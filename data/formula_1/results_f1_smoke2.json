@@ -1,0 +1,33 @@
+{
+  "runs": [
+    {
+      "question_id": 1,
+      "datasource": "formula_1",
+      "chat_id": "d3ca580c9d2f4fb2afcecd3685b90399",
+      "final_sql": "SELECT d.drvr_rf FROM qlfy q JOIN drvr d ON q.ref2 = d.drvr_id WHERE q.ref3 = 20 ORDER BY TIME_TO_SEC(q.q1) DESC LIMIT 5",
+      "sql_history": [
+        "SELECT ref2, q1 FROM qlfy WHERE ref3 = 20 ORDER BY q1 DESC LIMIT 8",
+        "SELECT d.drvr_rf FROM qlfy q JOIN drvr d ON q.ref2 = d.drvr_id WHERE q.ref3 = 20 ORDER BY TIME_TO_SEC(q.q1) DESC LIMIT 5"
+      ],
+      "agent_text": "Race 20 (2008 Brazilian GP) 中，Q1 被淘汰的 5 位车手参考名（driverRef）为：\n\n- sato\n- davidson\n- vettel\n- sutil\n- kovalainen",
+      "tool_calls": 4,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 16034,
+        "output": 1595,
+        "cache_read": 96768,
+        "cache_write": 0,
+        "reasoning": 1222,
+        "total": 114397
+      },
+      "cost_usd": 0.005401,
+      "elapsed_seconds": 24.09,
+      "agent_duration_ms": 13005,
+      "extra_columns": []
+    }
+  ]
+}

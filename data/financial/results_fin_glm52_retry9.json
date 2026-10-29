@@ -1,0 +1,261 @@
+{
+  "runs": [
+    {
+      "question_id": 15,
+      "datasource": "financial",
+      "chat_id": "4c4ecc79124443b7b321bf3eb2332143",
+      "final_sql": "SELECT clnt.clnt_id FROM crd JOIN dsp ON crd.ref1 = dsp.dsp_id JOIN clnt ON dsp.ref1 = clnt.clnt_id WHERE crd.issd = '1994-03-03'",
+      "sql_history": [
+        "SELECT clnt.clnt_id FROM crd JOIN dsp ON crd.ref1 = dsp.dsp_id JOIN clnt ON dsp.ref1 = clnt.clnt_id WHERE crd.issd = '1994-03-03'"
+      ],
+      "agent_text": "client id 为 **2429**。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78858,
+        "output": 278,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 140,
+        "total": 79136
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 22.27,
+      "agent_duration_ms": 14802,
+      "extra_columns": []
+    },
+    {
+      "question_id": 16,
+      "datasource": "financial",
+      "chat_id": "5d94cb28bf6147fba86f6c5ce2e50a9f",
+      "final_sql": "SELECT a.dt FROM acct a JOIN trns t ON t.ref1 = a.accn_id WHERE t.amnt = 840 AND t.dt = '1998-10-14'",
+      "sql_history": [
+        "SELECT a.dt FROM acct a JOIN trns t ON t.ref1 = a.accn_id WHERE t.amnt = 840 AND t.dt = '1998-10-14'"
+      ],
+      "agent_text": "该账户的开户日期为 **1993-02-26**。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78867,
+        "output": 378,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 244,
+        "total": 79245
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 23.31,
+      "agent_duration_ms": 15455,
+      "extra_columns": []
+    },
+    {
+      "question_id": 17,
+      "datasource": "financial",
+      "chat_id": "edfab7cb0ffc4cffb9e4bcaa6234111d",
+      "final_sql": "SELECT dstr.dstr_id FROM ln JOIN acct ON ln.ref1 = acct.accn_id JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE ln.dt = '1994-08-25'",
+      "sql_history": [
+        "SELECT dstr.dstr_id FROM ln JOIN acct ON ln.ref1 = acct.accn_id JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE ln.dt = '1994-08-25'"
+      ],
+      "agent_text": "该\n笔贷款对应的账户开户分支所在地区的 district ID 为 **31**。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78859,
+        "output": 507,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 370,
+        "total": 79366
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 24.92,
+      "agent_duration_ms": 17396,
+      "extra_columns": []
+    },
+    {
+      "question_id": 18,
+      "datasource": "financial",
+      "chat_id": "a7cb6bfb21ee407b83c2e56922716442",
+      "final_sql": "SELECT MAX(t.amnt) AS biggest_transaction_amount FROM crd c JOIN dsp d ON c.ref1 = d.dsp_id JOIN trns t ON d.ref2 = t.ref1 WHERE c.issd = '1996-10-21'",
+      "sql_history": [
+        "SELECT MAX(t.amnt) AS biggest_transaction_amount FROM crd c JOIN dsp d ON c.ref1 = d.dsp_id JOIN trns t ON d.ref2 = t.ref1 WHERE c.issd = '1996-10-21'"
+      ],
+      "agent_text": "最大\n交易金额为 **87,400**。\n\n**SQL 逻辑**：通过 `crd`（卡）的 `issd = '1996-10-21'` 找到该客户的卡 → 经 `dsp`（disposition）关联到账户 → 在 `trns`（交易）表中取该账户最大的 `amnt`。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78862,
+        "output": 4117,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 3912,
+        "total": 82979
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 95.04,
+      "agent_duration_ms": 87250,
+      "extra_columns": []
+    },
+    {
+      "question_id": 19,
+      "datasource": "financial",
+      "chat_id": "282e69d828074d2f9bd680a19cb0771a",
+      "final_sql": "SELECT c.gndr FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON a.accn_id = d.ref2 JOIN dstr ds ON ds.dstr_id = a.ref1 WHERE ds.a11 = (SELECT MAX(a11) FROM dstr) AND d.typ = 'OWNER' ORDER BY c.brth_dt ASC LIMIT 1",
+      "sql_history": [
+        "SELECT c.gndr FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON a.accn_id = d.ref2 JOIN dstr ds ON ds.dstr_id = a.ref1 WHERE ds.a11 = (SELECT MAX(a11) FROM dstr) AND d.typ = 'OWNER' ORDER BY c.brth_dt ASC LIMIT 1"
+      ],
+      "agent_text": "最终答案：**M**（男性）。\n\n在平均工资最高的分行（`dstr.a11` 最大值）开立账户的客户中，出生日期最早（即年龄最大）的是一位男性。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 106889,
+        "output": 1223,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 831,
+        "total": 108112
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 41.33,
+      "agent_duration_ms": 33635,
+      "extra_columns": []
+    },
+    {
+      "question_id": 20,
+      "datasource": "financial",
+      "chat_id": "70a6415cb0544be79525613c6bfb8c2b",
+      "final_sql": "SELECT t.amnt FROM ln l JOIN acct a ON l.ref1 = a.accn_id JOIN trns t ON t.ref1 = a.accn_id AND t.dt >= a.dt WHERE l.amnt = (SELECT MAX(amnt) FROM ln) ORDER BY t.dt ASC, t.trns_id ASC LIMIT 1",
+      "sql_history": [
+        "SELECT t.amnt FROM ln l JOIN acct a ON l.ref1 = a.accn_id JOIN trns t ON t.ref1 = a.accn_id AND t.dt >= a.dt WHERE l.amnt = (SELECT MAX(amnt) FROM ln) ORDER BY t.dt ASC, t.trns_id ASC LIMIT 1"
+      ],
+      "agent_text": "LLM request failed.",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 51312,
+        "output": 2525,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 2382,
+        "total": 53837
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 64.93,
+      "agent_duration_ms": 57269,
+      "extra_columns": []
+    },
+    {
+      "question_id": 21,
+      "datasource": "financial",
+      "chat_id": "b44ca7e6d6944b67aac2201458dc9055",
+      "final_sql": "SELECT COUNT(clnt.clnt_id) FROM clnt JOIN dsp ON clnt.clnt_id = dsp.ref1 JOIN acct ON dsp.ref2 = acct.accn_id JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE dstr.a2 = 'Jesenik' AND clnt.gndr = 'F'",
+      "sql_history": [
+        "SELECT COUNT(clnt.clnt_id) FROM clnt JOIN dsp ON clnt.clnt_id = dsp.ref1 JOIN acct ON dsp.ref2 = acct.accn_id JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE dstr.a2 = 'Jesenik' AND clnt.gndr = 'F'"
+      ],
+      "agent_text": "**25** 位女性客户在 Jesenik 分行开立了账户。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79083,
+        "output": 2867,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 2577,
+        "total": 81950
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 67.35,
+      "agent_duration_ms": 59587,
+      "extra_columns": []
+    },
+    {
+      "question_id": 22,
+      "datasource": "financial",
+      "chat_id": "820b701b4ca441f5bf3011c60480779b",
+      "final_sql": "SELECT dsp.dsp_id FROM trns JOIN dsp ON dsp.ref2 = trns.ref1 WHERE trns.amnt = 5100 AND trns.dt = '1998-09-02'",
+      "sql_history": [
+        "SELECT dsp.dsp_id FROM trns JOIN dsp ON dsp.ref2 = trns.ref1 WHERE trns.amnt = 5100 AND trns.dt = '1998-09-02' AND dsp.typ = 'OWNER'",
+        "SELECT trns.trns_id, trns.ref1, trns.dt, trns.typ, trns.oprt, trns.amnt, trns.k_symb FROM trns WHERE trns.amnt = 5100 AND trns.dt = '1998-09-02'",
+        "SELECT dsp.dsp_id FROM trns JOIN dsp ON dsp.ref2 = trns.ref1 WHERE trns.amnt = 5100 AND trns.dt = '1998-09-02'",
+        "SELECT dsp.dsp_id, dsp.ref1 AS clnt_id, dsp.ref2 AS accn_id, dsp.typ FROM trns JOIN dsp ON dsp.ref2 = trns.ref1 WHERE trns.amnt = 5100 AND trns.dt = '1998-09-02'",
+        "SELECT dsp.dsp_id, dsp.ref1 AS clnt_id, dsp.ref2 AS accn_id, dsp.typ FROM trns JOIN dsp ON dsp.ref2 = trns.ref1 WHERE trns.amnt = 5100 AND trns.dt = '1998-09-02' AND trns.k_symb = 'SIPO'",
+        "SELECT dsp.dsp_id FROM trns JOIN dsp ON dsp.ref2 = trns.ref1 WHERE trns.amnt = 5100 AND trns.dt = '1998-09-02'"
+      ],
+      "agent_text": "查询\n结果返回了 4 个 disposition ID：\n\n| dsp_id |\n|--------|\n| 1719 |\n| 4474 |\n| 4942 |\n| 5393 |\n\n1998/9/2 有 4 笔金额为 5100 的交易，分别关联 4 个不同账户，对应 4 个 disposition（均为 OWNER）。最后执行的 SQL 即为最终答案：\n\n```sql\nSELECT dsp.dsp_id\nFROM trns\nJOIN dsp ON dsp.ref2 = trns.ref1\nWHERE trns.amnt = 5100\n  AND trns.dt = '1998-09-02'\n```",
+      "tool_calls": 9,
+      "pass": false,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 9,
+      "tool_rounds": 8,
+      "tokens": {
+        "input": 251394,
+        "output": 5934,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 5233,
+        "total": 257328
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 148.94,
+      "agent_duration_ms": 141286,
+      "extra_columns": []
+    },
+    {
+      "question_id": 23,
+      "datasource": "financial",
+      "chat_id": "891b13cb33004334a172b4bc0979382b",
+      "final_sql": "SELECT COUNT(*) FROM acct JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE dstr.a2 = 'Litomerice' AND YEAR(acct.dt) = 1996",
+      "sql_history": [
+        "SELECT COUNT(*) FROM acct JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE dstr.a2 = 'Litomerice' AND YEAR(acct.dt) = 1996"
+      ],
+      "agent_text": "**9** 个账户于 1996 年在 Litomerice 开立。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78911,
+        "output": 615,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 485,
+        "total": 79526
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 27.19,
+      "agent_duration_ms": 19610,
+      "extra_columns": []
+    }
+  ]
+}

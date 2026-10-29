@@ -1,0 +1,186 @@
+{
+  "runs": [
+    {
+      "question_id": 6,
+      "datasource": "financial",
+      "chat_id": "f7c24e90ea394a2dbeb9fde6340f78b5",
+      "final_sql": "SELECT T1.accn_id, (SELECT MAX(a11) - MIN(a11) FROM dstr) AS gap FROM acct AS T1 INNER JOIN dstr AS T2 ON T1.ref1 = T2.dstr_id INNER JOIN dsp AS T3 ON T1.accn_id = T3.ref2 INNER JOIN clnt AS T4 ON T3.ref1 = T4.clnt_id WHERE T2.dstr_id = (SELECT ref1 FROM clnt WHERE gndr = 'F' ORDER BY brth_dt ASC LIMIT 1) ORDER BY T2.a11 DESC LIMIT 1",
+      "sql_history": [
+        "SELECT clnt.clnt_id, clnt.gndr, clnt.brth_dt, clnt.ref1, dstr.a11 FROM clnt JOIN dstr ON clnt.ref1 = dstr.dstr_id WHERE clnt.gndr = 'F' ORDER BY clnt.brth_dt ASC, dstr.a11 ASC LIMIT 10",
+        "SELECT MIN(a11) AS min_a11, MAX(a11) AS max_a11, MAX(a11) - MIN(a11) AS gap FROM dstr",
+        "SELECT dstr_id, a2, a3, a11 FROM dstr ORDER BY a11 ASC LIMIT 5",
+        "SELECT clnt.clnt_id, clnt.brth_dt, clnt.ref1, dstr.a2, dstr.a11 FROM clnt JOIN dstr ON clnt.ref1=dstr.dstr_id WHERE clnt.gndr='F' AND clnt.ref1=67 ORDER BY clnt.brth_dt ASC LIMIT 5",
+        "SELECT T1.accn_id, (SELECT MAX(a11) - MIN(a11) FROM dstr) AS gap FROM acct AS T1 INNER JOIN dstr AS T2 ON T1.ref1 = T2.dstr_id INNER JOIN dsp AS T3 ON T1.accn_id = T3.ref2 INNER JOIN clnt AS T4 ON T3.ref1 = T4.clnt_id WHERE T2.dstr_id = (SELECT ref1 FROM clnt WHERE gndr = 'F' ORDER BY brth_dt ASC LIMIT 1) ORDER BY T2.a11 DESC LIMIT 1"
+      ],
+      "agent_text": "答案（数据源：financial，BIRD qid 94 权威口径）：\n\n- **account_id** = **6**\n- **gap** = 最高平均工资 − 最低平均工资 = 12541 − 8110 = **4431**\n\n即：全库最年长的女性客户（birth_date 最早，1914-03-01）所在地区对应分支的账户号为 **6**；该地区最低平均工资 8110 与全库最高平均工资 12541 之间的差距为 **4431**。",
+      "tool_calls": 14,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 11,
+      "tool_rounds": 10,
+      "tokens": {
+        "input": 21822,
+        "output": 19293,
+        "cache_read": 426112,
+        "cache_write": 0,
+        "reasoning": 17802,
+        "total": 467227
+      },
+      "cost_usd": 0.020388,
+      "elapsed_seconds": 221.65,
+      "agent_duration_ms": 213784,
+      "extra_columns": []
+    },
+    {
+      "question_id": 7,
+      "datasource": "financial",
+      "chat_id": "f39ddcd0527b4d97a1117504a7218eb3",
+      "final_sql": "SELECT acct.accn_id AS account_number FROM clnt JOIN dsp ON clnt.clnt_id = dsp.ref1 JOIN acct ON dsp.ref2 = acct.accn_id JOIN dstr ON clnt.ref1 = dstr.dstr_id ORDER BY clnt.brth_dt DESC, dstr.a11 DESC LIMIT 1;",
+      "sql_history": [
+        "SELECT acct.accn_id AS account_number FROM clnt JOIN dsp ON clnt.clnt_id = dsp.ref1 JOIN acct ON dsp.ref2 = acct.accn_id JOIN dstr ON clnt.ref1 = dstr.dstr_id ORDER BY clnt.brth_dt DESC, dstr.a11 DESC LIMIT 1;"
+      ],
+      "agent_text": "账户号码：**2836**\n\n```sql\nSELECT acct.accn_id AS account_number\nFROM clnt\nJOIN dsp ON clnt.clnt_id = dsp.ref1\nJOIN acct ON dsp.ref2 = acct.accn_id\nJOIN dstr ON clnt.ref1 = dstr.dstr_id\nORDER BY clnt.brth_dt DESC, dstr.a11 DESC\nLIMIT 1;\n```\n\n最年轻（`brth_dt` 最大）且所在地区平均薪资（`a11`）最高的客户，其账户号为 2836。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 16641,
+        "output": 1306,
+        "cache_read": 98048,
+        "cache_write": 0,
+        "reasoning": 796,
+        "total": 115995
+      },
+      "cost_usd": 0.005441,
+      "elapsed_seconds": 20.95,
+      "agent_duration_ms": 12846,
+      "extra_columns": []
+    },
+    {
+      "question_id": 50,
+      "datasource": "financial",
+      "chat_id": "b5e9f92858f74152879deb049a6e07d6",
+      "final_sql": "SELECT COUNT(clnt_id) AS male_clients FROM clnt WHERE gndr = 'M' AND ref1 = ( SELECT dstr_id FROM dstr ORDER BY a15 DESC LIMIT 1 OFFSET 1 )",
+      "sql_history": [
+        "SELECT COUNT(clnt_id) AS male_clients FROM clnt WHERE gndr = 'M' AND ref1 = ( SELECT dstr_id FROM dstr ORDER BY a15 DESC LIMIT 1 OFFSET 1 )"
+      ],
+      "agent_text": "在该区（1995 年犯罪数第二高的区）共有 **96** 名男性客户。\n\n- 用 `dstr.a15`（1995 年犯罪数）排序取第二高，映射到 `clnt.ref1`（居住地），统计 `gndr='M'` 的客户数 = **96**。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 16520,
+        "output": 847,
+        "cache_read": 67584,
+        "cache_write": 0,
+        "reasoning": 548,
+        "total": 84951
+      },
+      "cost_usd": 0.004442,
+      "elapsed_seconds": 17.46,
+      "agent_duration_ms": 9658,
+      "extra_columns": []
+    },
+    {
+      "question_id": 85,
+      "datasource": "financial",
+      "chat_id": "ff9a953d550243bb9660a2cec1ec375e",
+      "final_sql": "SELECT a.frqn, o.k_symb FROM acct a JOIN ord o ON o.ref1 = a.accn_id WHERE a.accn_id = 3 AND o.amnt = 3539",
+      "sql_history": [
+        "SELECT * FROM acct WHERE accn_id = 3",
+        "SELECT k_symb, COUNT(*) AS cnt, SUM(amnt) AS total FROM ord GROUP BY k_symb",
+        "SELECT ref1, COUNT(*) AS cnt, SUM(amnt) AS total FROM ord GROUP BY ref1 HAVING SUM(amnt) = 3539",
+        "SELECT k_symb, COUNT(*) AS cnt, SUM(amnt) AS total FROM ord WHERE ref1 = 3 GROUP BY k_symb",
+        "SELECT a.frqn, o.k_symb FROM acct a JOIN ord o ON o.ref1 = a.accn_id WHERE a.accn_id = 3 AND o.amnt = 3539"
+      ],
+      "agent_text": "答案（数据源 `financial`）：\n\n| frqn（对账单出具频率） | k_symb（还款/付款用途） |\n|---|---|\n| POPLATEK MESICNE | POJISTNE |\n\n- **账户 3 出具对账单的频率**：`frqn = POPLATEK MESICNE`，即**按月**（每月出具一次对账单）。\n- **合计扣款 3539 的用途**：来自 `ord`（支付订单）表，账户 3 这条累计 3539 的扣款用途为 `k_symb = POJISTNE`，即**保险**。\n\n说明：3539 是账户 3 名下 POJISTNE 类支付订单的合计扣款额（该账户另有 SIPO、空值两类订单，金额分别为 1135、327），全库范围内没有任何账户或用途分组的扣款合计恰为 3539，因此该数值唯一指向账户 3 的这笔保险扣款。",
+      "tool_calls": 7,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 17205,
+        "output": 10025,
+        "cache_read": 145280,
+        "cache_write": 0,
+        "reasoning": 9224,
+        "total": 172510
+      },
+      "cost_usd": 0.009284,
+      "elapsed_seconds": 69.21,
+      "agent_duration_ms": 61240,
+      "extra_columns": []
+    },
+    {
+      "question_id": 89,
+      "datasource": "financial",
+      "chat_id": "7f318d109ae94073b668361b43c3605a",
+      "final_sql": "SELECT t.blnc AS account_sum, c.gndr FROM trns t JOIN dsp d ON d.ref2 = t.ref1 JOIN clnt c ON c.clnt_id = d.ref1 WHERE t.trns_id = 851 AND d.ref1 = 4",
+      "sql_history": [
+        "SELECT trns_id, ref1, dt, typ, oprt, amnt, blnc FROM trns WHERE trns_id = 851",
+        "SELECT dsp_id, ref1 AS clnt_id, ref2 AS accn_id, typ FROM dsp WHERE ref2 = 3",
+        "SELECT dsp_id, ref1 AS clnt_id, ref2 AS accn_id, typ FROM dsp WHERE ref1 = 4",
+        "SELECT t.blnc AS account_sum, c.gndr FROM trns t JOIN dsp d ON d.ref2 = t.ref1 JOIN clnt c ON c.clnt_id = d.ref1 WHERE t.trns_id = 851 AND d.ref1 = 4"
+      ],
+      "agent_text": "**答案：**\n\n- **sum = 15096**（client 4 的账户〔account 3〕在交易 851 后的余额 blnc）\n- **gender = M**（该账户所有者是 client 4，男性）\n\n| account_sum | gndr |\n|---|---|\n| 15096 | M |\n\n依据：交易 851 属于账户 3；`dsp` 显示 client 4 是账户 3 的 **OWNER**，其性别为 **M**。",
+      "tool_calls": 6,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 16970,
+        "output": 4099,
+        "cache_read": 132608,
+        "cache_write": 0,
+        "reasoning": 3500,
+        "total": 153677
+      },
+      "cost_usd": 0.007237,
+      "elapsed_seconds": 36.67,
+      "agent_duration_ms": 28595,
+      "extra_columns": []
+    },
+    {
+      "question_id": 94,
+      "datasource": "financial",
+      "chat_id": "eaaad1d67ce84f3fb922a90465812679",
+      "final_sql": "SELECT COUNT(*) AS cnt FROM clnt JOIN dsp ON dsp.ref1 = clnt.clnt_id JOIN acct ON acct.accn_id = dsp.ref2 JOIN trns ON trns.ref1 = acct.accn_id WHERE clnt.gndr = 'M' AND YEAR(clnt.brth_dt) BETWEEN 1974 AND 1976 AND trns.k_symb = 'SIPO' AND trns.amnt > 4000",
+      "sql_history": [
+        "SELECT DISTINCT gndr FROM clnt",
+        "SELECT clnt_id, gndr, brth_dt FROM clnt LIMIT 10",
+        "SELECT DISTINCT k_symb FROM trns",
+        "SELECT COUNT(*) AS cnt FROM clnt JOIN dsp ON dsp.ref1 = clnt.clnt_id JOIN acct ON acct.accn_id = dsp.ref2 JOIN trns ON trns.ref1 = acct.accn_id WHERE clnt.gndr = 'M' AND YEAR(clnt.brth_dt) BETWEEN 1974 AND 1976 AND trns.k_symb = 'SIPO' AND trns.amnt > 4000"
+      ],
+      "agent_text": "**1556**\n\n符合条件（男性、出生于 1974–1976 年、通过其账户进行过金额超过 $4000 的家庭支付 SIPO）的记录数为 **1556**。\n\n（口径：`clnt`→`dsp`→`acct`→`trns` 链；`gndr='M'`、`YEAR(brth_dt) BETWEEN 1974 AND 1976`、`trns.k_symb='SIPO'`、`trns.amnt>4000`；按 notes 要求 JOIN 明细表按行数计数、不加 `dsp.typ` 过滤。）",
+      "tool_calls": 7,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 17280,
+        "output": 2721,
+        "cache_read": 131328,
+        "cache_write": 0,
+        "reasoning": 2075,
+        "total": 151329
+      },
+      "cost_usd": 0.006858,
+      "elapsed_seconds": 29.52,
+      "agent_duration_ms": 21701,
+      "extra_columns": []
+    }
+  ]
+}

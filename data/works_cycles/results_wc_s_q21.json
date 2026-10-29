@@ -1,0 +1,49 @@
+{
+  "runs": [
+    {
+      "question_id": 21,
+      "s_level": "S0",
+      "final_sql": "SELECT COUNT(*) AS product_count\nFROM (\n  SELECT pr.ref1\n  FROM prod_rvw AS pr\n  JOIN prod AS p ON p.prdc_id = pr.ref1\n  WHERE p.sll_end_dt IS NULL\n    AND p.dscn_dt IS NULL\n  GROUP BY pr.ref1\n  HAVING COUNT(*) > 10\n) AS t",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4351,
+        "output": 2820,
+        "total": 7171
+      },
+      "elapsed_seconds": 13.32,
+      "extra_columns": []
+    },
+    {
+      "question_id": 21,
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(*) AS product_count\nFROM (\n    SELECT p.prdc_id\n    FROM prod p\n    JOIN prod_rvw r ON r.ref1 = p.prdc_id\n    WHERE p.fnsh_gds_flg = 1\n    GROUP BY p.prdc_id\n    HAVING COUNT(*) > 10\n) t",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 12812,
+        "output": 338,
+        "total": 13150
+      },
+      "elapsed_seconds": 1.92,
+      "extra_columns": []
+    },
+    {
+      "question_id": 21,
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(*) AS product_count FROM (SELECT p.prdc_id FROM prod AS p JOIN prod_rvw AS r ON r.ref1 = p.prdc_id WHERE p.fnsh_gds_flg = 1 GROUP BY p.prdc_id HAVING COUNT(*) > 10) AS prod_with_reviews",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 14150,
+        "output": 551,
+        "total": 14701
+      },
+      "elapsed_seconds": 2.9,
+      "extra_columns": []
+    }
+  ]
+}

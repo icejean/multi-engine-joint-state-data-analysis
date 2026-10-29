@@ -1,0 +1,61 @@
+{
+  "runs": [
+    {
+      "question_id": 19,
+      "datasource": "financial",
+      "chat_id": "857367245fbb4ac2b475dc6a118b5810",
+      "final_sql": "SELECT c.gndr FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON a.accn_id = d.ref2 JOIN dstr s ON s.dstr_id = a.ref1 WHERE d.typ = 'OWNER' AND s.dstr_id = (SELECT dstr_id FROM dstr ORDER BY a11 DESC LIMIT 1) ORDER BY c.brth_dt ASC LIMIT 1",
+      "sql_history": [
+        "SELECT c.gndr FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON a.accn_id = d.ref2 JOIN dstr s ON s.dstr_id = a.ref1 WHERE d.typ = 'OWNER' AND s.dstr_id = (SELECT dstr_id FROM dstr ORDER BY a11 DESC LIMIT 1) ORDER BY c.brth_dt ASC LIMIT 1"
+      ],
+      "agent_text": "The gender of the oldest client is **M** (male).\n\n**答案 SQL：**\n```sql\nSELECT c.gndr\nFROM clnt c\nJOIN dsp d ON d.ref1 = c.clnt_id\nJOIN acct a ON a.accn_id = d.ref2\nJOIN dstr s ON s.dstr_id = a.ref1\nWHERE d.typ = 'OWNER'\n  AND s.dstr_id = (SELECT dstr_id FROM dstr ORDER BY a11 DESC LIMIT 1)\nORDER BY c.brth_dt ASC\nLIMIT 1\n```\n\n逻辑：取 `a11`（平均工资）最高的区（branch 用 `acct.ref1→dstr`），在该区开户的 owner 客户（`dsp.typ='OWNER'`）中按 `brth_dt` 最早者，返回其 `gndr`。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 16117,
+        "output": 821,
+        "cache_read": 67200,
+        "cache_write": 0,
+        "reasoning": 353,
+        "total": 84138
+      },
+      "cost_usd": 0.004368,
+      "elapsed_seconds": 16.14,
+      "agent_duration_ms": 8535,
+      "extra_columns": []
+    },
+    {
+      "question_id": 91,
+      "datasource": "financial",
+      "chat_id": "9003515e8fba4d91a1dea7d8c66ca4d7",
+      "final_sql": "SELECT SUM(t.amnt) AS total_paid FROM trns t JOIN dsp d ON d.ref2 = t.ref1 WHERE d.ref1 = 617 AND YEAR(t.dt) = 1998",
+      "sql_history": [
+        "SELECT SUM(t.amnt) AS sum_all, SUM(CASE WHEN d.typ='OWNER' THEN t.amnt END) AS sum_owner, COUNT(*) AS rows_all, COUNT(CASE WHEN d.typ='OWNER' THEN 1 END) AS rows_owner FROM trns t JOIN dsp d ON d.ref2 = t.ref1 WHERE d.ref1 = 617 AND YEAR(t.dt) = 1998",
+        "SELECT SUM(t.amnt) AS total_paid FROM trns t JOIN dsp d ON d.ref2 = t.ref1 WHERE d.ref1 = 617 AND YEAR(t.dt) = 1998"
+      ],
+      "agent_text": "客户号 617 在 1998 年所有交易共支付 **303,276**。",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 16586,
+        "output": 2363,
+        "cache_read": 130560,
+        "cache_write": 0,
+        "reasoning": 1822,
+        "total": 149509
+      },
+      "cost_usd": 0.006639,
+      "elapsed_seconds": 26.97,
+      "agent_duration_ms": 19270,
+      "extra_columns": []
+    }
+  ]
+}

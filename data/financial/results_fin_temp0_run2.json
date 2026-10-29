@@ -1,0 +1,359 @@
+{
+  "runs": [
+    {
+      "question_id": 6,
+      "datasource": "financial",
+      "chat_id": "73c254b1c91d46599b6ba5e5abcaafd5",
+      "final_sql": "SELECT T1.accn_id, (SELECT MAX(a11) - MIN(a11) FROM dstr) AS gap FROM acct AS T1 INNER JOIN dstr AS T2 ON T1.ref1 = T2.dstr_id INNER JOIN dsp AS T3 ON T1.accn_id = T3.ref2 INNER JOIN clnt AS T4 ON T3.ref1 = T4.clnt_id WHERE T2.dstr_id = (SELECT ref1 FROM clnt WHERE gndr = 'F' ORDER BY brth_dt ASC LIMIT 1) ORDER BY T2.a11 DESC LIMIT 1",
+      "sql_history": [
+        "SELECT c.clnt_id, c.brth_dt, c.ref1 AS home_dstr, d.a2, d.a11 FROM clnt c JOIN dstr d ON c.ref1 = d.dstr_id WHERE c.gndr = 'F' ORDER BY c.brth_dt ASC LIMIT 10",
+        "SELECT MIN(a11) AS min_a11, MAX(a11) AS max_a11, MAX(a11)-MIN(a11) AS gap FROM dstr",
+        "SELECT c.clnt_id, c.brth_dt, c.ref1 FROM clnt c JOIN dstr d ON c.ref1 = d.dstr_id WHERE c.gndr = 'F' AND d.a11 = (SELECT MIN(a11) FROM dstr) ORDER BY c.brth_dt ASC LIMIT 10",
+        "SELECT T1.accn_id, (SELECT MAX(a11) - MIN(a11) FROM dstr) AS gap FROM acct AS T1 INNER JOIN dstr AS T2 ON T1.ref1 = T2.dstr_id INNER JOIN dsp AS T3 ON T1.accn_id = T3.ref2 INNER JOIN clnt AS T4 ON T3.ref1 = T4.clnt_id WHERE T2.dstr_id = (SELECT ref1 FROM clnt WHERE gndr = 'F' ORDER BY brth_dt ASC LIMIT 1) ORDER BY T2.a11 DESC LIMIT 1"
+      ],
+      "agent_text": "**结果**\n\n| account number | gap |\n|---|---|\n| 6 | 4431 |\n\n- 最年长的女性客户（最早出生日期）居住在 **Trutnov** 区；她所在分支区的账户号为 **6**。\n- 平均工资最低值与最高值之差：**12541 − 8110 = 4431**。",
+      "tool_calls": 11,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 10,
+      "tool_rounds": 9,
+      "tokens": {
+        "input": 20293,
+        "output": 7958,
+        "cache_read": 316160,
+        "cache_write": 0,
+        "reasoning": 6670,
+        "total": 344411
+      },
+      "cost_usd": 0.013922,
+      "elapsed_seconds": 161.67,
+      "agent_duration_ms": 85932,
+      "extra_columns": []
+    },
+    {
+      "question_id": 19,
+      "datasource": "financial",
+      "chat_id": "945d9eb237c84a12a35758eb37a7a162",
+      "final_sql": "SELECT c.gndr FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON a.accn_id = d.ref2 JOIN dstr ds ON ds.dstr_id = a.ref1 WHERE ds.a11 = (SELECT MAX(a11) FROM dstr) ORDER BY c.brth_dt ASC LIMIT 1",
+      "sql_history": [
+        "SELECT c.gndr FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON a.accn_id = d.ref2 JOIN dstr ds ON ds.dstr_id = a.ref1 WHERE ds.a11 = (SELECT MAX(a11) FROM dstr) ORDER BY c.brth_dt ASC LIMIT 1"
+      ],
+      "agent_text": "F\n\n最年长客户（在该分支开户）的性别为 **F**（女性）。\n\n路径：`dstr.a11` 平均薪资最高的分支 → `acct.ref1` 锁定该分支账户 → `dsp` 关联客户 → 取 `brth_dt` 最早者，返回 `gndr`。",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 15245,
+        "output": 548,
+        "cache_read": 66048,
+        "cache_write": 0,
+        "reasoning": 219,
+        "total": 81841
+      },
+      "cost_usd": 0.004137,
+      "elapsed_seconds": 14.82,
+      "agent_duration_ms": 6945,
+      "extra_columns": []
+    },
+    {
+      "question_id": 43,
+      "datasource": "financial",
+      "chat_id": "a2e917a858b1436888e135e7940a8e84",
+      "final_sql": "SELECT d.a2 AS district, COUNT(*) AS active_loans FROM ln l JOIN acct a ON l.ref1 = a.accn_id JOIN dstr d ON a.ref1 = d.dstr_id WHERE l.stts IN ('C','D') GROUP BY d.a2 ORDER BY active_loans DESC LIMIT 1",
+      "sql_history": [
+        "SELECT d.a2 AS district, COUNT(*) AS active_loans FROM ln l JOIN acct a ON l.ref1 = a.accn_id JOIN dstr d ON a.ref1 = d.dstr_id WHERE l.stts IN ('C','D') GROUP BY d.a2 ORDER BY active_loans DESC LIMIT 1"
+      ],
+      "agent_text": "**Hl.m. Praha** — 该区的活跃贷款（status = 'C' 或 'D'，即 running contract）数量最多，共 **47** 笔。\n\n口径：`ln → acct → dstr`（贷款所属账户的开设分支所在区），`stts IN ('C','D')` 为活跃（running）贷款，按区计数取最高。",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 15264,
+        "output": 652,
+        "cache_read": 66176,
+        "cache_write": 0,
+        "reasoning": 319,
+        "total": 82092
+      },
+      "cost_usd": 0.004172,
+      "elapsed_seconds": 16.18,
+      "agent_duration_ms": 8066,
+      "extra_columns": []
+    },
+    {
+      "question_id": 47,
+      "datasource": "financial",
+      "chat_id": "99d74089b3194056a19dc1f680be44aa",
+      "final_sql": "SELECT COUNT(DISTINCT t.ref1) AS num_accounts FROM trns t JOIN acct a ON a.accn_id = t.ref1 WHERE t.oprt = 'VYBER KARTOU' AND t.blnc < 0 AND a.frqn = 'POPLATEK MESICNE'",
+      "sql_history": [
+        "SELECT DISTINCT oprt FROM trns",
+        "SELECT DISTINCT frqn FROM acct",
+        "SELECT COUNT(*) AS rows_cnt, COUNT(DISTINCT t.ref1) AS acct_cnt FROM trns t JOIN acct a ON a.accn_id = t.ref1 WHERE t.oprt = 'VYBER KARTOU' AND t.blnc < 0 AND a.frqn = 'POPLATEK MESICNE'",
+        "SELECT t.ref1, t.dt, t.amnt, t.blnc, a.frqn FROM trns t JOIN acct a ON a.accn_id = t.ref1 WHERE t.oprt = 'VYBER KARTOU' AND t.blnc < 0 ORDER BY t.ref1, t.dt",
+        "SELECT COUNT(DISTINCT t.ref1) AS num_accounts FROM trns t JOIN acct a ON a.accn_id = t.ref1 WHERE t.oprt = 'VYBER KARTOU' AND t.blnc < 0 AND a.frqn = 'POPLATEK MESICNE'"
+      ],
+      "agent_text": "答案为 **1** 个账户。\n\n说明：在 `trns` 中筛选信用卡取现（`oprt = 'VYBER KARTOU'`）且交易后余额为负（`blnc < 0`）的记录，关联 `acct` 后要求账户频率为月结（`frqn = 'POPLATEK MESICNE'`），去重后只有 1 个账户（accn_id=2959，共 6 笔此类取现）。\n\n```sql\nSELECT COUNT(DISTINCT t.ref1) AS num_accounts\nFROM trns t\nJOIN acct a ON a.accn_id = t.ref1\nWHERE t.oprt = 'VYBER KARTOU'\n  AND t.blnc < 0\n  AND a.frqn = 'POPLATEK MESICNE';\n```\n\n结果：**1**",
+      "tool_calls": 9,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 7,
+      "tool_rounds": 6,
+      "tokens": {
+        "input": 16309,
+        "output": 5367,
+        "cache_read": 195456,
+        "cache_write": 0,
+        "reasoning": 4450,
+        "total": 217132
+      },
+      "cost_usd": 0.009259,
+      "elapsed_seconds": 42.22,
+      "agent_duration_ms": 34503,
+      "extra_columns": []
+    },
+    {
+      "question_id": 56,
+      "datasource": "financial",
+      "chat_id": "5eed94a42d49454298eb0d3840fb9b08",
+      "final_sql": "SELECT AVG(T4.amnt) FROM crd AS T1 INNER JOIN dsp AS T2 ON T1.ref1 = T2.dsp_id INNER JOIN acct AS T3 ON T2.ref2 = T3.accn_id INNER JOIN trns AS T4 ON T3.accn_id = T4.ref1 WHERE YEAR(T4.dt) = 1998 AND T4.oprt = 'VYBER KARTOU'",
+      "sql_history": [
+        "SELECT DISTINCT oprt FROM trns",
+        "SELECT dt FROM trns LIMIT 5",
+        "SELECT YEAR(dt) AS y, COUNT(*) AS c FROM trns GROUP BY y ORDER BY y",
+        "SELECT AVG(T4.amnt) FROM crd AS T1 INNER JOIN dsp AS T2 ON T1.ref1 = T2.dsp_id INNER JOIN acct AS T3 ON T2.ref2 = T3.accn_id INNER JOIN trns AS T4 ON T3.accn_id = T4.ref1 WHERE YEAR(T4.dt) = 1998 AND T4.oprt = 'VYBER KARTOU'"
+      ],
+      "agent_text": "平均金额：**2270.9430**\n\n最终 SQL（数据源 `financial`）：\n\n```sql\nSELECT AVG(T4.amnt)\nFROM crd AS T1\nINNER JOIN dsp  AS T2 ON T1.ref1 = T2.dsp_id\nINNER JOIN acct AS T3 ON T2.ref2 = T3.accn_id\nINNER JOIN trns AS T4 ON T3.accn_id = T4.ref1\nWHERE YEAR(T4.dt) = 1998 AND T4.oprt = 'VYBER KARTOU';\n```\n\n说明：`trns.oprt = 'VYBER KARTOU'` 即信用卡取现；该库交易数据年份为 1993–1998（无 2021 数据），故按可取现年份 1998 计，结果 `AVG(amnt) = 2270.9430`。",
+      "tool_calls": 11,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 10,
+      "tool_rounds": 9,
+      "tokens": {
+        "input": 25261,
+        "output": 8286,
+        "cache_read": 344960,
+        "cache_write": 0,
+        "reasoning": 6940,
+        "total": 378507
+      },
+      "cost_usd": 0.015515,
+      "elapsed_seconds": 65.52,
+      "agent_duration_ms": 57901,
+      "extra_columns": []
+    },
+    {
+      "question_id": 57,
+      "datasource": "financial",
+      "chat_id": "01336cad11274b079e9afc8fc8707525",
+      "final_sql": "SELECT T1.ref1 FROM trns AS T1 INNER JOIN acct AS T2 ON T1.ref1 = T2.accn_id WHERE YEAR(T1.dt) = '1998' AND T1.oprt = 'VYBER KARTOU' AND T1.amnt < (SELECT AVG(amnt) FROM trns WHERE YEAR(dt) = '1998')",
+      "sql_history": [
+        "SELECT T1.ref1 FROM trns AS T1 INNER JOIN acct AS T2 ON T1.ref1 = T2.accn_id WHERE YEAR(T1.dt) = '1998' AND T1.oprt = 'VYBER KARTOU' AND T1.amnt < (SELECT AVG(amnt) FROM trns WHERE YEAR(dt) = '1998')"
+      ],
+      "agent_text": "最终答案 SQL 已执行，结果为账户持有人（account holder）识别号：\n\n| ref1 (account_id) |\n|---|\n| 14 |\n| 14 |\n| 14 |\n| 14 |\n| 14 |\n| 14 |\n| 33 |\n| 33 |\n| 33 |\n| 33 |\n| 34 |\n| 43 (×10) |\n| 48 |\n| 48 |\n| 51 (×4) |\n\n去重后的账户识别号：**14, 33, 34, 43, 48, 51**\n\n即 1998 年通过信用卡（`oprt = 'VYBER KARTOU'`）发生金额低于当年全部交易平均金额的账户持有人识别号。\n\n```sql\nSELECT T1.ref1 FROM trns AS T1 INNER JOIN acct AS T2 ON T1.ref1 = T2.accn_id\nWHERE YEAR(T1.dt) = '1998' AND T1.oprt = 'VYBER KARTOU'\nAND T1.amnt < (SELECT AVG(amnt) FROM trns WHERE YEAR(dt) = '1998')\n```",
+      "tool_calls": 8,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 7,
+      "tool_rounds": 6,
+      "tokens": {
+        "input": 18134,
+        "output": 2900,
+        "cache_read": 195200,
+        "cache_write": 0,
+        "reasoning": 1747,
+        "total": 216234
+      },
+      "cost_usd": 0.008816,
+      "elapsed_seconds": 31.5,
+      "agent_duration_ms": 23840,
+      "extra_columns": []
+    },
+    {
+      "question_id": 59,
+      "datasource": "financial",
+      "chat_id": "c64f3cbb713247eb9676d767b831b88a",
+      "final_sql": "SELECT COUNT(*) AS female_south_bohemia_accounts FROM acct JOIN dsp ON dsp.ref2 = acct.accn_id JOIN clnt ON clnt.clnt_id = dsp.ref1 JOIN dstr ON dstr.dstr_id = acct.ref1 WHERE clnt.gndr = 'F' AND dstr.a3 = 'south Bohemia';",
+      "sql_history": [
+        "SELECT COUNT(*) AS female_south_bohemia_accounts FROM acct JOIN dsp ON dsp.ref2 = acct.accn_id JOIN clnt ON clnt.clnt_id = dsp.ref1 JOIN dstr ON dstr.dstr_id = acct.ref1 WHERE clnt.gndr = 'F' AND dstr.a3 = 'south Bohemia';"
+      ],
+      "agent_text": "**231**\n\n女性客户（`clnt.gndr = 'F'`）、其账户开户分支位于 South Bohemia 大区（`acct.ref1 → dstr.a3 = 'south Bohemia'`）的账户数为 **231**。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 15258,
+        "output": 936,
+        "cache_read": 66432,
+        "cache_write": 0,
+        "reasoning": 619,
+        "total": 82626
+      },
+      "cost_usd": 0.004258,
+      "elapsed_seconds": 16.69,
+      "agent_duration_ms": 8972,
+      "extra_columns": []
+    },
+    {
+      "question_id": 81,
+      "datasource": "financial",
+      "chat_id": "90c51e61800349ab970ffd35fb2a773e",
+      "final_sql": "SELECT (SUM(CASE WHEN YEAR(ln.dt)=1997 THEN ln.amnt END) - SUM(CASE WHEN YEAR(ln.dt)=1996 THEN ln.amnt END)) * 100.0 / SUM(CASE WHEN YEAR(ln.dt)=1996 THEN ln.amnt END) AS growth_rate FROM ln JOIN dsp ON dsp.ref2 = ln.ref1 JOIN clnt ON clnt.clnt_id = dsp.ref1 WHERE clnt.gndr = 'M' AND dsp.typ = 'OWNER'",
+      "sql_history": [
+        "SELECT (SUM(CASE WHEN YEAR(ln.dt)=1997 THEN ln.amnt END) - SUM(CASE WHEN YEAR(ln.dt)=1996 THEN ln.amnt END)) * 100.0 / SUM(CASE WHEN YEAR(ln.dt)=1996 THEN ln.amnt END) AS growth_rate FROM ln JOIN dsp ON dsp.ref2 = ln.ref1 JOIN clnt ON clnt.clnt_id = dsp.ref1 WHERE clnt.gndr = 'M' AND dsp.typ = 'OWNER'"
+      ],
+      "agent_text": "增长率 ≈ **25.30%**\n\n（男性客户名下所有账户的贷款总额：1997 年较 1996 年增长约 25.3%）",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 21515,
+        "output": 1299,
+        "cache_read": 101888,
+        "cache_write": 0,
+        "reasoning": 778,
+        "total": 124702
+      },
+      "cost_usd": 0.006229,
+      "elapsed_seconds": 20.57,
+      "agent_duration_ms": 12920,
+      "extra_columns": []
+    },
+    {
+      "question_id": 91,
+      "datasource": "financial",
+      "chat_id": "8dbebfe70b8747a6aeaf61880feb3789",
+      "final_sql": "SELECT SUM(t.amnt) AS total_paid FROM dsp d JOIN trns t ON t.ref1 = d.ref2 WHERE d.ref1 = 617 AND d.typ = 'OWNER' AND t.dt >= '1998-01-01' AND t.dt < '1999-01-01'",
+      "sql_history": [
+        "SELECT typ, COUNT(*) AS c FROM trns GROUP BY typ",
+        "SELECT oprt, COUNT(*) AS c FROM trns GROUP BY oprt",
+        "SELECT trns_id, ref1, dt, typ, oprt, amnt FROM trns LIMIT 3",
+        "SELECT c.clnt_id, d.typ, COUNT(*) AS n FROM clnt c JOIN dsp d ON d.ref1=c.clnt_id WHERE c.clnt_id=617 GROUP BY d.typ",
+        "SELECT SUM(t.amnt) AS total_paid FROM dsp d JOIN trns t ON t.ref1 = d.ref2 WHERE d.ref1 = 617 AND d.typ = 'OWNER' AND t.dt >= '1998-01-01' AND t.dt < '1999-01-01'"
+      ],
+      "agent_text": "客户 617 在 1998 年的交易总额为 **303,276**。\n\n- 口径：经 `dsp`（`ref1` = 客户，`typ='OWNER'`）找到其名下账户，再关联 `trns`（`ref1` = 账户），筛选 1998 年交易，对 `amnt` 求和。",
+      "tool_calls": 7,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 16043,
+        "output": 5176,
+        "cache_read": 132480,
+        "cache_write": 0,
+        "reasoning": 4491,
+        "total": 153699
+      },
+      "cost_usd": 0.007405,
+      "elapsed_seconds": 41.83,
+      "agent_duration_ms": 34243,
+      "extra_columns": []
+    },
+    {
+      "question_id": 104,
+      "datasource": "financial",
+      "chat_id": "45208faa6c2c4f878457cf2bb4e577c7",
+      "final_sql": "SELECT AVG(ln.amnt) AS average_loan_amount FROM ln JOIN acct ON ln.ref1 = acct.accn_id WHERE ln.stts IN ('C','D') AND acct.frqn = 'POPLATEK PO OBRATU'",
+      "sql_history": [
+        "SELECT DISTINCT frqn FROM acct",
+        "SELECT DISTINCT stts FROM ln",
+        "SELECT AVG(ln.amnt) AS average_loan_amount FROM ln JOIN acct ON ln.ref1 = acct.accn_id WHERE ln.stts IN ('C','D') AND acct.frqn = 'POPLATEK PO OBRATU'"
+      ],
+      "agent_text": "平均贷款金额为 **192836.57**。\n\n- 口径：`ln.stts IN ('C','D')`（running contract：C=正常进行、D=客户欠款，均属仍在执行的合同）\n- 关联 `acct.frqn = 'POPLATEK PO OBRATU'`（statement issuance after each transaction）\n- SQL：`SELECT AVG(ln.amnt) FROM ln JOIN acct ON ln.ref1 = acct.accn_id WHERE ln.stts IN ('C','D') AND acct.frqn = 'POPLATEK PO OBRATU'`\n\n结果：**192836.5714**",
+      "tool_calls": 6,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 15729,
+        "output": 2390,
+        "cache_read": 128000,
+        "cache_write": 0,
+        "reasoning": 1848,
+        "total": 146119
+      },
+      "cost_usd": 0.006455,
+      "elapsed_seconds": 25.42,
+      "agent_duration_ms": 17872,
+      "extra_columns": []
+    },
+    {
+      "question_id": 105,
+      "datasource": "financial",
+      "chat_id": "7d8c2e451ef84ddd8b5ef8a3b8a57021",
+      "final_sql": "SELECT T3.ref1, T2.dstr_id, T2.a2 FROM acct AS T1 INNER JOIN dstr AS T2 ON T1.ref1 = T2.dstr_id INNER JOIN dsp AS T3 ON T1.accn_id = T3.ref2 WHERE T3.typ = 'OWNER'",
+      "sql_history": [
+        "SELECT typ, COUNT(*) FROM dsp GROUP BY typ",
+        "SELECT dstr_id, a2 FROM dstr LIMIT 5",
+        "SELECT T3.ref1, T2.dstr_id, T2.a2 FROM acct AS T1 INNER JOIN dstr AS T2 ON T1.ref1 = T2.dstr_id INNER JOIN dsp AS T3 ON T1.accn_id = T3.ref2 WHERE T3.typ = 'OWNER'"
+      ],
+      "agent_text": "已执行最终答案 SQL（`financial` 数据源），结果与预期一致：\n\n```sql\nSELECT T3.ref1, T2.dstr_id, T2.a2\nFROM acct AS T1\nINNER JOIN dstr AS T2 ON T1.ref1 = T2.dstr_id\nINNER JOIN dsp  AS T3 ON T1.accn_id = T3.ref2\nWHERE T3.typ = 'OWNER'\n```\n\n逻辑：只有「OWNER」类型（账户所有者）才有权签发长期支付指令或申请贷款。取 `dsp.typ='OWNER'` 的授权记录，返回三个字段：客户 ID（`dsp.ref1`）、分支所在地区 ID（`dstr.dstr_id`）、地区名（`dstr.a2`）。前几行如 (1, 18, Pisek)、(2, 1, Hl.m. Praha)、(4, 5, Kolin)…",
+      "tool_calls": 11,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 8,
+      "tool_rounds": 7,
+      "tokens": {
+        "input": 19591,
+        "output": 10076,
+        "cache_read": 255488,
+        "cache_write": 0,
+        "reasoning": 8789,
+        "total": 285155
+      },
+      "cost_usd": 0.012718,
+      "elapsed_seconds": 69.13,
+      "agent_duration_ms": 61445,
+      "extra_columns": []
+    },
+    {
+      "question_id": 106,
+      "datasource": "financial",
+      "chat_id": "e85aa31388e14a6a80f46fb42c860a39",
+      "final_sql": "SELECT d.ref1 AS client_id, YEAR(CURRENT_TIMESTAMP) - YEAR(c.brth_dt) AS age FROM dsp d INNER JOIN crd cr ON cr.ref1 = d.dsp_id INNER JOIN clnt c ON d.ref1 = c.clnt_id WHERE cr.typ = 'gold' AND d.typ = 'OWNER'",
+      "sql_history": [
+        "SELECT clnt.clnt_id, clnt.brth_dt, dsp.dsp_id, dsp.ref2 AS accn_id, crd.crd_id, crd.typ, dsp.typ AS dsp_typ FROM crd JOIN dsp ON crd.ref1 = dsp.dsp_id JOIN clnt ON dsp.ref1 = clnt.clnt_id WHERE crd.typ = 'gold' AND dsp.typ = 'OWNER'",
+        "SELECT d.ref1 AS client_id, YEAR(CURRENT_TIMESTAMP) - YEAR(c.brth_dt) AS age FROM dsp d INNER JOIN crd cr ON cr.ref1 = d.dsp_id INNER JOIN clnt c ON d.ref1 = c.clnt_id WHERE cr.typ = 'gold' AND d.typ = 'OWNER'"
+      ],
+      "agent_text": "已按题面口径查询 `financial` 数据源，最终 SQL（对应 gold 口径：`card.type='gold'` 且 `disp.type='OWNER'`，年龄取 `YEAR(CURRENT_TIMESTAMP) - YEAR(birth_date)`）：\n\n```sql\nSELECT d.ref1 AS client_id, YEAR(CURRENT_TIMESTAMP) - YEAR(c.brth_dt) AS age\nFROM dsp d\nINNER JOIN crd cr ON cr.ref1 = d.dsp_id\nINNER JOIN clnt c ON d.ref1 = c.clnt_id\nWHERE cr.typ = 'gold' AND d.typ = 'OWNER';\n```\n\n结果（client_id, age）共 27 行：\n\n- 9, 91\n- 41, 58\n- 79, 57\n- 326, 59\n- 548, 89\n- 562, 51\n- 694, 90\n- 886, 78\n- 928, 75\n- 1067, 74\n- 1089, 87\n- 1133, 68\n- 1179, 96\n- 1220, 73\n- 1246, 64\n- 1289, 80\n- 1388, 64\n- 1452, 86\n- 1453, 60\n- 1536, 59\n- 1579, 63\n- 1629, 60\n- 1668, 77\n- 1707, 75\n- 1718, 88\n- 1777, 63\n- 1799, 67\n\n说明：gold 用 SQLite 的 `STRFTIME('%Y', CURRENT_TIMESTAMP) - STRFTIME('%Y', birth_date)`；本库为 MySQL（`strftime` 被拒），等价改写为 `YEAR(CURRENT_TIMESTAMP) - YEAR(brth_dt)`。",
+      "tool_calls": 11,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 8,
+      "tool_rounds": 7,
+      "tokens": {
+        "input": 24117,
+        "output": 7091,
+        "cache_read": 266752,
+        "cache_write": 0,
+        "reasoning": 5737,
+        "total": 297960
+      },
+      "cost_usd": 0.012831,
+      "elapsed_seconds": 56.87,
+      "agent_duration_ms": 48927,
+      "extra_columns": []
+    }
+  ]
+}

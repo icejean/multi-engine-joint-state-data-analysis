@@ -1,0 +1,1604 @@
+{
+  "runs": [
+    {
+      "question_id": "1",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(*) FROM acct AS a JOIN dstr AS d ON a.ref1 = d.dstr_id WHERE a.frqn = 'POPLATEK PO OBRATU' AND d.a3 = 'East Bohemia'",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1544,
+        "output": 1081,
+        "total": 2625
+      },
+      "elapsed_seconds": 6.24,
+      "extra_columns": []
+    },
+    {
+      "question_id": "2",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT acct.accn_id) FROM acct JOIN dstr ON acct.ref1 = dstr.dstr_id JOIN ln ON ln.ref1 = acct.accn_id WHERE dstr.a3 = 'Prague'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1521,
+        "output": 3360,
+        "total": 4881
+      },
+      "elapsed_seconds": 15.96,
+      "extra_columns": []
+    },
+    {
+      "question_id": "3",
+      "s_level": "S1",
+      "final_sql": "SELECT CASE WHEN AVG(a13) > AVG(a12) THEN '1996' ELSE '1995' END AS higher_unemployment_year FROM dstr",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1569,
+        "output": 346,
+        "total": 1915
+      },
+      "elapsed_seconds": 2.5,
+      "extra_columns": []
+    },
+    {
+      "question_id": "4",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT dstr.dstr_id)\nFROM dstr\nJOIN clnt ON clnt.ref1 = dstr.dstr_id\nWHERE clnt.gndr = 'F'\n  AND dstr.a11 > 6000\n  AND dstr.a11 < 10000",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1541,
+        "output": 1372,
+        "total": 2913
+      },
+      "elapsed_seconds": 7.37,
+      "extra_columns": []
+    },
+    {
+      "question_id": "5",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(clnt.clnt_id) FROM clnt JOIN dstr ON clnt.ref1 = dstr.dstr_id WHERE clnt.gndr = 'M' AND dstr.a3 = 'North Bohemia' AND dstr.a11 > 8000",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1541,
+        "output": 528,
+        "total": 2069
+      },
+      "elapsed_seconds": 3.09,
+      "extra_columns": []
+    },
+    {
+      "question_id": "6",
+      "s_level": "S1",
+      "final_sql": "SELECT DISTINCT a.accn_id, (SELECT MAX(a11) - MIN(a11) FROM dstr) AS salary_gap\nFROM acct a\nJOIN dsp dp ON a.accn_id = dp.ref2\nJOIN clnt c ON dp.ref1 = c.clnt_id\nJOIN dstr d ON a.ref1 = d.dstr_id\nWHERE c.gndr = 'F'\n  AND c.brth_dt = (SELECT MIN(c2.brth_dt) FROM clnt c2 WHERE c2.gndr = 'F')\n  AND d.a11 = (SELECT MIN(a11) FROM dstr)",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1626,
+        "output": 10379,
+        "total": 12005
+      },
+      "elapsed_seconds": 46.89,
+      "extra_columns": []
+    },
+    {
+      "question_id": "7",
+      "s_level": "S1",
+      "final_sql": "SELECT acct.accn_id\nFROM acct\nJOIN dsp ON acct.accn_id = dsp.ref2\nJOIN clnt ON dsp.ref1 = clnt.clnt_id\nJOIN dstr ON clnt.ref1 = dstr.dstr_id\nORDER BY clnt.brth_dt DESC, dstr.a11 DESC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1547,
+        "output": 8259,
+        "total": 9806
+      },
+      "elapsed_seconds": 38.44,
+      "extra_columns": []
+    },
+    {
+      "question_id": "8",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT c.clnt_id)\nFROM clnt c\nJOIN dsp d ON c.clnt_id = d.ref1\nJOIN acct a ON a.accn_id = d.ref2\nWHERE a.frqn = 'POPLATEK TYDNE'\n  AND d.typ = 'OWNER'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1526,
+        "output": 568,
+        "total": 2094
+      },
+      "elapsed_seconds": 3.72,
+      "extra_columns": []
+    },
+    {
+      "question_id": "9",
+      "s_level": "S1",
+      "final_sql": "SELECT DISTINCT clnt.clnt_id FROM clnt JOIN dsp ON clnt.clnt_id = dsp.ref1 JOIN acct ON dsp.ref2 = acct.accn_id WHERE acct.frqn = 'POPLATEK PO OBRATU' AND dsp.typ = 'DISPONENT'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1535,
+        "output": 578,
+        "total": 2113
+      },
+      "elapsed_seconds": 3.61,
+      "extra_columns": []
+    },
+    {
+      "question_id": "10",
+      "s_level": "S1",
+      "final_sql": "SELECT a.accn_id\nFROM acct AS a\nJOIN ln AS l ON a.accn_id = l.ref1\nWHERE YEAR(l.dt) = 1997\n  AND a.frqn = 'POPLATEK TYDNE'\nORDER BY l.amnt ASC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1543,
+        "output": 1406,
+        "total": 2949
+      },
+      "elapsed_seconds": 6.92,
+      "extra_columns": []
+    },
+    {
+      "question_id": "11",
+      "s_level": "S1",
+      "final_sql": "SELECT a.accn_id\nFROM acct a\nJOIN ln l ON l.ref1 = a.accn_id\nWHERE l.drtn > 12\n  AND YEAR(a.dt) = 1993\nORDER BY l.amnt DESC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1547,
+        "output": 3811,
+        "total": 5358
+      },
+      "elapsed_seconds": 17.35,
+      "extra_columns": []
+    },
+    {
+      "question_id": "12",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT c.clnt_id)\nFROM clnt c\nJOIN dstr d ON c.ref1 = d.dstr_id\nJOIN dsp p ON p.ref1 = c.clnt_id\nJOIN acct a ON a.accn_id = p.ref2\nWHERE c.gndr = 'F'\n  AND c.brth_dt < '1950-01-01'\n  AND d.a2 = 'Sokolov'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1545,
+        "output": 765,
+        "total": 2310
+      },
+      "elapsed_seconds": 4.2,
+      "extra_columns": []
+    },
+    {
+      "question_id": "13",
+      "s_level": "S1",
+      "final_sql": "SELECT DISTINCT a.accn_id FROM acct a JOIN trns t ON t.ref1 = a.accn_id WHERE t.dt = (SELECT MIN(dt) FROM trns WHERE YEAR(dt) = 1995)",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1499,
+        "output": 542,
+        "total": 2041
+      },
+      "elapsed_seconds": 4.7,
+      "extra_columns": []
+    },
+    {
+      "question_id": "14",
+      "s_level": "S1",
+      "final_sql": "SELECT DISTINCT a.accn_id\nFROM acct AS a\nJOIN ln AS l ON a.accn_id = l.ref1\nWHERE a.dt < '1997-01-01' AND l.amnt > 3000",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1509,
+        "output": 2159,
+        "total": 3668
+      },
+      "elapsed_seconds": 10.73,
+      "extra_columns": []
+    },
+    {
+      "question_id": "15",
+      "s_level": "S1",
+      "final_sql": "SELECT DISTINCT clnt.clnt_id\nFROM clnt\nJOIN dsp ON dsp.ref1 = clnt.clnt_id\nJOIN crd ON crd.ref1 = dsp.dsp_id\nWHERE crd.issd = '1994-03-03'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1505,
+        "output": 262,
+        "total": 1767
+      },
+      "elapsed_seconds": 2.0,
+      "extra_columns": []
+    },
+    {
+      "question_id": "16",
+      "s_level": "S1",
+      "final_sql": "SELECT acct.dt FROM trns JOIN acct ON trns.ref1 = acct.accn_id WHERE trns.amnt = 840 AND trns.dt = '1998-10-14'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1506,
+        "output": 300,
+        "total": 1806
+      },
+      "elapsed_seconds": 2.74,
+      "extra_columns": []
+    },
+    {
+      "question_id": "17",
+      "s_level": "S1",
+      "final_sql": "SELECT dstr.dstr_id\nFROM ln\nJOIN acct ON ln.ref1 = acct.accn_id\nJOIN dstr ON acct.ref1 = dstr.dstr_id\nWHERE ln.dt = '1994-08-25'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1512,
+        "output": 536,
+        "total": 2048
+      },
+      "elapsed_seconds": 3.49,
+      "extra_columns": []
+    },
+    {
+      "question_id": "18",
+      "s_level": "S1",
+      "final_sql": "SELECT MAX(t.amnt) FROM trns AS t JOIN dsp AS d ON t.ref1 = d.ref2 JOIN crd AS c ON d.dsp_id = c.ref1 WHERE c.issd = '1996-10-21'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1508,
+        "output": 2823,
+        "total": 4331
+      },
+      "elapsed_seconds": 15.33,
+      "extra_columns": []
+    },
+    {
+      "question_id": "19",
+      "s_level": "S1",
+      "final_sql": "SELECT c.gndr\nFROM clnt c\nJOIN dsp d ON c.clnt_id = d.ref1\nJOIN acct a ON d.ref2 = a.accn_id\nJOIN dstr ds ON a.ref1 = ds.dstr_id\nWHERE d.typ = 'OWNER'\nAND ds.a11 = (SELECT MAX(a11) FROM dstr)\nORDER BY c.brth_dt ASC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1602,
+        "output": 521,
+        "total": 2123
+      },
+      "elapsed_seconds": 3.36,
+      "extra_columns": []
+    },
+    {
+      "question_id": "20",
+      "s_level": "S1",
+      "final_sql": "SELECT t.amnt\nFROM trns t\nWHERE t.ref1 = (\n  SELECT l.ref1\n  FROM ln l\n  ORDER BY l.amnt DESC\n  LIMIT 1\n)\nORDER BY t.dt ASC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1571,
+        "output": 628,
+        "total": 2199
+      },
+      "elapsed_seconds": 4.53,
+      "extra_columns": []
+    },
+    {
+      "question_id": "21",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(*)\nFROM clnt c\nJOIN dsp dp ON dp.ref1 = c.clnt_id\nJOIN acct a ON a.accn_id = dp.ref2\nJOIN dstr d ON d.dstr_id = a.ref1\nWHERE d.a2 = 'Jesenik' AND c.gndr = 'F'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1536,
+        "output": 5649,
+        "total": 7185
+      },
+      "elapsed_seconds": 27.77,
+      "extra_columns": []
+    },
+    {
+      "question_id": "22",
+      "s_level": "S1",
+      "final_sql": "SELECT DISTINCT dsp.dsp_id\nFROM trns\nJOIN acct ON trns.ref1 = acct.accn_id\nJOIN dsp ON dsp.ref2 = acct.accn_id\nWHERE trns.amnt = 5100\n  AND trns.dt = '1998-09-02'",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1508,
+        "output": 662,
+        "total": 2170
+      },
+      "elapsed_seconds": 4.31,
+      "extra_columns": []
+    },
+    {
+      "question_id": "23",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(a.accn_id) FROM acct a JOIN dstr d ON a.ref1 = d.dstr_id WHERE d.a2 = 'Litomerice' AND YEAR(a.dt) = 1996",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1530,
+        "output": 257,
+        "total": 1787
+      },
+      "elapsed_seconds": 1.98,
+      "extra_columns": []
+    },
+    {
+      "question_id": "24",
+      "s_level": "S1",
+      "final_sql": "SELECT DISTINCT ds.a2\nFROM clnt c\nJOIN dsp dp ON c.clnt_id = dp.ref1\nJOIN acct a ON dp.ref2 = a.accn_id\nJOIN dstr ds ON a.ref1 = ds.dstr_id\nWHERE c.gndr = 'F'\n  AND c.brth_dt = '1976-01-29'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1539,
+        "output": 439,
+        "total": 1978
+      },
+      "elapsed_seconds": 2.86,
+      "extra_columns": []
+    },
+    {
+      "question_id": "25",
+      "s_level": "S1",
+      "final_sql": "SELECT clnt.brth_dt\nFROM ln\nJOIN dsp ON dsp.ref2 = ln.ref1\nJOIN clnt ON clnt.clnt_id = dsp.ref1\nWHERE ln.amnt = 98832 AND ln.dt = '1996-01-03'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1509,
+        "output": 677,
+        "total": 2186
+      },
+      "elapsed_seconds": 4.27,
+      "extra_columns": []
+    },
+    {
+      "question_id": "26",
+      "s_level": "S1",
+      "final_sql": "SELECT acct.accn_id\nFROM acct\nJOIN dstr ON acct.ref1 = dstr.dstr_id\nJOIN dsp ON dsp.ref2 = acct.accn_id\nWHERE dstr.a3 = 'Prague'\nORDER BY acct.dt ASC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1526,
+        "output": 1165,
+        "total": 2691
+      },
+      "elapsed_seconds": 6.87,
+      "extra_columns": []
+    },
+    {
+      "question_id": "27",
+      "s_level": "S1",
+      "final_sql": "SELECT 100.0 * SUM(c.gndr = 'M') / COUNT(*) AS percentage\nFROM clnt c\nJOIN dstr d ON c.ref1 = d.dstr_id\nWHERE d.dstr_id = (\n    SELECT dstr_id\n    FROM dstr\n    WHERE a3 = 'South Bohemia'\n    ORDER BY CAST(a4 AS UNSIGNED) DESC\n    LIMIT 1\n)",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1570,
+        "output": 1942,
+        "total": 3512
+      },
+      "elapsed_seconds": 10.35,
+      "extra_columns": []
+    },
+    {
+      "question_id": "28",
+      "s_level": "S1",
+      "final_sql": "SELECT ((end_b.blnc - start_b.blnc) / start_b.blnc) * 100 AS increase_rate\nFROM (\n  SELECT t.blnc\n  FROM trns t\n  WHERE t.ref1 = (SELECT ref1 FROM ln ORDER BY dt ASC, ln_id ASC LIMIT 1)\n    AND t.dt = '1993-03-22'\n  ORDER BY t.trns_id DESC\n  LIMIT 1\n) AS start_b,\n(\n  SELECT t.blnc\n  FROM trns t\n  WHERE t.ref1 = (SELECT ref1 FROM ln ORDER BY dt ASC, ln_id ASC LIMIT 1)\n    AND t.dt = '1998-12-27'\n  ORDER BY t.trns_id DESC\n  LIMIT 1\n) AS end_b",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1573,
+        "output": 8540,
+        "total": 10113
+      },
+      "elapsed_seconds": 39.4,
+      "extra_columns": []
+    },
+    {
+      "question_id": "29",
+      "s_level": "S1",
+      "final_sql": "SELECT SUM(CASE WHEN stts = 'A' THEN amnt ELSE 0 END) / SUM(amnt) * 100 AS percentage FROM ln",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1563,
+        "output": 291,
+        "total": 1854
+      },
+      "elapsed_seconds": 2.21,
+      "extra_columns": []
+    },
+    {
+      "question_id": "30",
+      "s_level": "S1",
+      "final_sql": "SELECT SUM(stts = 'C') * 100.0 / COUNT(ref1) AS percentage FROM ln WHERE amnt < 100000",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1608,
+        "output": 924,
+        "total": 2532
+      },
+      "elapsed_seconds": 5.57,
+      "extra_columns": []
+    },
+    {
+      "question_id": "31",
+      "s_level": "S1",
+      "final_sql": "SELECT acct.accn_id, dstr.a2, dstr.a3\nFROM acct\nJOIN dstr ON acct.ref1 = dstr.dstr_id\nWHERE YEAR(acct.dt) = 1993\n  AND acct.frqn = 'POPLATEK PO OBRATU'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1559,
+        "output": 946,
+        "total": 2505
+      },
+      "elapsed_seconds": 4.61,
+      "extra_columns": []
+    },
+    {
+      "question_id": "32",
+      "s_level": "S1",
+      "final_sql": "SELECT DISTINCT a.accn_id, a.frqn\nFROM acct a\nJOIN dsp d ON d.ref2 = a.accn_id\nJOIN clnt c ON c.clnt_id = d.ref1\nJOIN dstr ds ON ds.dstr_id = c.ref1\nWHERE d.typ = 'OWNER'\nAND ds.a3 = 'east Bohemia'\nAND a.dt BETWEEN '1995-01-01' AND '2000-12-31'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1543,
+        "output": 2739,
+        "total": 4282
+      },
+      "elapsed_seconds": 12.76,
+      "extra_columns": []
+    },
+    {
+      "question_id": "33",
+      "s_level": "S1",
+      "final_sql": "SELECT acct.accn_id, acct.dt FROM acct JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE dstr.a2 = 'Prachatice'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1525,
+        "output": 225,
+        "total": 1750
+      },
+      "elapsed_seconds": 1.64,
+      "extra_columns": []
+    },
+    {
+      "question_id": "34",
+      "s_level": "S1",
+      "final_sql": "SELECT dstr.a2, dstr.a3 FROM ln JOIN acct ON ln.ref1 = acct.accn_id JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE ln.ln_id = 4990",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1526,
+        "output": 269,
+        "total": 1795
+      },
+      "elapsed_seconds": 1.97,
+      "extra_columns": []
+    },
+    {
+      "question_id": "35",
+      "s_level": "S1",
+      "final_sql": "SELECT acct.accn_id, dstr.a2, dstr.a3 FROM acct JOIN ln ON acct.accn_id = ln.ref1 JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE ln.amnt > 300000",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1530,
+        "output": 448,
+        "total": 1978
+      },
+      "elapsed_seconds": 2.75,
+      "extra_columns": []
+    },
+    {
+      "question_id": "36",
+      "s_level": "S1",
+      "final_sql": "SELECT ln.ln_id, dstr.a2, dstr.a11 FROM ln JOIN acct ON ln.ref1 = acct.accn_id JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE ln.drtn = 60",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1589,
+        "output": 275,
+        "total": 1864
+      },
+      "elapsed_seconds": 2.16,
+      "extra_columns": []
+    },
+    {
+      "question_id": "37",
+      "s_level": "S1",
+      "final_sql": "SELECT ((dstr.a13 - dstr.a12) * 100 / dstr.a12) AS unemployment_increment\nFROM ln\nJOIN acct ON ln.ref1 = acct.accn_id\nJOIN dstr ON acct.ref1 = dstr.dstr_id\nWHERE ln.stts = 'D'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1682,
+        "output": 484,
+        "total": 2166
+      },
+      "elapsed_seconds": 3.1,
+      "extra_columns": []
+    },
+    {
+      "question_id": "38",
+      "s_level": "S1",
+      "final_sql": "SELECT SUM(CASE WHEN dstr.a2 = 'Decin' THEN 1 ELSE 0 END) * 100.0 / COUNT(*) AS percentage\nFROM acct\nJOIN dstr ON acct.ref1 = dstr.dstr_id\nWHERE acct.dt >= '1993-01-01' AND acct.dt < '1994-01-01'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1529,
+        "output": 612,
+        "total": 2141
+      },
+      "elapsed_seconds": 3.46,
+      "extra_columns": []
+    },
+    {
+      "question_id": "39",
+      "s_level": "S1",
+      "final_sql": "SELECT accn_id FROM acct WHERE frqn = 'POPLATEK MESICNE'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1525,
+        "output": 249,
+        "total": 1774
+      },
+      "elapsed_seconds": 2.18,
+      "extra_columns": []
+    },
+    {
+      "question_id": "40",
+      "s_level": "S1",
+      "final_sql": "SELECT d.a2, COUNT(c.clnt_id) AS female_account_holders\nFROM dstr d\nJOIN clnt c ON c.ref1 = d.dstr_id\nWHERE c.gndr = 'F'\nGROUP BY d.dstr_id, d.a2\nORDER BY female_account_holders DESC\nLIMIT 9",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1538,
+        "output": 1577,
+        "total": 3115
+      },
+      "elapsed_seconds": 8.28,
+      "extra_columns": []
+    },
+    {
+      "question_id": "41",
+      "s_level": "S1",
+      "final_sql": "SELECT d.a2\nFROM trns t\nJOIN acct a ON t.ref1 = a.accn_id\nJOIN dstr d ON a.ref1 = d.dstr_id\nWHERE t.typ = 'VYDAJ' AND t.dt LIKE '1996-01%'\nORDER BY t.amnt DESC\nLIMIT 10",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1567,
+        "output": 3620,
+        "total": 5187
+      },
+      "elapsed_seconds": 17.32,
+      "extra_columns": []
+    },
+    {
+      "question_id": "42",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(dsp.ref2) FROM dsp JOIN clnt ON dsp.ref1 = clnt.clnt_id JOIN dstr ON clnt.ref1 = dstr.dstr_id WHERE dstr.a3 = 'South Bohemia' AND dsp.typ != 'OWNER'",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1602,
+        "output": 437,
+        "total": 2039
+      },
+      "elapsed_seconds": 2.46,
+      "extra_columns": []
+    },
+    {
+      "question_id": "43",
+      "s_level": "S1",
+      "final_sql": "SELECT d.a3\nFROM dstr d\nJOIN acct a ON a.ref1 = d.dstr_id\nJOIN ln l ON l.ref1 = a.accn_id\nWHERE l.stts IN ('C', 'D')\nGROUP BY d.dstr_id, d.a3\nORDER BY COUNT(*) DESC\nLIMIT 1",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1549,
+        "output": 7654,
+        "total": 9203
+      },
+      "elapsed_seconds": 32.52,
+      "extra_columns": []
+    },
+    {
+      "question_id": "44",
+      "s_level": "S1",
+      "final_sql": "SELECT AVG(ln.amnt) FROM ln JOIN dsp ON dsp.ref2 = ln.ref1 JOIN clnt ON clnt.clnt_id = dsp.ref1 WHERE clnt.gndr = 'M'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1518,
+        "output": 744,
+        "total": 2262
+      },
+      "elapsed_seconds": 4.34,
+      "extra_columns": []
+    },
+    {
+      "question_id": "45",
+      "s_level": "S1",
+      "final_sql": "SELECT dstr_id, a2 FROM dstr WHERE a13 = (SELECT MAX(a13) FROM dstr)",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1541,
+        "output": 247,
+        "total": 1788
+      },
+      "elapsed_seconds": 1.68,
+      "extra_columns": []
+    },
+    {
+      "question_id": "46",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(accn_id) AS account_count\nFROM acct\nWHERE ref1 = (\n    SELECT dstr_id\n    FROM dstr\n    ORDER BY a16 DESC\n    LIMIT 1\n)",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1535,
+        "output": 299,
+        "total": 1834
+      },
+      "elapsed_seconds": 1.75,
+      "extra_columns": []
+    },
+    {
+      "question_id": "47",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT a.accn_id) FROM acct a JOIN trns t ON a.accn_id = t.ref1 WHERE a.frqn = 'POPLATEK MESICNE' AND t.oprt = 'VYBER KARTOU' AND t.blnc < 0",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1562,
+        "output": 1200,
+        "total": 2762
+      },
+      "elapsed_seconds": 6.45,
+      "extra_columns": []
+    },
+    {
+      "question_id": "48",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(ln.ln_id) FROM ln JOIN acct ON ln.ref1 = acct.accn_id WHERE acct.frqn = 'POPLATEK MESICNE' AND ln.dt BETWEEN '1995-01-01' AND '1997-12-31' AND ln.amnt >= 250000",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1558,
+        "output": 1054,
+        "total": 2612
+      },
+      "elapsed_seconds": 5.09,
+      "extra_columns": []
+    },
+    {
+      "question_id": "49",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT a.accn_id) AS account_count\nFROM acct a\nJOIN ln l ON l.ref1 = a.accn_id\nWHERE a.ref1 = 1 AND l.stts IN ('C','D')",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1540,
+        "output": 572,
+        "total": 2112
+      },
+      "elapsed_seconds": 3.59,
+      "extra_columns": []
+    },
+    {
+      "question_id": "50",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(*) FROM clnt WHERE gndr = 'M' AND ref1 = (SELECT dstr_id FROM dstr ORDER BY a15 DESC LIMIT 1 OFFSET 1)",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1575,
+        "output": 757,
+        "total": 2332
+      },
+      "elapsed_seconds": 4.21,
+      "extra_columns": []
+    },
+    {
+      "question_id": "51",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(*) FROM crd JOIN dsp ON crd.ref1 = dsp.dsp_id WHERE crd.typ = 'gold' AND dsp.typ = 'OWNER'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1528,
+        "output": 216,
+        "total": 1744
+      },
+      "elapsed_seconds": 1.79,
+      "extra_columns": []
+    },
+    {
+      "question_id": "52",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(*) FROM acct JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE dstr.a2 = 'Pisek'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1521,
+        "output": 285,
+        "total": 1806
+      },
+      "elapsed_seconds": 1.91,
+      "extra_columns": []
+    },
+    {
+      "question_id": "53",
+      "s_level": "S1",
+      "final_sql": "SELECT DISTINCT dstr.a2\nFROM trns\nJOIN acct ON trns.ref1 = acct.accn_id\nJOIN dstr ON acct.ref1 = dstr.dstr_id\nWHERE trns.amnt > 10000\nAND trns.dt BETWEEN '1997-01-01' AND '1997-12-31'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1500,
+        "output": 684,
+        "total": 2184
+      },
+      "elapsed_seconds": 4.36,
+      "extra_columns": []
+    },
+    {
+      "question_id": "54",
+      "s_level": "S1",
+      "final_sql": "SELECT DISTINCT a.accn_id\nFROM acct a\nJOIN ord o ON o.ref1 = a.accn_id\nJOIN dstr d ON a.ref1 = d.dstr_id\nWHERE o.k_symb = 'SIPO' AND d.a2 = 'Pisek'",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1524,
+        "output": 589,
+        "total": 2113
+      },
+      "elapsed_seconds": 3.7,
+      "extra_columns": []
+    },
+    {
+      "question_id": "55",
+      "s_level": "S1",
+      "final_sql": "SELECT DISTINCT a.accn_id FROM acct a JOIN dsp d ON d.ref2 = a.accn_id JOIN crd c ON c.ref1 = d.dsp_id WHERE c.typ = 'gold'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1494,
+        "output": 346,
+        "total": 1840
+      },
+      "elapsed_seconds": 2.39,
+      "extra_columns": []
+    },
+    {
+      "question_id": "56",
+      "s_level": "S1",
+      "final_sql": "SELECT MONTH(dt) AS mnth, AVG(amnt) AS avg_amount\nFROM trns\nWHERE oprt = 'VYBER KARTOU' AND YEAR(dt) = 2021\nGROUP BY MONTH(dt)\nORDER BY mnth",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1540,
+        "output": 1864,
+        "total": 3404
+      },
+      "elapsed_seconds": 10.02,
+      "extra_columns": []
+    },
+    {
+      "question_id": "57",
+      "s_level": "S1",
+      "final_sql": "SELECT DISTINCT c.clnt_id\nFROM clnt c\nJOIN dsp d ON c.clnt_id = d.ref1\nJOIN acct a ON d.ref2 = a.accn_id\nJOIN trns t ON a.accn_id = t.ref1\nWHERE t.oprt = 'VYBER KARTOU'\n  AND t.amnt < (SELECT AVG(t2.amnt) FROM trns t2 WHERE t2.oprt = 'VYBER KARTOU')\n  AND YEAR(t.dt) = 1998",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1546,
+        "output": 7279,
+        "total": 8825
+      },
+      "elapsed_seconds": 31.42,
+      "extra_columns": []
+    },
+    {
+      "question_id": "58",
+      "s_level": "S1",
+      "final_sql": "SELECT DISTINCT c.clnt_id FROM clnt c JOIN dsp d ON c.clnt_id = d.ref1 JOIN crd cr ON cr.ref1 = d.dsp_id JOIN ln l ON l.ref1 = d.ref2 WHERE c.gndr = 'F'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1523,
+        "output": 3397,
+        "total": 4920
+      },
+      "elapsed_seconds": 15.82,
+      "extra_columns": []
+    },
+    {
+      "question_id": "59",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT a.accn_id)\nFROM clnt AS c\nJOIN dsp AS d ON c.clnt_id = d.ref1\nJOIN acct AS a ON d.ref2 = a.accn_id\nJOIN dstr AS r ON a.ref1 = r.dstr_id\nWHERE c.gndr = 'F' AND r.a3 = 'south Bohemia'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1534,
+        "output": 2219,
+        "total": 3753
+      },
+      "elapsed_seconds": 11.58,
+      "extra_columns": []
+    },
+    {
+      "question_id": "60",
+      "s_level": "S1",
+      "final_sql": "SELECT DISTINCT a.accn_id\nFROM acct a\nJOIN dstr d ON a.ref1 = d.dstr_id\nJOIN dsp p ON p.ref2 = a.accn_id\nWHERE d.a2 = 'Tabor'\nAND p.typ = 'OWNER'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1537,
+        "output": 378,
+        "total": 1915
+      },
+      "elapsed_seconds": 2.45,
+      "extra_columns": []
+    },
+    {
+      "question_id": "61",
+      "s_level": "S1",
+      "final_sql": "SELECT dsp.typ FROM dsp JOIN acct ON dsp.ref2 = acct.accn_id JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE dsp.typ <> 'OWNER' AND dstr.a11 BETWEEN 8000 AND 9000",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1616,
+        "output": 2879,
+        "total": 4495
+      },
+      "elapsed_seconds": 13.11,
+      "extra_columns": []
+    },
+    {
+      "question_id": "62",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT acct.accn_id) FROM acct JOIN dstr ON acct.ref1 = dstr.dstr_id JOIN trns ON acct.accn_id = trns.ref1 WHERE dstr.a3 = 'North Bohemia' AND trns.bnk = 'AB'",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1533,
+        "output": 399,
+        "total": 1932
+      },
+      "elapsed_seconds": 2.24,
+      "extra_columns": []
+    },
+    {
+      "question_id": "63",
+      "s_level": "S1",
+      "final_sql": "SELECT DISTINCT dstr.a2\nFROM dstr\nJOIN acct ON acct.ref1 = dstr.dstr_id\nJOIN trns ON trns.ref1 = acct.accn_id\nWHERE trns.typ = 'VYDAJ'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1534,
+        "output": 256,
+        "total": 1790
+      },
+      "elapsed_seconds": 2.47,
+      "extra_columns": []
+    },
+    {
+      "question_id": "64",
+      "s_level": "S1",
+      "final_sql": "SELECT AVG(a15) FROM dstr WHERE a15 > 4000 AND EXISTS (SELECT 1 FROM acct WHERE acct.ref1 = dstr.dstr_id AND acct.dt >= '1997-01-01')",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1560,
+        "output": 3162,
+        "total": 4722
+      },
+      "elapsed_seconds": 14.79,
+      "extra_columns": []
+    },
+    {
+      "question_id": "65",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(*) FROM crd JOIN dsp ON crd.ref1 = dsp.dsp_id WHERE crd.typ = 'classic' AND dsp.typ = 'OWNER'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1527,
+        "output": 613,
+        "total": 2140
+      },
+      "elapsed_seconds": 3.52,
+      "extra_columns": []
+    },
+    {
+      "question_id": "66",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(*) AS male_clients FROM clnt JOIN dstr ON clnt.ref1 = dstr.dstr_id WHERE clnt.gndr = 'M' AND dstr.a2 = 'Hl.m. Praha'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1530,
+        "output": 298,
+        "total": 1828
+      },
+      "elapsed_seconds": 2.01,
+      "extra_columns": []
+    },
+    {
+      "question_id": "67",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(CASE WHEN typ = 'Gold' AND issd < '1998-01-01' THEN 1 END) * 100.0 / COUNT(*) AS percent FROM crd",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1544,
+        "output": 377,
+        "total": 1921
+      },
+      "elapsed_seconds": 2.48,
+      "extra_columns": []
+    },
+    {
+      "question_id": "68",
+      "s_level": "S1",
+      "final_sql": "SELECT c.clnt_id\nFROM ln l\nJOIN dsp d ON l.ref1 = d.ref2\nJOIN clnt c ON d.ref1 = c.clnt_id\nWHERE d.typ = 'OWNER'\nORDER BY l.amnt DESC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1497,
+        "output": 5936,
+        "total": 7433
+      },
+      "elapsed_seconds": 26.67,
+      "extra_columns": []
+    },
+    {
+      "question_id": "69",
+      "s_level": "S1",
+      "final_sql": "SELECT d.a15 FROM acct a JOIN dstr d ON a.ref1 = d.dstr_id WHERE a.accn_id = 532",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1537,
+        "output": 202,
+        "total": 1739
+      },
+      "elapsed_seconds": 1.38,
+      "extra_columns": []
+    },
+    {
+      "question_id": "70",
+      "s_level": "S1",
+      "final_sql": "SELECT acct.ref1 FROM ord JOIN acct ON ord.ref1 = acct.accn_id WHERE ord.ordr_id = 33333",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1503,
+        "output": 499,
+        "total": 2002
+      },
+      "elapsed_seconds": 3.11,
+      "extra_columns": []
+    },
+    {
+      "question_id": "71",
+      "s_level": "S1",
+      "final_sql": "SELECT trns.trns_id, trns.ref1, trns.dt, trns.typ, trns.oprt, trns.amnt, trns.blnc, trns.k_symb, trns.bnk, trns.accn FROM trns WHERE trns.oprt = 'VYBER' AND trns.ref1 IN (SELECT dsp.ref2 FROM dsp WHERE dsp.ref1 = 3356)",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1531,
+        "output": 7134,
+        "total": 8665
+      },
+      "elapsed_seconds": 32.92,
+      "extra_columns": [
+        "ref1",
+        "dt",
+        "typ",
+        "oprt",
+        "amnt",
+        "blnc",
+        "k_symb",
+        "bnk",
+        "accn"
+      ]
+    },
+    {
+      "question_id": "72",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT a.accn_id) FROM acct a JOIN ln l ON l.ref1 = a.accn_id WHERE a.frqn = 'POPLATEK TYDNE' AND l.amnt < 200000",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1533,
+        "output": 425,
+        "total": 1958
+      },
+      "elapsed_seconds": 2.48,
+      "extra_columns": []
+    },
+    {
+      "question_id": "73",
+      "s_level": "S1",
+      "final_sql": "SELECT crd.typ FROM clnt JOIN dsp ON dsp.ref1 = clnt.clnt_id JOIN crd ON crd.ref1 = dsp.dsp_id WHERE clnt.clnt_id = 13539",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1500,
+        "output": 889,
+        "total": 2389
+      },
+      "elapsed_seconds": 4.65,
+      "extra_columns": []
+    },
+    {
+      "question_id": "74",
+      "s_level": "S1",
+      "final_sql": "SELECT dstr.a3 FROM clnt JOIN dstr ON clnt.ref1 = dstr.dstr_id WHERE clnt.clnt_id = 3541",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1521,
+        "output": 140,
+        "total": 1661
+      },
+      "elapsed_seconds": 1.5,
+      "extra_columns": []
+    },
+    {
+      "question_id": "75",
+      "s_level": "S1",
+      "final_sql": "SELECT dstr.a2\nFROM dstr\nJOIN acct ON acct.ref1 = dstr.dstr_id\nJOIN ln ON ln.ref1 = acct.accn_id\nWHERE ln.stts = 'A'\nGROUP BY dstr.dstr_id, dstr.a2\nORDER BY COUNT(DISTINCT acct.accn_id) DESC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1528,
+        "output": 599,
+        "total": 2127
+      },
+      "elapsed_seconds": 3.58,
+      "extra_columns": []
+    },
+    {
+      "question_id": "76",
+      "s_level": "S1",
+      "final_sql": "SELECT clnt.clnt_id FROM ord JOIN dsp ON ord.ref1 = dsp.ref2 JOIN clnt ON dsp.ref1 = clnt.clnt_id WHERE ord.ordr_id = 32423",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1495,
+        "output": 1347,
+        "total": 2842
+      },
+      "elapsed_seconds": 7.23,
+      "extra_columns": []
+    },
+    {
+      "question_id": "77",
+      "s_level": "S1",
+      "final_sql": "SELECT trns.trns_id, trns.ref1, trns.dt, trns.typ, trns.oprt, trns.amnt, trns.blnc, trns.k_symb, trns.bnk, trns.accn\nFROM trns\nJOIN acct ON trns.ref1 = acct.accn_id\nWHERE acct.ref1 = 5",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1497,
+        "output": 1237,
+        "total": 2734
+      },
+      "elapsed_seconds": 139.87,
+      "extra_columns": []
+    },
+    {
+      "question_id": "78",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(*) FROM acct JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE dstr.a2 = 'Jesenik'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1496,
+        "output": 326,
+        "total": 1822
+      },
+      "elapsed_seconds": 2.12,
+      "extra_columns": []
+    },
+    {
+      "question_id": "79",
+      "s_level": "S1",
+      "final_sql": "SELECT DISTINCT dsp.ref1 AS clnt_id FROM crd JOIN dsp ON crd.ref1 = dsp.dsp_id WHERE crd.typ = 'junior' AND crd.issd >= '1997-01-01'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1533,
+        "output": 328,
+        "total": 1861
+      },
+      "elapsed_seconds": 2.1,
+      "extra_columns": []
+    },
+    {
+      "question_id": "80",
+      "s_level": "S1",
+      "final_sql": "SELECT 100.0 * COUNT(DISTINCT CASE WHEN c.gndr = 'F' THEN c.clnt_id END) / COUNT(DISTINCT c.clnt_id) AS percentage\nFROM clnt c\nJOIN dsp d ON d.ref1 = c.clnt_id\nJOIN acct a ON a.accn_id = d.ref2\nJOIN dstr ds ON ds.dstr_id = a.ref1\nWHERE ds.a11 > 10000",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1546,
+        "output": 523,
+        "total": 2069
+      },
+      "elapsed_seconds": 3.02,
+      "extra_columns": []
+    },
+    {
+      "question_id": "81",
+      "s_level": "S1",
+      "final_sql": "SELECT ((SUM(CASE WHEN YEAR(l.dt) = 1997 THEN l.amnt ELSE 0 END) - SUM(CASE WHEN YEAR(l.dt) = 1996 THEN l.amnt ELSE 0 END)) / SUM(CASE WHEN YEAR(l.dt) = 1996 THEN l.amnt ELSE 0 END)) * 100 AS growth_rate\nFROM ln AS l\nJOIN acct AS a ON l.ref1 = a.accn_id\nJOIN dsp AS d ON a.accn_id = d.ref2\nJOIN clnt AS c ON d.ref1 = c.clnt_id\nWHERE c.gndr = 'M' AND YEAR(l.dt) IN (1996, 1997)",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1566,
+        "output": 2486,
+        "total": 4052
+      },
+      "elapsed_seconds": 11.78,
+      "extra_columns": []
+    },
+    {
+      "question_id": "82",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(*) AS count FROM trns WHERE oprt = 'VYBER KARTOU' AND YEAR(dt) > 1995",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1528,
+        "output": 259,
+        "total": 1787
+      },
+      "elapsed_seconds": 2.2,
+      "extra_columns": []
+    },
+    {
+      "question_id": "83",
+      "s_level": "S1",
+      "final_sql": "SELECT (SELECT SUM(a16) FROM dstr WHERE a3 = 'East Bohemia') - (SELECT SUM(a16) FROM dstr WHERE a3 = 'North Bohemia') AS difference",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1584,
+        "output": 515,
+        "total": 2099
+      },
+      "elapsed_seconds": 3.09,
+      "extra_columns": []
+    },
+    {
+      "question_id": "84",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(*) FROM dsp WHERE ref2 BETWEEN 1 AND 10 AND typ IN ('OWNER', 'DISPONENT')",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1504,
+        "output": 1120,
+        "total": 2624
+      },
+      "elapsed_seconds": 6.4,
+      "extra_columns": []
+    },
+    {
+      "question_id": "85",
+      "s_level": "S1",
+      "final_sql": "SELECT acct.frqn, ord.k_symb\nFROM acct\nJOIN ord ON acct.accn_id = ord.ref1\nWHERE acct.accn_id = 3\nGROUP BY acct.frqn, ord.k_symb\nHAVING SUM(ord.amnt) = 3539",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1562,
+        "output": 8085,
+        "total": 9647
+      },
+      "elapsed_seconds": 36.89,
+      "extra_columns": []
+    },
+    {
+      "question_id": "86",
+      "s_level": "S1",
+      "final_sql": "SELECT YEAR(brth_dt) FROM clnt WHERE clnt_id = 130",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1494,
+        "output": 292,
+        "total": 1786
+      },
+      "elapsed_seconds": 2.04,
+      "extra_columns": []
+    },
+    {
+      "question_id": "87",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT a.accn_id) FROM acct a JOIN dsp d ON a.accn_id = d.ref2 WHERE d.typ = 'OWNER' AND a.frqn = 'POPLATEK PO OBRATU'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1538,
+        "output": 469,
+        "total": 2007
+      },
+      "elapsed_seconds": 2.32,
+      "extra_columns": []
+    },
+    {
+      "question_id": "88",
+      "s_level": "S1",
+      "final_sql": "SELECT ln.amnt, ln.stts\nFROM clnt\nJOIN dsp ON dsp.ref1 = clnt.clnt_id\nJOIN ln ON ln.ref1 = dsp.ref2\nWHERE clnt.clnt_id = 992",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1506,
+        "output": 2004,
+        "total": 3510
+      },
+      "elapsed_seconds": 10.1,
+      "extra_columns": []
+    },
+    {
+      "question_id": "89",
+      "s_level": "S1",
+      "final_sql": "SELECT trns.blnc, clnt.gndr\nFROM clnt\nJOIN dsp ON clnt.clnt_id = dsp.ref1\nJOIN trns ON dsp.ref2 = trns.ref1\nWHERE clnt.clnt_id = 4 AND trns.trns_id = 851",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1554,
+        "output": 1409,
+        "total": 2963
+      },
+      "elapsed_seconds": 6.72,
+      "extra_columns": []
+    },
+    {
+      "question_id": "90",
+      "s_level": "S1",
+      "final_sql": "SELECT DISTINCT crd.typ FROM crd JOIN dsp ON crd.ref1 = dsp.dsp_id WHERE dsp.ref1 = 9",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1496,
+        "output": 636,
+        "total": 2132
+      },
+      "elapsed_seconds": 3.71,
+      "extra_columns": []
+    },
+    {
+      "question_id": "91",
+      "s_level": "S1",
+      "final_sql": "SELECT COALESCE(SUM(trns.amnt), 0) AS total_amount\nFROM clnt\nJOIN dsp ON clnt.clnt_id = dsp.ref1\nJOIN acct ON dsp.ref2 = acct.accn_id\nJOIN trns ON acct.accn_id = trns.ref1\nWHERE clnt.clnt_id = 617\n  AND YEAR(trns.dt) = 1998",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1604,
+        "output": 440,
+        "total": 2044
+      },
+      "elapsed_seconds": 3.01,
+      "extra_columns": []
+    },
+    {
+      "question_id": "92",
+      "s_level": "S1",
+      "final_sql": "SELECT DISTINCT clnt.clnt_id, acct.accn_id\nFROM clnt\nJOIN dsp ON dsp.ref1 = clnt.clnt_id\nJOIN acct ON dsp.ref2 = acct.accn_id\nJOIN dstr ON acct.ref1 = dstr.dstr_id\nWHERE clnt.brth_dt >= '1983-01-01'\n  AND clnt.brth_dt <= '1987-12-31'\n  AND dstr.a3 = 'East Bohemia'",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1556,
+        "output": 1556,
+        "total": 3112
+      },
+      "elapsed_seconds": 7.73,
+      "extra_columns": []
+    },
+    {
+      "question_id": "93",
+      "s_level": "S1",
+      "final_sql": "SELECT c.clnt_id\nFROM clnt AS c\nJOIN dsp AS d ON c.clnt_id = d.ref1\nJOIN ln AS l ON d.ref2 = l.ref1\nWHERE c.gndr = 'F'\nGROUP BY c.clnt_id\nORDER BY MAX(l.amnt) DESC\nLIMIT 3",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1523,
+        "output": 2485,
+        "total": 4008
+      },
+      "elapsed_seconds": 11.49,
+      "extra_columns": []
+    },
+    {
+      "question_id": "94",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT clnt.clnt_id) FROM clnt JOIN dsp ON dsp.ref1 = clnt.clnt_id JOIN acct ON acct.accn_id = dsp.ref2 JOIN ord ON ord.ref1 = acct.accn_id WHERE clnt.gndr = 'M' AND YEAR(clnt.brth_dt) BETWEEN 1974 AND 1976 AND ord.k_symb = 'SIPO' AND ord.amnt > 4000",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1548,
+        "output": 607,
+        "total": 2155
+      },
+      "elapsed_seconds": 3.39,
+      "extra_columns": []
+    },
+    {
+      "question_id": "95",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(*) FROM acct JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE dstr.a2 = 'Beroun' AND YEAR(acct.dt) > 1996",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1497,
+        "output": 325,
+        "total": 1822
+      },
+      "elapsed_seconds": 1.9,
+      "extra_columns": []
+    },
+    {
+      "question_id": "96",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT clnt.clnt_id) FROM clnt JOIN dsp ON dsp.ref1 = clnt.clnt_id JOIN crd ON crd.ref1 = dsp.dsp_id WHERE clnt.gndr = 'F' AND crd.typ = 'junior'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1518,
+        "output": 452,
+        "total": 1970
+      },
+      "elapsed_seconds": 2.8,
+      "extra_columns": []
+    },
+    {
+      "question_id": "97",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT CASE WHEN c.gndr = 'F' THEN c.clnt_id END) / COUNT(DISTINCT c.clnt_id) * 100 AS proportion\nFROM clnt c\nJOIN dsp d ON d.ref1 = c.clnt_id\nJOIN acct a ON d.ref2 = a.accn_id\nJOIN dstr ds ON a.ref1 = ds.dstr_id\nWHERE ds.a3 = 'Prague'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1561,
+        "output": 4448,
+        "total": 6009
+      },
+      "elapsed_seconds": 20.56,
+      "extra_columns": []
+    },
+    {
+      "question_id": "98",
+      "s_level": "S1",
+      "final_sql": "SELECT 100.0 * COUNT(DISTINCT CASE WHEN clnt.gndr = 'M' THEN clnt.clnt_id END) / COUNT(DISTINCT clnt.clnt_id) AS percentage FROM acct JOIN dsp ON acct.accn_id = dsp.ref2 JOIN clnt ON dsp.ref1 = clnt.clnt_id WHERE acct.frqn = 'POPLATEK TYDNE'",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1561,
+        "output": 4357,
+        "total": 5918
+      },
+      "elapsed_seconds": 20.54,
+      "extra_columns": []
+    },
+    {
+      "question_id": "99",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT dsp.ref1) FROM dsp JOIN acct ON dsp.ref2 = acct.accn_id WHERE acct.frqn = 'POPLATEK TYDNE' AND dsp.typ = 'OWNER'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1528,
+        "output": 448,
+        "total": 1976
+      },
+      "elapsed_seconds": 2.71,
+      "extra_columns": []
+    },
+    {
+      "question_id": "100",
+      "s_level": "S1",
+      "final_sql": "SELECT a.accn_id\nFROM acct AS a\nJOIN ln AS l ON a.accn_id = l.ref1\nWHERE l.drtn > 24\n  AND a.dt < '1997-01-01'\nORDER BY l.amnt ASC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1517,
+        "output": 2970,
+        "total": 4487
+      },
+      "elapsed_seconds": 13.83,
+      "extra_columns": []
+    },
+    {
+      "question_id": "101",
+      "s_level": "S1",
+      "final_sql": "SELECT a.accn_id\nFROM clnt c\nJOIN dsp d ON d.ref1 = c.clnt_id\nJOIN acct a ON d.ref2 = a.accn_id\nJOIN dstr ds ON c.ref1 = ds.dstr_id\nWHERE c.gndr = 'F'\nORDER BY c.brth_dt ASC, ds.a11 ASC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1576,
+        "output": 3106,
+        "total": 4682
+      },
+      "elapsed_seconds": 14.64,
+      "extra_columns": []
+    },
+    {
+      "question_id": "102",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(*) FROM clnt JOIN dstr ON clnt.ref1 = dstr.dstr_id WHERE YEAR(clnt.brth_dt) = 1920 AND LOWER(dstr.a3) = 'east bohemia'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1532,
+        "output": 845,
+        "total": 2377
+      },
+      "elapsed_seconds": 4.33,
+      "extra_columns": []
+    },
+    {
+      "question_id": "103",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(*)\nFROM ln\nJOIN acct ON ln.ref1 = acct.accn_id\nWHERE ln.drtn = 24\n  AND acct.frqn = 'POPLATEK TYDNE'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1538,
+        "output": 4070,
+        "total": 5608
+      },
+      "elapsed_seconds": 18.7,
+      "extra_columns": []
+    },
+    {
+      "question_id": "104",
+      "s_level": "S1",
+      "final_sql": "SELECT AVG(ln.amnt) FROM ln JOIN acct ON ln.ref1 = acct.accn_id WHERE ln.stts IN ('C', 'D') AND acct.frqn = 'POPLATEK PO OBRATU'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1565,
+        "output": 970,
+        "total": 2535
+      },
+      "elapsed_seconds": 5.5,
+      "extra_columns": []
+    },
+    {
+      "question_id": "105",
+      "s_level": "S1",
+      "final_sql": "SELECT DISTINCT clnt.clnt_id, dstr.a2\nFROM clnt\nJOIN dstr ON clnt.ref1 = dstr.dstr_id\nJOIN dsp ON dsp.ref1 = clnt.clnt_id\nWHERE dsp.typ = 'OWNER'",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1538,
+        "output": 1433,
+        "total": 2971
+      },
+      "elapsed_seconds": 17.37,
+      "extra_columns": []
+    },
+    {
+      "question_id": "106",
+      "s_level": "S1",
+      "final_sql": "SELECT DISTINCT c.clnt_id, TIMESTAMPDIFF(YEAR, c.brth_dt, CURDATE()) AS age\nFROM clnt c\nJOIN dsp d ON d.ref1 = c.clnt_id\nJOIN crd cr ON cr.ref1 = d.dsp_id\nWHERE cr.typ = 'gold' AND d.typ = 'OWNER'",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 1546,
+        "output": 884,
+        "total": 2430
+      },
+      "elapsed_seconds": 4.32,
+      "extra_columns": []
+    }
+  ]
+}

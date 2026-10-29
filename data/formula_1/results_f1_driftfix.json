@@ -1,0 +1,296 @@
+{
+  "runs": [
+    {
+      "question_id": 26,
+      "datasource": "formula_1",
+      "chat_id": "799455e581eb4d079793ce3ac1f8aa7b",
+      "final_sql": "SELECT DISTINCT T2.ntnl FROM qlfy AS T1 INNER JOIN drvr AS T2 ON T2.drvr_id = T1.ref2 WHERE T1.ref3 = 347 AND T1.q2 LIKE '1:15%'",
+      "sql_history": [
+        "SELECT d.frnm, d.srnm, d.ntnl FROM qlfy q JOIN drvr d ON d.drvr_id = q.ref2 WHERE q.ref3 = 347 AND q.q2 LIKE '1:15%'",
+        "SELECT d.frnm, d.srnm, d.ntnl, q.q1, q.q2, q.q3 FROM qlfy q JOIN drvr d ON d.drvr_id = q.ref2 WHERE q.ref3 = 347 ORDER BY q.q2",
+        "SELECT DISTINCT T2.ntnl FROM qlfy AS T1 INNER JOIN drvr AS T2 ON T2.drvr_id = T1.ref2 WHERE T1.ref3 = 347 AND T1.q2 LIKE '1:15%'"
+      ],
+      "agent_text": "答：这些车手的国籍（where he is from）为 —— **German、Japanese、Russian、Spanish、Swiss**。\n\n（对应 race 347 中 Q2 成绩以 `1:15` 开头的车手，去重后的国籍列表。）",
+      "tool_calls": 7,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 7,
+      "tool_rounds": 6,
+      "tokens": {
+        "input": 23569,
+        "output": 10528,
+        "cache_read": 236672,
+        "cache_write": 0,
+        "reasoning": 9578,
+        "total": 270769
+      },
+      "cost_usd": 0.012874,
+      "elapsed_seconds": 74.38,
+      "agent_duration_ms": 66560,
+      "extra_columns": []
+    },
+    {
+      "question_id": 59,
+      "datasource": "formula_1",
+      "chat_id": "c41c67f67fa14ac2bf1dbd5276d1fcad",
+      "final_sql": "SELECT r.nm AS race_name, r.ref2 AS year FROM lp_tm l JOIN drvr d ON l.ref1 = d.drvr_id JOIN rcs r ON l.ref2 = r.rc_id WHERE d.frnm = 'Michael' AND d.srnm = 'Schumacher' AND l.mlls IS NOT NULL ORDER BY l.mlls ASC LIMIT 1;",
+      "sql_history": [
+        "SELECT r.nm AS race_name, r.ref2 AS year FROM lp_tm l JOIN drvr d ON l.ref1 = d.drvr_id JOIN rcs r ON l.ref2 = r.rc_id WHERE d.frnm = 'Michael' AND d.srnm = 'Schumacher' AND l.mlls IS NOT NULL ORDER BY l.mlls ASC LIMIT 1;"
+      ],
+      "agent_text": "Michael Schumacher 的最快圈（按 milliseconds 最小）出现在 **2003 年奥地利大奖赛（Austrian Grand Prix）**。\n\n- race_name: Austrian Grand Prix\n- year: 2003",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 18568,
+        "output": 771,
+        "cache_read": 69760,
+        "cache_write": 0,
+        "reasoning": 457,
+        "total": 89099
+      },
+      "cost_usd": 0.004769,
+      "elapsed_seconds": 18.46,
+      "agent_duration_ms": 10313,
+      "extra_columns": []
+    },
+    {
+      "question_id": 84,
+      "datasource": "formula_1",
+      "chat_id": "43ea52cbb62c4850a74b18cd0bcb0413",
+      "final_sql": "SELECT rcs.nm FROM rslt JOIN drvr ON rslt.ref3 = drvr.drvr_id JOIN rcs ON rslt.ref4 = rcs.rc_id WHERE drvr.frnm = 'Lewis' AND drvr.srnm = 'Hamilton'",
+      "sql_history": [
+        "SELECT rcs.nm FROM rslt JOIN drvr ON rslt.ref3 = drvr.drvr_id JOIN rcs ON rslt.ref4 = rcs.rc_id WHERE drvr.frnm = 'Lewis' AND drvr.srnm = 'Hamilton'"
+      ],
+      "agent_text": "已执行最终答案 SQL（`rslt` 连接 `drvr`、`rcs`，未去重，按每条比赛记录返回一行）。\n\n结果（forename='Lewis'，surname='Hamilton' 参加的每场大奖赛，按 result 表每条记录一行）：\n\n- Australian Grand Prix\n- Malaysian Grand Prix\n- Bahrain Grand Prix\n- Spanish Grand Prix\n- Turkish Grand Prix\n- Monaco Grand Prix\n- Canadian Grand Prix\n- French Grand Prix\n- British Grand Prix\n- German Grand Prix\n- Hungarian Grand Prix\n- European Grand Prix\n- Belgian Grand Prix\n- Italian Grand Prix\n- Singapore Grand Prix\n- Japanese Grand Prix\n- Chinese Grand Prix\n- Brazilian Grand Prix\n- …（同名单按每赛季/每场重复出现，全量共 202 行）\n\n📁 /home/ubuntu/.openclaw/workspace/formula_1_hamilton_races.csv",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 18695,
+        "output": 727,
+        "cache_read": 69376,
+        "cache_write": 0,
+        "reasoning": 290,
+        "total": 88798
+      },
+      "cost_usd": 0.004763,
+      "elapsed_seconds": 16.7,
+      "agent_duration_ms": 8835,
+      "extra_columns": []
+    },
+    {
+      "question_id": 85,
+      "datasource": "formula_1",
+      "chat_id": "d240413f5f0143fabecf61fd99946066",
+      "final_sql": "SELECT rcs.nm FROM rslt JOIN drvr ON rslt.ref3 = drvr.drvr_id JOIN rcs ON rslt.ref4 = rcs.rc_id WHERE drvr.frnm = 'Lewis' AND drvr.srnm = 'Hamilton' AND rslt.rnk = 1",
+      "sql_history": [
+        "SELECT rcs.nm FROM rslt JOIN drvr ON rslt.ref3 = drvr.drvr_id JOIN rcs ON rslt.ref4 = rcs.rc_id WHERE drvr.frnm = 'Lewis' AND drvr.srnm = 'Hamilton' AND rslt.rnk = 1"
+      ],
+      "agent_text": "Lewis Hamilton 的最高名次是第 1 名（`rslt.rnk = 1`，即 min(rank)），他在以下这些 F1 分站中排名最高（共 27 场）：\n\n- Chinese Grand Prix\n- Malaysian Grand Prix\n- Japanese Grand Prix\n- Chinese Grand Prix\n- Spanish Grand Prix\n- Belgian Grand Prix\n- Brazilian Grand Prix\n- Abu Dhabi Grand Prix\n- Spanish Grand Prix\n- German Grand Prix\n- Italian Grand Prix\n- Brazilian Grand Prix\n- Italian Grand Prix\n- Malaysian Grand Prix\n- British Grand Prix\n- German Grand Prix\n- Italian Grand Prix\n- Singapore Grand Prix\n- Japanese Grand Prix\n- Brazilian Grand Prix\n- Australian Grand Prix\n- Chinese Grand Prix\n- Spanish Grand Prix\n- British Grand Prix\n- Italian Grand Prix\n- Japanese Grand Prix\n- Brazilian Grand Prix\n\n最终 SQL：\n\n```sql\nSELECT rcs.nm\nFROM rslt\nJOIN drvr ON rslt.ref3 = drvr.drvr_id\nJOIN rcs  ON rslt.ref4 = rcs.rc_id\nWHERE drvr.frnm = 'Lewis' AND drvr.srnm = 'Hamilton' AND rslt.rnk = 1;\n```",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 18659,
+        "output": 4260,
+        "cache_read": 69888,
+        "cache_write": 0,
+        "reasoning": 3750,
+        "total": 92807
+      },
+      "cost_usd": 0.005762,
+      "elapsed_seconds": 38.9,
+      "agent_duration_ms": 31316,
+      "extra_columns": []
+    },
+    {
+      "question_id": 92,
+      "datasource": "formula_1",
+      "chat_id": "9c939bb834ef41e589523f318be2582d",
+      "final_sql": "SELECT rslt.tm AS finish_time FROM rslt JOIN rcs ON rslt.ref4 = rcs.rc_id WHERE rcs.ref2 = 2008 AND rcs.nm = 'Chinese Grand Prix' AND rslt.rnk = 2",
+      "sql_history": [
+        "SELECT rslt.tm AS finish_time FROM rslt JOIN rcs ON rslt.ref4 = rcs.rc_id WHERE rcs.ref2 = 2008 AND rcs.nm = 'Chinese Grand Prix' AND rslt.rnk = 2"
+      ],
+      "agent_text": "Finish time: **+16.445** (the driver ranked 2nd on fastest-lap rank in the 2008 Chinese Grand Prix).\n\n```\n+-------------+\n| finish_time |\n+-------------+\n| +16.445     |\n+-------------+\n```",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 18567,
+        "output": 1080,
+        "cache_read": 70016,
+        "cache_write": 0,
+        "reasoning": 797,
+        "total": 89663
+      },
+      "cost_usd": 0.004862,
+      "elapsed_seconds": 18.71,
+      "agent_duration_ms": 10777,
+      "extra_columns": []
+    },
+    {
+      "question_id": 107,
+      "datasource": "formula_1",
+      "chat_id": "986a4e9688904232977ff428e2430796",
+      "final_sql": "SELECT DISTINCT c.nm FROM rslt r JOIN cnstr c ON c.cnst_id = r.ref2 WHERE r.rnk = 1 ORDER BY c.nm",
+      "sql_history": [
+        "SELECT DISTINCT c.nm FROM cnstr_std cs JOIN cnstr c ON c.cnst_id = cs.ref1 WHERE cs.pstn = 1",
+        "SELECT COUNT(DISTINCT c.nm) AS n FROM rslt r JOIN cnstr c ON c.cnst_id = r.ref2 WHERE r.pstn_ordr = 1",
+        "SELECT COUNT(*) AS total_rows, COUNT(DISTINCT ref1) AS distinct_cnst FROM cnstr_std WHERE pstn = 1",
+        "SELECT c.nm FROM cnstr_std cs JOIN cnstr c ON c.cnst_id = cs.ref1 JOIN rcs r ON r.rc_id = cs.ref2 WHERE cs.pstn = 1 AND (r.ref2, r.rnd) IN (SELECT ref2, MAX(rnd) FROM rcs GROUP BY ref2)",
+        "SELECT 'cnstr' AS t, COUNT(*) AS c FROM cnstr UNION ALL SELECT 'cnstr_total_rows', COUNT(*) FROM cnstr_std UNION ALL SELECT 'cnstr_std_p1_rows', COUNT(*) FROM cnstr_std WHERE pstn = 1 UNION ALL SELECT 'cnstr_std_p1_distinct', COUNT(DISTINCT ref1) FROM cnstr_std WHERE pstn = 1 UNION ALL SELECT 'qlfy_p1_distinct', COUNT(DISTINCT ref1) FROM qlfy WHERE pstn = 1 UNION ALL SELECT 'rslt_pstn1_distinct', COUNT(DISTINCT ref2) FROM rslt WHERE pstn = 1 UNION ALL SELECT 'rslt_pstn_ordr1_distinct', COUNT(DISTINCT ref2) FROM rslt WHERE pstn_ordr = 1 UNION ALL SELECT 'rslt_rows', COUNT(*) FROM rslt",
+        "SELECT DISTINCT c.nm FROM cnstr_std cs JOIN cnstr c ON c.cnst_id = cs.ref1 JOIN rcs r ON r.rc_id = cs.ref2 WHERE cs.pstn = 1 AND r.rnd = (SELECT MAX(rr.rnd) FROM rcs rr WHERE rr.ref2 = r.ref2) ORDER BY c.nm",
+        "SELECT 'wins' AS k, COUNT(DISTINCT ref2) AS v FROM rslt WHERE pstn = 1 UNION ALL SELECT 'pole', COUNT(DISTINCT ref1) FROM qlfy WHERE pstn = 1 UNION ALL SELECT 'fastestlap', COUNT(DISTINCT ref2) FROM rslt WHERE fsts_lp_tm IS NOT NULL AND fsts_lp_tm <> '' UNION ALL SELECT 'std_p1', COUNT(DISTINCT ref1) FROM cnstr_std WHERE pstn = 1 UNION ALL SELECT 'std_p1_txt', COUNT(DISTINCT ref1) FROM cnstr_std WHERE pstn_txt = '1' UNION ALL SELECT 'rnk1', COUNT(DISTINCT ref2) FROM rslt WHERE rnk = 1",
+        "SELECT DISTINCT c.nm FROM rslt r JOIN cnstr c ON c.cnst_id = r.ref2 WHERE r.rnk = 1 ORDER BY c.nm"
+      ],
+      "agent_text": "13 个 constructor，与 gold 一致。\n\n**Which constructors have been ranked 1?**\n\n| nm |\n|---|\n| BMW Sauber |\n| Brawn |\n| Ferrari |\n| Force India |\n| Lotus F1 |\n| McLaren |\n| Mercedes |\n| Red Bull |\n| Renault |\n| Sauber |\n| Toro Rosso |\n| Toyota |\n| Williams |\n\n判据：题面「ranked 1」按 notes 规则走 `rslt.rnk`（results 的排名/rank 口径，不是积分榜 `cnstr_std.pstn`），`rnk = 1` 加 `DISTINCT` 去 fan-out，得 13 个 constructor（若不 DISTINCT 会是 256 行）。\n\n最终 SQL：\n```sql\nSELECT DISTINCT c.nm\nFROM rslt r\nJOIN cnstr c ON c.cnst_id = r.ref2\nWHERE r.rnk = 1;\n```",
+      "tool_calls": 11,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 11,
+      "tool_rounds": 10,
+      "tokens": {
+        "input": 20271,
+        "output": 23909,
+        "cache_read": 422528,
+        "cache_write": 0,
+        "reasoning": 22287,
+        "total": 466708
+      },
+      "cost_usd": 0.021363,
+      "elapsed_seconds": 156.77,
+      "agent_duration_ms": 148939,
+      "extra_columns": []
+    },
+    {
+      "question_id": 108,
+      "datasource": "formula_1",
+      "chat_id": "d69637996b224c81bbee4013add89c14",
+      "final_sql": "SELECT COUNT(DISTINCT c.cnst_id) AS french_constructors_over_50_laps FROM cnstr c JOIN rslt r ON r.ref2 = c.cnst_id WHERE c.ntnl = 'French' AND r.lps > 50",
+      "sql_history": [
+        "SELECT c.cnst_id, c.nm, c.ntnl, COUNT(*) AS rows_gt50, COUNT(DISTINCT r.ref4) AS races_gt50 FROM cnstr c JOIN rslt r ON r.ref2 = c.cnst_id WHERE c.ntnl = 'French' AND r.lps > 50 GROUP BY c.cnst_id, c.nm, c.ntnl",
+        "SELECT COUNT(DISTINCT c.cnst_id) AS french_constructors_over_50_laps FROM cnstr c JOIN rslt r ON r.ref2 = c.cnst_id WHERE c.ntnl = 'French' AND r.lps > 50"
+      ],
+      "agent_text": "**11** French constructors have a lap number over 50.\n\nQuery used:\n```sql\nSELECT COUNT(DISTINCT c.cnst_id) AS french_constructors_over_50_laps\nFROM cnstr c\nJOIN rslt r ON r.ref2 = c.cnst_id\nWHERE c.ntnl = 'French' AND r.lps > 50\n```\n\nThey are: Renault, Prost, Ligier, Larrousse, AGS, Martini, Matra, Gordini, Simca, Talbot-Lago, Matra-Ford.",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 19001,
+        "output": 3843,
+        "cache_read": 106240,
+        "cache_write": 0,
+        "reasoning": 3297,
+        "total": 129084
+      },
+      "cost_usd": 0.006711,
+      "elapsed_seconds": 34.47,
+      "agent_duration_ms": 26910,
+      "extra_columns": []
+    },
+    {
+      "question_id": 117,
+      "datasource": "formula_1",
+      "chat_id": "9658c84d075e453d9abe21812693d867",
+      "final_sql": "SELECT 100.0 * SUM(CASE WHEN YEAR(d.db) < 1985 AND r.lps > 50 THEN 1 ELSE 0 END) / COUNT(*) AS percentage FROM rslt r JOIN rcs ra ON r.ref4 = ra.rc_id JOIN drvr d ON r.ref3 = d.drvr_id WHERE ra.ref2 BETWEEN 2000 AND 2005",
+      "sql_history": [
+        "SELECT 100.0 * SUM(CASE WHEN YEAR(d.db) < 1985 AND r.lps > 50 THEN 1 ELSE 0 END) / COUNT(*) AS percentage FROM rslt r JOIN rcs ra ON r.ref4 = ra.rc_id JOIN drvr d ON r.ref3 = d.drvr_id WHERE ra.ref2 BETWEEN 2000 AND 2005"
+      ],
+      "agent_text": "From 2000 to 2005, the percentage of race-result rows where the driver was born before 1985 and completed over 50 laps is **64.61894%**.\n\n- 分子：2000–2005 赛季中，出生年份 < 1985 且 `rslt.lps > 50` 的记录数\n- 分母：2000–2005 赛季全部 `rslt` 记录数\n- 结果 = 64.61894%",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 24427,
+        "output": 1713,
+        "cache_read": 109184,
+        "cache_write": 0,
+        "reasoning": 1188,
+        "total": 135324
+      },
+      "cost_usd": 0.006957,
+      "elapsed_seconds": 24.19,
+      "agent_duration_ms": 16159,
+      "extra_columns": []
+    },
+    {
+      "question_id": 119,
+      "datasource": "formula_1",
+      "chat_id": "362b257e5ecc4a8b9727f46eaf60dff7",
+      "final_sql": "SELECT cd FROM drvr WHERE ntnl = 'American'",
+      "sql_history": [
+        "SELECT cd FROM drvr WHERE ntnl = 'America'",
+        "SELECT DISTINCT ntnl, COUNT(*) FROM drvr GROUP BY ntnl ORDER BY 2 DESC",
+        "SELECT cd FROM drvr WHERE ntnl = 'American'"
+      ],
+      "agent_text": "Drivers with nationality \"American\" (note: the data stores the value as `'American'`, not `'America'` — 157 rows), returning their driver **code** (`cdf`) one row per driver:\n\n```sql\nSELECT cd FROM drvr WHERE ntnl = 'American';\n```\n\nNote: most historic drivers have a NULL `code` (only a few modern-era drivers like `SPE` have one), so the result is 157 rows with mostly NULL codes.",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 19243,
+        "output": 1859,
+        "cache_read": 133888,
+        "cache_write": 0,
+        "reasoning": 1405,
+        "total": 154990
+      },
+      "cost_usd": 0.006963,
+      "elapsed_seconds": 26.22,
+      "agent_duration_ms": 18391,
+      "extra_columns": []
+    },
+    {
+      "question_id": 151,
+      "datasource": "formula_1",
+      "chat_id": "22b1211d56794c1c9b54adfb64980c3c",
+      "final_sql": "SELECT SUM(CASE WHEN ref2 BETWEEN 2000 AND 2010 THEN 1 ELSE 0 END)/10 AS annual_avg_races FROM rcs",
+      "sql_history": [
+        "SELECT SUM(CASE WHEN ref2 BETWEEN 2000 AND 2010 THEN 1 ELSE 0 END)/10 AS annual_avg_races FROM rcs"
+      ],
+      "agent_text": "21世纪初十年（2000–2010）年均举办 **19.3 场**大奖赛。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 18587,
+        "output": 509,
+        "cache_read": 69504,
+        "cache_write": 0,
+        "reasoning": 275,
+        "total": 88600
+      },
+      "cost_usd": 0.004691,
+      "elapsed_seconds": 15.74,
+      "agent_duration_ms": 8015,
+      "extra_columns": []
+    }
+  ]
+}

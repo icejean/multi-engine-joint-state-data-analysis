@@ -1,0 +1,60 @@
+{
+  "runs": [
+    {
+      "question_id": 1,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "ab0fbcd8521d4a569e3ad5e50df656a8",
+      "final_sql": "",
+      "sql_history": [],
+      "agent_text": "查询结果：\n\n| 指标 | 数量 |\n|---|---|\n| 以家庭地址作为其地址的企业数 (AddressTypeID = 2) | **18,774** |\n| 拥有收货地址的企业数 (AddressTypeID = 5) | **35** |\n\n**最终答案 SQL：**\n\n```sql\nSELECT \n  COUNT(DISTINCT CASE WHEN ba.ref2 = 2 THEN ba.ref1 END) AS home_address_count,\n  COUNT(DISTINCT CASE WHEN ba.ref2 = 5 THEN ba.ref1 END) AS shipping_address_count\nFROM biz_addr ba\n```\n\n逻辑说明：`biz_addr` 是业务实体-地址关联表，`ref1` = 业务实体编号，`ref2` = 地址类型编号。按 `ref2 = 2`（家庭地址）和 `ref2 = 5`（收货地址）分别对 `ref1` 做 `COUNT(DISTINCT)` 去重计数，返回两个独立计数。",
+      "tool_calls": 13,
+      "pass": false,
+      "error": "no final sql",
+      "model": "zai/glm-5.2",
+      "turns": 11,
+      "tool_rounds": 10,
+      "tokens": {
+        "input": 115585,
+        "output": 3539,
+        "cache_read": 408576,
+        "cache_write": 0,
+        "reasoning": 2527,
+        "total": 527700
+      },
+      "cost_usd": 0.250916,
+      "elapsed_seconds": 220.16,
+      "agent_duration_ms": 207446,
+      "extra_columns": []
+    },
+    {
+      "question_id": 2,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "ac8b3db63e5240c4aee68a19dfb07be5",
+      "final_sql": "SELECT COUNT(CASE WHEN vctn_hrs > 20 THEN 1 END) * 100.0 / COUNT(*) AS percentage FROM emp WHERE crrn_flg = 1 AND sck_lv_hrs > 10",
+      "sql_history": [
+        "SELECT COUNT(CASE WHEN vctn_hrs > 20 THEN 1 END) * 100.0 / COUNT(*) AS percentage FROM emp WHERE crrn_flg = 1 AND sck_lv_hrs > 10"
+      ],
+      "agent_text": "**80.69%**\n\n在在职员工（`crrn_flg = 1`）中，病假超过 10 小时的员工里，年假超过 20 小时的占比为 **80.69%**。\n\n计算口径：\n- 分母：在职且病假 > 10 小时的员工数\n- 分子：其中年假 > 20 小时的员工数\n- 百分比 = 分子 / 分母 × 100",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 46967,
+        "output": 1330,
+        "cache_read": 70464,
+        "cache_write": 0,
+        "reasoning": 1108,
+        "total": 118761
+      },
+      "cost_usd": 0.078592,
+      "elapsed_seconds": 36.34,
+      "agent_duration_ms": 28306,
+      "extra_columns": []
+    }
+  ]
+}

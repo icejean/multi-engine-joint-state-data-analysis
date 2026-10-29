@@ -1,0 +1,174 @@
+{
+  "runs": [
+    {
+      "question_id": 3,
+      "datasource": "financial",
+      "chat_id": "10c3b537109c49e2814282aa84af08fa",
+      "final_sql": "SELECT CASE WHEN AVG(a12) > AVG(a13) THEN '1995' ELSE '1996' END AS higher_year FROM dstr",
+      "sql_history": [
+        "SELECT CASE WHEN AVG(a12) > AVG(a13) THEN '1995' ELSE '1996' END AS higher_year FROM dstr"
+      ],
+      "agent_text": "1996 年的平均失业率更高。\n\n- 比较：`AVG(a12)`（1995） vs `AVG(a13)`（1996），1996 更高。\n\n📊 结果：**1996**",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 16473,
+        "output": 416,
+        "cache_read": 67200,
+        "cache_write": 0,
+        "reasoning": 166,
+        "total": 84089
+      },
+      "cost_usd": 0.004304,
+      "elapsed_seconds": 15.52,
+      "agent_duration_ms": 8182,
+      "extra_columns": []
+    },
+    {
+      "question_id": 13,
+      "datasource": "financial",
+      "chat_id": "a4ba220d857a4492b91673daaa50254d",
+      "final_sql": "SELECT DISTINCT ref1 AS accn_id FROM trns WHERE dt = (SELECT MIN(dt) FROM trns WHERE dt >= '1995-01-01' AND dt <= '1995-12-31') AND dt >= '1995-01-01' AND dt <= '1995-12-31'",
+      "sql_history": [
+        "SELECT DISTINCT ref1 AS accn_id FROM trns WHERE dt = (SELECT MIN(dt) FROM trns WHERE dt >= '1995-01-01' AND dt <= '1995-12-31') AND dt >= '1995-01-01' AND dt <= '1995-12-31'"
+      ],
+      "agent_text": "1995 年最早交易日（earliest trading date）当天发生交易的账户如下：\n\n| accn_id |\n|---|\n| 9, 35, 36, 40, 50, 66, 71, 83, 90, 104, 107, 112, 119, 123, 126, 128, 153, 160, 163, 168, 201, 220, 222, 234, 237, 238, 244 |\n\n共 27 个账户（trns.ref1 = acct.accn_id）。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 16432,
+        "output": 1308,
+        "cache_read": 67968,
+        "cache_write": 0,
+        "reasoning": 940,
+        "total": 85708
+      },
+      "cost_usd": 0.00457,
+      "elapsed_seconds": 21.25,
+      "agent_duration_ms": 13566,
+      "extra_columns": []
+    },
+    {
+      "question_id": 20,
+      "datasource": "financial",
+      "chat_id": "385e850ad39846fea51ba7b68c281a5c",
+      "final_sql": "SELECT t.amnt FROM trns t WHERE t.ref1 = (SELECT ref1 FROM ln ORDER BY amnt DESC LIMIT 1) ORDER BY t.dt ASC LIMIT 1",
+      "sql_history": [
+        "SELECT t.amnt FROM trns t WHERE t.ref1 = (SELECT ref1 FROM ln ORDER BY amnt DESC LIMIT 1) ORDER BY t.dt ASC LIMIT 1"
+      ],
+      "agent_text": "最大贷款的账户，开户后第一笔交易金额为 **300**。\n\n📁 /home/ubuntu/.openclaw/workspace/",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 16488,
+        "output": 546,
+        "cache_read": 67328,
+        "cache_write": 0,
+        "reasoning": 304,
+        "total": 84362
+      },
+      "cost_usd": 0.004346,
+      "elapsed_seconds": 15.61,
+      "agent_duration_ms": 8174,
+      "extra_columns": []
+    },
+    {
+      "question_id": 44,
+      "datasource": "financial",
+      "chat_id": "52d6323fa7484c1bad67f4e8cbb896c4",
+      "final_sql": "SELECT AVG(l.amnt) AS avg_loan_amount FROM ln l JOIN dsp d ON d.ref2 = l.ref1 JOIN clnt c ON c.clnt_id = d.ref1 WHERE c.gndr = 'M';",
+      "sql_history": [
+        "SELECT AVG(l.amnt) AS avg_loan_amount FROM ln l JOIN dsp d ON d.ref2 = l.ref1 JOIN clnt c ON c.clnt_id = d.ref1 WHERE c.gndr = 'M';"
+      ],
+      "agent_text": "平均贷款金额（男性借款人，gender='M'）：\n\n**149609.1805**\n\nSQL：\n```sql\nSELECT AVG(l.amnt) AS avg_loan_amount\nFROM ln l\nJOIN dsp d ON d.ref2 = l.ref1\nJOIN clnt c ON c.clnt_id = d.ref1\nWHERE c.gndr = 'M';\n```",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 16446,
+        "output": 1103,
+        "cache_read": 67712,
+        "cache_write": 0,
+        "reasoning": 803,
+        "total": 85261
+      },
+      "cost_usd": 0.004507,
+      "elapsed_seconds": 18.68,
+      "agent_duration_ms": 11478,
+      "extra_columns": []
+    },
+    {
+      "question_id": 54,
+      "datasource": "financial",
+      "chat_id": "c3e21bfe7cef412199673c505bd7a274",
+      "final_sql": "SELECT DISTINCT o.ref1 AS account_id FROM ord o JOIN acct a ON o.ref1 = a.accn_id JOIN dstr d ON a.ref1 = d.dstr_id WHERE o.k_symb = 'SIPO' AND d.a2 = 'Pisek'",
+      "sql_history": [
+        "SELECT (SELECT COUNT(*) FROM ord WHERE k_symb = 'SIPO') AS ord_sipo, (SELECT COUNT(*) FROM trns WHERE k_symb = 'SIPO') AS trns_sipo, (SELECT COUNT(*) FROM dstr WHERE a2 = 'Pisek') AS pisek_rows",
+        "SELECT DISTINCT o.ref1 AS account_id FROM ord o JOIN acct a ON o.ref1 = a.accn_id JOIN dstr d ON a.ref1 = d.dstr_id WHERE o.k_symb = 'SIPO' AND d.a2 = 'Pisek'"
+      ],
+      "agent_text": "**Which accounts placed orders for household payment (k_symbol = 'SIPO') in Pisek**\n\nAccounts located in the Pisek branch district that placed household-payment orders:\n\n| account_id |\n|---|\n| 1 |\n| 343 |\n| 413 |\n| 431 |\n| 945 |\n| 970 |\n| 1049 |\n| 1171 |\n| 1552 |\n| 1733 |\n| 1765 |\n| 1796 |\n| 1919 |\n| 2076 |\n| 2174 |\n| 2309 |\n| 2350 |\n| 2402 |\n| 2421 |\n| 2479 |\n| 2520 |\n| 2636 |\n| 2726 |\n| 2812 |\n| 2987 |\n| 3079 |\n| 3088 |\n\n共 27 个账户。SQL：\n```sql\nSELECT DISTINCT o.ref1 AS account_id\nFROM ord o\nJOIN acct a ON o.ref1 = a.accn_id\nJOIN dstr d ON a.ref1 = d.dstr_id\nWHERE o.k_symb = 'SIPO' AND d.a2 = 'Pisek';\n```",
+      "tool_calls": 5,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 16872,
+        "output": 17650,
+        "cache_read": 176512,
+        "cache_write": 0,
+        "reasoning": 16940,
+        "total": 211034
+      },
+      "cost_usd": 0.012246,
+      "elapsed_seconds": 114.84,
+      "agent_duration_ms": 107481,
+      "extra_columns": []
+    },
+    {
+      "question_id": 57,
+      "datasource": "financial",
+      "chat_id": "5e9753d8f46645a8beb8bee9f431e493",
+      "final_sql": "SELECT ref1 FROM trns WHERE oprt = 'VYBER KARTOU' AND YEAR(dt) = 1998 AND amnt < (SELECT AVG(amnt) FROM trns WHERE YEAR(dt) = 1998)",
+      "sql_history": [
+        "SELECT * FROM trns LIMIT 3",
+        "SELECT ref1 FROM trns WHERE oprt = 'VYBER KARTOU' AND YEAR(dt) = 1998 AND amnt < (SELECT AVG(amnt) FROM trns WHERE YEAR(dt) = 1998)"
+      ],
+      "agent_text": "已得到最终答案（数据源 `financial`，MySQL），按题面「account holder identification number」＝交易所属账户 `trns.ref1`，信用卡取现 `oprt='VYBER KARTOU'`、1998 年、金额低于「1998 年全部交易」均值（基准保留年份、去掉 operation 过滤），明细级不去重：\n\n**满足条件的账户持有人识别号（每笔交易一行）：**\n\n| ref1 (account holder id) |\n|---|\n| 14 |\n| 14 |\n| 14 |\n| 14 |\n| 14 |\n| 14 |\n| 33 |\n| 33 |\n| 33 |\n| 33 |\n| 34 |\n| 43 |\n| 43 |\n| 43 |\n| 43 |\n| 43 |\n| 43 |\n| 43 |\n| 43 |\n| 43 |\n| 43 |\n| 48 |\n| 48 |\n| 51 |\n| 51 |\n| 51 |\n| 51 |\n\n去重后涉及的持有人 ID 为：**14, 33, 34, 43, 48, 51**（共 27 条交易记录）。",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 22887,
+        "output": 3243,
+        "cache_read": 139392,
+        "cache_write": 0,
+        "reasoning": 2570,
+        "total": 165522
+      },
+      "cost_usd": 0.008015,
+      "elapsed_seconds": 32.16,
+      "agent_duration_ms": 24641,
+      "extra_columns": []
+    }
+  ]
+}

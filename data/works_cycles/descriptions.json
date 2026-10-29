@@ -1,0 +1,847 @@
+{
+  "SalesOrderHeader": {
+    "type": "fact",
+    "desc": "销售订单头表,每笔订单一行(客户/日期/金额/收货地址)",
+    "fields": {
+      "SalesOrderID": "销售订单编号",
+      "RevisionNumber": "修订编号",
+      "OrderDate": "下单日期",
+      "DueDate": "到期日期",
+      "ShipDate": "发货日期",
+      "Status": "状态(1=待定,2=已批准,3=已拒绝,4=已完成)",
+      "OnlineOrderFlag": "在线下单标记",
+      "SalesOrderNumber": "销售订单编号",
+      "PurchaseOrderNumber": "采购订单编号",
+      "AccountNumber": "账户编号",
+      "CustomerID": "客户编号",
+      "SalesPersonID": "销售员编号",
+      "TerritoryID": "销售区域编号",
+      "BillToAddressID": "账单地址编号",
+      "ShipToAddressID": "收货地址编号",
+      "ShipMethodID": "运输方式编号",
+      "CreditCardID": "信用卡编号",
+      "CreditCardApprovalCode": "信用卡授权码",
+      "CurrencyRateID": "货币汇率编号",
+      "SubTotal": "小计金额",
+      "TaxAmt": "税额",
+      "Freight": "运费",
+      "TotalDue": "应付总额",
+      "Comment": "备注",
+      "rowguid": "行GUID",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "SalesOrderDetail": {
+    "type": "fact",
+    "desc": "销售订单明细表,每个订单行一个产品及其数量/价格",
+    "fields": {
+      "SalesOrderID": "销售订单编号",
+      "SalesOrderDetailID": "销售订单明细编号",
+      "CarrierTrackingNumber": "承运人追踪号",
+      "OrderQty": "订购数量",
+      "ProductID": "产品编号",
+      "SpecialOfferID": "促销编号",
+      "UnitPrice": "单价",
+      "UnitPriceDiscount": "单价折扣",
+      "LineTotal": "行总额",
+      "rowguid": "行GUID",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "SalesOrderHeaderSalesReason": {
+    "type": "junction",
+    "desc": "销售订单-销售原因关联表(多对多)",
+    "fields": {
+      "SalesOrderID": "销售订单编号",
+      "SalesReasonID": "销售原因编号",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "SalesPerson": {
+    "type": "dim",
+    "desc": "销售员维度表",
+    "fields": {
+      "BusinessEntityID": "员工编号",
+      "TerritoryID": "销售区域编号",
+      "SalesQuota": "销售配额",
+      "Bonus": "奖金(0=未达配额)",
+      "CommissionPct": "佣金比例",
+      "SalesYTD": "年初至今销售额",
+      "SalesLastYear": "去年销售额",
+      "rowguid": "行GUID",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "SalesTerritory": {
+    "type": "dim",
+    "desc": "销售区域维度表",
+    "fields": {
+      "TerritoryID": "区域编号",
+      "Name": "名称",
+      "CountryRegionCode": "国家/地区编号",
+      "Group": "地理分组",
+      "SalesYTD": "年初至今销售额",
+      "SalesLastYear": "去年销售额",
+      "CostYTD": "年初至今成本",
+      "CostLastYear": "去年成本",
+      "rowguid": "行GUID",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "SalesTerritoryHistory": {
+    "type": "fact",
+    "desc": "销售员-区域任职历史表",
+    "fields": {
+      "BusinessEntityID": "销售员编号",
+      "TerritoryID": "销售区域编号",
+      "StartDate": "开始日期",
+      "EndDate": "结束日期",
+      "rowguid": "行GUID",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "SalesPersonQuotaHistory": {
+    "type": "fact",
+    "desc": "销售员配额历史表",
+    "fields": {
+      "BusinessEntityID": "销售员编号",
+      "QuotaDate": "配额日期",
+      "SalesQuota": "销售配额",
+      "rowguid": "行GUID",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "SalesReason": {
+    "type": "dim",
+    "desc": "销售原因维度表",
+    "fields": {
+      "SalesReasonID": "销售原因编号",
+      "Name": "名称",
+      "ReasonType": "原因类型",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "SalesTaxRate": {
+    "type": "fact",
+    "desc": "销售税率表",
+    "fields": {
+      "SalesTaxRateID": "销售税率编号",
+      "StateProvinceID": "州/省编号",
+      "TaxType": "税类型(1=零售,2=批发,3=全部)",
+      "TaxRate": "税率",
+      "Name": "名称(含'+'=多重税)",
+      "rowguid": "行GUID",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "SpecialOffer": {
+    "type": "dim",
+    "desc": "促销优惠维度表",
+    "fields": {
+      "SpecialOfferID": "特殊优惠编号",
+      "Description": "描述",
+      "DiscountPct": "折扣比例",
+      "Type": "类型",
+      "Category": "类别",
+      "StartDate": "开始日期",
+      "EndDate": "结束日期(促销期=结束日期-开始日期)",
+      "MinQty": "最低数量",
+      "MaxQty": "最高数量",
+      "rowguid": "行GUID",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "SpecialOfferProduct": {
+    "type": "junction",
+    "desc": "促销-产品关联表(多对多)",
+    "fields": {
+      "SpecialOfferID": "促销编号",
+      "ProductID": "产品编号",
+      "rowguid": "行GUID",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "ShoppingCartItem": {
+    "type": "junction",
+    "desc": "购物车条目表",
+    "fields": {
+      "ShoppingCartItemID": "购物购物车条目编号",
+      "ShoppingCartID": "购物购物车编号",
+      "Quantity": "数量",
+      "ProductID": "产品编号",
+      "DateCreated": "日期创建",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "Customer": {
+    "type": "dim",
+    "desc": "客户维度表(个人或门店)",
+    "fields": {
+      "CustomerID": "客户编号",
+      "PersonID": "个人编号",
+      "StoreID": "门店编号",
+      "TerritoryID": "销售区域编号",
+      "AccountNumber": "账户编号(计算列:'AW'+客户编号)",
+      "rowguid": "行GUID",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "Store": {
+    "type": "dim",
+    "desc": "门店维度表(公司客户)",
+    "fields": {
+      "BusinessEntityID": "业务实体编号",
+      "Name": "名称",
+      "SalesPersonID": "销售员编号",
+      "Demographics": "人口统计信息",
+      "rowguid": "行GUID",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "PersonCreditCard": {
+    "type": "junction",
+    "desc": "个人-信用卡关联表(多对多)",
+    "fields": {
+      "BusinessEntityID": "人员编号",
+      "CreditCardID": "信用卡编号",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "CreditCard": {
+    "type": "dim",
+    "desc": "信用卡维度表",
+    "fields": {
+      "CreditCardID": "信用卡编号",
+      "CardType": "卡类型",
+      "CardNumber": "卡编号",
+      "ExpMonth": "到期月",
+      "ExpYear": "到期年",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "Currency": {
+    "type": "dim",
+    "desc": "货币维度表",
+    "fields": {
+      "CurrencyCode": "货币代码(ISO标准)",
+      "Name": "名称",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "CurrencyRate": {
+    "type": "fact",
+    "desc": "货币汇率表",
+    "fields": {
+      "CurrencyRateID": "汇率编号",
+      "CurrencyRateDate": "汇率日期",
+      "FromCurrencyCode": "源货币代码",
+      "ToCurrencyCode": "目标货币代码",
+      "AverageRate": "日均汇率",
+      "EndOfDayRate": "收盘汇率",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "CountryRegionCurrency": {
+    "type": "junction",
+    "desc": "国家-货币关联表",
+    "fields": {
+      "CountryRegionCode": "国家/地区编号",
+      "CurrencyCode": "货币编号",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "Person": {
+    "type": "dim",
+    "desc": "人员维度表,含姓名/类型",
+    "fields": {
+      "BusinessEntityID": "业务实体编号",
+      "PersonType": "人员类型(SC=门店联系人,IN=个人客户,SP=销售员,EM=员工,VC=供应商联系人,GC=一般联系人)",
+      "NameStyle": "名称款式(0=西方(名在前),1=东方(姓在前))",
+      "Title": "头衔",
+      "FirstName": "名",
+      "MiddleName": "中间名",
+      "LastName": "姓",
+      "Suffix": "后缀",
+      "EmailPromotion": "邮件促销标记(0=不接收,1=接收,2=接收(含合作方))",
+      "AdditionalContactInfo": "补充联系信息",
+      "Demographics": "人口统计信息",
+      "rowguid": "行GUID",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "Employee": {
+    "type": "dim",
+    "desc": "员工维度表(带职位/工号)",
+    "fields": {
+      "BusinessEntityID": "人员编号",
+      "NationalIDNumber": "身份证号",
+      "LoginID": "登录账号",
+      "OrganizationNode": "组织层级节点(公司层级位置)",
+      "OrganizationLevel": "组织层级深度(计算列:组织层级深度)",
+      "JobTitle": "工作头衔",
+      "BirthDate": "出生日期",
+      "MaritalStatus": "婚姻状况(M=已婚,S=单身)",
+      "Gender": "性别(M=男,F=女)",
+      "HireDate": "入职日期",
+      "SalariedFlag": "是否领薪(0=时薪,1=月薪)",
+      "VacationHours": "可用年假小时数",
+      "SickLeaveHours": "可用病假小时数",
+      "CurrentFlag": "当前在职标志(0=离职,1=在职)",
+      "rowguid": "行GUID",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "EmployeeDepartmentHistory": {
+    "type": "fact",
+    "desc": "员工-部门任职历史表(时间区间)",
+    "fields": {
+      "BusinessEntityID": "员工编号",
+      "DepartmentID": "部门编号",
+      "ShiftID": "班次编号",
+      "StartDate": "开始日期",
+      "EndDate": "结束日期",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "EmployeePayHistory": {
+    "type": "fact",
+    "desc": "员工薪资历史表",
+    "fields": {
+      "BusinessEntityID": "员工编号",
+      "RateChangeDate": "调薪日期",
+      "Rate": "时薪(小时工资率)",
+      "PayFrequency": "发薪频率(1=月薪,2=双周薪)",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "Department": {
+    "type": "dim",
+    "desc": "部门维度表",
+    "fields": {
+      "DepartmentID": "部门编号",
+      "Name": "名称",
+      "GroupName": "组名称",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "Shift": {
+    "type": "dim",
+    "desc": "班次维度表",
+    "fields": {
+      "ShiftID": "班次编号",
+      "Name": "名称",
+      "StartTime": "开始时间",
+      "EndTime": "结束时间",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "JobCandidate": {
+    "type": "dim",
+    "desc": "求职者维度表",
+    "fields": {
+      "JobCandidateID": "工作求职者编号",
+      "BusinessEntityID": "员工编号",
+      "Resume": "简历",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "EmailAddress": {
+    "type": "dim",
+    "desc": "邮箱地址表",
+    "fields": {
+      "BusinessEntityID": "人员编号",
+      "EmailAddressID": "邮箱编号",
+      "EmailAddress": "邮箱地址",
+      "rowguid": "行GUID",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "Password": {
+    "type": "dim",
+    "desc": "登录密码表",
+    "fields": {
+      "BusinessEntityID": "人员编号",
+      "PasswordHash": "密码哈希",
+      "PasswordSalt": "密码盐",
+      "rowguid": "行GUID",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "PhoneNumberType": {
+    "type": "dim",
+    "desc": "电话类型维度表",
+    "fields": {
+      "PhoneNumberTypeID": "电话类型编号",
+      "Name": "名称",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "BusinessEntity": {
+    "type": "dim",
+    "desc": "业务实体主表(个人/门店的父类型)",
+    "fields": {
+      "BusinessEntityID": "业务实体编号",
+      "rowguid": "行GUID",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "BusinessEntityAddress": {
+    "type": "junction",
+    "desc": "实体-地址关联表(多对多)",
+    "fields": {
+      "BusinessEntityID": "业务实体编号",
+      "AddressID": "地址编号",
+      "AddressTypeID": "地址类型编号",
+      "rowguid": "行GUID",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "BusinessEntityContact": {
+    "type": "junction",
+    "desc": "实体-联系人关联表(多对多)",
+    "fields": {
+      "BusinessEntityID": "业务实体编号",
+      "PersonID": "个人编号",
+      "ContactTypeID": "联系类型编号",
+      "rowguid": "行GUID",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "ContactType": {
+    "type": "dim",
+    "desc": "联系类型维度表",
+    "fields": {
+      "ContactTypeID": "联系类型编号",
+      "Name": "名称",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "AddressType": {
+    "type": "dim",
+    "desc": "地址类型维度表",
+    "fields": {
+      "AddressTypeID": "地址类型编号",
+      "Name": "名称",
+      "rowguid": "行GUID",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "Product": {
+    "type": "dim",
+    "desc": "产品维度表,含名称/价格/成本",
+    "fields": {
+      "ProductID": "产品编号",
+      "Name": "名称",
+      "ProductNumber": "产品编号",
+      "MakeFlag": "是否自制(0=外购,1=自制)",
+      "FinishedGoodsFlag": "是否成品(可售)(0=非成品,1=成品(可售))",
+      "Color": "颜色",
+      "SafetyStockLevel": "最低库存量(安全库存)",
+      "ReorderPoint": "再订货点(触发补货)",
+      "StandardCost": "标准成本",
+      "ListPrice": "标价(利润=标价-标准成本)",
+      "Size": "尺寸",
+      "SizeUnitMeasureCode": "尺寸单位代码",
+      "WeightUnitMeasureCode": "重量单位代码",
+      "Weight": "重量",
+      "DaysToManufacture": "制造天数",
+      "ProductLine": "产品线(R=公路,M=山地,T=旅行,S=标准)",
+      "Class": "质量等级(H=高,M=中,L=低)",
+      "Style": "款式(W=女式,M=男式,U=通用)",
+      "ProductSubcategoryID": "产品子类编号",
+      "ProductModelID": "产品型号编号",
+      "SellStartDate": "开售日期",
+      "SellEndDate": "停售日期",
+      "DiscontinuedDate": "停产日期",
+      "rowguid": "行GUID",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "ProductCategory": {
+    "type": "dim",
+    "desc": "产品大类维度表",
+    "fields": {
+      "ProductCategoryID": "产品大类编号",
+      "Name": "名称",
+      "rowguid": "行GUID",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "ProductSubcategory": {
+    "type": "dim",
+    "desc": "产品子类维度表",
+    "fields": {
+      "ProductSubcategoryID": "产品子类编号",
+      "ProductCategoryID": "产品大类编号",
+      "Name": "名称",
+      "rowguid": "行GUID",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "ProductModel": {
+    "type": "dim",
+    "desc": "产品型号维度表",
+    "fields": {
+      "ProductModelID": "产品型号编号",
+      "Name": "名称",
+      "CatalogDescription": "目录描述",
+      "Instructions": "使用说明",
+      "rowguid": "行GUID",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "ProductCostHistory": {
+    "type": "fact",
+    "desc": "产品成本历史表",
+    "fields": {
+      "ProductID": "产品编号",
+      "StartDate": "开始日期",
+      "EndDate": "结束日期",
+      "StandardCost": "标准成本",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "ProductListPriceHistory": {
+    "type": "fact",
+    "desc": "产品标价历史表",
+    "fields": {
+      "ProductID": "产品编号",
+      "StartDate": "开始日期",
+      "EndDate": "结束日期",
+      "ListPrice": "标价",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "ProductInventory": {
+    "type": "fact",
+    "desc": "产品库存表",
+    "fields": {
+      "ProductID": "产品编号",
+      "LocationID": "生产位置编号",
+      "Shelf": "货架",
+      "Bin": "货位",
+      "Quantity": "数量",
+      "rowguid": "行GUID",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "ProductReview": {
+    "type": "fact",
+    "desc": "产品评论表",
+    "fields": {
+      "ProductReviewID": "产品评论编号",
+      "ProductID": "产品编号",
+      "ReviewerName": "评论者姓名",
+      "ReviewDate": "评论日期",
+      "EmailAddress": "邮箱地址",
+      "Rating": "评分(1-5,5最高)",
+      "Comments": "备注",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "ProductPhoto": {
+    "type": "dim",
+    "desc": "产品照片表",
+    "fields": {
+      "ProductPhotoID": "产品照片编号",
+      "ThumbNailPhoto": "缩略图",
+      "ThumbnailPhotoFileName": "缩略图文件名",
+      "LargePhoto": "大图",
+      "LargePhotoFileName": "大图文件名",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "ProductDocument": {
+    "type": "junction",
+    "desc": "产品-文档关联表(多对多)",
+    "fields": {
+      "ProductID": "产品编号",
+      "DocumentNode": "文档编号",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "ProductProductPhoto": {
+    "type": "junction",
+    "desc": "产品-照片关联表(多对多)",
+    "fields": {
+      "ProductID": "产品编号",
+      "ProductPhotoID": "产品照片编号",
+      "Primary": "是否主图(0=非主图,1=主图)",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "ProductModelProductDescriptionCulture": {
+    "type": "junction",
+    "desc": "型号-描述-文化关联表",
+    "fields": {
+      "ProductModelID": "产品型号编号",
+      "ProductDescriptionID": "产品描述编号",
+      "CultureID": "文化/语言编号",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "ProductDescription": {
+    "type": "dim",
+    "desc": "产品描述维度表",
+    "fields": {
+      "ProductDescriptionID": "产品描述编号",
+      "Description": "描述",
+      "rowguid": "行GUID",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "BillOfMaterials": {
+    "type": "fact",
+    "desc": "物料清单表,产品装配关系(自引用/递归)",
+    "fields": {
+      "BillOfMaterialsID": "物料清单编号",
+      "ProductAssemblyID": "装配产品编号",
+      "ComponentID": "组件编号",
+      "StartDate": "开始日期",
+      "EndDate": "结束日期(NULL=当前生效,非空=已失效)",
+      "UnitMeasureCode": "计量单位编号",
+      "BOMLevel": "物料层级(全局层级号,0=顶层成品;求某产品的最深装配层级时,用递归CTE里 level+1 累计,勿用本列)",
+      "PerAssemblyQty": "每装配数量",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "UnitMeasure": {
+    "type": "dim",
+    "desc": "计量单位维度表",
+    "fields": {
+      "UnitMeasureCode": "计量单位代码",
+      "Name": "名称",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "Vendor": {
+    "type": "dim",
+    "desc": "供应商维度表",
+    "fields": {
+      "BusinessEntityID": "业务实体编号",
+      "AccountNumber": "账户编号",
+      "Name": "名称",
+      "CreditRating": "信用评级(1=优秀,2=良好,3=中上,4=一般,5=较差)",
+      "PreferredVendorStatus": "首选供应商标志(0=非首选,1=首选)",
+      "ActiveFlag": "是否在用标志(0=停用,1=在用)",
+      "PurchasingWebServiceURL": "采购Web服务URL",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "ProductVendor": {
+    "type": "junction",
+    "desc": "产品-供应商关联表(多对多)",
+    "fields": {
+      "ProductID": "产品编号",
+      "BusinessEntityID": "供应商编号",
+      "AverageLeadTime": "平均交货期(单位:天)",
+      "StandardPrice": "标准价格(区别于产品StandardCost(标准成本);净利(profit on net)=上次收货成本-此值)",
+      "LastReceiptCost": "上次收货成本(净利(profit on net)=上次收货成本-标准价)",
+      "LastReceiptDate": "上次收货日期",
+      "MinOrderQty": "最小订购数量",
+      "MaxOrderQty": "最大订购数量",
+      "OnOrderQty": "在途订购数量(0=缺货)",
+      "UnitMeasureCode": "计量单位编号",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "PurchaseOrderHeader": {
+    "type": "fact",
+    "desc": "采购订单头表",
+    "fields": {
+      "PurchaseOrderID": "采购订单编号",
+      "RevisionNumber": "修订编号",
+      "Status": "状态(1=待定,2=已批准,3=已拒绝,4=已完成)",
+      "EmployeeID": "员工编号",
+      "VendorID": "供应商编号",
+      "ShipMethodID": "运输方式编号",
+      "OrderDate": "下单日期",
+      "ShipDate": "发货日期",
+      "SubTotal": "小计金额(计算列:明细行总额之和)",
+      "TaxAmt": "税额",
+      "Freight": "运费",
+      "TotalDue": "应付总额(计算列:小计+税+运费)",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "PurchaseOrderDetail": {
+    "type": "fact",
+    "desc": "采购订单明细表",
+    "fields": {
+      "PurchaseOrderID": "采购订单编号",
+      "PurchaseOrderDetailID": "采购订单明细编号",
+      "DueDate": "到期日期",
+      "OrderQty": "订购数量",
+      "ProductID": "产品编号",
+      "UnitPrice": "单价",
+      "LineTotal": "行总额(计算列:订购数量×单价)",
+      "ReceivedQty": "已收数量",
+      "RejectedQty": "拒收数量",
+      "StockedQty": "入库数量",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "ShipMethod": {
+    "type": "dim",
+    "desc": "运输方式维度表",
+    "fields": {
+      "ShipMethodID": "运输方式编号",
+      "Name": "名称",
+      "ShipBase": "基础运费",
+      "ShipRate": "每磅运费",
+      "rowguid": "行GUID",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "WorkOrder": {
+    "type": "fact",
+    "desc": "生产工单表",
+    "fields": {
+      "WorkOrderID": "工单编号",
+      "ProductID": "产品编号",
+      "OrderQty": "订购数量",
+      "StockedQty": "入库数量(计算列:订单量-报废量)",
+      "ScrappedQty": "报废数量",
+      "StartDate": "开始日期",
+      "EndDate": "结束日期",
+      "DueDate": "到期日期",
+      "ScrapReasonID": "报废原因编号",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "WorkOrderRouting": {
+    "type": "fact",
+    "desc": "生产工序路由表",
+    "fields": {
+      "WorkOrderID": "生产工单编号",
+      "ProductID": "产品编号",
+      "OperationSequence": "工序顺序",
+      "LocationID": "生产位置编号",
+      "ScheduledStartDate": "计划开始日期",
+      "ScheduledEndDate": "计划结束日期",
+      "ActualStartDate": "实际开始日期",
+      "ActualEndDate": "实际结束日期",
+      "ActualResourceHrs": "实际资源工时",
+      "PlannedCost": "计划成本",
+      "ActualCost": "实际成本",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "TransactionHistory": {
+    "type": "fact",
+    "desc": "库存事务历史表",
+    "fields": {
+      "TransactionID": "事务编号",
+      "ProductID": "产品编号",
+      "ReferenceOrderID": "关联订单编号",
+      "ReferenceOrderLineID": "关联订单行号",
+      "TransactionDate": "事务日期",
+      "TransactionType": "事务类型(W=工单,S=销售订单,P=采购订单)",
+      "Quantity": "数量",
+      "ActualCost": "实际成本",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "TransactionHistoryArchive": {
+    "type": "fact",
+    "desc": "库存事务历史归档表",
+    "fields": {
+      "TransactionID": "事务编号",
+      "ProductID": "产品编号",
+      "ReferenceOrderID": "关联订单编号",
+      "ReferenceOrderLineID": "关联订单行号",
+      "TransactionDate": "事务日期",
+      "TransactionType": "事务类型(W=工单,S=销售订单,P=采购订单)",
+      "Quantity": "数量",
+      "ActualCost": "实际成本",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "ScrapReason": {
+    "type": "dim",
+    "desc": "报废原因维度表",
+    "fields": {
+      "ScrapReasonID": "报废原因编号",
+      "Name": "名称",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "Location": {
+    "type": "dim",
+    "desc": "生产位置维度表",
+    "fields": {
+      "LocationID": "位置编号",
+      "Name": "名称",
+      "CostRate": "小时成本率",
+      "Availability": "可用工时(小时)",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "Culture": {
+    "type": "dim",
+    "desc": "文化/语言维度表",
+    "fields": {
+      "CultureID": "文化编号",
+      "Name": "名称",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "Address": {
+    "type": "dim",
+    "desc": "地址维度表",
+    "fields": {
+      "AddressID": "地址编号",
+      "AddressLine1": "地址第一行",
+      "AddressLine2": "地址第二行(NULL=地址较短(无第二行))",
+      "City": "城市",
+      "StateProvinceID": "州/省编号",
+      "PostalCode": "邮编",
+      "SpatialLocation": "空间位置",
+      "rowguid": "行GUID",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "StateProvince": {
+    "type": "dim",
+    "desc": "州/省维度表",
+    "fields": {
+      "StateProvinceID": "州省编号",
+      "StateProvinceCode": "州省代码",
+      "CountryRegionCode": "国家/地区编号",
+      "IsOnlyStateProvinceFlag": "是否唯一州省标志(0=有州省代码,1=无州省代码(用国家代码))",
+      "Name": "名称",
+      "TerritoryID": "销售区域编号",
+      "rowguid": "行GUID",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "CountryRegion": {
+    "type": "dim",
+    "desc": "国家/地区维度表",
+    "fields": {
+      "CountryRegionCode": "国家地区代码",
+      "Name": "名称",
+      "ModifiedDate": "最后修改时间"
+    }
+  },
+  "Document": {
+    "type": "dim",
+    "desc": "文档表",
+    "fields": {
+      "DocumentNode": "文档层级节点",
+      "DocumentLevel": "文档层级深度(计算列:文档层级深度)",
+      "Title": "头衔",
+      "Owner": "员工编号",
+      "FolderFlag": "是否文件夹(0=文件夹,1=文档)",
+      "FileName": "文件名",
+      "FileExtension": "文件扩展名",
+      "Revision": "修订",
+      "ChangeNumber": "变更编号",
+      "Status": "状态(1=待审批,2=已批准,3=已作废)",
+      "DocumentSummary": "文档摘要(NULL=私密文档)",
+      "Document": "文档内容",
+      "rowguid": "行GUID",
+      "ModifiedDate": "最后修改时间"
+    }
+  }
+}

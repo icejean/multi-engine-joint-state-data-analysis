@@ -1,0 +1,74 @@
+{
+  "runs": [
+    {
+      "question_id": 33,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "99bf342aa0ce404cafa4b614fc095b3c",
+      "final_sql": "SELECT COUNT(DISTINCT b.ref1) AS store_contacts_with_vista FROM biz_cnt b JOIN stor s ON s.ref2 = b.ref3 JOIN prsn_crd pc ON pc.ref1 = b.ref1 JOIN crd c ON c.crdt_crd_id = pc.ref2 WHERE c.crd_typ = 'Vista'",
+      "sql_history": [
+        "SELECT cntc_typ_id, nm FROM cnt_typ ORDER BY cntc_typ_id",
+        "SELECT DISTINCT crd_typ FROM crd",
+        "SELECT (SELECT COUNT(*) FROM emp) AS n_emp, (SELECT COUNT(*) FROM prsn) AS n_prsn, (SELECT COUNT(*) FROM biz_cnt) AS n_biz_cnt, (SELECT COUNT(*) FROM prsn_crd) AS n_prsn_crd, (SELECT COUNT(*) FROM crd) AS n_crd, (SELECT COUNT(*) FROM stor) AS n_stor, (SELECT COUNT(*) FROM sls_prsn) AS n_sls_prsn, (SELECT COUNT(*) FROM biz_ent) AS n_biz_ent",
+        "SELECT ref2 AS contact_type, COUNT(*) c FROM biz_cnt GROUP BY ref2 ORDER BY ref2",
+        "SELECT prsn_typ, COUNT(*) c FROM prsn GROUP BY prsn_typ ORDER BY c DESC",
+        "SELECT COUNT(DISTINCT e.ref1) AS emp_ct_also_bizcnt FROM emp e JOIN biz_cnt b ON e.ref1 = b.ref1",
+        "SELECT COUNT(DISTINCT e.ref1) AS emp_with_vista FROM emp e JOIN prsn_crd pc ON pc.ref1 = e.ref1 JOIN crd c ON c.crdt_crd_id = pc.ref2 WHERE c.crd_typ = 'Vista'",
+        "SELECT table_name, column_name, column_comment FROM information_schema.columns WHERE table_schema='works_cycles' AND table_name IN ('emp','prsn','prsn_crd','crd','biz_cnt','stor','sls_prsn','biz_ent') ORDER BY table_name, ordinal_position",
+        "SELECT (SELECT COUNT(DISTINCT pc.ref1) FROM prsn_crd pc JOIN crd c ON c.crdt_crd_id=pc.ref2 WHERE c.crd_typ='Vista') AS all_vista_holders, (SELECT COUNT(DISTINCT p.ref1) FROM prsn p JOIN prsn_crd pc ON pc.ref1=p.ref1 JOIN crd c ON c.crdt_crd_id=pc.ref2 WHERE c.crd_typ='Vista' AND p.prsn_typ='SC') AS sc_vista, (SELECT COUNT(DISTINCT b.ref1) FROM biz_cnt b JOIN prsn_crd pc ON pc.ref1=b.ref1 JOIN crd c ON c.crdt_crd_id=pc.ref2 WHERE c.crd_typ='Vista') AS bizcnt_vista, (SELECT MIN(ref1) FROM prsn_crd) AS pc_min, (SELECT MAX(ref1) FROM prsn_crd) AS pc_max, (SELECT MIN(ref1) FROM emp) AS emp_min, (SELECT MAX(ref1) FROM emp) AS emp_max, (SELECT MIN(ref1) FROM prsn) AS p_min, (SELECT MAX(ref1) FROM prsn) AS p_max",
+        "SELECT p.prsn_typ, COUNT(*) cnt FROM biz_cnt b JOIN prsn p ON p.ref1=b.ref1 GROUP BY p.prsn_typ ORDER BY cnt DESC",
+        "SELECT (SELECT COUNT(DISTINCT b.ref1) FROM biz_cnt b JOIN stor s ON s.ref2=b.ref3) AS store_contacts, (SELECT COUNT(DISTINCT b.ref1) FROM biz_cnt b JOIN stor s ON s.ref2=b.ref3 JOIN prsn_crd pc ON pc.ref1=b.ref1 JOIN crd c ON c.crdt_crd_id=pc.ref2 WHERE c.crd_typ='Vista') AS store_contacts_vista",
+        "SELECT COUNT(DISTINCT b.ref1) AS store_contacts_with_vista FROM biz_cnt b JOIN stor s ON s.ref2 = b.ref3 JOIN prsn_crd pc ON pc.ref1 = b.ref1 JOIN crd c ON c.crdt_crd_id = pc.ref2 WHERE c.crd_typ = 'Vista'"
+      ],
+      "agent_text": "**163**\n\nAmong the store contacts (persons linked to stores via `biz_cnt` → `stor`), **163** of them have a Vista credit card (`crd.crd_typ = 'Vista'`).",
+      "tool_calls": 24,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": 99,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "6a4e7f03549e4b5fb65875c16f8b8704",
+      "final_sql": "WITH RECURSIVE bom_tree AS ( SELECT b.ref2 AS component_id, b.bm_lvl AS level FROM bom b WHERE b.ref3 = 680 AND b.end_dt IS NULL UNION ALL SELECT b.ref2, b.bm_lvl FROM bom b JOIN bom_tree t ON b.ref3 = t.component_id WHERE b.end_dt IS NULL ) SELECT DISTINCT t.level, p.prdc_id AS component_id, p.nm AS component_name FROM bom_tree t JOIN prod p ON p.prdc_id = t.component_id ORDER BY t.level, p.prdc_id",
+      "sql_history": [
+        "SELECT prdc_id, nm, prdc_nmbr, sz FROM prod WHERE nm = 'HL Road Frame - Black, 58'",
+        "SELECT bll_of_mtrl_id, ref3, ref2, ref1, bm_lvl, pr_assm_qty, strt_dt, end_dt FROM bom WHERE ref3 = 680",
+        "SELECT b.bll_of_mtrl_id, b.ref3, b.ref2, pa.nm AS assembly_nm, c.nm AS component_nm, b.bm_lvl, b.pr_assm_qty, b.end_dt FROM bom b LEFT JOIN prod pa ON pa.prdc_id = b.ref3 LEFT JOIN prod c ON c.prdc_id = b.ref2 WHERE b.ref2 = 680 OR b.ref3 = 680 ORDER BY b.bll_of_mtrl_id",
+        "SELECT b.bll_of_mtrl_id, b.ref3, b.ref2, b.bm_lvl FROM bom b WHERE b.ref3 IS NULL",
+        "WITH RECURSIVE cte AS ( SELECT ref2 AS comp, 1 AS lvl FROM bom WHERE ref3 = 680 AND end_dt IS NULL UNION ALL SELECT b.ref2, c.lvl + 1 FROM bom b JOIN cte c ON b.ref3 = c.comp WHERE b.end_dt IS NULL ) SELECT c.lvl, c.comp, p.nm, p.prdc_nmbr FROM cte c JOIN prod p ON p.prdc_id = c.comp ORDER BY c.lvl, c.comp",
+        "SELECT DISTINCT ref3 FROM bom WHERE ref3 IS NOT NULL ORDER BY ref3",
+        "WITH RECURSIVE cte AS ( SELECT ref3 AS parent, ref2 AS comp, 1 AS lvl FROM bom WHERE ref3 = 680 AND end_dt IS NULL UNION ALL SELECT b.ref3, b.ref2, c.lvl + 1 FROM bom b JOIN cte c ON b.ref3 = c.comp WHERE b.end_dt IS NULL ) SELECT c.lvl, c.parent, p.nm AS parent_nm, c.comp, pc.nm AS comp_nm, pc.prdc_nmbr FROM cte c LEFT JOIN prod p ON p.prdc_id = c.parent LEFT JOIN prod pc ON pc.prdc_id = c.comp ORDER BY c.lvl, c.parent, c.comp",
+        "SELECT ref3, ref2, bm_lvl, pr_assm_qty, end_dt FROM bom WHERE ref3 IN (680,324,327,399,532,533,534,804,316,331,350,531) ORDER BY ref3, ref2, bll_of_mtrl_id",
+        "WITH RECURSIVE cte AS ( SELECT b.ref2 AS comp, 1 AS lvl, b.bm_lvl, b.end_dt FROM bom b WHERE b.ref3 = 680 UNION ALL SELECT b.ref2, c.lvl + 1, b.bm_lvl, b.end_dt FROM bom b JOIN cte c ON b.ref3 = c.comp ) SELECT c.lvl, c.comp, p.nm, c.bm_lvl, c.end_dt FROM cte c JOIN prod p ON p.prdc_id = c.comp ORDER BY c.lvl, c.comp, c.end_dt",
+        "SELECT COUNT(*) AS total_rows, SUM(CASE WHEN end_dt IS NOT NULL THEN 1 ELSE 0 END) AS expired_rows FROM bom",
+        "WITH RECURSIVE bom_tree AS ( SELECT b.ref2 AS component_id, b.bm_lvl AS level FROM bom b WHERE b.ref3 = 680 AND b.end_dt IS NULL UNION ALL SELECT b.ref2, b.bm_lvl FROM bom b JOIN bom_tree t ON b.ref3 = t.component_id WHERE b.end_dt IS NULL ) SELECT DISTINCT t.level, p.prdc_id AS component_id, p.nm AS component_name, p.prdc_nmbr AS product_number FROM bom_tree t JOIN prod p ON p.prdc_id = t.component_id ORDER BY t.level, p.prdc_id",
+        "WITH RECURSIVE bom_tree AS ( SELECT b.ref2 AS component_id, b.bm_lvl AS level FROM bom b WHERE b.ref3 = 680 AND b.end_dt IS NULL UNION ALL SELECT b.ref2, b.bm_lvl FROM bom b JOIN bom_tree t ON b.ref3 = t.component_id WHERE b.end_dt IS NULL ) SELECT DISTINCT t.level, p.prdc_id AS component_id, p.nm AS component_name FROM bom_tree t JOIN prod p ON p.prdc_id = t.component_id ORDER BY t.level, p.prdc_id"
+      ],
+      "agent_text": "组装 **'HL Road Frame - Black, 58'**（产品 ID 680）所需的全部组件（直接 + 嵌套），含其在装配层级中的层级（BOM Level）：\n\n**第 2 层（直接组件）**\n| 组件 | 编号 |\n|---|---|\n| Chain Stays | CS-2812 |\n| Decal 1 | DC-8732 |\n| Decal 2 | DC-9824 |\n| Down Tube | DT-2377 |\n| Head Tube | HT-8019 |\n| Paint - Black | PA-187B |\n| Seat Stays | SS-2985 |\n| Seat Tube | ST-9828 |\n| Top Tube | TO-2301 |\n| HL Fork | FK-9939 |\n\n**第 3 层（嵌套）**\n| 组件 | 编号 |\n|---|---|\n| Blade | BL-2036 |\n| Fork End | FE-3760 |\n| Fork Crown | FC-3654 |\n| Metal Bar 2 | MB-6061 |\n| Metal Sheet 2 | MS-0253 |\n| Metal Sheet 3 | MS-1256 |\n| Metal Sheet 7 | MS-1981 |\n| Metal Sheet 4 | MS-2259 |\n| Metal Sheet 5 | MS-2341 |\n| Steerer | SR-2098 |\n\n**第 4 层（更深嵌套）**\n| 组件 | 编号 |\n|---|---|\n| Metal Sheet 2 | MS-0253 |\n| Metal Sheet 5 | MS-2341 |\n| Metal Sheet 6 | MS-2348 |\n\n说明：层级取自 `bom.bm_lvl`（BOM Level，整条产品装配层级，成品为第 0 层）。该车架 680 本身是上层成品（Road-250）的第 1 层子装配，因此它的直接组件为第 2 层；`Metal Sheet 2`、`Metal Sheet 5` 在多个子装配中被复用，会出现在不同层级。取数时仅保留当前有效的 BOM 关系（`end_dt IS NULL`）。\n\n共 23 条「组件—层级」记录（10 + 10 + 3）。",
+      "tool_calls": 22,
+      "pass": false,
+      "error": null
+    },
+    {
+      "question_id": 113,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "f793a856f5e0454a92e0098b21935421",
+      "final_sql": "SELECT p.nm AS product_name FROM prod p WHERE p.fnsh_gds_flg = 1 AND NOT EXISTS (SELECT 1 FROM so_dtl d WHERE d.ref2 = p.prdc_id) ORDER BY p.nm",
+      "sql_history": [
+        "SELECT * FROM sys_tables LIMIT 5",
+        "SELECT * FROM sys_table_fields LIMIT 5",
+        "SELECT field_name, field_desc FROM sys_table_fields WHERE table_name IN ('prod','so_dtl','so_hdr') ORDER BY table_name, field_name",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('so_dtl','so_hdr') ORDER BY table_name, field_name",
+        "SELECT fnsh_gds_flg, COUNT(*) AS cnt FROM prod GROUP BY fnsh_gds_flg",
+        "SELECT COUNT(DISTINCT ref2) AS ordered_prod FROM so_dtl",
+        "SELECT p.nm AS product_name FROM prod p WHERE p.fnsh_gds_flg = 1 AND NOT EXISTS (SELECT 1 FROM so_dtl d WHERE d.ref2 = p.prdc_id) ORDER BY p.nm"
+      ],
+      "agent_text": "查询完成。**从未被订购过的成品（finished goods，`fnsh_gds_flg = 1`）共 27 个：**\n\n| # | 成品名称 |\n|---|---|\n| 1 | HL Mountain Frame - Black, 46 |\n| 2 | HL Mountain Frame - Silver, 44 |\n| 3 | HL Road Frame - Black, 52 |\n| 4 | HL Road Frame - Black, 58 |\n| 5 | HL Road Frame - Black, 62 |\n| 6 | HL Road Frame - Red, 52 |\n| 7 | HL Road Frame - Red, 56 |\n| 8 | HL Road Frame - Red, 58 |\n| 9 | Headlights - Dual-Beam |\n| 10 | Headlights - Weatherproof |\n| 11 | LL Road Frame - Black, 48 |\n| 12 | LL Road Frame - Black, 62 |\n| 13 | LL Road Frame - Red, 58 |\n| 14 | LL Road Front Wheel |\n| 15 | LL Touring Frame - Yellow, 54 |\n| 16 | ML Bottom Bracket |\n| 17 | ML Fork |\n| 18 | ML Road Frame - Red, 44 |\n| 19 | ML Road Frame - Red, 58 |\n| 20 | ML Road Frame - Red, 60 |\n| 21 | ML Road Frame-W - Yellow, 42 |\n| 22 | ML Road Handlebars |\n| 23 | ML Road Seat/Saddle |\n| 24 | Men's Sports Shorts, XL |\n| 25 | Mountain Pump |\n| 26 | Taillights - Battery-Powered |\n| 27 | Touring Front Wheel |\n\n判定依据：`prod.fnsh_gds_flg = 1`（成品标记）且 `prod.prdc_id` 未出现在任何销售订单明细 `so_dtl.ref2`（产品编号）中。\n\n最终 SQL：\n```sql\nSELECT p.nm AS product_name\nFROM prod p\nWHERE p.fnsh_gds_flg = 1\n  AND NOT EXISTS (SELECT 1 FROM so_dtl d WHERE d.ref2 = p.prdc_id)\nORDER BY p.nm;\n```",
+      "tool_calls": 11,
+      "pass": false,
+      "error": null
+    }
+  ]
+}

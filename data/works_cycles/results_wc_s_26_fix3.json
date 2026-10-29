@@ -1,0 +1,1189 @@
+{
+  "runs": [
+    {
+      "question_id": 1,
+      "s_level": "S0",
+      "final_sql": "SELECT COUNT(DISTINCT CASE WHEN t.nm = 'Home' THEN b.ref3 END) AS home_count, COUNT(DISTINCT CASE WHEN t.nm = 'Shipping' THEN b.ref3 END) AS shipping_count FROM biz_addr b JOIN addr_typ t ON b.ref1 = t.addr_typ_id",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4364,
+        "output": 21956,
+        "total": 26320
+      },
+      "elapsed_seconds": 89.33,
+      "extra_columns": []
+    },
+    {
+      "question_id": 1,
+      "s_level": "S1",
+      "final_sql": "SELECT\n  COUNT(DISTINCT CASE WHEN at.nm = 'Home' THEN ba.ref1 END) AS home_count,\n  COUNT(DISTINCT CASE WHEN at.nm = 'Shipping' THEN ba.ref1 END) AS shipping_count\nFROM biz_addr ba\nJOIN addr_typ at ON ba.ref2 = at.addr_typ_id",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 12825,
+        "output": 2411,
+        "total": 15236
+      },
+      "elapsed_seconds": 12.74,
+      "extra_columns": []
+    },
+    {
+      "question_id": 1,
+      "s_level": "S2",
+      "final_sql": "SELECT\n  COUNT(DISTINCT CASE WHEN adt.nm = 'Home' THEN ba.ref1 END) AS home_business_count,\n  COUNT(DISTINCT CASE WHEN adt.nm = 'Shipping' THEN ba.ref1 END) AS shipping_business_count\nFROM biz_addr ba\nJOIN addr_typ adt ON ba.ref2 = adt.addr_typ_id\nWHERE adt.nm IN ('Home', 'Shipping')",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 14163,
+        "output": 1504,
+        "total": 15667
+      },
+      "elapsed_seconds": 7.9,
+      "extra_columns": []
+    },
+    {
+      "question_id": 26,
+      "s_level": "S0",
+      "final_sql": "SELECT COUNT(DISTINCT emp.ref1)\nFROM emp\nJOIN prsn ON emp.ref1 = prsn.ref1\nJOIN emp_dept_hist ON emp.ref1 = emp_dept_hist.ref3\nJOIN dept ON emp_dept_hist.ref2 = dept.dprt_id\nWHERE prsn.eml_prmt = 0\nAND dept.nm = 'Engineering'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4366,
+        "output": 8153,
+        "total": 12519
+      },
+      "elapsed_seconds": 34.32,
+      "extra_columns": []
+    },
+    {
+      "question_id": 26,
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT e.ref1)\nFROM emp e\nJOIN prsn p ON e.ref1 = p.ref1\nJOIN emp_dept_hist edh ON e.ref1 = edh.ref3\nJOIN dept d ON edh.ref2 = d.dprt_id\nWHERE p.eml_prmt = 0\nAND d.nm = 'Engineering'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 12827,
+        "output": 1654,
+        "total": 14481
+      },
+      "elapsed_seconds": 8.51,
+      "extra_columns": []
+    },
+    {
+      "question_id": 26,
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(DISTINCT emp.ref1)\nFROM emp\nJOIN prsn ON emp.ref1 = prsn.ref1\nJOIN emp_dept_hist ON emp_dept_hist.ref3 = emp.ref1\nJOIN dept ON dept.dprt_id = emp_dept_hist.ref2\nWHERE prsn.eml_prmt = 0\n  AND dept.nm = 'Engineering'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 14165,
+        "output": 573,
+        "total": 14738
+      },
+      "elapsed_seconds": 3.04,
+      "extra_columns": []
+    },
+    {
+      "question_id": 33,
+      "s_level": "S0",
+      "final_sql": "SELECT COUNT(DISTINCT emp.ref1)\nFROM emp\nJOIN biz_cnt ON biz_cnt.ref1 = emp.ref1\nJOIN cnt_typ ON cnt_typ.cntc_typ_id = biz_cnt.ref2\nJOIN prsn_crd ON prsn_crd.ref1 = emp.ref1\nJOIN crd ON crd.crdt_crd_id = prsn_crd.ref2\nWHERE cnt_typ.nm = 'Store Contact'\n  AND crd.crd_typ = 'Vista'",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4354,
+        "output": 6944,
+        "total": 11298
+      },
+      "elapsed_seconds": 30.47,
+      "extra_columns": []
+    },
+    {
+      "question_id": 33,
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT emp.ref1) AS cnt\nFROM emp\nJOIN biz_cnt ON emp.ref1 = biz_cnt.ref1\nJOIN cnt_typ ON biz_cnt.ref2 = cnt_typ.cntc_typ_id\nJOIN prsn_crd ON emp.ref1 = prsn_crd.ref1\nJOIN crd ON prsn_crd.ref2 = crd.crdt_crd_id\nWHERE cnt_typ.nm = 'Store Contact' AND crd.crd_typ = 'Vista'",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 12815,
+        "output": 3483,
+        "total": 16298
+      },
+      "elapsed_seconds": 16.71,
+      "extra_columns": []
+    },
+    {
+      "question_id": 33,
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(DISTINCT emp.ref1) FROM emp JOIN biz_cnt ON emp.ref1 = biz_cnt.ref1 JOIN stor ON biz_cnt.ref3 = stor.ref2 JOIN prsn_crd ON emp.ref1 = prsn_crd.ref1 JOIN crd ON prsn_crd.ref2 = crd.crdt_crd_id WHERE crd.crd_typ = 'Vista'",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 14153,
+        "output": 4846,
+        "total": 18999
+      },
+      "elapsed_seconds": 23.47,
+      "extra_columns": []
+    },
+    {
+      "question_id": 89,
+      "s_level": "S0",
+      "final_sql": "SELECT p.frst_nm, p.lst_nm\nFROM emp e\nJOIN prsn p ON e.ref1 = p.ref1\nJOIN emp_dept_hist edh ON e.ref1 = edh.ref3\nJOIN dept d ON edh.ref2 = d.dprt_id\nWHERE d.nm = 'Shipping and Receiving'\n  AND YEAR(e.hr_dt) = 2009\n  AND edh.end_dt IS NULL",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4356,
+        "output": 12177,
+        "total": 16533
+      },
+      "elapsed_seconds": 49.72,
+      "extra_columns": []
+    },
+    {
+      "question_id": 89,
+      "s_level": "S1",
+      "final_sql": "SELECT p.frst_nm, p.lst_nm\nFROM emp AS e\nJOIN prsn AS p ON e.ref1 = p.ref1\nJOIN emp_dept_hist AS edh ON e.ref1 = edh.ref3\nJOIN dept AS d ON edh.ref2 = d.dprt_id\nWHERE d.nm = 'Shipping and Receiving'\n  AND edh.end_dt IS NULL\n  AND YEAR(e.hr_dt) = 2009",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 12817,
+        "output": 6226,
+        "total": 19043
+      },
+      "elapsed_seconds": 29.22,
+      "extra_columns": []
+    },
+    {
+      "question_id": 89,
+      "s_level": "S2",
+      "final_sql": "SELECT p.frst_nm, p.lst_nm\nFROM emp AS e\nJOIN prsn AS p ON e.ref1 = p.ref1\nJOIN emp_dept_hist AS edh ON e.ref1 = edh.ref3\nJOIN dept AS d ON edh.ref2 = d.dprt_id\nWHERE d.nm = 'Shipping and Receiving'\n  AND YEAR(e.hr_dt) = 2009\n  AND edh.end_dt IS NULL",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 14155,
+        "output": 3115,
+        "total": 17270
+      },
+      "elapsed_seconds": 14.94,
+      "extra_columns": []
+    },
+    {
+      "question_id": 90,
+      "s_level": "S0",
+      "final_sql": "SELECT stor.nm, prsn.frst_nm, prsn.lst_nm\nFROM stor\nJOIN sls_prsn ON stor.ref1 = sls_prsn.ref2\nJOIN sls_terr ON sls_prsn.ref1 = sls_terr.trrt_id\nJOIN prsn ON sls_prsn.ref2 = prsn.ref1\nWHERE sls_terr.nm = 'France'",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4361,
+        "output": 2886,
+        "total": 7247
+      },
+      "elapsed_seconds": 12.69,
+      "extra_columns": []
+    },
+    {
+      "question_id": 90,
+      "s_level": "S1",
+      "final_sql": "SELECT stor.nm, prsn.frst_nm, prsn.lst_nm\nFROM stor\nJOIN sls_prsn ON stor.ref1 = sls_prsn.ref2\nJOIN sls_terr ON sls_prsn.ref1 = sls_terr.trrt_id\nJOIN prsn ON sls_prsn.ref2 = prsn.ref1\nWHERE sls_terr.nm = 'France'",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 12822,
+        "output": 3735,
+        "total": 16557
+      },
+      "elapsed_seconds": 15.88,
+      "extra_columns": []
+    },
+    {
+      "question_id": 90,
+      "s_level": "S2",
+      "final_sql": "SELECT DISTINCT s.nm, p.frst_nm, p.lst_nm\nFROM stor s\nJOIN biz_addr ba ON ba.ref1 = s.ref2\nJOIN addr a ON a.addr_id = ba.ref3\nJOIN st_prv prv ON prv.stt_prvn_id = a.ref1\nJOIN sls_terr terr ON terr.trrt_id = prv.ref1\nJOIN sls_prsn sp ON sp.ref2 = s.ref1\nJOIN emp e ON e.ref1 = sp.ref2\nJOIN prsn p ON p.ref1 = e.ref1\nWHERE terr.nm = 'France'",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 14160,
+        "output": 3649,
+        "total": 17809
+      },
+      "elapsed_seconds": 16.33,
+      "extra_columns": []
+    },
+    {
+      "question_id": 91,
+      "s_level": "S0",
+      "final_sql": "SELECT p.frst_nm, p.lst_nm, t.nm\nFROM stor AS s\nJOIN sls_prsn AS sp ON sp.ref2 = s.ref1\nJOIN prsn AS p ON p.ref1 = sp.ref2\nJOIN sls_terr AS t ON t.trrt_id = sp.ref1\nWHERE s.nm = 'Area Bike Accessories'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4357,
+        "output": 3393,
+        "total": 7750
+      },
+      "elapsed_seconds": 13.84,
+      "extra_columns": [
+        "frst_nm",
+        "lst_nm"
+      ]
+    },
+    {
+      "question_id": 91,
+      "s_level": "S1",
+      "final_sql": "SELECT prsn.frst_nm, prsn.lst_nm, sls_terr.nm\nFROM stor\nJOIN sls_prsn ON stor.ref1 = sls_prsn.ref2\nJOIN emp ON sls_prsn.ref2 = emp.ref1\nJOIN prsn ON emp.ref1 = prsn.ref1\nJOIN sls_terr ON sls_prsn.ref1 = sls_terr.trrt_id\nWHERE stor.nm = 'Area Bike Accessories'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 12818,
+        "output": 1376,
+        "total": 14194
+      },
+      "elapsed_seconds": 6.55,
+      "extra_columns": [
+        "frst_nm",
+        "lst_nm"
+      ]
+    },
+    {
+      "question_id": 91,
+      "s_level": "S2",
+      "final_sql": "SELECT p.frst_nm, p.lst_nm, t.nm\nFROM stor s\nJOIN sls_prsn sp ON s.ref1 = sp.ref2\nJOIN emp e ON sp.ref2 = e.ref1\nJOIN prsn p ON e.ref1 = p.ref1\nJOIN sls_terr t ON sp.ref1 = t.trrt_id\nWHERE s.nm = 'Area Bike Accessories'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 14156,
+        "output": 1009,
+        "total": 15165
+      },
+      "elapsed_seconds": 4.8,
+      "extra_columns": [
+        "frst_nm",
+        "lst_nm"
+      ]
+    },
+    {
+      "question_id": 93,
+      "s_level": "S0",
+      "final_sql": "SELECT DISTINCT vnd.nm\nFROM vnd\nJOIN prod_vnd ON prod_vnd.ref2 = vnd.ref1\nJOIN prod ON prod.prdc_id = prod_vnd.ref3\nWHERE prod.nm LIKE 'Women''s Tights%'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4357,
+        "output": 4706,
+        "total": 9063
+      },
+      "elapsed_seconds": 20.09,
+      "extra_columns": []
+    },
+    {
+      "question_id": 93,
+      "s_level": "S1",
+      "final_sql": "SELECT DISTINCT vnd.nm\nFROM vnd\nJOIN po_hdr ON po_hdr.ref2 = vnd.ref1\nJOIN po_dtl ON po_dtl.ref2 = po_hdr.prch_ordr_id\nJOIN prod ON prod.prdc_id = po_dtl.ref1\nJOIN prod_sub ON prod_sub.prdc_sbct_id = prod.ref2\nWHERE prod_sub.nm = 'Tights' AND prod.styl = 'W'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 12818,
+        "output": 5697,
+        "total": 18515
+      },
+      "elapsed_seconds": 25.03,
+      "extra_columns": []
+    },
+    {
+      "question_id": 93,
+      "s_level": "S2",
+      "final_sql": "SELECT DISTINCT vnd.nm\nFROM vnd\nJOIN po_hdr ON po_hdr.ref2 = vnd.ref1\nJOIN po_dtl ON po_dtl.ref2 = po_hdr.prch_ordr_id\nJOIN prod ON prod.prdc_id = po_dtl.ref1\nJOIN prod_sub ON prod_sub.prdc_sbct_id = prod.ref2\nWHERE prod_sub.nm = 'Tights' AND prod.styl = 'W'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 14156,
+        "output": 5850,
+        "total": 20006
+      },
+      "elapsed_seconds": 25.65,
+      "extra_columns": []
+    },
+    {
+      "question_id": 94,
+      "s_level": "S0",
+      "final_sql": "SELECT pv.avrg_ld_tm AS average_lead_time, (p.lst_prc - p.stnd_cst) AS profit_on_net, a.addr_ln1, a.addr_ln2, a.cty, sp.nm AS state_province, cr.nm AS country_region, a.pstl_cd FROM prod p JOIN prod_vnd pv ON p.prdc_id = pv.ref3 JOIN vnd v ON pv.ref2 = v.ref1 JOIN biz_addr ba ON v.ref1 = ba.ref1 JOIN addr a ON ba.ref3 = a.addr_id JOIN st_prv sp ON a.ref1 = sp.stt_prvn_id JOIN cnty cr ON sp.ref2 = cr.cntr_rgn_cd WHERE p.prdc_id = 843",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4368,
+        "output": 13429,
+        "total": 17797
+      },
+      "elapsed_seconds": 53.84,
+      "extra_columns": []
+    },
+    {
+      "question_id": 94,
+      "s_level": "S1",
+      "final_sql": "SELECT pv.avrg_ld_tm, (pv.lst_rcpt_cst - pv.stnd_prc) AS profit_on_net, a.addr_ln1, a.addr_ln2, a.cty, sp.nm AS state_province, a.pstl_cd, c.nm AS country FROM prod_vnd pv JOIN vnd v ON pv.ref2 = v.ref1 JOIN biz_addr ba ON v.ref1 = ba.ref1 JOIN addr a ON ba.ref3 = a.addr_id JOIN st_prv sp ON a.ref1 = sp.stt_prvn_id JOIN cnty c ON sp.ref2 = c.cntr_rgn_cd WHERE pv.ref3 = 843",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 12829,
+        "output": 5874,
+        "total": 18703
+      },
+      "elapsed_seconds": 25.69,
+      "extra_columns": [
+        "state_province",
+        "country"
+      ]
+    },
+    {
+      "question_id": 94,
+      "s_level": "S2",
+      "final_sql": "SELECT pv.avrg_ld_tm, (pv.lst_rcpt_cst - pv.stnd_prc) AS profit_on_net, a.addr_ln1, a.addr_ln2, a.cty, sp.nm AS state_province, a.pstl_cd, c.nm AS country FROM prod_vnd AS pv JOIN vnd AS v ON pv.ref2 = v.ref1 JOIN biz_addr AS ba ON v.ref1 = ba.ref1 JOIN addr AS a ON ba.ref3 = a.addr_id LEFT JOIN st_prv AS sp ON a.ref1 = sp.stt_prvn_id LEFT JOIN cnty AS c ON sp.ref2 = c.cntr_rgn_cd WHERE pv.ref3 = 843",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 14167,
+        "output": 4373,
+        "total": 18540
+      },
+      "elapsed_seconds": 18.55,
+      "extra_columns": [
+        "state_province",
+        "country"
+      ]
+    },
+    {
+      "question_id": 95,
+      "s_level": "S0",
+      "final_sql": "SELECT e.jb_ttl, d.nm FROM emp e JOIN emp_dept_hist edh ON e.ref1 = edh.ref3 JOIN dept d ON edh.ref2 = d.dprt_id WHERE edh.end_dt IS NULL ORDER BY e.brth_dt ASC LIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4358,
+        "output": 4787,
+        "total": 9145
+      },
+      "elapsed_seconds": 19.59,
+      "extra_columns": []
+    },
+    {
+      "question_id": 95,
+      "s_level": "S1",
+      "final_sql": "SELECT e.jb_ttl, d.nm\nFROM emp AS e\nJOIN emp_dept_hist AS edh ON edh.ref3 = e.ref1 AND edh.end_dt IS NULL\nJOIN dept AS d ON d.dprt_id = edh.ref2\nWHERE e.crrn_flg = 1\nORDER BY e.brth_dt ASC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 12819,
+        "output": 1328,
+        "total": 14147
+      },
+      "elapsed_seconds": 6.22,
+      "extra_columns": []
+    },
+    {
+      "question_id": 95,
+      "s_level": "S2",
+      "final_sql": "SELECT e.jb_ttl, d.nm\nFROM emp e\nLEFT JOIN emp_dept_hist edh ON edh.ref3 = e.ref1 AND edh.end_dt IS NULL\nLEFT JOIN dept d ON d.dprt_id = edh.ref2\nWHERE e.crrn_flg = 1\nORDER BY e.brth_dt ASC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 14157,
+        "output": 1530,
+        "total": 15687
+      },
+      "elapsed_seconds": 7.5,
+      "extra_columns": []
+    },
+    {
+      "question_id": 96,
+      "s_level": "S0",
+      "final_sql": "SELECT COUNT(DISTINCT prod.prdc_id) FROM prod JOIN prod_sub ON prod.ref2 = prod_sub.prdc_sbct_id JOIN prod_cat ON prod_sub.ref1 = prod_cat.prdc_ctgr_id JOIN spcl_prod ON spcl_prod.ref2 = prod.prdc_id JOIN spcl_offr ON spcl_prod.ref1 = spcl_offr.spcl_offr_id WHERE prod_cat.nm = 'Clothing' AND spcl_offr.dscr = 'LL Road Frame Sale'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4353,
+        "output": 7785,
+        "total": 12138
+      },
+      "elapsed_seconds": 30.67,
+      "extra_columns": []
+    },
+    {
+      "question_id": 96,
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT p.prdc_id)\nFROM spcl_offr AS offr\nJOIN spcl_prod AS sp ON sp.ref2 = offr.spcl_offr_id\nJOIN prod AS p ON p.prdc_id = sp.ref1\nJOIN prod_sub AS ps ON ps.prdc_sbct_id = p.ref2\nJOIN prod_cat AS pc ON pc.prdc_ctgr_id = ps.ref1\nWHERE offr.dscr = 'LL Road Frame Sale'\n  AND pc.nm = 'Clothing'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 12814,
+        "output": 766,
+        "total": 13580
+      },
+      "elapsed_seconds": 3.9,
+      "extra_columns": []
+    },
+    {
+      "question_id": 96,
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(DISTINCT p.prdc_id)\nFROM prod p\nJOIN prod_sub ps ON p.ref2 = ps.prdc_sbct_id\nJOIN prod_cat pc ON ps.ref1 = pc.prdc_ctgr_id\nJOIN spcl_prod sp ON p.prdc_id = sp.ref1\nJOIN spcl_offr so ON sp.ref2 = so.spcl_offr_id\nWHERE pc.nm = 'Clothing'\n  AND so.dscr = 'LL Road Frame Sale'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 14152,
+        "output": 757,
+        "total": 14909
+      },
+      "elapsed_seconds": 3.7,
+      "extra_columns": []
+    },
+    {
+      "question_id": 98,
+      "s_level": "S0",
+      "final_sql": "WITH latest_pay AS (\n  SELECT ref1 AS emp_id, rt\n  FROM (\n    SELECT ref1, rt, ROW_NUMBER() OVER (PARTITION BY ref1 ORDER BY rt_chng_dt DESC) AS rn\n    FROM emp_pay_hist\n  ) AS ranked_pay\n  WHERE rn = 1\n)\nSELECT d.nm AS department_name,\n       AVG(lp.rt) AS average_hourly_payrate\nFROM dept AS d\nLEFT JOIN emp_dept_hist AS edh\n  ON edh.ref2 = d.dprt_id\n AND edh.end_dt IS NULL\nLEFT JOIN latest_pay AS lp\n  ON lp.emp_id = edh.ref3\nGROUP BY d.dprt_id, d.nm",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4358,
+        "output": 5574,
+        "total": 9932
+      },
+      "elapsed_seconds": 23.8,
+      "extra_columns": []
+    },
+    {
+      "question_id": 98,
+      "s_level": "S1",
+      "final_sql": "WITH latest_pay AS (\n  SELECT ref1, rt, ROW_NUMBER() OVER (PARTITION BY ref1 ORDER BY rt_chng_dt DESC) AS rn\n  FROM emp_pay_hist\n),\ncurrent_dept AS (\n  SELECT ref3, ref2\n  FROM emp_dept_hist\n  WHERE end_dt IS NULL\n)\nSELECT d.nm AS department_name, AVG(lp.rt) AS avg_hourly_payrate\nFROM latest_pay lp\nJOIN current_dept cd ON cd.ref3 = lp.ref1\nJOIN dept d ON d.dprt_id = cd.ref2\nWHERE lp.rn = 1\nGROUP BY d.dprt_id, d.nm",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 12819,
+        "output": 3916,
+        "total": 16735
+      },
+      "elapsed_seconds": 16.93,
+      "extra_columns": []
+    },
+    {
+      "question_id": 98,
+      "s_level": "S2",
+      "final_sql": "SELECT d.nm AS department, AVG(lp.rt) AS avg_hourly_payrate\nFROM (\n  SELECT p.ref1, p.rt\n  FROM emp_pay_hist p\n  WHERE p.rt_chng_dt = (\n    SELECT MAX(p2.rt_chng_dt)\n    FROM emp_pay_hist p2\n    WHERE p2.ref1 = p.ref1\n  )\n) lp\nJOIN emp_dept_hist edh ON edh.ref3 = lp.ref1 AND edh.end_dt IS NULL\nJOIN dept d ON d.dprt_id = edh.ref2\nGROUP BY d.dprt_id, d.nm",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 14157,
+        "output": 3891,
+        "total": 18048
+      },
+      "elapsed_seconds": 17.72,
+      "extra_columns": []
+    },
+    {
+      "question_id": 99,
+      "s_level": "S0",
+      "final_sql": "WITH RECURSIVE bom_tree AS (\n  SELECT b.ref2 AS component_id, b.bm_lvl AS lvl\n  FROM bom b\n  JOIN prod p ON p.prdc_id = b.ref3\n  WHERE p.nm = 'HL Road Frame - Black, 58'\n    AND b.end_dt IS NULL\n  UNION ALL\n  SELECT b.ref2, b.bm_lvl\n  FROM bom b\n  JOIN bom_tree bt ON b.ref3 = bt.component_id\n  WHERE b.end_dt IS NULL\n)\nSELECT p.nm, bt.lvl\nFROM bom_tree bt\nJOIN prod p ON p.prdc_id = bt.component_id\nORDER BY bt.lvl, p.nm",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4368,
+        "output": 8187,
+        "total": 12555
+      },
+      "elapsed_seconds": 36.49,
+      "extra_columns": []
+    },
+    {
+      "question_id": 99,
+      "s_level": "S1",
+      "final_sql": "WITH RECURSIVE bom_tree AS (\n  SELECT b.ref2 AS component_id, 1 AS lvl\n  FROM bom b\n  JOIN prod p ON p.prdc_id = b.ref3\n  WHERE p.nm = 'HL Road Frame - Black, 58'\n    AND b.end_dt IS NULL\n  UNION ALL\n  SELECT b.ref2 AS component_id, bt.lvl + 1 AS lvl\n  FROM bom_tree bt\n  JOIN bom b ON b.ref3 = bt.component_id\n  WHERE b.end_dt IS NULL\n)\nSELECT p.nm AS component_name, bt.lvl AS level\nFROM bom_tree bt\nJOIN prod p ON p.prdc_id = bt.component_id\nORDER BY bt.lvl, p.nm",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 12829,
+        "output": 4524,
+        "total": 17353
+      },
+      "elapsed_seconds": 21.61,
+      "extra_columns": []
+    },
+    {
+      "question_id": 99,
+      "s_level": "S2",
+      "final_sql": "WITH RECURSIVE bom_tree AS (\n  SELECT b.ref2 AS component_id, 1 AS lvl\n  FROM bom b\n  JOIN prod p ON p.prdc_id = b.ref3\n  WHERE p.nm = 'HL Road Frame - Black, 58'\n    AND b.end_dt IS NULL\n  UNION ALL\n  SELECT b.ref2 AS component_id, bt.lvl + 1 AS lvl\n  FROM bom_tree bt\n  JOIN bom b ON b.ref3 = bt.component_id\n  WHERE b.end_dt IS NULL\n)\nSELECT DISTINCT p.nm AS component, bt.lvl AS assembly_level\nFROM bom_tree bt\nJOIN prod p ON p.prdc_id = bt.component_id\nORDER BY assembly_level, component",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 14167,
+        "output": 2712,
+        "total": 16879
+      },
+      "elapsed_seconds": 13.55,
+      "extra_columns": []
+    },
+    {
+      "question_id": 100,
+      "s_level": "S0",
+      "final_sql": "WITH RECURSIVE bom_cte AS (\n    SELECT b.ref2 AS component_id, b.pr_assm_qty AS total_qty\n    FROM bom b\n    JOIN prod p ON b.ref3 = p.prdc_id\n    WHERE p.nm = 'HL Road Frame - Black, 58'\n      AND b.end_dt IS NULL\n    UNION ALL\n    SELECT b.ref2, b.pr_assm_qty * cte.total_qty\n    FROM bom b\n    JOIN bom_cte cte ON b.ref3 = cte.component_id\n    WHERE b.end_dt IS NULL\n)\nSELECT SUM(total_qty) AS total_components\nFROM bom_cte",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4363,
+        "output": 11830,
+        "total": 16193
+      },
+      "elapsed_seconds": 50.01,
+      "extra_columns": []
+    },
+    {
+      "question_id": 100,
+      "s_level": "S1",
+      "final_sql": "WITH RECURSIVE bom_tree AS (\n  SELECT b.ref2 AS component_id\n  FROM bom b\n  JOIN prod p ON b.ref3 = p.prdc_id\n  WHERE p.nm = 'HL Road Frame - Black, 58'\n    AND b.end_dt IS NULL\n  UNION ALL\n  SELECT b.ref2 AS component_id\n  FROM bom b\n  JOIN bom_tree bt ON b.ref3 = bt.component_id\n  WHERE b.end_dt IS NULL\n)\nSELECT COUNT(*) AS total_components\nFROM bom_tree",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 12824,
+        "output": 17428,
+        "total": 30252
+      },
+      "elapsed_seconds": 75.36,
+      "extra_columns": []
+    },
+    {
+      "question_id": 100,
+      "s_level": "S2",
+      "final_sql": "WITH RECURSIVE bom_tree AS (\n  SELECT b.ref2 AS component_id, 1 AS lvl\n  FROM bom b\n  JOIN prod p ON p.prdc_id = b.ref3\n  WHERE p.nm = 'HL Road Frame - Black, 58'\n    AND b.end_dt IS NULL\n  UNION ALL\n  SELECT b.ref2 AS component_id, bt.lvl + 1\n  FROM bom b\n  JOIN bom_tree bt ON b.ref3 = bt.component_id\n  WHERE b.end_dt IS NULL\n)\nSELECT COUNT(*) AS total_components\nFROM bom_tree",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 14162,
+        "output": 6111,
+        "total": 20273
+      },
+      "elapsed_seconds": 27.72,
+      "extra_columns": []
+    },
+    {
+      "question_id": 101,
+      "s_level": "S0",
+      "final_sql": "SELECT MAX(bom.bm_lvl) FROM bom JOIN prod ON bom.ref3 = prod.prdc_id WHERE prod.nm = 'HL Road Frame - Black, 58'",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4361,
+        "output": 965,
+        "total": 5326
+      },
+      "elapsed_seconds": 5.11,
+      "extra_columns": []
+    },
+    {
+      "question_id": 101,
+      "s_level": "S1",
+      "final_sql": "WITH RECURSIVE bom_tree AS (\n  SELECT b.ref2 AS component_id, 1 AS lvl\n  FROM bom b\n  JOIN prod p ON b.ref3 = p.prdc_id\n  WHERE p.nm = 'HL Road Frame - Black, 58'\n    AND b.end_dt IS NULL\n  UNION ALL\n  SELECT b.ref2, bt.lvl + 1\n  FROM bom b\n  JOIN bom_tree bt ON b.ref3 = bt.component_id\n  WHERE b.end_dt IS NULL\n)\nSELECT MAX(lvl) AS deepest_assembly_level\nFROM bom_tree",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 12822,
+        "output": 2278,
+        "total": 15100
+      },
+      "elapsed_seconds": 10.87,
+      "extra_columns": []
+    },
+    {
+      "question_id": 101,
+      "s_level": "S2",
+      "final_sql": "WITH RECURSIVE bom_levels AS (\n  SELECT prdc_id, 0 AS lvl\n  FROM prod\n  WHERE nm = 'HL Road Frame - Black, 58'\n  UNION ALL\n  SELECT b.ref2, bl.lvl + 1\n  FROM bom_levels bl\n  JOIN bom b ON b.ref3 = bl.prdc_id AND b.end_dt IS NULL\n)\nSELECT MAX(lvl) AS deepest_level\nFROM bom_levels",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 14160,
+        "output": 2368,
+        "total": 16528
+      },
+      "elapsed_seconds": 10.93,
+      "extra_columns": []
+    },
+    {
+      "question_id": 102,
+      "s_level": "S0",
+      "final_sql": "WITH RECURSIVE bom_explosion (component_id, qty) AS (\n    SELECT b.ref2, b.pr_assm_qty\n    FROM bom b\n    JOIN prod p ON p.prdc_id = b.ref3\n    WHERE p.nm = 'HL Road Frame - Black, 58'\n      AND b.end_dt IS NULL\n    UNION ALL\n    SELECT b.ref2, be.qty * b.pr_assm_qty\n    FROM bom b\n    JOIN bom_explosion be ON be.component_id = b.ref3\n    WHERE b.end_dt IS NULL\n)\nSELECT SUM(p.stnd_cst * be.qty) AS total_standard_cost\nFROM bom_explosion be\nJOIN prod p ON p.prdc_id = be.component_id",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4369,
+        "output": 7198,
+        "total": 11567
+      },
+      "elapsed_seconds": 31.6,
+      "extra_columns": []
+    },
+    {
+      "question_id": 102,
+      "s_level": "S1",
+      "final_sql": "WITH RECURSIVE bom_tree AS (\n  SELECT b.ref2 AS component_id,\n         b.pr_assm_qty AS total_qty\n  FROM bom b\n  WHERE b.ref3 = (SELECT prdc_id FROM prod WHERE nm = 'HL Road Frame - Black, 58')\n    AND b.end_dt IS NULL\n  UNION ALL\n  SELECT b.ref2,\n         bt.total_qty * b.pr_assm_qty\n  FROM bom b\n  JOIN bom_tree bt ON b.ref3 = bt.component_id\n  WHERE b.end_dt IS NULL\n)\nSELECT SUM(p.stnd_cst * bt.total_qty) AS total_standard_cost\nFROM bom_tree bt\nJOIN prod p ON p.prdc_id = bt.component_id",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 12830,
+        "output": 11906,
+        "total": 24736
+      },
+      "elapsed_seconds": 53.54,
+      "extra_columns": []
+    },
+    {
+      "question_id": 102,
+      "s_level": "S2",
+      "final_sql": "WITH RECURSIVE bom_tree (comp_id, qty) AS (\n  SELECT b.ref2, b.pr_assm_qty\n  FROM bom b\n  JOIN prod p ON b.ref3 = p.prdc_id\n  WHERE p.nm = 'HL Road Frame - Black, 58'\n    AND b.end_dt IS NULL\n  UNION ALL\n  SELECT b.ref2, bt.qty * b.pr_assm_qty\n  FROM bom b\n  JOIN bom_tree bt ON b.ref3 = bt.comp_id\n  WHERE b.end_dt IS NULL\n)\nSELECT SUM(comp.stnd_cst * bt.qty) AS total_standard_cost\nFROM bom_tree bt\nJOIN prod comp ON bt.comp_id = comp.prdc_id",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 14168,
+        "output": 3813,
+        "total": 17981
+      },
+      "elapsed_seconds": 18.19,
+      "extra_columns": []
+    },
+    {
+      "question_id": 103,
+      "s_level": "S0",
+      "final_sql": "WITH RECURSIVE bom_tree AS (\n  SELECT b.ref3 AS prdc_id\n  FROM bom b\n  JOIN prod p ON p.prdc_id = b.ref2\n  WHERE p.nm = 'Adjustable Race'\n  UNION DISTINCT\n  SELECT b.ref3\n  FROM bom b\n  JOIN bom_tree bt ON b.ref2 = bt.prdc_id\n)\nSELECT DISTINCT p.nm\nFROM prod p\nJOIN bom_tree bt ON bt.prdc_id = p.prdc_id",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4359,
+        "output": 6970,
+        "total": 11329
+      },
+      "elapsed_seconds": 28.86,
+      "extra_columns": []
+    },
+    {
+      "question_id": 103,
+      "s_level": "S1",
+      "final_sql": "WITH RECURSIVE bom_ancestors AS (\n  SELECT b.ref3 AS prdc_id\n  FROM bom b\n  JOIN prod p ON p.prdc_id = b.ref2\n  WHERE p.nm = 'Adjustable Race'\n  UNION ALL\n  SELECT b.ref3\n  FROM bom b\n  JOIN bom_ancestors a ON b.ref2 = a.prdc_id\n)\nSELECT DISTINCT p.nm\nFROM bom_ancestors a\nJOIN prod p ON p.prdc_id = a.prdc_id",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 12820,
+        "output": 4684,
+        "total": 17504
+      },
+      "elapsed_seconds": 20.66,
+      "extra_columns": []
+    },
+    {
+      "question_id": 103,
+      "s_level": "S2",
+      "final_sql": "WITH RECURSIVE bom_path AS (\n  SELECT b.ref3 AS prdc_id\n  FROM bom b\n  JOIN prod p ON p.prdc_id = b.ref2\n  WHERE p.nm = 'Adjustable Race'\n    AND b.end_dt IS NULL\n  UNION ALL\n  SELECT b.ref3\n  FROM bom b\n  JOIN bom_path bp ON b.ref2 = bp.prdc_id\n  WHERE b.end_dt IS NULL\n)\nSELECT DISTINCT p.nm\nFROM bom_path bp\nJOIN prod p ON p.prdc_id = bp.prdc_id",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 14158,
+        "output": 4996,
+        "total": 19154
+      },
+      "elapsed_seconds": 23.63,
+      "extra_columns": []
+    },
+    {
+      "question_id": 105,
+      "s_level": "S0",
+      "final_sql": "SELECT COUNT(DISTINCT ref8) FROM so_hdr WHERE ordr_dt >= '2013-01-01' AND ordr_dt < '2014-01-01'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4351,
+        "output": 3411,
+        "total": 7762
+      },
+      "elapsed_seconds": 14.09,
+      "extra_columns": []
+    },
+    {
+      "question_id": 105,
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT ref8) AS customer_count FROM so_hdr WHERE ordr_dt >= '2013-01-01' AND ordr_dt < '2014-01-01'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 12812,
+        "output": 378,
+        "total": 13190
+      },
+      "elapsed_seconds": 2.48,
+      "extra_columns": []
+    },
+    {
+      "question_id": 105,
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(DISTINCT ref8) FROM so_hdr WHERE ordr_dt >= '2013-01-01' AND ordr_dt < '2014-01-01'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 14150,
+        "output": 499,
+        "total": 14649
+      },
+      "elapsed_seconds": 2.91,
+      "extra_columns": []
+    },
+    {
+      "question_id": 108,
+      "s_level": "S0",
+      "final_sql": "SELECT pc.nm AS product_category, SUM(od.ordr_qty) AS total_quantity_sold, SUM(od.ln_ttl) AS total_revenue\nFROM so_dtl od\nJOIN prod p ON p.prdc_id = od.ref2\nJOIN prod_sub ps ON ps.prdc_sbct_id = p.ref2\nJOIN prod_cat pc ON pc.prdc_ctgr_id = ps.ref1\nGROUP BY pc.prdc_ctgr_id, pc.nm",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4353,
+        "output": 6756,
+        "total": 11109
+      },
+      "elapsed_seconds": 27.1,
+      "extra_columns": []
+    },
+    {
+      "question_id": 108,
+      "s_level": "S1",
+      "final_sql": "SELECT pc.nm AS product_category, COALESCE(SUM(sd.ordr_qty), 0) AS total_quantity_sold, COALESCE(SUM(sd.ln_ttl), 0) AS total_revenue\nFROM prod_cat pc\nLEFT JOIN prod_sub ps ON ps.ref1 = pc.prdc_ctgr_id\nLEFT JOIN prod p ON p.ref2 = ps.prdc_sbct_id\nLEFT JOIN so_dtl sd ON sd.ref2 = p.prdc_id\nGROUP BY pc.prdc_ctgr_id, pc.nm",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 12814,
+        "output": 929,
+        "total": 13743
+      },
+      "elapsed_seconds": 5.07,
+      "extra_columns": []
+    },
+    {
+      "question_id": 108,
+      "s_level": "S2",
+      "final_sql": "SELECT pc.nm AS product_category, SUM(sd.ordr_qty) AS total_quantity_sold, SUM(sd.ln_ttl) AS total_revenue\nFROM prod_cat pc\nJOIN prod_sub ps ON ps.ref1 = pc.prdc_ctgr_id\nJOIN prod p ON p.ref2 = ps.prdc_sbct_id\nJOIN so_dtl sd ON sd.ref2 = p.prdc_id\nGROUP BY pc.prdc_ctgr_id, pc.nm",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 14152,
+        "output": 557,
+        "total": 14709
+      },
+      "elapsed_seconds": 3.47,
+      "extra_columns": []
+    },
+    {
+      "question_id": 109,
+      "s_level": "S0",
+      "final_sql": "SELECT COUNT(*) FROM cust c WHERE EXISTS (SELECT 1 FROM prsn_crd pc WHERE pc.ref1 = c.ref3) AND EXISTS (SELECT 1 FROM so_hdr so WHERE so.ref8 = c.cstm_id AND YEAR(so.ordr_dt) = 2013)",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4358,
+        "output": 18760,
+        "total": 23118
+      },
+      "elapsed_seconds": 72.74,
+      "extra_columns": []
+    },
+    {
+      "question_id": 109,
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT c.cstm_id)\nFROM cust c\nJOIN prsn_crd pc ON pc.ref1 = c.ref3\nJOIN so_hdr so ON so.ref8 = c.cstm_id\nWHERE so.ordr_dt >= '2013-01-01' AND so.ordr_dt < '2014-01-01'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 12819,
+        "output": 2310,
+        "total": 15129
+      },
+      "elapsed_seconds": 11.05,
+      "extra_columns": []
+    },
+    {
+      "question_id": 109,
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(DISTINCT c.cstm_id) AS customer_count\nFROM cust c\nWHERE EXISTS (\n  SELECT 1\n  FROM prsn_crd pc\n  WHERE pc.ref1 = c.ref3\n)\nAND EXISTS (\n  SELECT 1\n  FROM so_hdr o\n  WHERE o.ref8 = c.cstm_id\n    AND o.ordr_dt >= '2013-01-01'\n    AND o.ordr_dt < '2014-01-01'\n)",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 14157,
+        "output": 1004,
+        "total": 15161
+      },
+      "elapsed_seconds": 5.25,
+      "extra_columns": []
+    },
+    {
+      "question_id": 111,
+      "s_level": "S0",
+      "final_sql": "SELECT COUNT(DISTINCT soh.sls_ordr_id) FROM so_hdr soh JOIN cust c ON c.cstm_id = soh.ref8 JOIN biz_addr ba ON ba.ref3 = COALESCE(c.ref3, c.ref2) JOIN addr a ON a.addr_id = ba.ref2 JOIN st_prv spv ON spv.stt_prvn_id = a.ref1 JOIN cnty cn ON cn.cntr_rgn_cd = spv.ref2 WHERE YEAR(soh.ordr_dt) = 2013 AND cn.nm = 'Canada'",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4353,
+        "output": 20098,
+        "total": 24451
+      },
+      "elapsed_seconds": 78.22,
+      "extra_columns": []
+    },
+    {
+      "question_id": 111,
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT so_hdr.sls_ordr_id) AS order_count\nFROM so_hdr\nJOIN cust ON cust.cstm_id = so_hdr.ref8\nJOIN biz_addr ON biz_addr.ref1 = COALESCE(cust.ref1, cust.ref3)\nJOIN addr ON addr.addr_id = biz_addr.ref3\nJOIN st_prv ON st_prv.stt_prvn_id = addr.ref1\nJOIN cnty ON cnty.cntr_rgn_cd = st_prv.ref2\nWHERE so_hdr.ordr_dt >= '2013-01-01' AND so_hdr.ordr_dt < '2014-01-01'\n  AND cnty.nm = 'Canada'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 12814,
+        "output": 4605,
+        "total": 17419
+      },
+      "elapsed_seconds": 20.71,
+      "extra_columns": []
+    },
+    {
+      "question_id": 111,
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(*)\nFROM so_hdr\nJOIN cust ON so_hdr.ref8 = cust.cstm_id\nJOIN sls_terr ON cust.ref2 = sls_terr.trrt_id\nJOIN cnty ON sls_terr.ref1 = cnty.cntr_rgn_cd\nWHERE YEAR(so_hdr.ordr_dt) = 2013\n  AND cnty.nm = 'Canada'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 14152,
+        "output": 5286,
+        "total": 19438
+      },
+      "elapsed_seconds": 23.72,
+      "extra_columns": []
+    },
+    {
+      "question_id": 113,
+      "s_level": "S0",
+      "final_sql": "SELECT p.nm FROM prod p WHERE p.fnsh_gds_flg = 1 AND NOT EXISTS (SELECT 1 FROM so_dtl d WHERE d.ref2 = p.prdc_id)",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4350,
+        "output": 1847,
+        "total": 6197
+      },
+      "elapsed_seconds": 9.13,
+      "extra_columns": []
+    },
+    {
+      "question_id": 113,
+      "s_level": "S1",
+      "final_sql": "SELECT p.nm FROM prod p WHERE p.fnsh_gds_flg = 1 AND NOT EXISTS (SELECT 1 FROM so_dtl d WHERE d.ref2 = p.prdc_id)",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 12811,
+        "output": 229,
+        "total": 13040
+      },
+      "elapsed_seconds": 1.84,
+      "extra_columns": []
+    },
+    {
+      "question_id": 113,
+      "s_level": "S2",
+      "final_sql": "SELECT p.nm FROM prod p WHERE p.fnsh_gds_flg = 1 AND NOT EXISTS (SELECT 1 FROM so_dtl sd WHERE sd.ref2 = p.prdc_id)",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 14149,
+        "output": 354,
+        "total": 14503
+      },
+      "elapsed_seconds": 2.59,
+      "extra_columns": []
+    },
+    {
+      "question_id": 123,
+      "s_level": "S0",
+      "final_sql": "SELECT p.frst_nm, p.lst_nm, e.jb_ttl\nFROM emp AS e\nJOIN prsn AS p ON p.ref1 = e.ref1\nJOIN emp_dept_hist AS edh ON edh.ref3 = e.ref1\nJOIN dept AS d ON d.dprt_id = edh.ref2\nWHERE d.nm = 'Sales' AND edh.end_dt IS NULL\nORDER BY p.lst_nm",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4360,
+        "output": 3864,
+        "total": 8224
+      },
+      "elapsed_seconds": 16.4,
+      "extra_columns": []
+    },
+    {
+      "question_id": 123,
+      "s_level": "S1",
+      "final_sql": "SELECT p.frst_nm, p.lst_nm, e.jb_ttl\nFROM emp e\nJOIN prsn p ON e.ref1 = p.ref1\nJOIN emp_dept_hist edh ON edh.ref3 = e.ref1\nJOIN dept d ON d.dprt_id = edh.ref2\nWHERE d.nm = 'Sales' AND edh.end_dt IS NULL\nORDER BY p.lst_nm",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 12821,
+        "output": 3362,
+        "total": 16183
+      },
+      "elapsed_seconds": 14.95,
+      "extra_columns": []
+    },
+    {
+      "question_id": 123,
+      "s_level": "S2",
+      "final_sql": "SELECT p.frst_nm, p.lst_nm, e.jb_ttl\nFROM emp AS e\nJOIN prsn AS p ON p.ref1 = e.ref1\nJOIN emp_dept_hist AS edh ON edh.ref3 = e.ref1\nJOIN dept AS d ON d.dprt_id = edh.ref2\nWHERE d.nm = 'Sales' AND edh.end_dt IS NULL\nORDER BY p.lst_nm",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 14159,
+        "output": 1680,
+        "total": 15839
+      },
+      "elapsed_seconds": 7.63,
+      "extra_columns": []
+    },
+    {
+      "question_id": 124,
+      "s_level": "S0",
+      "final_sql": "SELECT stor.nm, addr.cty, st_prv.nm\nFROM stor\nJOIN biz_addr ON stor.ref2 = biz_addr.ref1\nJOIN addr ON biz_addr.ref3 = addr.addr_id\nJOIN st_prv ON addr.ref1 = st_prv.stt_prvn_id\nORDER BY stor.nm",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4359,
+        "output": 6413,
+        "total": 10772
+      },
+      "elapsed_seconds": 25.7,
+      "extra_columns": []
+    },
+    {
+      "question_id": 124,
+      "s_level": "S1",
+      "final_sql": "SELECT stor.nm, addr.cty, st_prv.nm\nFROM stor\nJOIN biz_addr ON stor.ref2 = biz_addr.ref1\nJOIN addr ON biz_addr.ref3 = addr.addr_id\nJOIN st_prv ON addr.ref1 = st_prv.stt_prvn_id\nORDER BY stor.nm",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 12820,
+        "output": 672,
+        "total": 13492
+      },
+      "elapsed_seconds": 3.6,
+      "extra_columns": []
+    },
+    {
+      "question_id": 124,
+      "s_level": "S2",
+      "final_sql": "SELECT s.nm AS store_name, a.cty AS city, sp.nm AS state_province\nFROM stor s\nJOIN biz_addr ba ON ba.ref1 = s.ref2\nJOIN addr a ON a.addr_id = ba.ref3\nJOIN st_prv sp ON sp.stt_prvn_id = a.ref1\nORDER BY s.nm",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 14158,
+        "output": 1361,
+        "total": 15519
+      },
+      "elapsed_seconds": 7.13,
+      "extra_columns": []
+    },
+    {
+      "question_id": 126,
+      "s_level": "S0",
+      "final_sql": "SELECT p.frst_nm, p.lst_nm, e.jb_ttl\nFROM emp e\nJOIN prsn p ON p.ref1 = e.ref1\nJOIN (\n  SELECT ref1, rt\n  FROM (\n    SELECT ref1, rt,\n           ROW_NUMBER() OVER (PARTITION BY ref1 ORDER BY rt_chng_dt DESC) AS rn\n    FROM emp_pay_hist\n  ) x\n  WHERE x.rn = 1\n) ph ON ph.ref1 = e.ref1\nWHERE ph.rt > 50",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4356,
+        "output": 3135,
+        "total": 7491
+      },
+      "elapsed_seconds": 13.5,
+      "extra_columns": []
+    },
+    {
+      "question_id": 126,
+      "s_level": "S1",
+      "final_sql": "SELECT p.frst_nm, p.lst_nm, e.jb_ttl\nFROM emp e\nJOIN prsn p ON p.ref1 = e.ref1\nJOIN emp_pay_hist eph ON eph.ref1 = e.ref1\nWHERE eph.rt > 50\n  AND eph.rt_chng_dt = (\n    SELECT MAX(eph2.rt_chng_dt)\n    FROM emp_pay_hist eph2\n    WHERE eph2.ref1 = e.ref1\n  )",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 12817,
+        "output": 2866,
+        "total": 15683
+      },
+      "elapsed_seconds": 12.85,
+      "extra_columns": []
+    },
+    {
+      "question_id": 126,
+      "s_level": "S2",
+      "final_sql": "SELECT p.frst_nm, p.lst_nm, e.jb_ttl\nFROM emp AS e\nJOIN prsn AS p ON e.ref1 = p.ref1\nJOIN emp_pay_hist AS ph ON e.ref1 = ph.ref1\nWHERE ph.rt > 50\n  AND ph.rt_chng_dt = (\n    SELECT MAX(ph2.rt_chng_dt)\n    FROM emp_pay_hist AS ph2\n    WHERE ph2.ref1 = e.ref1\n  )",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 14155,
+        "output": 2780,
+        "total": 16935
+      },
+      "elapsed_seconds": 12.15,
+      "extra_columns": []
+    },
+    {
+      "question_id": 127,
+      "s_level": "S0",
+      "final_sql": "SELECT COUNT(DISTINCT edh.ref3)\nFROM emp_dept_hist edh\nJOIN dept d ON d.dprt_id = edh.ref2\nJOIN emp_pay_hist eph ON eph.ref1 = edh.ref3\nWHERE edh.end_dt IS NULL\n  AND d.nm = 'Production'\n  AND eph.rt > 20\n  AND eph.rt_chng_dt = (\n    SELECT MAX(eph2.rt_chng_dt)\n    FROM emp_pay_hist eph2\n    WHERE eph2.ref1 = eph.ref1\n  )",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4358,
+        "output": 11332,
+        "total": 15690
+      },
+      "elapsed_seconds": 46.34,
+      "extra_columns": []
+    },
+    {
+      "question_id": 127,
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT e.ref1)\nFROM emp e\nJOIN emp_dept_hist edh ON edh.ref3 = e.ref1 AND edh.end_dt IS NULL\nJOIN dept d ON d.dprt_id = edh.ref2\nJOIN emp_pay_hist eph ON eph.ref1 = e.ref1\nWHERE e.crrn_flg = 1\n  AND d.nm = 'Production'\n  AND eph.rt > 20\n  AND eph.rt_chng_dt = (\n      SELECT MAX(eph2.rt_chng_dt)\n      FROM emp_pay_hist eph2\n      WHERE eph2.ref1 = eph.ref1\n  )",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 12819,
+        "output": 2553,
+        "total": 15372
+      },
+      "elapsed_seconds": 11.26,
+      "extra_columns": []
+    },
+    {
+      "question_id": 127,
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(DISTINCT e.ref1)\nFROM emp e\nJOIN emp_dept_hist edh ON edh.ref3 = e.ref1 AND edh.end_dt IS NULL\nJOIN dept d ON d.dprt_id = edh.ref2\nJOIN emp_pay_hist ph ON ph.ref1 = e.ref1\nWHERE e.crrn_flg = 1\n  AND d.nm = 'Production'\n  AND ph.rt > 20\n  AND ph.rt_chng_dt = (\n    SELECT MAX(ph2.rt_chng_dt)\n    FROM emp_pay_hist ph2\n    WHERE ph2.ref1 = e.ref1\n  )",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 14157,
+        "output": 1682,
+        "total": 15839
+      },
+      "elapsed_seconds": 7.89,
+      "extra_columns": []
+    },
+    {
+      "question_id": 128,
+      "s_level": "S0",
+      "final_sql": "SELECT SUM(sd.ln_ttl) AS total_revenue\nFROM so_dtl sd\nJOIN so_hdr sh ON sd.ref3 = sh.sls_ordr_id\nJOIN prod p ON sd.ref2 = p.prdc_id\nJOIN prod_sub ps ON p.ref2 = ps.prdc_sbct_id\nJOIN prod_cat pc ON ps.ref1 = pc.prdc_ctgr_id\nWHERE pc.nm = 'Bikes'\n  AND sh.ordr_dt >= '2013-01-01'\n  AND sh.ordr_dt < '2014-01-01'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4363,
+        "output": 3168,
+        "total": 7531
+      },
+      "elapsed_seconds": 14.02,
+      "extra_columns": []
+    },
+    {
+      "question_id": 128,
+      "s_level": "S1",
+      "final_sql": "SELECT SUM(sd.ln_ttl) AS total_revenue\nFROM so_dtl sd\nJOIN so_hdr sh ON sd.ref3 = sh.sls_ordr_id\nJOIN prod p ON sd.ref2 = p.prdc_id\nJOIN prod_sub ps ON p.ref2 = ps.prdc_sbct_id\nJOIN prod_cat pc ON ps.ref1 = pc.prdc_ctgr_id\nWHERE pc.nm = 'Bikes'\n  AND sh.ordr_dt >= '2013-01-01'\n  AND sh.ordr_dt < '2014-01-01'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 12824,
+        "output": 608,
+        "total": 13432
+      },
+      "elapsed_seconds": 3.79,
+      "extra_columns": []
+    },
+    {
+      "question_id": 128,
+      "s_level": "S2",
+      "final_sql": "SELECT SUM(so_dtl.ln_ttl)\nFROM so_dtl\nJOIN so_hdr ON so_dtl.ref3 = so_hdr.sls_ordr_id\nJOIN prod ON so_dtl.ref2 = prod.prdc_id\nJOIN prod_sub ON prod.ref2 = prod_sub.prdc_sbct_id\nJOIN prod_cat ON prod_sub.ref1 = prod_cat.prdc_ctgr_id\nWHERE YEAR(so_hdr.ordr_dt) = 2013\n  AND prod_cat.nm = 'Bikes'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 14162,
+        "output": 492,
+        "total": 14654
+      },
+      "elapsed_seconds": 3.02,
+      "extra_columns": []
+    }
+  ]
+}

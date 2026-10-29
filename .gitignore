@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# 密钥(真实凭据绝不进 git)
+.env
+
+# 文档衍生物(.md 是源)
+*.docx
+
+# 私有数据(安全网：newbc-ri 生产库及对话记录)
+newbc-ri/
+data/newbc-ri/

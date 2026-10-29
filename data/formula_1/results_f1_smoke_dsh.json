@@ -1,0 +1,33 @@
+{
+  "runs": [
+    {
+      "question_id": 1,
+      "datasource": "formula_1",
+      "chat_id": "e0e5ecf7b4c44b778b87715c964f4e69",
+      "final_sql": "SELECT d.drvr_rf FROM qlfy q JOIN drvr d ON d.drvr_id = q.ref2 WHERE q.ref3 = 20 ORDER BY (CAST(SUBSTRING_INDEX(q.q1, ':', 1) AS DECIMAL(10,3)) * 60 + CAST(SUBSTRING_INDEX(q.q1, ':', -1) AS DECIMAL(10,3))) DESC LIMIT 5",
+      "sql_history": [
+        "SELECT ref2, q1 FROM qlfy WHERE ref3 = 20",
+        "SELECT d.drvr_rf FROM qlfy q JOIN drvr d ON d.drvr_id = q.ref2 WHERE q.ref3 = 20 ORDER BY (CAST(SUBSTRING_INDEX(q.q1, ':', 1) AS DECIMAL(10,3)) * 60 + CAST(SUBSTRING_INDEX(q.q1, ':', -1) AS DECIMAL(10,3))) DESC LIMIT 5"
+      ],
+      "agent_text": "The 5 drivers eliminated in the first qualifying period (slowest Q1 times) of race 20:\n\n| drvr_rf |\n|---|\n| sato |\n| davidson |\n| vettel |\n| sutil |\n| fisichella |",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "deepseek-official/deepseek-v4-flash",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 18469,
+        "output": 1263,
+        "cache_read": 64256,
+        "cache_write": 0,
+        "reasoning": null,
+        "total": 83988
+      },
+      "cost_usd": null,
+      "elapsed_seconds": 13.05,
+      "agent_duration_ms": null,
+      "extra_columns": []
+    }
+  ]
+}

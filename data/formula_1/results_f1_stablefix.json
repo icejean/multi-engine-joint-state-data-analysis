@@ -1,0 +1,201 @@
+{
+  "runs": [
+    {
+      "question_id": 11,
+      "datasource": "formula_1",
+      "chat_id": "0d986aa0bede45738c1ded6ca95c9438",
+      "final_sql": "SELECT DISTINCT rcs.tm FROM rcs JOIN crct ON rcs.ref1 = crct.crct_id WHERE crct.nm = 'Sepang International Circuit'",
+      "sql_history": [
+        "SELECT DISTINCT rcs.tm FROM rcs JOIN crct ON rcs.ref1 = crct.crct_id WHERE crct.nm = 'Sepang International Circuit'"
+      ],
+      "agent_text": "查询完成，Sepang International Circuit（雪邦国际赛道）举办过的比赛时间（去重）：\n\n- 09:00:00\n- 07:00:00\n- 15:00:00\n- 08:00:00\n- （NULL，表示该场无记录时间）",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 18626,
+        "output": 482,
+        "cache_read": 69248,
+        "cache_write": 0,
+        "reasoning": 203,
+        "total": 88356
+      },
+      "cost_usd": 0.004682,
+      "elapsed_seconds": 16.38,
+      "agent_duration_ms": 8387,
+      "extra_columns": []
+    },
+    {
+      "question_id": 51,
+      "datasource": "formula_1",
+      "chat_id": "6441a1e62461478ead6e8ee33e9d2cca",
+      "final_sql": "SELECT 100.0 * SUM(CASE WHEN ds.pstn <> 1 THEN 1 ELSE 0 END) / COUNT(ds.ref2) AS percentage FROM drvr_std ds JOIN drvr d ON ds.ref1 = d.drvr_id JOIN rcs r ON ds.ref2 = r.rc_id WHERE d.srnm = 'Hamilton' AND r.ref2 >= 2010",
+      "sql_history": [
+        "SELECT 100.0 * SUM(CASE WHEN ds.pstn <> 1 THEN 1 ELSE 0 END) / COUNT(ds.ref2) AS percentage FROM drvr_std ds JOIN drvr d ON ds.ref1 = d.drvr_id JOIN rcs r ON ds.ref2 = r.rc_id WHERE d.srnm = 'Hamilton' AND r.ref2 >= 2010"
+      ],
+      "agent_text": "**结果：74.00%**\n\nHamilton 在 2010 年及以后、所有有积分榜记录的场次中，未排在积分榜第 1 位的比例 = 74/…，即 **74.00%**。\n\n- 分子：`drvr_std.pstn <> 1` 的 Hamilton 场次\n- 分母：2010 年起 Hamilton 的全部积分榜场次\n- 口径：用 `drvr_std`（非 `rslt`），`rcs.ref2 >= 2010`",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 18599,
+        "output": 840,
+        "cache_read": 69760,
+        "cache_write": 0,
+        "reasoning": 453,
+        "total": 89199
+      },
+      "cost_usd": 0.004792,
+      "elapsed_seconds": 16.31,
+      "agent_duration_ms": 8910,
+      "extra_columns": []
+    },
+    {
+      "question_id": 58,
+      "datasource": "formula_1",
+      "chat_id": "46d76c6cfbdb4b3c88421e1d08394aa9",
+      "final_sql": "SELECT SUM(ds.wns) AS total_wins FROM drvr_std ds JOIN drvr d ON ds.ref1 = d.drvr_id JOIN rcs r ON ds.ref2 = r.rc_id JOIN crct c ON r.ref1 = c.crct_id WHERE d.frnm = 'Michael' AND d.srnm = 'Schumacher' AND c.nm = 'Sepang International Circuit';",
+      "sql_history": [
+        "SELECT SUM(ds.wns) AS total_wins FROM drvr_std ds JOIN drvr d ON ds.ref1 = d.drvr_id JOIN rcs r ON ds.ref2 = r.rc_id JOIN crct c ON r.ref1 = c.crct_id WHERE d.frnm = 'Michael' AND d.srnm = 'Schumacher' AND c.nm = 'Sepang International Circuit';"
+      ],
+      "agent_text": "Michael Schumacher 在 Sepang International Circuit 的累计胜场数为 **16**。\n\nSQL（最终答案）：\n```sql\nSELECT SUM(ds.wns) AS total_wins\nFROM drvr_std ds\nJOIN drvr d ON ds.ref1 = d.drvr_id\nJOIN rcs r ON ds.ref2 = r.rc_id\nJOIN crct c ON r.ref1 = c.crct_id\nWHERE d.frnm = 'Michael' AND d.srnm = 'Schumacher'\n  AND c.nm = 'Sepang International Circuit';\n```\n\n结果：**16**",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 18672,
+        "output": 1102,
+        "cache_read": 69760,
+        "cache_write": 0,
+        "reasoning": 687,
+        "total": 89534
+      },
+      "cost_usd": 0.004876,
+      "elapsed_seconds": 19.06,
+      "agent_duration_ms": 11449,
+      "extra_columns": []
+    },
+    {
+      "question_id": 71,
+      "datasource": "formula_1",
+      "chat_id": "fe6a7612222e4982b99de47af7dbe25d",
+      "final_sql": "SELECT srnm FROM drvr WHERE LOWER(ntnl) = 'italian';",
+      "sql_history": [
+        "SELECT srnm FROM drvr WHERE LOWER(ntnl) = 'italian';"
+      ],
+      "agent_text": "意大利车手的姓氏（surname）如下：\n\nTrulli、Fisichella、Liuzzi、Pantano、Bruni、Badoer、Zanardi、Larini、Sospiri、Morbidelli、Montermini、Lavaggi、Schiattarella、Martini、Papis、Tarquini、Alboreto、de Cesaris、Patrese、Barbazza、Capelli、Apicella、Naspetti、Modena、Amati、Caffi、Bertaggia\n\n共 27 位（`SELECT srnm FROM drvr WHERE LOWER(ntnl) = 'italian'`）。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 18974,
+        "output": 687,
+        "cache_read": 101120,
+        "cache_write": 0,
+        "reasoning": 293,
+        "total": 120781
+      },
+      "cost_usd": 0.00568,
+      "elapsed_seconds": 17.43,
+      "agent_duration_ms": 9907,
+      "extra_columns": []
+    },
+    {
+      "question_id": 83,
+      "datasource": "formula_1",
+      "chat_id": "767b2a4863a645e58102df575375b7c0",
+      "final_sql": "SELECT d.frnm, d.srnm, d.drvr_rf FROM rslt r JOIN rcs ra ON r.ref4 = ra.rc_id JOIN drvr d ON r.ref3 = d.drvr_id WHERE ra.nm = 'Canadian Grand Prix' AND ra.ref2 = 2007 AND r.rnk = 1;",
+      "sql_history": [
+        "SELECT d.frnm, d.srnm, d.drvr_rf FROM rslt r JOIN rcs ra ON r.ref4 = ra.rc_id JOIN drvr d ON r.ref3 = d.drvr_id WHERE ra.nm = 'Canadian Grand Prix' AND ra.ref2 = 2007 AND r.rnk = 1;"
+      ],
+      "agent_text": "2007 年加拿大大奖赛中排名第一（最快圈速，rnk=1）的车手是 **Fernando Alonso**。\n\n- 名（forename）：Fernando\n- 姓（surname）：Alonso\n- Reference name（driverRef）：`alonso`",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 18668,
+        "output": 499,
+        "cache_read": 69504,
+        "cache_write": 0,
+        "reasoning": 183,
+        "total": 88671
+      },
+      "cost_usd": 0.004699,
+      "elapsed_seconds": 14.9,
+      "agent_duration_ms": 7408,
+      "extra_columns": []
+    },
+    {
+      "question_id": 125,
+      "datasource": "formula_1",
+      "chat_id": "b61fdb29d91948a7a49924a1e8e2204b",
+      "final_sql": "SELECT d.frnm, d.srnm FROM drvr d JOIN lp_tm l ON l.ref1 = d.drvr_id WHERE d.ntnl = 'German' AND YEAR(d.db) BETWEEN 1980 AND 1990 GROUP BY d.drvr_id, d.frnm, d.srnm ORDER BY MIN(l.mlls) ASC LIMIT 3",
+      "sql_history": [
+        "SELECT DISTINCT ntnl FROM drvr WHERE ntnl LIKE '%erm%'",
+        "SELECT d.frnm, d.srnm FROM drvr d JOIN lp_tm l ON l.ref1 = d.drvr_id WHERE d.ntnl = 'German' AND YEAR(d.db) BETWEEN 1980 AND 1990 GROUP BY d.drvr_id, d.frnm, d.srnm ORDER BY MIN(l.mlls) ASC LIMIT 3"
+      ],
+      "agent_text": "Top 3 German drivers (born 1980–1990) with the earliest lap times:\n\n| Forename | Surname |\n|---|---|\n| Sebastian | Vettel |\n| Nico | Rosberg |\n| Nico | Hülkenberg |\n\n（按各车手最快单圈 `MIN(mlls)` 升序排序）",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 19013,
+        "output": 1435,
+        "cache_read": 134912,
+        "cache_write": 0,
+        "reasoning": 961,
+        "total": 155360
+      },
+      "cost_usd": 0.006841,
+      "elapsed_seconds": 22.14,
+      "agent_duration_ms": 14596,
+      "extra_columns": []
+    },
+    {
+      "question_id": 133,
+      "datasource": "formula_1",
+      "chat_id": "57a21381142b4232ae8a4a0b9012c8ee",
+      "final_sql": "SELECT DISTINCT lctn, lt, lng FROM crct WHERE cntr = 'Austria'",
+      "sql_history": [
+        "SELECT DISTINCT lctn, lt, lng FROM crct WHERE cntr = 'Austria'"
+      ],
+      "agent_text": "查询结果（奥地利赛道去重，含坐标）：\n\n| location | lat | lng |\n|---|---|---|\n| Spielburg | 47.2197 | 14.7647 |\n| Styria | 47.2039 | 14.7478 |",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 18643,
+        "output": 351,
+        "cache_read": 69248,
+        "cache_write": 0,
+        "reasoning": 97,
+        "total": 88242
+      },
+      "cost_usd": 0.004647,
+      "elapsed_seconds": 14.44,
+      "agent_duration_ms": 6895,
+      "extra_columns": []
+    }
+  ]
+}

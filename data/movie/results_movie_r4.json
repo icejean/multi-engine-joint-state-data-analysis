@@ -1,0 +1,471 @@
+{
+  "runs": [
+    {
+      "question_id": 56,
+      "datasource": "movie",
+      "chat_id": "078b8c9b029d4d319ad56d0737e189ba",
+      "final_cypher": "MATCH (jp:Movie {name:'Jurassic Park'})-[:hasGenre]->(g:Genre)<-[:hasGenre]-(m:Movie)\nWITH DISTINCT m\nRETURN avg(m.global_box_office_usd) AS average_global_box_office_usd",
+      "cypher_history": [
+        "MATCH (jp:Movie {name:'Jurassic Park'})-[:hasGenre]->(g:Genre) RETURN jp.name AS m, g.name AS genre",
+        "MATCH (jp:Movie {name:'Jurassic Park'})-[:hasGenre]->(g:Genre)<-[:hasGenre]-(m:Movie)\nWITH DISTINCT m\nRETURN avg(m.global_box_office_usd) AS average_global_box_office_usd"
+      ],
+      "agent_text": "**平均全球票房：约 $303,333,867.69**\n\n查询逻辑：`Jurassic Park` 有 5 个类型（film based on a novel / science fiction film / adventure film / thriller film / action film），取所有与它共享任意一个类型的电影（按节点去重），对其 `global_box_office_usd` 求平均。\n\n```cypher\nMATCH (jp:Movie {name:'Jurassic Park'})-[:hasGenre]->(g:Genre)<-[:hasGenre]-(m:Movie)\nWITH DISTINCT m\nRETURN avg(m.global_box_office_usd) AS average_global_box_office_usd\n```",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 15776,
+        "output": 1147,
+        "cache_read": 92672,
+        "cache_write": 0,
+        "reasoning": 684,
+        "total": 109595
+      },
+      "cost_usd": 0.005125,
+      "elapsed_seconds": 31.0,
+      "agent_duration_ms": 22209,
+      "extra_columns": []
+    },
+    {
+      "question_id": 59,
+      "datasource": "movie",
+      "chat_id": "094cb788d7e746d49d6d8b7e3e77aa9a",
+      "final_cypher": "MATCH (mib:Movie {name:'Men in Black 3'})-[:directedBy]->(d:Person)\nWITH DISTINCT d\nMATCH (m:Movie)-[:directedBy]->(d)\nWITH m, count(DISTINCT d) AS num\nRETURN m.name AS movie, num\nORDER BY num DESC, movie",
+      "cypher_history": [
+        "MATCH (mib:Movie {name:'Men in Black 3'})-[:directedBy]->(d:Person)\nWITH DISTINCT d\nMATCH (m:Movie)-[:directedBy]->(d)\nWITH m, count(DISTINCT d) AS num\nRETURN m.name AS movie, num\nORDER BY num DESC, movie"
+      ],
+      "agent_text": "导演《Men in Black 3》的是 Barry Sonnenfeld，由他执导的电影及每部片对应的“这类导演数”如下（每部均为 1）：\n\n| movie | num |\n|---|---|\n| Addams Family Values | 1 |\n| Big Trouble | 1 |\n| For Love or Money | 1 |\n| Get Shorty | 1 |\n| Men in Black | 1 |\n| Men in Black 3 | 1 |\n| Men in Black II | 1 |\n| Nine Lives | 1 |\n| RV | 1 |\n| The Addams Family | 1 |\n| Wild Wild West | 1 |\n\n共 11 部。",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 15419,
+        "output": 1450,
+        "cache_read": 65024,
+        "cache_write": 0,
+        "reasoning": 1088,
+        "total": 81893
+      },
+      "cost_usd": 0.004385,
+      "elapsed_seconds": 23.38,
+      "agent_duration_ms": 16584,
+      "extra_columns": []
+    },
+    {
+      "question_id": 79,
+      "datasource": "movie",
+      "chat_id": "43aa58f86e8f44e295af0f67fcf30f91",
+      "final_cypher": "MATCH (m:Movie)-[:writtenBy]->(p:Person), (m)-[:hasCastMember]->(p)\nWITH DISTINCT p\nRETURN p.name AS name",
+      "cypher_history": [
+        "MATCH (m:Movie)-[:writtenBy]->(p:Person), (m)-[:hasCastMember]->(p)\nWITH DISTINCT p\nRETURN p.name AS name"
+      ],
+      "agent_text": "已完成。基于资源文件确定图结构后，直接用了「同一节点约束」模式：同一个 `Movie` 上同时存在该 `Person` 的 `writtenBy` 和 `hasCastMember`。\n\n最终答案 Cypher（已执行）：\n\n```cypher\nMATCH (m:Movie)-[:writtenBy]->(p:Person), (m)-[:hasCastMember]->(p)\nWITH DISTINCT p\nRETURN p.name AS name\n```\n\n结果：共 **5426** 位人物既写过某部电影、又在该同一部电影里出演（返回按 person 节点去重的姓名列表，含 Charlie Chaplin、John Woo、Sammo Hung、Eli Roth、Lois Weber 等）。\n\n关键点：两个条件绑在同一变量 `m`（同一部电影）；方向用 `writtenBy`/`hasCastMember`（均从 Movie 出发）；按节点 `WITH DISTINCT p` 去重而非按名字。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 15896,
+        "output": 1173,
+        "cache_read": 64256,
+        "cache_write": 0,
+        "reasoning": 764,
+        "total": 81325
+      },
+      "cost_usd": 0.004353,
+      "elapsed_seconds": 25.19,
+      "agent_duration_ms": 17842,
+      "extra_columns": []
+    },
+    {
+      "question_id": 99,
+      "datasource": "movie",
+      "chat_id": "44d1764a85c8489e82df69c328a86ca3",
+      "final_cypher": "MATCH (m:Movie)-[:originatesFrom]->(:Country {name:'Australia'})\nWITH DISTINCT m\nOPTIONAL MATCH (m)-[:directedBy]->(d:Person)\nWITH m, count(DISTINCT d) AS num\nRETURN m.name AS name, num",
+      "cypher_history": [
+        "MATCH (m:Movie)-[:originatesFrom]->(:Country {name:'Australia'})\nWITH DISTINCT m\nOPTIONAL MATCH (m)-[:directedBy]->(d:Person)\nWITH m, count(DISTINCT d) AS num\nRETURN m.name AS name, num"
+      ],
+      "agent_text": "已执行并得到答案（末条 Cypher 为最终答案）。\n\n**查询（数据源 movie）：**\n\n```cypher\nMATCH (m:Movie)-[:originatesFrom]->(:Country {name:'Australia'})\nWITH DISTINCT m\nOPTIONAL MATCH (m)-[:directedBy]->(d:Person)\nWITH m, count(DISTINCT d) AS num\nRETURN m.name AS name, num\n```\n\n**结果：** 共 **6793** 部澳大利亚电影（按节点去重，同名电影各出一行），每行给出电影名与其导演数 `num`。\n\n说明要点：\n- “来自澳大利亚”用 `originatesFrom`（产地），方向 `(Movie)->(:Country)`。\n- 用 `WITH DISTINCT m` 按**节点**去重，避免一对多 fan-out 重复。\n- 用 `OPTIONAL MATCH` 保留没有导演记录的影片（`num=0`，如 *Bad Blood*、*Parkway Drive: The DVD* 等）。\n- 计数用 `count(DISTINCT d)` 按导演节点去重。\n\n返回结果较长（6793 行，超出单次展示上限 100），前 100 行示例：`Boy Erased=1`、`Ned Kelly=1`、`Cargo=2`、`Shatter=2`、`The Arena=2`、`Bad Blood=0`、`Penguin Bloom=1` …… 完整结果仍在 kernel 中，可用 `export_data` 导出全量。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 16441,
+        "output": 1341,
+        "cache_read": 64384,
+        "cache_write": 0,
+        "reasoning": 780,
+        "total": 82166
+      },
+      "cost_usd": 0.00448,
+      "elapsed_seconds": 26.53,
+      "agent_duration_ms": 20324,
+      "extra_columns": []
+    },
+    {
+      "question_id": 106,
+      "datasource": "movie",
+      "chat_id": "8b4c7c1a947e4d7eabed66dc315ab2d8",
+      "final_cypher": "MATCH (a:Movie {name:'The Long Way Home'})\nWHERE a.runtime_minute IS NOT NULL\nWITH max(a.runtime_minute) AS lwh\nMATCH (b:Movie {name:'The Father'})\nWHERE b.runtime_minute IS NOT NULL\nWITH lwh, max(b.runtime_minute) AS father\nRETURN CASE WHEN lwh > father THEN 'The Long Way Home' ELSE 'The Father' END AS answer",
+      "cypher_history": [
+        "MATCH (a:Movie {name:'The Long Way Home'}), (b:Movie {name:'The Father'})\nWHERE a.runtime_minute IS NOT NULL AND b.runtime_minute IS NOT NULL\nRETURN CASE WHEN a.runtime_minute > b.runtime_minute THEN a.name ELSE b.name END AS answer",
+        "MATCH (a:Movie {name:'The Long Way Home'})\nWHERE a.runtime_minute IS NOT NULL\nRETURN a.runtime_minute AS lwh\nORDER BY a.runtime_minute DESC",
+        "MATCH (b:Movie {name:'The Father'})\nWHERE b.runtime_minute IS NOT NULL\nRETURN b.runtime_minute AS father\nORDER BY b.runtime_minute DESC",
+        "MATCH (a:Movie {name:'The Long Way Home'})\nWHERE a.runtime_minute IS NOT NULL\nWITH max(a.runtime_minute) AS lwh\nMATCH (b:Movie {name:'The Father'})\nWHERE b.runtime_minute IS NOT NULL\nWITH lwh, max(b.runtime_minute) AS father\nRETURN CASE WHEN lwh > father THEN 'The Long Way Home' ELSE 'The Father' END AS answer"
+      ],
+      "agent_text": "**The Long Way Home** 的片长更长（最长 120 分钟 vs. The Father 最长 114 分钟）。",
+      "tool_calls": 6,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 15866,
+        "output": 2384,
+        "cache_read": 122624,
+        "cache_write": 0,
+        "reasoning": 1768,
+        "total": 140874
+      },
+      "cost_usd": 0.006322,
+      "elapsed_seconds": 37.75,
+      "agent_duration_ms": 30194,
+      "extra_columns": []
+    },
+    {
+      "question_id": 119,
+      "datasource": "movie",
+      "chat_id": "7210190a3eb9497aa4611de3e3ebe286",
+      "final_cypher": "MATCH (a:Movie {name:'Spectre'})\nWITH max(a.global_box_office_usd) AS spectre\nMATCH (b:Movie {name:'The Lost World: Jurassic Park'})\nWITH spectre, max(b.global_box_office_usd) AS lostworld\nRETURN CASE WHEN spectre > lostworld THEN 'Spectre' ELSE 'The Lost World: Jurassic Park' END AS answer",
+      "cypher_history": [
+        "MATCH (a:Movie {name:'Spectre'}), (b:Movie {name:'The Lost World: Jurassic Park'})\nRETURN CASE WHEN a.global_box_office_usd > b.global_box_office_usd THEN 'Spectre' ELSE 'The Lost World: Jurassic Park' END AS answer",
+        "MATCH (m:Movie) WHERE m.name IN ['Spectre','The Lost World: Jurassic Park'] RETURN m.name AS name, m.global_box_office_usd AS bo ORDER BY name",
+        "MATCH (a:Movie {name:'Spectre'})\nWITH max(a.global_box_office_usd) AS spectre\nMATCH (b:Movie {name:'The Lost World: Jurassic Park'})\nWITH spectre, max(b.global_box_office_usd) AS lostworld\nRETURN CASE WHEN spectre > lostworld THEN 'Spectre' ELSE 'The Lost World: Jurassic Park' END AS answer"
+      ],
+      "agent_text": "**Spectre** 的全球票房更高。\n\n- Spectre（《幽灵党》）：**$880,674,609**\n- The Lost World: Jurassic Park（《侏罗纪公园2：失落的世界》）：**$618,638,999**\n\n答案：**Spectre**",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 15980,
+        "output": 1339,
+        "cache_read": 121216,
+        "cache_write": 0,
+        "reasoning": 795,
+        "total": 138535
+      },
+      "cost_usd": 0.006006,
+      "elapsed_seconds": 77.51,
+      "agent_duration_ms": 70355,
+      "extra_columns": []
+    },
+    {
+      "question_id": 148,
+      "datasource": "movie",
+      "chat_id": "826d45e5554d4cc1b37060e4f3a341ba",
+      "final_cypher": "MATCH (target:Movie {name:'Pirates of the Caribbean: The Curse of the Black Pearl'})-[:writtenBy]->(w:Person)\nMATCH (m:Movie)-[:writtenBy]->(w)\nWITH m, count(DISTINCT w) AS num\nRETURN m.name AS name, num\nORDER BY num DESC, name",
+      "cypher_history": [
+        "MATCH (target:Movie {name:'Pirates of the Caribbean: The Curse of the Black Pearl'})-[:writtenBy]->(w:Person)\nMATCH (m:Movie)-[:writtenBy]->(w)\nWITH m, count(DISTINCT w) AS num\nRETURN m.name AS name, num\nORDER BY num DESC, name"
+      ],
+      "agent_text": "查询完成。**Pirates of the Caribbean: The Curse of the Black Pearl** 的编剧共有 2 人（Ted Elliott 与 Terry Rossio），他们参与编剧的电影及各自的「这些编剧人数」如下：\n\n| 电影名 | 参与编剧数 |\n|---|---|\n| Pirates of the Caribbean: The Curse of the Black Pearl | 2 |\n| Pirates of the Caribbean: Dead Man's Chest | 2 |\n| Pirates of the Caribbean: At World's End | 2 |\n| Pirates of the Caribbean: On Stranger Tides | 2 |\n| Pirates of the Caribbean: A Day At The Sea | 2 |\n| Small Soldiers | 2 |\n| The Mask of Zorro | 2 |\n| The Puppet Masters | 2 |\n| The Road to El Dorado | 2 |\n| Déjà Vu | 1 |\n| Godzilla vs. Kong | 1 |\n| Godzilla x Kong: The New Empire | 1 |\n| Little Monsters | 1 |\n| The Amazing Maurice | 1 |\n\n共 14 部电影（按节点去重，未合并同名节点）。\n\n最终 Cypher：\n```cypher\nMATCH (target:Movie {name:'Pirates of the Caribbean: The Curse of the Black Pearl'})-[:writtenBy]->(w:Person)\nMATCH (m:Movie)-[:writtenBy]->(w)\nWITH m, count(DISTINCT w) AS num\nRETURN m.name AS name, num\nORDER BY num DESC, name\n```",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 15474,
+        "output": 1185,
+        "cache_read": 64640,
+        "cache_write": 0,
+        "reasoning": 624,
+        "total": 81299
+      },
+      "cost_usd": 0.004308,
+      "elapsed_seconds": 217.0,
+      "agent_duration_ms": 213262,
+      "extra_columns": []
+    },
+    {
+      "question_id": 207,
+      "datasource": "movie",
+      "chat_id": "b4b8f556c40d407f8a26691560c5087d",
+      "final_cypher": "",
+      "cypher_history": [],
+      "agent_text": "LLM request timed out.",
+      "tool_calls": 0,
+      "pass": false,
+      "error": "no final cypher",
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 2,
+      "tool_rounds": 0,
+      "tokens": {
+        "input": 0,
+        "output": 0,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 0,
+        "total": 0
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 250.86,
+      "agent_duration_ms": 251348,
+      "extra_columns": []
+    },
+    {
+      "question_id": 227,
+      "datasource": "movie",
+      "chat_id": "476546f86fcb4183aef4719b09cf724b",
+      "final_cypher": "",
+      "cypher_history": [],
+      "agent_text": "",
+      "tool_calls": 0,
+      "pass": false,
+      "error": "agent rc=1: \u001b[35m[plugins]\u001b[39m \u001b[33mplugins.allow is empty; discovered non-bundled plugins may auto-load: deepseek (/usr/local/lib/nodejs/node-v24.21.0-linux-x64/lib/node_modules/@openclaw/deepseek-provider/dist/index.js), zai (/usr/local/lib/nodejs/node-v24.21.0-linux-x64/lib/node_modules/@openclaw/zai-provid",
+      "model": "deepseek-v4-flash",
+      "turns": 0,
+      "tool_rounds": 0,
+      "tokens": null,
+      "cost_usd": null,
+      "elapsed_seconds": 99.95,
+      "agent_duration_ms": null,
+      "extra_columns": []
+    },
+    {
+      "question_id": 231,
+      "datasource": "movie",
+      "chat_id": "a74065db01484b77873253fd196bc5fb",
+      "final_cypher": "",
+      "cypher_history": [],
+      "agent_text": "LLM request timed out.",
+      "tool_calls": 2,
+      "pass": false,
+      "error": "no final cypher",
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 2,
+      "tool_rounds": 1,
+      "tokens": {
+        "input": 11782,
+        "output": 114,
+        "cache_read": 12288,
+        "cache_write": 0,
+        "reasoning": 8,
+        "total": 24184
+      },
+      "cost_usd": 0.002025,
+      "elapsed_seconds": 222.35,
+      "agent_duration_ms": 219613,
+      "extra_columns": []
+    },
+    {
+      "question_id": 241,
+      "datasource": "movie",
+      "chat_id": "6e9690ce6a474372bb7151b3204da710",
+      "final_cypher": "",
+      "cypher_history": [],
+      "agent_text": "LLM request timed out.",
+      "tool_calls": 2,
+      "pass": false,
+      "error": "no final cypher",
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 1,
+      "tokens": {
+        "input": 12974,
+        "output": 114,
+        "cache_read": 12288,
+        "cache_write": 0,
+        "reasoning": 8,
+        "total": 25376
+      },
+      "cost_usd": 0.002192,
+      "elapsed_seconds": 300.94,
+      "agent_duration_ms": 302033,
+      "extra_columns": []
+    },
+    {
+      "question_id": 249,
+      "datasource": "movie",
+      "chat_id": "4146a177effa4de0a1240bc14cf7f05c",
+      "final_cypher": "",
+      "cypher_history": [],
+      "agent_text": "LLM request timed out.",
+      "tool_calls": 2,
+      "pass": false,
+      "error": "no final cypher",
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 1,
+      "tokens": {
+        "input": 12978,
+        "output": 114,
+        "cache_read": 12288,
+        "cache_write": 0,
+        "reasoning": 0,
+        "total": 25380
+      },
+      "cost_usd": 0.002193,
+      "elapsed_seconds": 361.4,
+      "agent_duration_ms": 370187,
+      "extra_columns": []
+    },
+    {
+      "question_id": 251,
+      "datasource": "movie",
+      "chat_id": "a017dbae65514e8899b78b99e873b5a3",
+      "final_cypher": "MATCH (t:Movie {name:'Training Day'})-[:writtenBy]->(p:Person)\nMATCH (m:Movie)-[:writtenBy]->(p)\nWITH DISTINCT m\nRETURN m.name AS name, m.filming_location AS filming_location",
+      "cypher_history": [
+        "MATCH (t:Movie {name:'Training Day'})-[:writtenBy]->(p:Person)\nMATCH (m:Movie)-[:writtenBy]->(p)\nWITH DISTINCT m\nRETURN m.name AS name, m.filming_location AS filming_location"
+      ],
+      "agent_text": "David Ayer 是《Training Day》的编剧。以下是同一编剧所写电影的片名与拍摄地点：\n\n| 电影 | 拍摄地点 |\n|---|---|\n| Sabotage | Atlanta, Georgia, Los Angeles |\n| S.W.A.T. | Ambassador Hotel |\n| U-571 | Russia, San Francisco |\n| The Tax Collector | —（缺失） |\n| End of Watch | Los Angeles |\n| Training Day | California, Santa Monica |\n| Harsh Times | —（缺失） |\n| Suicide Squad | —（缺失） |\n| The Fast and the Furious | Long Beach, Los Angeles, Malibu, Mexico |\n| Fury | Hertfordshire, London, Los Angeles, Oxfordshire, Pinewood Studios, RAF Bovingdon, Watlington |\n| Dark Blue | —（缺失） |\n\n共 11 部。其中 3 部（The Tax Collector、Harsh Times、Suicide Squad）无拍摄地点数据。",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 15472,
+        "output": 771,
+        "cache_read": 64256,
+        "cache_write": 0,
+        "reasoning": 352,
+        "total": 80499
+      },
+      "cost_usd": 0.004181,
+      "elapsed_seconds": 157.32,
+      "agent_duration_ms": 155225,
+      "extra_columns": []
+    },
+    {
+      "question_id": 267,
+      "datasource": "movie",
+      "chat_id": "24c08dac016948338f3f584657439730",
+      "final_cypher": "MATCH (a:Movie {name:'Another Round'}), (b:Movie {name:'The Salesman'})\nWITH max(a.runtime_minute) AS art, max(b.runtime_minute) AS brt\nRETURN CASE WHEN art > brt THEN 'Another Round' ELSE 'The Salesman' END AS answer",
+      "cypher_history": [
+        "MATCH (a:Movie {name:'Another Round'}) RETURN a.name AS name, a.runtime_minute AS rt\nUNION ALL\nMATCH (b:Movie {name:'The Salesman'}) RETURN b.name AS name, b.runtime_minute AS rt",
+        "MATCH (a:Movie {name:'Another Round'}), (b:Movie {name:'The Salesman'})\nWITH max(a.runtime_minute) AS art, max(b.runtime_minute) AS brt\nRETURN CASE WHEN art > brt THEN 'Another Round' ELSE 'The Salesman' END AS answer"
+      ],
+      "agent_text": "**The Salesman** 片长更长。\n\n（The Salesman 123 分钟 vs Another Round 117 分钟）",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 15676,
+        "output": 1115,
+        "cache_read": 92672,
+        "cache_write": 0,
+        "reasoning": 728,
+        "total": 109463
+      },
+      "cost_usd": 0.005102,
+      "elapsed_seconds": 219.94,
+      "agent_duration_ms": 219845,
+      "extra_columns": []
+    },
+    {
+      "question_id": 268,
+      "datasource": "movie",
+      "chat_id": "2788ada8788b4a1e8a4b1df5b8f69540",
+      "final_cypher": "MATCH (a:Movie {name:'Spectre'}), (b:Movie {name:'The Lost World: Jurassic Park'})\nWHERE a.global_box_office_usd IS NOT NULL\nRETURN a.global_box_office_usd - b.global_box_office_usd AS diff",
+      "cypher_history": [
+        "MATCH (a:Movie {name:'Spectre'}), (b:Movie {name:'The Lost World: Jurassic Park'})\nRETURN a.global_box_office_usd AS spectre, b.global_box_office_usd AS lost_world,\na.global_box_office_usd - b.global_box_office_usd AS diff",
+        "MATCH (a:Movie {name:'Spectre'}), (b:Movie {name:'The Lost World: Jurassic Park'})\nWHERE a.global_box_office_usd IS NOT NULL\nRETURN a.global_box_office_usd - b.global_box_office_usd AS diff"
+      ],
+      "agent_text": "**差额：262,035,610 美元**\n\n- *Spectre*：880,674,609 美元\n- *The Lost World: Jurassic Park*：618,638,999 美元\n\n（Spectre 更高，两者相差 262,035,610 美元）",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 15666,
+        "output": 944,
+        "cache_read": 92416,
+        "cache_write": 0,
+        "reasoning": 520,
+        "total": 109026
+      },
+      "cost_usd": 0.005045,
+      "elapsed_seconds": 228.04,
+      "agent_duration_ms": 227362,
+      "extra_columns": []
+    },
+    {
+      "question_id": 294,
+      "datasource": "movie",
+      "chat_id": "caf17e9072d749c0b4408f6de54be811",
+      "final_cypher": "",
+      "cypher_history": [],
+      "agent_text": "LLM request timed out.",
+      "tool_calls": 2,
+      "pass": false,
+      "error": "no final cypher",
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 2,
+      "tool_rounds": 1,
+      "tokens": {
+        "input": 11782,
+        "output": 114,
+        "cache_read": 12288,
+        "cache_write": 0,
+        "reasoning": 8,
+        "total": 24184
+      },
+      "cost_usd": 0.002025,
+      "elapsed_seconds": 176.84,
+      "agent_duration_ms": 176042,
+      "extra_columns": []
+    },
+    {
+      "question_id": 303,
+      "datasource": "movie",
+      "chat_id": "de65784adbe444f894e3b76d395a5c80",
+      "final_cypher": "MATCH (a:Movie {name:'Arrival'})-[:originatesFrom]->(c:Country)\nMATCH (m:Movie)-[:originatesFrom]->(c)\nUNWIND m.filming_location AS loc\nRETURN DISTINCT loc",
+      "cypher_history": [
+        "MATCH (a:Movie {name:'Arrival'})-[:originatesFrom]->(c:Country)\nMATCH (m:Movie)-[:originatesFrom]->(c)\nUNWIND m.filming_location AS loc\nRETURN DISTINCT loc",
+        "MATCH (a:Movie {name:'Arrival'})-[:originatesFrom]->(c:Country)\nRETURN c.name AS country, count(*) AS arrival_nodes",
+        "MATCH (a:Movie {name:'Arrival'})-[:originatesFrom]->(c:Country)\nMATCH (m:Movie)-[:originatesFrom]->(c)\nUNWIND m.filming_location AS loc\nRETURN DISTINCT loc"
+      ],
+      "agent_text": "已用数据源 `movie` 查出。\n\n**最终 Cypher：**\n```cypher\nMATCH (a:Movie {name:'Arrival'})-[:originatesFrom]->(c:Country)\nMATCH (m:Movie)-[:originatesFrom]->(c)\nUNWIND m.filming_location AS loc\nRETURN DISTINCT loc\n```\n\n**结果：** `Arrival` 的产地国是 **United States of America**；所有产自美国的电影，其 `filming_location`（List 属性，用 UNWIND 展开）去重后共 **2031 个**不重复的拍摄地点。\n\n返回的前若干项（受 100 行显示上限截断）：\nCalifornia, Atlanta, Los Angeles, New Jersey, Monaco, Paris, Toronto, New York City, Montreal, Ontario, Santa Monica, Fort Lee, Barcelona, Spain, Salt Lake City, Delhi, Austria, Switzerland, Vancouver, Arizona, Thailand, New Orleans, Morocco, San Francisco, North Carolina, Romania, South Carolina, British Columbia, Mexico, Florida, Hawaii, The Bahamas, Chicago, Utah, Boston, Madrid, Scotland, Turkey, New Mexico, Egypt, Pittsburgh, Japan, New Zealand, Iceland, South Africa, Greece… （共 2031 个）",
+      "tool_calls": 5,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 16594,
+        "output": 2696,
+        "cache_read": 124672,
+        "cache_write": 0,
+        "reasoning": 1997,
+        "total": 143962
+      },
+      "cost_usd": 0.006569,
+      "elapsed_seconds": 364.45,
+      "agent_duration_ms": 374539,
+      "extra_columns": []
+    }
+  ]
+}

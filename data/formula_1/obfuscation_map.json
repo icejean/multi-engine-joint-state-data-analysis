@@ -1,0 +1,339 @@
+{
+  "circuits": {
+    "abbrev": "crct",
+    "columns": {
+      "circuitId": "crct_id",
+      "circuitRef": "crct_rf",
+      "name": "nm",
+      "location": "lctn",
+      "country": "cntr",
+      "lat": "lt",
+      "lng": "lng",
+      "alt": "alt",
+      "url": "url"
+    },
+    "pk": [
+      "crct_id"
+    ],
+    "fks": []
+  },
+  "constructorResults": {
+    "abbrev": "cnstr_rslt",
+    "columns": {
+      "constructorResultsId": "cnst_rslt_id",
+      "raceId": "ref2",
+      "constructorId": "ref1",
+      "points": "pnts",
+      "status": "stts"
+    },
+    "pk": [
+      "cnst_rslt_id"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_cnstr_rslt_cnstr",
+        "from_col": "ref1",
+        "to_table": "cnstr",
+        "to_col": "cnst_id"
+      },
+      {
+        "constraint": "fk_cnstr_rslt_rcs",
+        "from_col": "ref2",
+        "to_table": "rcs",
+        "to_col": "rc_id"
+      }
+    ]
+  },
+  "constructorStandings": {
+    "abbrev": "cnstr_std",
+    "columns": {
+      "constructorStandingsId": "cnst_stnd_id",
+      "raceId": "ref2",
+      "constructorId": "ref1",
+      "points": "pnts",
+      "position": "pstn",
+      "positionText": "pstn_txt",
+      "wins": "wns"
+    },
+    "pk": [
+      "cnst_stnd_id"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_cnstr_std_cnstr",
+        "from_col": "ref1",
+        "to_table": "cnstr",
+        "to_col": "cnst_id"
+      },
+      {
+        "constraint": "fk_cnstr_std_rcs",
+        "from_col": "ref2",
+        "to_table": "rcs",
+        "to_col": "rc_id"
+      }
+    ]
+  },
+  "constructors": {
+    "abbrev": "cnstr",
+    "columns": {
+      "constructorId": "cnst_id",
+      "constructorRef": "cnst_rf",
+      "name": "nm",
+      "nationality": "ntnl",
+      "url": "url"
+    },
+    "pk": [
+      "cnst_id"
+    ],
+    "fks": []
+  },
+  "driverStandings": {
+    "abbrev": "drvr_std",
+    "columns": {
+      "driverStandingsId": "drvr_stnd_id",
+      "raceId": "ref2",
+      "driverId": "ref1",
+      "points": "pnts",
+      "position": "pstn",
+      "positionText": "pstn_txt",
+      "wins": "wns"
+    },
+    "pk": [
+      "drvr_stnd_id"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_drvr_std_drvr",
+        "from_col": "ref1",
+        "to_table": "drvr",
+        "to_col": "drvr_id"
+      },
+      {
+        "constraint": "fk_drvr_std_rcs",
+        "from_col": "ref2",
+        "to_table": "rcs",
+        "to_col": "rc_id"
+      }
+    ]
+  },
+  "drivers": {
+    "abbrev": "drvr",
+    "columns": {
+      "driverId": "drvr_id",
+      "driverRef": "drvr_rf",
+      "number": "nmbr",
+      "code": "cd",
+      "forename": "frnm",
+      "surname": "srnm",
+      "dob": "db",
+      "nationality": "ntnl",
+      "url": "url"
+    },
+    "pk": [
+      "drvr_id"
+    ],
+    "fks": []
+  },
+  "lapTimes": {
+    "abbrev": "lp_tm",
+    "columns": {
+      "raceId": "ref2",
+      "driverId": "ref1",
+      "lap": "lp",
+      "position": "pstn",
+      "time": "tm",
+      "milliseconds": "mlls"
+    },
+    "pk": [
+      "ref2",
+      "ref1",
+      "lp"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_lp_tm_drvr",
+        "from_col": "ref1",
+        "to_table": "drvr",
+        "to_col": "drvr_id"
+      },
+      {
+        "constraint": "fk_lp_tm_rcs",
+        "from_col": "ref2",
+        "to_table": "rcs",
+        "to_col": "rc_id"
+      }
+    ]
+  },
+  "pitStops": {
+    "abbrev": "pt_stp",
+    "columns": {
+      "raceId": "ref2",
+      "driverId": "ref1",
+      "stop": "stp",
+      "lap": "lp",
+      "time": "tm",
+      "duration": "drtn",
+      "milliseconds": "mlls"
+    },
+    "pk": [
+      "ref2",
+      "ref1",
+      "stp"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_pt_stp_drvr",
+        "from_col": "ref1",
+        "to_table": "drvr",
+        "to_col": "drvr_id"
+      },
+      {
+        "constraint": "fk_pt_stp_rcs",
+        "from_col": "ref2",
+        "to_table": "rcs",
+        "to_col": "rc_id"
+      }
+    ]
+  },
+  "qualifying": {
+    "abbrev": "qlfy",
+    "columns": {
+      "qualifyId": "qlfy_id",
+      "raceId": "ref3",
+      "driverId": "ref2",
+      "constructorId": "ref1",
+      "number": "nmbr",
+      "position": "pstn",
+      "q1": "q1",
+      "q2": "q2",
+      "q3": "q3"
+    },
+    "pk": [
+      "qlfy_id"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_qlfy_cnstr",
+        "from_col": "ref1",
+        "to_table": "cnstr",
+        "to_col": "cnst_id"
+      },
+      {
+        "constraint": "fk_qlfy_drvr",
+        "from_col": "ref2",
+        "to_table": "drvr",
+        "to_col": "drvr_id"
+      },
+      {
+        "constraint": "fk_qlfy_rcs",
+        "from_col": "ref3",
+        "to_table": "rcs",
+        "to_col": "rc_id"
+      }
+    ]
+  },
+  "races": {
+    "abbrev": "rcs",
+    "columns": {
+      "raceId": "rc_id",
+      "year": "ref2",
+      "round": "rnd",
+      "circuitId": "ref1",
+      "name": "nm",
+      "date": "dt",
+      "time": "tm",
+      "url": "url"
+    },
+    "pk": [
+      "rc_id"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_rcs_crct",
+        "from_col": "ref1",
+        "to_table": "crct",
+        "to_col": "crct_id"
+      },
+      {
+        "constraint": "fk_rcs_ssn",
+        "from_col": "ref2",
+        "to_table": "ssn",
+        "to_col": "yr"
+      }
+    ]
+  },
+  "results": {
+    "abbrev": "rslt",
+    "columns": {
+      "resultId": "rslt_id",
+      "raceId": "ref4",
+      "driverId": "ref3",
+      "constructorId": "ref2",
+      "number": "nmbr",
+      "grid": "grd",
+      "position": "pstn",
+      "positionText": "pstn_txt",
+      "positionOrder": "pstn_ordr",
+      "points": "pnts",
+      "laps": "lps",
+      "time": "tm",
+      "milliseconds": "mlls",
+      "fastestLap": "fsts_lp",
+      "rank": "rnk",
+      "fastestLapTime": "fsts_lp_tm",
+      "fastestLapSpeed": "fsts_lp_spd",
+      "statusId": "ref1"
+    },
+    "pk": [
+      "rslt_id"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_rslt_stat",
+        "from_col": "ref1",
+        "to_table": "stat",
+        "to_col": "stts_id"
+      },
+      {
+        "constraint": "fk_rslt_cnstr",
+        "from_col": "ref2",
+        "to_table": "cnstr",
+        "to_col": "cnst_id"
+      },
+      {
+        "constraint": "fk_rslt_drvr",
+        "from_col": "ref3",
+        "to_table": "drvr",
+        "to_col": "drvr_id"
+      },
+      {
+        "constraint": "fk_rslt_rcs",
+        "from_col": "ref4",
+        "to_table": "rcs",
+        "to_col": "rc_id"
+      }
+    ]
+  },
+  "seasons": {
+    "abbrev": "ssn",
+    "columns": {
+      "year": "yr",
+      "url": "url"
+    },
+    "pk": [
+      "yr"
+    ],
+    "fks": []
+  },
+  "status": {
+    "abbrev": "stat",
+    "columns": {
+      "statusId": "stts_id",
+      "status": "stts"
+    },
+    "pk": [
+      "stts_id"
+    ],
+    "fks": []
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "runs": [
+    {
+      "question_id": 6,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "3019fcfad3b64af3b5dad02f5ecd0186",
+      "final_sql": "SELECT COUNT(*) AS num_products FROM ( SELECT p.prdc_id FROM prod p JOIN prod_rvw r ON r.ref1 = p.prdc_id WHERE p.mk_flg = 1 AND p.fnsh_gds_flg = 1 GROUP BY p.prdc_id HAVING COUNT(r.cmmn) > 10 ) t;",
+      "sql_history": [
+        "SELECT COUNT(*) AS num_products FROM ( SELECT p.prdc_id FROM prod p JOIN prod_rvw r ON r.ref1 = p.prdc_id WHERE p.mk_flg = 1 AND p.fnsh_gds_flg = 1 GROUP BY p.prdc_id HAVING COUNT(*) > 10 ) t;",
+        "SELECT p.mk_flg, p.fnsh_gds_flg, COUNT(*) AS cnt FROM prod p GROUP BY p.mk_flg, p.fnsh_gds_flg;",
+        "SELECT MAX(c) AS max_reviews, COUNT(*) AS num_prods FROM ( SELECT ref1, COUNT(*) AS c FROM prod_rvw GROUP BY ref1 ) t;",
+        "SELECT COUNT(*) AS total_reviews FROM prod_rvw;",
+        "SELECT (SELECT COUNT(*) FROM prod) AS prods, (SELECT COUNT(*) FROM prod_rvw) AS reviews;",
+        "SELECT COUNT(*) AS num_products FROM ( SELECT p.prdc_id FROM prod p JOIN prod_rvw r ON r.ref1 = p.prdc_id WHERE p.mk_flg = 1 AND p.fnsh_gds_flg = 1 GROUP BY p.prdc_id HAVING COUNT(r.cmmn) > 10 ) t;"
+      ],
+      "agent_text": "**0**\n\n按题面语义：自制且可售的产品 = `prod.mk_flg = 1 AND prod.fnsh_gds_flg = 1`（共 212 个）；评论数 = `prod_rvw` 中按产品聚合的 `COUNT(cmmn)`。该库 `prod_rvw` 表仅有 4 条评论（分布在产品 709、937、798 上，单产品最多 2 条），没有任何产品评论数超过 10，所以满足条件的产品数为 **0**。",
+      "tool_calls": 10,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 8,
+      "tool_rounds": 7,
+      "tokens": {
+        "input": 36215,
+        "output": 6711,
+        "cache_read": 338432,
+        "cache_write": 0,
+        "reasoning": 5771,
+        "total": 381358
+      },
+      "cost_usd": 0.016425,
+      "elapsed_seconds": 49.72,
+      "agent_duration_ms": 41736,
+      "extra_columns": []
+    },
+    {
+      "question_id": 96,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "b434d05b26074746ad59d24f82b7d4ef",
+      "final_sql": "SELECT COUNT(DISTINCT p.prdc_id) AS product_count FROM spcl_offr o JOIN spcl_prod sp ON sp.ref2 = o.spcl_offr_id JOIN prod p ON p.prdc_id = sp.ref1 JOIN prod_sub ps ON ps.prdc_sbct_id = p.ref2 JOIN prod_cat pc ON pc.prdc_ctgr_id = ps.ref1 WHERE o.dscr = 'LL Road Frame Sale' AND pc.nm = 'Clothing'",
+      "sql_history": [
+        "SELECT spcl_offr_id, ctgr, typ, dscr, dscn_pct FROM spcl_offr WHERE dscr LIKE '%Road Frame%'",
+        "SELECT prdc_ctgr_id, nm FROM prod_cat",
+        "SELECT COUNT(DISTINCT p.prdc_id) AS product_count FROM spcl_offr o JOIN spcl_prod sp ON sp.ref2 = o.spcl_offr_id JOIN prod p ON p.prdc_id = sp.ref1 JOIN prod_sub ps ON ps.prdc_sbct_id = p.ref2 JOIN prod_cat pc ON pc.prdc_ctgr_id = ps.ref1 WHERE o.dscr = 'LL Road Frame Sale' AND pc.nm = 'Clothing'",
+        "SELECT pc.nm AS category, COUNT(*) AS cnt FROM spcl_prod sp JOIN prod p ON p.prdc_id = sp.ref1 JOIN prod_sub ps ON ps.prdc_sbct_id = p.ref2 JOIN prod_cat pc ON pc.prdc_ctgr_id = ps.ref1 WHERE sp.ref2 = 12 GROUP BY pc.nm",
+        "SELECT pc.nm AS category, COUNT(DISTINCT p.prdc_id) AS cnt FROM so_dtl d JOIN prod p ON p.prdc_id = d.ref2 JOIN prod_sub ps ON ps.prdc_sbct_id = p.ref2 JOIN prod_cat pc ON pc.prdc_ctgr_id = ps.ref1 WHERE d.ref1 = 12 GROUP BY pc.nm",
+        "SELECT COUNT(*) AS total_rows, COUNT(DISTINCT ref1) AS distinct_products FROM spcl_prod WHERE ref2 = 12",
+        "SELECT DISTINCT ref1 FROM so_dtl ORDER BY ref1",
+        "SELECT p.prdc_id, p.nm, p.prdc_ln, ps.nm AS subcat, pc.nm AS cat FROM spcl_prod sp JOIN prod p ON p.prdc_id = sp.ref1 JOIN prod_sub ps ON ps.prdc_sbct_id = p.ref2 JOIN prod_cat pc ON pc.prdc_ctgr_id = ps.ref1 WHERE sp.ref2 = 12",
+        "SELECT o.spcl_offr_id, o.dscr, pc.nm AS cat, COUNT(DISTINCT sp.ref1) AS n FROM spcl_offr o JOIN spcl_prod sp ON sp.ref2 = o.spcl_offr_id JOIN prod p ON p.prdc_id = sp.ref1 JOIN prod_sub ps ON ps.prdc_sbct_id = p.ref2 JOIN prod_cat pc ON pc.prdc_ctgr_id = ps.ref1 GROUP BY o.spcl_offr_id, o.dscr, pc.nm ORDER BY o.spcl_offr_id",
+        "SELECT COUNT(DISTINCT p.prdc_id) AS product_count FROM spcl_offr o JOIN spcl_prod sp ON sp.ref2 = o.spcl_offr_id JOIN prod p ON p.prdc_id = sp.ref1 JOIN prod_sub ps ON ps.prdc_sbct_id = p.ref2 JOIN prod_cat pc ON pc.prdc_ctgr_id = ps.ref1 WHERE o.dscr = 'LL Road Frame Sale' AND pc.nm = 'Clothing'"
+      ],
+      "agent_text": "**答案：0**\n\n`LL Road Frame Sale`（`spcl_offr` 中 `spcl_offr_id=12`，类型=Excess Inventory / Reseller）关联的产品共 12 个，全部属于 **Components** 大类（Road Frames 子类的 LL Road Frame 各尺寸/颜色变体）；其中没有任何一个是 **Clothing** 大类，所以 Clothing 类产品数量为 **0**。\n\n最终 SQL：\n\n```sql\nSELECT COUNT(DISTINCT p.prdc_id) AS product_count\nFROM spcl_offr o\nJOIN spcl_prod sp ON sp.ref2 = o.spcl_offr_id\nJOIN prod p       ON p.prdc_id = sp.ref1\nJOIN prod_sub ps  ON ps.prdc_sbct_id = p.ref2\nJOIN prod_cat pc  ON pc.prdc_ctgr_id = ps.ref1\nWHERE o.dscr = 'LL Road Frame Sale'\n  AND pc.nm = 'Clothing';\n```",
+      "tool_calls": 13,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 10,
+      "tool_rounds": 9,
+      "tokens": {
+        "input": 36718,
+        "output": 12551,
+        "cache_read": 458496,
+        "cache_write": 0,
+        "reasoning": 10858,
+        "total": 507765
+      },
+      "cost_usd": 0.021493,
+      "elapsed_seconds": 81.89,
+      "agent_duration_ms": 73884,
+      "extra_columns": []
+    },
+    {
+      "question_id": 99,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "3c463290734949029fdaeb688818e8bf",
+      "final_sql": "WITH RECURSIVE bom_tree AS ( SELECT ref2 AS component_id, 1 AS level FROM bom WHERE ref3 = (SELECT prdc_id FROM prod WHERE nm = 'HL Road Frame - Black, 58') AND end_dt IS NULL UNION ALL SELECT b.ref2 AS component_id, bt.level + 1 AS level FROM bom b JOIN bom_tree bt ON b.ref3 = bt.component_id WHERE b.end_dt IS NULL ) SELECT DISTINCT p.nm AS component, bt.level FROM bom_tree bt JOIN prod p ON p.prdc_id = bt.component_id ORDER BY bt.level, p.nm;",
+      "sql_history": [
+        "SELECT prdc_id, nm, prdc_nmbr, fnsh_gds_flg FROM prod WHERE nm LIKE 'HL Road Frame%'",
+        "WITH RECURSIVE bom_tree AS ( SELECT ref2 AS component_id, 1 AS level FROM bom WHERE ref3 = (SELECT prdc_id FROM prod WHERE nm = 'HL Road Frame - Black, 58') AND end_dt IS NULL UNION ALL SELECT b.ref2 AS component_id, bt.level + 1 AS level FROM bom b JOIN bom_tree bt ON b.ref3 = bt.component_id WHERE b.end_dt IS NULL ) SELECT DISTINCT p.nm AS component, bt.level FROM bom_tree bt JOIN prod p ON p.prdc_id = bt.component_id ORDER BY bt.level, p.nm;"
+      ],
+      "agent_text": "直接和嵌套组件清单（数据源 `works_cycles`，按当前生效 BOM `end_dt IS NULL` 递归，层级从 1 起逐层 +1，并按「组件×层级」去重）：\n\n**Level 1（直接子件）**\n- Chain Stays\n- Decal 1\n- Decal 2\n- Down Tube\n- HL Fork\n- Head Tube\n- Paint - Black\n- Seat Stays\n- Seat Tube\n- Top Tube\n\n**Level 2（嵌套子件）**\n- Blade\n- Fork Crown\n- Fork End\n- Metal Bar 2\n- Metal Sheet 2\n- Metal Sheet 3\n- Metal Sheet 4\n- Metal Sheet 5\n- Metal Sheet 7\n- Steerer\n\n**Level 3（更深嵌套）**\n- Metal Sheet 2\n- Metal Sheet 5\n- Metal Sheet 6\n\n说明：`Metal Sheet 2` 与 `Metal Sheet 5` 分别经不同装配路径出现在第 2、3 层，故两层各保留一行（同一组件可对应多个层级）。共 23 行「组件-层级」记录。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 34875,
+        "output": 1506,
+        "cache_read": 132736,
+        "cache_write": 0,
+        "reasoning": 836,
+        "total": 169117
+      },
+      "cost_usd": 0.009021,
+      "elapsed_seconds": 22.2,
+      "agent_duration_ms": 13720,
+      "extra_columns": []
+    },
+    {
+      "question_id": 124,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "cce5c4cfaa6c46d5b6f94dfaa9a403fc",
+      "final_sql": "SELECT stor.nm AS store_name, addr.cty AS city, st_prv.nm AS state_province FROM stor JOIN biz_addr ON biz_addr.ref1 = stor.ref2 JOIN addr ON addr.addr_id = biz_addr.ref3 JOIN st_prv ON st_prv.stt_prvn_id = addr.ref1 ORDER BY stor.nm;",
+      "sql_history": [
+        "SELECT stor.nm AS store_name, addr.cty AS city, st_prv.nm AS state_province FROM stor JOIN biz_addr ON biz_addr.ref1 = stor.ref2 JOIN addr ON addr.addr_id = biz_addr.ref3 JOIN st_prv ON st_prv.stt_prvn_id = addr.ref1 ORDER BY stor.nm;"
+      ],
+      "agent_text": "已按 `works_cycles` 数据源查询所有门店的名称、城市、州/省，结果如下（按门店名排序；注意 \"All Cycle Shop\" 因存在多条地址关联出现两行，按「保留所有行、不去重」口径输出）：\n\n| store_name | city | state_province |\n|---|---|---|\n| A Bicycle Association | De Witt | New York |\n| A Bike Store | Seattle | Washington |\n| A Cycle Shop | Albany | Oregon |\n| A Great Bicycle Company | Jefferson City | Missouri |\n| A Typical Bike Shop | Round Rock | Texas |\n| Acceptable Sales & Service | Calgary | Alberta |\n| Accessories Network | Paris | Seine (Paris) |\n| Acclaimed Bicycle Company | Mcdonough | Georgia |\n| Ace Bicycle Supply | Paris | Seine (Paris) |\n| Action Bicycle Specialists | Woolston | England |\n| Active Cycling | Heath | Ohio |\n| Active Life Toys | Mississauga | Ontario |\n| Active Systems | Duluth | Minnesota |\n| Active Transport Inc. | North Randall | Ohio |\n| Activity Center | Crossville | Tennessee |\n| Advanced Bike Components | Irving | Texas |\n| Aerobic Exercise Company | Camarillo | California |\n| Affordable Sports Equipment | Lake Elsinore | California |\n| All Cycle Shop | Bothell | Washington |\n| All Cycle Shop | Bothell | Washington |\n| All Seasons Sports Supply | Houston | Texas |\n| Alpine Ski House | Elk Grove | California |\n| Alternative Vehicles | Washougal | Washington |\n| Amalgamated Parts Shop | Frankfurt am Main | Hamburg |\n| Another Bicycle Company | Milwaukie | Oregon |\n| Another Sporting Goods Company | Westminster | Colorado |\n| Area Bike Accessories | Modesto | California |\n\n（注：返回被截断到 27 行，全量结果仍在 kernel 中，可用 export_data 导出。）\n\n📁 已在 kernel 中保留完整结果。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 34575,
+        "output": 1625,
+        "cache_read": 85120,
+        "cache_write": 0,
+        "reasoning": 960,
+        "total": 121320
+      },
+      "cost_usd": 0.007679,
+      "elapsed_seconds": 19.93,
+      "agent_duration_ms": 11646,
+      "extra_columns": []
+    }
+  ]
+}

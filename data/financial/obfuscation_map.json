@@ -1,0 +1,184 @@
+{
+  "account": {
+    "abbrev": "acct",
+    "columns": {
+      "account_id": "accn_id",
+      "district_id": "ref1",
+      "frequency": "frqn",
+      "date": "dt"
+    },
+    "pk": [
+      "accn_id"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_acct_dstr",
+        "from_col": "ref1",
+        "to_table": "dstr",
+        "to_col": "dstr_id"
+      }
+    ]
+  },
+  "card": {
+    "abbrev": "crd",
+    "columns": {
+      "card_id": "crd_id",
+      "disp_id": "ref1",
+      "type": "typ",
+      "issued": "issd"
+    },
+    "pk": [
+      "crd_id"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_crd_dsp",
+        "from_col": "ref1",
+        "to_table": "dsp",
+        "to_col": "dsp_id"
+      }
+    ]
+  },
+  "client": {
+    "abbrev": "clnt",
+    "columns": {
+      "client_id": "clnt_id",
+      "gender": "gndr",
+      "birth_date": "brth_dt",
+      "district_id": "ref1"
+    },
+    "pk": [
+      "clnt_id"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_clnt_dstr",
+        "from_col": "ref1",
+        "to_table": "dstr",
+        "to_col": "dstr_id"
+      }
+    ]
+  },
+  "disp": {
+    "abbrev": "dsp",
+    "columns": {
+      "disp_id": "dsp_id",
+      "client_id": "ref1",
+      "account_id": "ref2",
+      "type": "typ"
+    },
+    "pk": [
+      "dsp_id"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_dsp_clnt",
+        "from_col": "ref1",
+        "to_table": "clnt",
+        "to_col": "clnt_id"
+      },
+      {
+        "constraint": "fk_dsp_acct",
+        "from_col": "ref2",
+        "to_table": "acct",
+        "to_col": "accn_id"
+      }
+    ]
+  },
+  "district": {
+    "abbrev": "dstr",
+    "columns": {
+      "district_id": "dstr_id",
+      "A2": "a2",
+      "A3": "a3",
+      "A4": "a4",
+      "A5": "a5",
+      "A6": "a6",
+      "A7": "a7",
+      "A8": "a8",
+      "A9": "a9",
+      "A10": "a10",
+      "A11": "a11",
+      "A12": "a12",
+      "A13": "a13",
+      "A14": "a14",
+      "A15": "a15",
+      "A16": "a16"
+    },
+    "pk": [
+      "dstr_id"
+    ],
+    "fks": []
+  },
+  "loan": {
+    "abbrev": "ln",
+    "columns": {
+      "loan_id": "ln_id",
+      "account_id": "ref1",
+      "date": "dt",
+      "amount": "amnt",
+      "duration": "drtn",
+      "payments": "pymn",
+      "status": "stts"
+    },
+    "pk": [
+      "ln_id"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_ln_acct",
+        "from_col": "ref1",
+        "to_table": "acct",
+        "to_col": "accn_id"
+      }
+    ]
+  },
+  "order": {
+    "abbrev": "ord",
+    "columns": {
+      "order_id": "ordr_id",
+      "account_id": "ref1",
+      "bank_to": "bnk_to",
+      "account_to": "accn_to",
+      "amount": "amnt",
+      "k_symbol": "k_symb"
+    },
+    "pk": [
+      "ordr_id"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_ord_acct",
+        "from_col": "ref1",
+        "to_table": "acct",
+        "to_col": "accn_id"
+      }
+    ]
+  },
+  "trans": {
+    "abbrev": "trns",
+    "columns": {
+      "trans_id": "trns_id",
+      "account_id": "ref1",
+      "date": "dt",
+      "type": "typ",
+      "operation": "oprt",
+      "amount": "amnt",
+      "balance": "blnc",
+      "k_symbol": "k_symb",
+      "bank": "bnk",
+      "account": "accn"
+    },
+    "pk": [
+      "trns_id"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_trns_acct",
+        "from_col": "ref1",
+        "to_table": "acct",
+        "to_col": "accn_id"
+      }
+    ]
+  }
+}

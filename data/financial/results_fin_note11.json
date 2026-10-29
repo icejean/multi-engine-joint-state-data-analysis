@@ -1,0 +1,151 @@
+{
+  "runs": [
+    {
+      "question_id": 44,
+      "datasource": "financial",
+      "chat_id": "eab0534698c54242beaca7edc6fffdfc",
+      "final_sql": "SELECT AVG(l.amnt) AS avg_loan_amount FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN ln l ON l.ref1 = d.ref2 WHERE c.gndr = 'M' AND d.typ = 'OWNER'",
+      "sql_history": [
+        "SELECT AVG(l.amnt) AS avg_loan_amount FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN ln l ON l.ref1 = d.ref2 WHERE c.gndr = 'M' AND d.typ = 'OWNER'"
+      ],
+      "agent_text": "Average loan amount by male borrowers (gender = 'M'): **147501.7365**",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 15209,
+        "output": 680,
+        "cache_read": 66176,
+        "cache_write": 0,
+        "reasoning": 425,
+        "total": 82065
+      },
+      "cost_usd": 0.004173,
+      "elapsed_seconds": 17.89,
+      "agent_duration_ms": 9934,
+      "extra_columns": []
+    },
+    {
+      "question_id": 80,
+      "datasource": "financial",
+      "chat_id": "2e14858840db4fc4b73b82d476ef37ba",
+      "final_sql": "SELECT CAST(SUM(CASE WHEN c.gndr = 'F' THEN 1 ELSE 0 END) AS DOUBLE) * 100 / COUNT(c.clnt_id) AS pct FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON a.accn_id = d.ref2 JOIN dstr ds ON ds.dstr_id = a.ref1 WHERE ds.a11 > 10000",
+      "sql_history": [
+        "SELECT CAST(SUM(CASE WHEN c.gndr = 'F' THEN 1 ELSE 0 END) AS DOUBLE) * 100 / COUNT(c.clnt_id) AS pct FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON a.accn_id = d.ref2 JOIN dstr ds ON ds.dstr_id = a.ref1 WHERE ds.a11 > 10000"
+      ],
+      "agent_text": "**50.39%**（结果：50.38819875776397）\n\n查询口径：账户开户分支所在地区（`acct.ref1` → `dstr`）平均工资 `a11 > 10000` 的客户中，女性（`gndr='F'`）占比 = 女性客户数 / 客户总数 × 100。",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 15279,
+        "output": 1119,
+        "cache_read": 66560,
+        "cache_write": 0,
+        "reasoning": 771,
+        "total": 82958
+      },
+      "cost_usd": 0.004316,
+      "elapsed_seconds": 20.47,
+      "agent_duration_ms": 11922,
+      "extra_columns": []
+    },
+    {
+      "question_id": 91,
+      "datasource": "financial",
+      "chat_id": "5665d7d8b77a40649cec0b8626404920",
+      "final_sql": "SELECT SUM(t.amnt) AS total_paid FROM trns t JOIN dsp d ON d.ref2 = t.ref1 WHERE d.ref1 = 617 AND d.typ = 'OWNER' AND t.typ = 'VYDAJ' AND t.dt >= '1998-01-01' AND t.dt < '1999-01-01'",
+      "sql_history": [
+        "SELECT typ, COUNT(*) FROM trns GROUP BY typ",
+        "SELECT SUM(t.amnt) AS total_paid FROM trns t JOIN dsp d ON d.ref2 = t.ref1 WHERE d.ref1 = 617 AND d.typ = 'OWNER' AND t.typ = 'VYDAJ' AND t.dt >= '1998-01-01' AND t.dt < '1999-01-01'"
+      ],
+      "agent_text": "Client 617 在 1998 年所有支出交易（`VYDAJ`）的合计金额为 **143,545**。\n\n（口径：`dsp.typ='OWNER'` 找到客户 617 拥有的账户 → `trns` 中该账户 1998 年的支出类交易求和。）",
+      "tool_calls": 5,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 15538,
+        "output": 1499,
+        "cache_read": 124672,
+        "cache_write": 0,
+        "reasoning": 1050,
+        "total": 141709
+      },
+      "cost_usd": 0.006086,
+      "elapsed_seconds": 25.53,
+      "agent_duration_ms": 17809,
+      "extra_columns": []
+    },
+    {
+      "question_id": 97,
+      "datasource": "financial",
+      "chat_id": "680c3b555c394338b875584a62a54861",
+      "final_sql": "SELECT CAST(SUM(CASE WHEN c.gndr = 'F' THEN 1 ELSE 0 END) AS DOUBLE) * 100 / COUNT(c.clnt_id) AS percentage FROM clnt c JOIN dsp d ON c.clnt_id = d.ref1 JOIN acct a ON d.ref2 = a.accn_id JOIN dstr ds ON a.ref1 = ds.dstr_id WHERE ds.a3 = 'Prague'",
+      "sql_history": [
+        "SELECT DISTINCT a3 FROM dstr ORDER BY a3",
+        "SELECT COUNT(*) AS total_rows, COUNT(DISTINCT c.clnt_id) AS distinct_clients, COUNT(DISTINCT a.accn_id) AS distinct_accounts FROM clnt c JOIN dsp d ON c.clnt_id = d.ref1 JOIN acct a ON d.ref2 = a.accn_id JOIN dstr ds ON a.ref1 = ds.dstr_id WHERE ds.a3 = 'Prague'",
+        "SELECT CAST(SUM(CASE WHEN c.gndr = 'F' THEN 1 ELSE 0 END) AS DOUBLE) * 100 / COUNT(c.clnt_id) AS percentage FROM clnt c JOIN dsp d ON c.clnt_id = d.ref1 JOIN acct a ON d.ref2 = a.accn_id JOIN dstr ds ON a.ref1 = ds.dstr_id WHERE ds.a3 = 'Prague'"
+      ],
+      "agent_text": "Prague 分行客户的女性占比为 **49.78%**（女性客户 334 / 客户总数 671）。\n\n```sql\nSELECT CAST(SUM(CASE WHEN c.gndr = 'F' THEN 1 ELSE 0 END) AS DOUBLE) * 100 / COUNT(c.clnt_id) AS percentage\nFROM clnt c\nJOIN dsp d ON c.clnt_id = d.ref1\nJOIN acct a ON d.ref2 = a.accn_id\nJOIN dstr ds ON a.ref1 = ds.dstr_id\nWHERE ds.a3 = 'Prague';\n```\n\n- 口径：客户 → 账户（dsp 关联）→ 开户分行（dstr），取 region `a3 = 'Prague'`；按客户实体计数（该子集无 fan-out，671 行=671 个客户）。",
+      "tool_calls": 5,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 15526,
+        "output": 2297,
+        "cache_read": 127360,
+        "cache_write": 0,
+        "reasoning": 1631,
+        "total": 145183
+      },
+      "cost_usd": 0.006383,
+      "elapsed_seconds": 27.5,
+      "agent_duration_ms": 19635,
+      "extra_columns": []
+    },
+    {
+      "question_id": 98,
+      "datasource": "financial",
+      "chat_id": "5516774736d342a289def51240ad8819",
+      "final_sql": "SELECT CAST(SUM(t.gndr='M') AS DOUBLE)*100/COUNT(*) AS percentage FROM ( SELECT DISTINCT c.clnt_id, c.gndr FROM clnt c JOIN dsp d ON c.clnt_id = d.ref1 JOIN acct a ON d.ref2 = a.accn_id WHERE a.frqn = 'POPLATEK TYDNE' ) t",
+      "sql_history": [
+        "SELECT DISTINCT frqn FROM acct",
+        "SELECT CAST(SUM(t.gndr='M') AS DOUBLE)*100/COUNT(*) AS pct FROM (SELECT DISTINCT c.clnt_id, c.gndr FROM clnt c JOIN dsp d ON c.clnt_id=d.ref1 JOIN acct a ON d.ref2=a.accn_id WHERE a.frqn='POPLATEK TYDNE') t",
+        "SELECT SUM(a.frqn='POPLATEK TYDNE') AS tydne, COUNT(*) AS total, COUNT(DISTINCT c.clnt_id) AS uniq FROM clnt c JOIN dsp d ON c.clnt_id=d.ref1 JOIN acct a ON d.ref2=a.accn_id",
+        "SELECT d.typ, COUNT(*) cnt FROM dsp d JOIN acct a ON d.ref2=a.accn_id WHERE a.frqn='POPLATEK TYDNE' GROUP BY d.typ",
+        "SELECT CAST(SUM(t.gndr='M') AS DOUBLE)*100/COUNT(*) AS percentage FROM ( SELECT DISTINCT c.clnt_id, c.gndr FROM clnt c JOIN dsp d ON c.clnt_id = d.ref1 JOIN acct a ON d.ref2 = a.accn_id WHERE a.frqn = 'POPLATEK TYDNE' ) t"
+      ],
+      "agent_text": "**52.12765957446808%**\n\n男性客户中申请每周对账单（POPLATEK TYDNE）的比例 = 147 / 282 ≈ 52.13%\n\n- 数据源：`financial`\n- 口径：`clnt → dsp → acct` 关联，筛选 `acct.frqn = 'POPLATEK TYDNE'`，按客户去重计数；分子为 `gndr = 'M'`。",
+      "tool_calls": 12,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 8,
+      "tool_rounds": 7,
+      "tokens": {
+        "input": 18560,
+        "output": 4357,
+        "cache_read": 230528,
+        "cache_write": 0,
+        "reasoning": 3348,
+        "total": 253445
+      },
+      "cost_usd": 0.010273,
+      "elapsed_seconds": 43.0,
+      "agent_duration_ms": 35145,
+      "extra_columns": []
+    }
+  ]
+}

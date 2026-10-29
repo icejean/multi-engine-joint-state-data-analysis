@@ -1,0 +1,425 @@
+{
+  "runs": [
+    {
+      "question_id": 3,
+      "datasource": "financial",
+      "chat_id": "554956cc5b3842d6ad74273c953d5960",
+      "final_sql": "SELECT DISTINCT CASE WHEN AVG(a13) > AVG(a12) THEN '1996' ELSE '1995' END AS higher_unemployment_year FROM dstr;",
+      "sql_history": [
+        "SELECT DISTINCT CASE WHEN AVG(a13) > AVG(a12) THEN '1996' ELSE '1995' END AS higher_unemployment_year FROM dstr;"
+      ],
+      "agent_text": "1996 年的平均失业率更高。\n\n| higher_unemployment_year |\n|---|\n| 1996 |\n\nAVG(a12)（1995 失业率） < AVG(a13)（1996 失业率），故 1996 占比更高。",
+      "tool_calls": 7,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 6,
+      "tool_rounds": 5,
+      "tokens": {
+        "input": 20063,
+        "output": 2865,
+        "cache_read": 172032,
+        "cache_write": 0,
+        "reasoning": 2313,
+        "total": 194960
+      },
+      "cost_usd": 0.008428,
+      "elapsed_seconds": 32.63,
+      "agent_duration_ms": 24620,
+      "extra_columns": []
+    },
+    {
+      "question_id": 22,
+      "datasource": "financial",
+      "chat_id": "a254a995038246fa905ec456f234156c",
+      "final_sql": "SELECT DISTINCT dsp.dsp_id FROM trns JOIN dsp ON dsp.ref2 = trns.ref1 WHERE trns.dt = '1998-09-02' AND trns.amnt = 5100",
+      "sql_history": [
+        "SELECT dsp.dsp_id, dsp.ref1 AS client_id, dsp.ref2 AS account_id, dsp.typ FROM trns JOIN dsp ON dsp.ref2 = trns.ref1 WHERE trns.dt = '1998-09-02' AND trns.amnt = 5100",
+        "SELECT * FROM trns WHERE dt = '1998-09-02' AND amnt = 5100",
+        "SELECT DISTINCT dsp.dsp_id FROM trns JOIN dsp ON dsp.ref2 = trns.ref1 WHERE trns.dt = '1998-09-02' AND trns.amnt = 5100"
+      ],
+      "agent_text": "Disposition IDs: **1719, 4474, 4942, 5393**\n\n(四笔 1998-09-02 金额 5100 的取现交易，各自账户的 disposition id)",
+      "tool_calls": 5,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 15614,
+        "output": 3075,
+        "cache_read": 126080,
+        "cache_write": 0,
+        "reasoning": 2593,
+        "total": 144769
+      },
+      "cost_usd": 0.006577,
+      "elapsed_seconds": 34.24,
+      "agent_duration_ms": 26459,
+      "extra_columns": []
+    },
+    {
+      "question_id": 30,
+      "datasource": "financial",
+      "chat_id": "e655c0886959462b860902eade970512",
+      "final_sql": "SELECT CAST(SUM(stts = 'C') AS REAL) * 100 / COUNT(ref1) FROM ln WHERE amnt < 100000",
+      "sql_history": [
+        "SELECT COUNT(*) AS total_loans, SUM(CASE WHEN amnt < 100000 THEN 1 ELSE 0 END) AS loans_lt_100k, SUM(CASE WHEN amnt < 100000 AND stts='C' THEN 1 ELSE 0 END) AS lt100k_c, SUM(CASE WHEN stts='C' THEN 1 ELSE 0 END) AS all_c FROM ln",
+        "SELECT CAST(SUM(stts = 'C') AS REAL) * 100 / COUNT(ref1) FROM ln WHERE amnt < 100000"
+      ],
+      "agent_text": "**46.885245901639344%**（约 46.89%）\n\n口径：在贷款金额 < 100,000 的账户中，状态为 'C'（running contract, ok so far）的比例 = 该条件下 status='C' 的账户数 / 金额<100,000 的账户总数 × 100（143 / 305 × 100）。\n\n最终 SQL：\n```sql\nSELECT CAST(SUM(stts = 'C') AS REAL) * 100 / COUNT(ref1) FROM ln WHERE amnt < 100000\n```",
+      "tool_calls": 7,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 6,
+      "tool_rounds": 5,
+      "tokens": {
+        "input": 17009,
+        "output": 5995,
+        "cache_read": 171776,
+        "cache_write": 0,
+        "reasoning": 5280,
+        "total": 194780
+      },
+      "cost_usd": 0.00887,
+      "elapsed_seconds": 52.6,
+      "agent_duration_ms": 44589,
+      "extra_columns": []
+    },
+    {
+      "question_id": 42,
+      "datasource": "financial",
+      "chat_id": "a4246805865a4694ad47957f2a33e1b9",
+      "final_sql": "SELECT COUNT(*) AS cnt FROM clnt c JOIN dstr d ON c.ref1 = d.dstr_id WHERE d.a3 = 'south Bohemia' AND NOT EXISTS ( SELECT 1 FROM dsp JOIN crd ON crd.ref1 = dsp.dsp_id WHERE dsp.ref1 = c.clnt_id );",
+      "sql_history": [
+        "SELECT COUNT(*) AS cnt FROM clnt c JOIN dstr d ON c.ref1 = d.dstr_id WHERE d.a3 = 'South Bohemia' AND NOT EXISTS ( SELECT 1 FROM dsp JOIN crd ON crd.ref1 = dsp.dsp_id WHERE dsp.ref1 = c.clnt_id );",
+        "SELECT DISTINCT a3 FROM dstr",
+        "SELECT COUNT(*) AS cnt FROM clnt c JOIN dstr d ON c.ref1 = d.dstr_id WHERE d.a3 = 'south Bohemia' AND NOT EXISTS ( SELECT 1 FROM dsp JOIN crd ON crd.ref1 = dsp.dsp_id WHERE dsp.ref1 = c.clnt_id );"
+      ],
+      "agent_text": "答案：**371**\n\n南波希米亚（south Bohemia）地区未持有信用卡的账户持有人共有 **371** 人。\n\n口径说明：\n- 「account holders in South Bohemia」= 居住地位于该地区的客户（`clnt.ref1 → dstr.dstr_id`，`dstr.a3 = 'south Bohemia'`）。\n- 「do not own credit cards」= 该客户没有任何一张卡：`crd.ref1 → dsp.dsp_id`，`dsp.ref1 = clnt_id`，用 `NOT EXISTS` 取「没有卡」的那部分。",
+      "tool_calls": 5,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 15452,
+        "output": 1394,
+        "cache_read": 124160,
+        "cache_write": 0,
+        "reasoning": 812,
+        "total": 141006
+      },
+      "cost_usd": 0.00603,
+      "elapsed_seconds": 21.67,
+      "agent_duration_ms": 13523,
+      "extra_columns": []
+    },
+    {
+      "question_id": 43,
+      "datasource": "financial",
+      "chat_id": "49629d4593ba49958e61edd5056e72aa",
+      "final_sql": "SELECT d.a2 AS district, SUM(l.amnt) AS total_active_loan FROM ln l JOIN acct a ON l.ref1 = a.accn_id JOIN dstr d ON a.ref1 = d.dstr_id WHERE l.stts IN ('C','D') GROUP BY d.a2 ORDER BY total_active_loan DESC LIMIT 1",
+      "sql_history": [
+        "SELECT d.a2 AS district, SUM(l.amnt) AS total_active_loan FROM ln l JOIN acct a ON l.ref1 = a.accn_id JOIN dstr d ON a.ref1 = d.dstr_id WHERE l.stts IN ('C','D') GROUP BY d.a2 ORDER BY total_active_loan DESC LIMIT 1"
+      ],
+      "agent_text": "**答案：Hl.m. Praha** —— 该行政区的活跃贷款（stts 为 'C'/'D' 的 running contract）总额最高，达 9,291,852。\n\n依据：`ln`(贷款) → `acct`(账户，用 acct.ref1 关联开户分支) → `dstr`(行政区)，按区汇总活跃贷款金额降序取第一。",
+      "tool_calls": 4,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 15518,
+        "output": 1576,
+        "cache_read": 96384,
+        "cache_write": 0,
+        "reasoning": 1215,
+        "total": 113478
+      },
+      "cost_usd": 0.005313,
+      "elapsed_seconds": 21.84,
+      "agent_duration_ms": 13850,
+      "extra_columns": []
+    },
+    {
+      "question_id": 44,
+      "datasource": "financial",
+      "chat_id": "64244912efc54b7eab5701ec54101767",
+      "final_sql": "SELECT AVG(ln.amnt) AS avg_loan_amount FROM ln JOIN dsp ON ln.ref1 = dsp.ref2 JOIN clnt ON dsp.ref1 = clnt.clnt_id WHERE clnt.gndr = 'M' AND dsp.typ = 'OWNER'",
+      "sql_history": [
+        "SELECT AVG(ln.amnt) AS avg_loan_amount FROM ln JOIN dsp ON ln.ref1 = dsp.ref2 JOIN clnt ON dsp.ref1 = clnt.clnt_id WHERE clnt.gndr = 'M' AND dsp.typ = 'OWNER'"
+      ],
+      "agent_text": "Male borrowers 的平均贷款金额为 **147501.74**。\n\n（计算口径：`ln` 贷款表按账户关联 `dsp`（限 `typ='OWNER'` 账户所有者）再关联 `clnt` 客户表，筛选 `gndr='M'`，取 `AVG(ln.amnt)`。）",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 15017,
+        "output": 562,
+        "cache_read": 65920,
+        "cache_write": 0,
+        "reasoning": 250,
+        "total": 81499
+      },
+      "cost_usd": 0.004105,
+      "elapsed_seconds": 15.46,
+      "agent_duration_ms": 7651,
+      "extra_columns": []
+    },
+    {
+      "question_id": 53,
+      "datasource": "financial",
+      "chat_id": "2f251dffcee24458b5cf49eb91d149b5",
+      "final_sql": "SELECT DISTINCT d.dstr_id AS district_id FROM trns t JOIN acct a ON t.ref1 = a.accn_id JOIN dstr d ON a.ref1 = d.dstr_id WHERE t.amnt > 10000 AND t.dt >= '1997-01-01' AND t.dt < '1998-01-01' ORDER BY d.dstr_id",
+      "sql_history": [
+        "SELECT COUNT(*) AS n, MIN(dt) AS min_dt, MAX(dt) AS max_dt, MAX(amnt) AS max_amnt FROM trns",
+        "SELECT d.dstr_id, d.a2, COUNT(*) AS cnt, SUM(t.amnt) AS total FROM trns t JOIN acct a ON t.ref1 = a.accn_id JOIN dstr d ON a.ref1 = d.dstr_id WHERE t.amnt > 10000 AND t.dt >= '1997-01-01' AND t.dt < '1998-01-01' GROUP BY d.dstr_id, d.a2 ORDER BY cnt DESC",
+        "SELECT COUNT(*) AS total_1997, SUM(CASE WHEN amnt > 10000 THEN 1 ELSE 0 END) AS big_1997, AVG(amnt) AS avg_amnt FROM trns WHERE dt >= '1997-01-01' AND dt < '1998-01-01'",
+        "SELECT DISTINCT d.dstr_id AS district_id FROM trns t JOIN acct a ON t.ref1 = a.accn_id JOIN dstr d ON a.ref1 = d.dstr_id WHERE t.amnt > 10000 AND t.dt >= '1997-01-01' AND t.dt < '1998-01-01' ORDER BY d.dstr_id"
+      ],
+      "agent_text": "数据源 `financial` 查询完成（已停止，不再执行其它 SQL）。\n\n**答：1997 年有单笔交易金额超过 10,000 的地区（district）共 27 个。**\n\ndistrict_id：1, 5, 6, 8, 9, 15, 16, 18, 19, 28, 31, 33, 36, 38, 51, 52, 53, 54, 61, 64, 66, 68, 69, 70, 72, 73, 74\n\n对应地区名（供参考）：Hl.m. Praha、Kolin、Kutna Hora、Mlada Boleslav、Nymburk、Cesky Krumlov、Jindrichuv Hradec、Pisek、Prachatice、Plzen-sever、Tachov、Decin、Liberec、Louny、Trutnov、Usti nad Orlici、Blansko、Brno-mesto、Trebic、Zlin、Zdar nad Sazavou、Frydek-Mistek、Jesenik、Karvina、Olomouc、Opava、Ostrava-mesto。\n\n最终执行的 SQL：\n\n```sql\nSELECT DISTINCT d.dstr_id AS district_id\nFROM trns t\nJOIN acct a ON t.ref1 = a.accn_id\nJOIN dstr d  ON a.ref1 = d.dstr_id\nWHERE t.amnt > 10000\n  AND t.dt >= '1997-01-01' AND t.dt < '1998-01-01'\nORDER BY d.dstr_id;\n```\n\n依据：`trns.ref1 → acct.accn_id`，`acct.ref1` 为账户开户分支所属地区（notes §7）；`> 10000` 为严格大于；`which districts` 取地区唯一实体（DISTINCT），输出地区 id（notes §9：transactions 按 district → 返回 id）。",
+      "tool_calls": 10,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 8,
+      "tool_rounds": 7,
+      "tokens": {
+        "input": 21700,
+        "output": 28417,
+        "cache_read": 285824,
+        "cache_write": 0,
+        "reasoning": 27073,
+        "total": 335941
+      },
+      "cost_usd": 0.018998,
+      "elapsed_seconds": 181.16,
+      "agent_duration_ms": 172907,
+      "extra_columns": []
+    },
+    {
+      "question_id": 57,
+      "datasource": "financial",
+      "chat_id": "a0554daa50ce409d9b1a8936a74ac4aa",
+      "final_sql": "SELECT T1.ref1 FROM trns AS T1 INNER JOIN acct AS T2 ON T1.ref1 = T2.accn_id WHERE YEAR(T1.dt) = 1998 AND T1.oprt = 'VYBER KARTOU' AND T1.amnt < (SELECT AVG(amnt) FROM trns WHERE YEAR(dt) = 1998)",
+      "sql_history": [
+        "SELECT DISTINCT oprt FROM trns",
+        "SELECT trns_id, ref1, dt, typ, oprt, amnt FROM trns LIMIT 5",
+        "SELECT T1.ref1 FROM trns AS T1 INNER JOIN acct AS T2 ON T1.ref1 = T2.accn_id WHERE YEAR(T1.dt) = 1998 AND T1.oprt = 'VYBER KARTOU' AND T1.amnt < (SELECT AVG(amnt) FROM trns WHERE YEAR(dt) = 1998)"
+      ],
+      "agent_text": "1998 年有过信用卡取现（`VYBER KARTOU`）且金额低于该年信用卡交易平均额的账户持有人编号（`ref1`）：**14, 33, 34, 43, 48, 51**（按每笔交易列出，共 27 行）。\n\n```sql\nSELECT T1.ref1\nFROM trns AS T1\nINNER JOIN acct AS T2 ON T1.ref1 = T2.accn_id\nWHERE YEAR(T1.dt) = 1998\n  AND T1.oprt = 'VYBER KARTOU'\n  AND T1.amnt < (SELECT AVG(amnt) FROM trns WHERE YEAR(dt) = 1998)\n```\n\n说明：信用卡取现由 evidence 指定为 `oprt='VYBER KARTOU'`；平均额取 1998 年全部交易的平均金额（子查询口径），再筛出低于该平均的信用卡取现账户。",
+      "tool_calls": 10,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 7,
+      "tool_rounds": 6,
+      "tokens": {
+        "input": 22640,
+        "output": 6143,
+        "cache_read": 214784,
+        "cache_write": 0,
+        "reasoning": 5226,
+        "total": 243567
+      },
+      "cost_usd": 0.010904,
+      "elapsed_seconds": 52.07,
+      "agent_duration_ms": 44143,
+      "extra_columns": []
+    },
+    {
+      "question_id": 61,
+      "datasource": "financial",
+      "chat_id": "741990d571014582934675817ad54668",
+      "final_sql": "SELECT dsp.typ FROM dsp JOIN acct ON dsp.ref2 = acct.accn_id JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE dstr.a11 > 8000 AND dstr.a11 <= 9000 AND dsp.typ <> 'OWNER'",
+      "sql_history": [
+        "SELECT DISTINCT typ FROM dsp",
+        "SELECT DISTINCT frqn FROM acct",
+        "SELECT MIN(a11) AS mn, MAX(a11) AS mx FROM dstr",
+        "SELECT COUNT(*) AS n FROM dsp JOIN acct ON dsp.ref2=acct.accn_id JOIN dstr ON acct.ref1=dstr.dstr_id WHERE dstr.a11>8000 AND dstr.a11<=9000 AND dsp.typ<>'OWNER'",
+        "SELECT dsp.typ FROM dsp JOIN acct ON dsp.ref2 = acct.accn_id JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE dstr.a11 > 8000 AND dstr.a11 <= 9000 AND dsp.typ <> 'OWNER'"
+      ],
+      "agent_text": "最终答案（已执行并停止）：\n\n**不满足贷款资格的账户类型：`DISPONENT`**\n\n依据：`disp.type = 'OWNER'` 才具备贷款资格，因此不具备资格的是 `DISPONENT`。筛选条件为账户所在分支地区（`acct.ref1 → dstr.dstr_id`）的平均工资 `a11` 满足 `> 8000` 且 `<= 9000`。\n\n最终 SQL：\n```sql\nSELECT dsp.typ\nFROM dsp\nJOIN acct ON dsp.ref2 = acct.accn_id\nJOIN dstr ON acct.ref1 = dstr.dstr_id\nWHERE dstr.a11 > 8000 AND dstr.a11 <= 9000\n  AND dsp.typ <> 'OWNER'\n```\n\n结果：共 461 行，全部为 `DISPONENT`。",
+      "tool_calls": 13,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 10,
+      "tool_rounds": 9,
+      "tokens": {
+        "input": 19963,
+        "output": 7181,
+        "cache_read": 324736,
+        "cache_write": 0,
+        "reasoning": 5729,
+        "total": 351880
+      },
+      "cost_usd": 0.013898,
+      "elapsed_seconds": 56.04,
+      "agent_duration_ms": 48343,
+      "extra_columns": []
+    },
+    {
+      "question_id": 64,
+      "datasource": "financial",
+      "chat_id": "14817c1300424cd9973742cbd7fb2a4a",
+      "final_sql": "SELECT AVG(T1.a15) FROM dstr AS T1 INNER JOIN acct AS T2 ON T1.dstr_id = T2.ref1 WHERE YEAR(T2.dt) >= 1997 AND T1.a15 > 4000",
+      "sql_history": [
+        "SELECT a3, COUNT(*) AS n_district, SUM(a15) AS crimes95, MAX(a15) AS max_d FROM dstr GROUP BY a3 ORDER BY crimes95 DESC",
+        "SELECT a3, COUNT(*) AS n, SUM(CASE WHEN a15 > 4000 THEN 1 ELSE 0 END) AS n_gt4000 FROM dstr GROUP BY a3",
+        "SELECT DISTINCT d.a3 FROM dstr d JOIN acct a ON a.ref1 = d.dstr_id WHERE a.dt >= '1997-01-01'",
+        "SELECT a3, a2, a15 FROM dstr WHERE a15 > 4000 ORDER BY a3, a15",
+        "SELECT AVG(T1.a15) FROM dstr AS T1 INNER JOIN acct AS T2 ON T1.dstr_id = T2.ref1 WHERE YEAR(T2.dt) >= 1997 AND T1.a15 > 4000"
+      ],
+      "agent_text": "平均犯罪数为 **29670.4495**。\n\n（口径：`dstr.a15` 为 1995 年犯罪数，按题面要求筛选 `a15 > 4000` 的区县，并只保留其所属区域中在 1997 年及以后开立过账户的记录，再对这些行取 `AVG(a15)`。）",
+      "tool_calls": 11,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 9,
+      "tool_rounds": 8,
+      "tokens": {
+        "input": 23268,
+        "output": 9401,
+        "cache_read": 294528,
+        "cache_write": 0,
+        "reasoning": 8354,
+        "total": 327197
+      },
+      "cost_usd": 0.014137,
+      "elapsed_seconds": 75.24,
+      "agent_duration_ms": 67565,
+      "extra_columns": []
+    },
+    {
+      "question_id": 80,
+      "datasource": "financial",
+      "chat_id": "85dfb5bc68464ca8b8b1cf0d385bfcd1",
+      "final_sql": "SELECT CAST(SUM(CASE WHEN c.gndr = 'F' THEN 1 ELSE 0 END) AS DOUBLE) * 100 / COUNT(*) AS percentage FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON a.accn_id = d.ref2 JOIN dstr ds ON ds.dstr_id = a.ref1 WHERE ds.a11 > 10000",
+      "sql_history": [
+        "SELECT dstr_id, a2, a3, a11 FROM dstr WHERE a11 > 10000 ORDER BY a11 DESC",
+        "SELECT COUNT(*) AS total_rows, COUNT(DISTINCT c.clnt_id) AS distinct_clients, SUM(CASE WHEN c.gndr='F' THEN 1 ELSE 0 END) AS female_rows, CAST(SUM(CASE WHEN c.gndr='F' THEN 1 ELSE 0 END) AS DOUBLE)*100/COUNT(*) AS pct_rows FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON a.accn_id = d.ref2 JOIN dstr ds ON ds.dstr_id = a.ref1 WHERE ds.a11 > 10000",
+        "SELECT COUNT(*) AS total_rows, SUM(CASE WHEN c.gndr='F' THEN 1 ELSE 0 END) AS female_rows, CAST(SUM(CASE WHEN c.gndr='F' THEN 1 ELSE 0 END) AS DOUBLE)*100/COUNT(*) AS pct_rows FROM clnt c JOIN dstr ds ON ds.dstr_id = c.ref1 WHERE ds.a11 > 10000",
+        "SELECT COUNT(*) AS total_rows, SUM(CASE WHEN c.gndr='F' THEN 1 ELSE 0 END) AS female_rows, CAST(SUM(CASE WHEN c.gndr='F' THEN 1 ELSE 0 END) AS DOUBLE)*100/COUNT(*) AS pct_rows FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id AND d.typ = 'OWNER' JOIN acct a ON a.accn_id = d.ref2 JOIN dstr ds ON ds.dstr_id = a.ref1 WHERE ds.a11 > 10000",
+        "SELECT CAST(SUM(CASE WHEN c.gndr = 'F' THEN 1 ELSE 0 END) AS DOUBLE) * 100 / COUNT(*) AS percentage FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON a.accn_id = d.ref2 JOIN dstr ds ON ds.dstr_id = a.ref1 WHERE ds.a11 > 10000"
+      ],
+      "agent_text": "**结果：50.38819875776397%**\n\n查询逻辑：\n- 用 `dstr.a11 > 10000` 筛出平均工资超过 10000 的地区（共 8 个：Praha、Mlada Boleslav、Plzen-mesto 等）；\n- 「开户所在地区」按 `acct.ref1`（账户开户分支所属地区）走 `clnt → dsp → acct → dstr` 链；\n- 百分比按行数口径：`SUM(gndr='F') * 100 / COUNT(*)`。\n\n即：在这些地区开户的客户中，女性（gender='F'）占比约 **50.39%**。\n\n```sql\nSELECT CAST(SUM(CASE WHEN c.gndr = 'F' THEN 1 ELSE 0 END) AS DOUBLE) * 100 / COUNT(*) AS percentage\nFROM clnt c\nJOIN dsp d ON d.ref1 = c.clnt_id\nJOIN acct a ON a.accn_id = d.ref2\nJOIN dstr ds ON ds.dstr_id = a.ref1\nWHERE ds.a11 > 10000;\n```",
+      "tool_calls": 8,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 8,
+      "tool_rounds": 7,
+      "tokens": {
+        "input": 16435,
+        "output": 7864,
+        "cache_read": 232576,
+        "cache_write": 0,
+        "reasoning": 6651,
+        "total": 256875
+      },
+      "cost_usd": 0.011015,
+      "elapsed_seconds": 58.82,
+      "agent_duration_ms": 51002,
+      "extra_columns": []
+    },
+    {
+      "question_id": 91,
+      "datasource": "financial",
+      "chat_id": "cb3e648b966848fe81ba5f3d83dd5662",
+      "final_sql": "SELECT SUM(t.amnt) AS total_paid FROM trns t JOIN dsp d ON d.ref2 = t.ref1 WHERE d.ref1 = 617 AND d.typ = 'OWNER' AND t.typ = 'VYDAJ' AND t.dt >= '1998-01-01' AND t.dt < '1999-01-01'",
+      "sql_history": [
+        "SELECT DISTINCT typ FROM trns",
+        "SELECT * FROM trns LIMIT 5",
+        "SELECT t.typ, COUNT(*) AS n, SUM(t.amnt) AS s FROM trns t JOIN dsp d ON d.ref2 = t.ref1 JOIN clnt c ON c.clnt_id = d.ref1 WHERE d.ref1 = 617 AND d.typ = 'OWNER' AND t.dt >= '1998-01-01' AND t.dt < '1999-01-01' GROUP BY t.typ",
+        "SELECT d.typ, COUNT(*) AS n, COUNT(DISTINCT d.ref2) AS accts FROM dsp d WHERE d.ref1 = 617 GROUP BY d.typ",
+        "SELECT SUM(t.amnt) AS total_paid FROM trns t JOIN dsp d ON d.ref2 = t.ref1 WHERE d.ref1 = 617 AND d.typ = 'OWNER' AND t.typ = 'VYDAJ' AND t.dt >= '1998-01-01' AND t.dt < '1999-01-01'"
+      ],
+      "agent_text": "客户 617 在 1998 年支付（VYDAJ 支出交易）总额为 **143545**。\n\n- 口径：`clnt 617 → dsp(OWNER) → acct → trns`，筛选 `trns.typ='VYDAJ'`（支出/付款）且交易日期在 1998 年。\n- 该客户名下仅 1 个 OWNER 账户，无 DISPONENT，无重复放大。",
+      "tool_calls": 9,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 7,
+      "tool_rounds": 6,
+      "tokens": {
+        "input": 16275,
+        "output": 4782,
+        "cache_read": 191872,
+        "cache_write": 0,
+        "reasoning": 3962,
+        "total": 212929
+      },
+      "cost_usd": 0.00899,
+      "elapsed_seconds": 44.99,
+      "agent_duration_ms": 37046,
+      "extra_columns": []
+    },
+    {
+      "question_id": 97,
+      "datasource": "financial",
+      "chat_id": "6c11723dd6e345be8b792eb4ef7b00e1",
+      "final_sql": "SELECT CAST(SUM(CASE WHEN c.gndr = 'F' THEN 1 ELSE 0 END) AS DOUBLE) * 100 / COUNT(*) AS female_proportion_pct FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON a.accn_id = d.ref2 JOIN dstr ds ON ds.dstr_id = a.ref1 WHERE ds.a3 = 'Prague'",
+      "sql_history": [
+        "SELECT DISTINCT a2, a3 FROM dstr WHERE a2 LIKE '%ragu%' OR a3 LIKE '%ragu%' OR a2 LIKE '%raha%' OR a3 LIKE '%raha%'",
+        "SELECT COUNT(*) AS rows_total, COUNT(CASE WHEN c.gndr='F' THEN 1 END) AS rows_female, COUNT(DISTINCT c.clnt_id) AS clients_total, COUNT(DISTINCT CASE WHEN c.gndr='F' THEN c.clnt_id END) AS clients_female FROM clnt c JOIN dsp d ON d.ref1=c.clnt_id JOIN acct a ON a.accn_id=d.ref2 JOIN dstr ds ON ds.dstr_id=a.ref1 WHERE ds.a3='Prague'",
+        "SELECT CAST(SUM(CASE WHEN c.gndr = 'F' THEN 1 ELSE 0 END) AS DOUBLE) * 100 / COUNT(*) AS female_proportion_pct FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON a.accn_id = d.ref2 JOIN dstr ds ON ds.dstr_id = a.ref1 WHERE ds.a3 = 'Prague'"
+      ],
+      "agent_text": "在 Prague 分行持有账户的客户中，女性占比为 **49.78%**（334 名女性 / 671 名客户）。\n\n- 口径：`clnt → dsp → acct → dstr`，筛选 `dstr.a3 = 'Prague'`（即 Hl.m. Praha 分行），`gndr = 'F'` 为女性。\n- 计算：334 × 100 / 671 = 49.77645305514158",
+      "tool_calls": 5,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 15413,
+        "output": 2356,
+        "cache_read": 126336,
+        "cache_write": 0,
+        "reasoning": 1699,
+        "total": 144105
+      },
+      "cost_usd": 0.006355,
+      "elapsed_seconds": 25.98,
+      "agent_duration_ms": 18467,
+      "extra_columns": []
+    },
+    {
+      "question_id": 98,
+      "datasource": "financial",
+      "chat_id": "10af9c77a3a4435b987679ef332218fc",
+      "final_sql": "SELECT CAST(SUM(CASE WHEN c.gndr = 'M' THEN 1 ELSE 0 END) AS DOUBLE) * 100 / COUNT(*) AS pct_male_weekly FROM clnt c JOIN dsp d ON c.clnt_id = d.ref1 JOIN acct a ON d.ref2 = a.accn_id WHERE a.frqn = 'POPLATEK TYDNE'",
+      "sql_history": [
+        "SELECT DISTINCT frqn FROM acct",
+        "SELECT CAST(SUM(CASE WHEN c.gndr = 'M' THEN 1 ELSE 0 END) AS DOUBLE) * 100 / COUNT(*) AS pct_male_weekly FROM clnt c JOIN dsp d ON c.clnt_id = d.ref1 JOIN acct a ON d.ref2 = a.accn_id WHERE a.frqn = 'POPLATEK TYDNE'"
+      ],
+      "agent_text": "男性客户占申请周结单（`POPLATEK TYDNE`）客户的比例为 **52.13%**。\n\n（口径：`clnt → dsp → acct` 链路，筛 `acct.frqn='POPLATEK TYDNE'`，`gndr='M'` 行数 ÷ 总行数 × 100）",
+      "tool_calls": 4,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 15321,
+        "output": 1113,
+        "cache_read": 95232,
+        "cache_write": 0,
+        "reasoning": 703,
+        "total": 111666
+      },
+      "cost_usd": 0.005123,
+      "elapsed_seconds": 19.6,
+      "agent_duration_ms": 11829,
+      "extra_columns": []
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "runs": [
+    {
+      "question_id": 13,
+      "datasource": "financial",
+      "chat_id": "66569df3f85e4c4cb15b0c14825982c8",
+      "final_sql": "SELECT ref1 AS accn_id FROM trns WHERE dt = (SELECT MIN(dt) FROM trns WHERE dt >= '1995-01-01' AND dt < '1996-01-01')",
+      "sql_history": [
+        "SELECT dt, COUNT(*) AS c, COUNT(DISTINCT ref1) AS accs FROM trns WHERE dt >= '1995-01-01' AND dt < '1996-01-01' GROUP BY dt ORDER BY dt ASC LIMIT 5",
+        "SELECT ref1 AS accn_id FROM trns WHERE dt = (SELECT MIN(dt) FROM trns WHERE dt >= '1995-01-01' AND dt < '1996-01-01')"
+      ],
+      "agent_text": "已执行最终查询。\n\n**问题：** List out the accounts who have the earliest trading date in 1995?\n\n**答案逻辑：** 交易流水表 `trns` 中，取 1995 年内的最早交易日期（动态 `MIN(dt)`，未硬编码），返回该日期对应的账户 `accn_id` 列表。\n\n```sql\nSELECT ref1 AS accn_id\nFROM trns\nWHERE dt = (SELECT MIN(dt) FROM trns WHERE dt >= '1995-01-01' AND dt < '1996-01-01')\n```\n\n1995 年最早交易日为 `1995-01-01`，共 359 笔交易，涉及账户（含重复行，按原始行返回）如：9、35、36、40、50、66、71、83、90、104、107、112、119、123、126、128、153、160、163、168、201 ……",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 15339,
+        "output": 3518,
+        "cache_read": 97408,
+        "cache_write": 0,
+        "reasoning": 2985,
+        "total": 116265
+      },
+      "cost_usd": 0.00586,
+      "elapsed_seconds": 32.51,
+      "agent_duration_ms": 24694,
+      "extra_columns": []
+    },
+    {
+      "question_id": 83,
+      "datasource": "financial",
+      "chat_id": "9a465b0614164566b84b3b00882b9fcc",
+      "final_sql": "SELECT SUM(CASE WHEN a3 = 'east Bohemia' THEN a16 ELSE 0 END) - SUM(CASE WHEN a3 = 'north Bohemia' THEN a16 ELSE 0 END) AS diff FROM dstr",
+      "sql_history": [
+        "SELECT SUM(CASE WHEN a3 = 'east Bohemia' THEN a16 ELSE 0 END) - SUM(CASE WHEN a3 = 'north Bohemia' THEN a16 ELSE 0 END) AS diff FROM dstr"
+      ],
+      "agent_text": "The difference in the number of committed crimes in 1996 (East Bohemia − North Bohemia) is **-17734**.\n\n问的是 East 减 North 的差，结果为 **-17734**（即东波希米亚比北波希米亚少 17734 起）。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 14928,
+        "output": 682,
+        "cache_read": 65792,
+        "cache_write": 0,
+        "reasoning": 399,
+        "total": 81402
+      },
+      "cost_usd": 0.004123,
+      "elapsed_seconds": 16.04,
+      "agent_duration_ms": 8165,
+      "extra_columns": []
+    }
+  ]
+}

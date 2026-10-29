@@ -1,0 +1,213 @@
+{
+  "nodes": {
+    "Movie": {
+      "count": 218828,
+      "properties": {
+        "name": {
+          "present": 218828,
+          "type": "String",
+          "sample": "!Women Art Revolution"
+        },
+        "original_language": {
+          "present": 170487,
+          "type": "List",
+          "sample": [
+            "Spanish"
+          ]
+        },
+        "runtime_minute": {
+          "present": 109337,
+          "type": "Float",
+          "sample": 118.0
+        },
+        "filming_location": {
+          "present": 19222,
+          "type": "List",
+          "sample": [
+            "California"
+          ]
+        },
+        "global_box_office_usd": {
+          "present": 1263,
+          "type": "Float",
+          "sample": 180563636.0
+        }
+      }
+    },
+    "FilmSeries": {
+      "count": 596,
+      "properties": {
+        "name": {
+          "present": 596,
+          "type": "String",
+          "sample": "08/15 trilogy"
+        }
+      }
+    },
+    "ProductionCompany": {
+      "count": 3178,
+      "properties": {
+        "name": {
+          "present": 3178,
+          "type": "String",
+          "sample": "10 West Studios"
+        },
+        "country": {
+          "present": 2278,
+          "type": "String",
+          "sample": "Belgium"
+        }
+      }
+    },
+    "Award": {
+      "count": 1583,
+      "properties": {
+        "name": {
+          "present": 1583,
+          "type": "String",
+          "sample": "1st prize for short film at the international festival of Thonon-les-Bains"
+        }
+      }
+    },
+    "Country": {
+      "count": 205,
+      "properties": {
+        "name": {
+          "present": 205,
+          "type": "String",
+          "sample": "Afghanistan"
+        }
+      }
+    },
+    "Genre": {
+      "count": 694,
+      "properties": {
+        "name": {
+          "present": 694,
+          "type": "String",
+          "sample": "Afrofuturism"
+        }
+      }
+    },
+    "Person": {
+      "count": 234309,
+      "properties": {
+        "name": {
+          "present": 234309,
+          "type": "String",
+          "sample": "\"Weird Al\" Yankovic"
+        },
+        "gender": {
+          "present": 222059,
+          "type": "String",
+          "sample": "male"
+        },
+        "country_of_citizenship": {
+          "present": 189340,
+          "type": "List",
+          "sample": [
+            "Germany"
+          ]
+        },
+        "place_of_birth": {
+          "present": 169638,
+          "type": "String",
+          "sample": "Parchim"
+        },
+        "date_of_birth": {
+          "present": 165357,
+          "type": "Date",
+          "sample": "1932-12-04"
+        },
+        "date_of_death": {
+          "present": 64221,
+          "type": "Date",
+          "sample": "1990-04-12"
+        }
+      }
+    }
+  },
+  "relationships": {
+    "releasedIn": {
+      "count": 54218,
+      "from": [
+        "Movie"
+      ],
+      "to": [
+        "Country"
+      ]
+    },
+    "directedBy": {
+      "count": 200966,
+      "from": [
+        "Movie"
+      ],
+      "to": [
+        "Person"
+      ]
+    },
+    "hasGenre": {
+      "count": 251667,
+      "from": [
+        "Movie"
+      ],
+      "to": [
+        "Genre"
+      ]
+    },
+    "writtenBy": {
+      "count": 126050,
+      "from": [
+        "Movie"
+      ],
+      "to": [
+        "Person"
+      ]
+    },
+    "partOfSeries": {
+      "count": 2476,
+      "from": [
+        "Movie"
+      ],
+      "to": [
+        "FilmSeries"
+      ]
+    },
+    "producedBy": {
+      "count": 33350,
+      "from": [
+        "Movie"
+      ],
+      "to": [
+        "ProductionCompany"
+      ]
+    },
+    "receivesAward": {
+      "count": 10765,
+      "from": [
+        "Movie"
+      ],
+      "to": [
+        "Award"
+      ]
+    },
+    "hasCastMember": {
+      "count": 981423,
+      "from": [
+        "Movie"
+      ],
+      "to": [
+        "Person"
+      ]
+    },
+    "originatesFrom": {
+      "count": 231287,
+      "from": [
+        "Movie"
+      ],
+      "to": [
+        "Country"
+      ]
+    }
+  }
+}

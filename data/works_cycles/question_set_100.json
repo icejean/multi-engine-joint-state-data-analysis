@@ -1,0 +1,1129 @@
+{
+  "name": "works_cycles_question_set_100",
+  "description": "三梯度测试用 100 道有区分度的题(优先多表 join)",
+  "selection": {
+    "multi_join_kept": 73,
+    "one_join_added": 27
+  },
+  "questions": [
+    {
+      "db_id": "works_cycles",
+      "question": "Add the number of businesses that indicate their home address as their address and those whose address corresponds to the shipping address.",
+      "evidence": "their home address as their address refers to AddressTypeID = 2; address corresponds to the shipping address refers to AddressTypeID = 5",
+      "SQL": "SELECT SUM(CASE WHEN T2.Name = 'Home' THEN 1 ELSE 0 END) , SUM(CASE WHEN T2.Name = 'Shipping' THEN 1 ELSE 0 END) FROM BusinessEntityAddress AS T1 INNER JOIN AddressType AS T2 ON T1.AddressTypeID = T2.AddressTypeID",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "CASE"
+      ],
+      "domain": "Geography"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Among the active employees with over 10 hours of sick leave, what is the percentage of the employees with over 20 vacation hours?",
+      "evidence": "CurrentFlag = 1 refers to the active status of employees; Percentage = Divide (Count (BusinessEntityID (CurrentFlag = 1 & VacationHours >20 & SickLeaveHours > 10)), Count (BusinessEntityID (CurrentFlag = 1 & SickLeaveHours>10))) * 100;",
+      "SQL": "SELECT CAST(SUM(CASE WHEN T2.VacationHours > 20 THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(T1.BusinessEntityID) FROM EmployeePayHistory AS T1 INNER JOIN Employee AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID WHERE T2.CurrentFlag = 1 AND T2.SickLeaveHours > 10",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "CASE"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Among the employees who have a pay rate of above 40, how many of them are male?",
+      "evidence": "pay rate above 40 refers to Rate>40; male employee refers to Gender = M",
+      "SQL": "SELECT SUM(CASE WHEN T2.Gender = 'M' THEN 1 ELSE 0 END) FROM EmployeePayHistory AS T1 INNER JOIN Employee AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID WHERE T1.Rate > 40",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "CASE"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Among the employees who wish to receive e-mail promotion from AdventureWorks, how many percent of them are female?",
+      "evidence": "female refers to Gender = 'F'; employee who wish to receive email promotion refers to EmailPromotion = 1; percentage = DIVIDE(SUM(Gender = 'F')), (sum(Gender = 'F' or Gender = 'M'))) as percentage;",
+      "SQL": "SELECT CAST(SUM(CASE WHEN T1.Gender = 'F' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(T1.BusinessEntityID) FROM Employee AS T1 INNER JOIN Person AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID WHERE T2.EmailPromotion = 1",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "CASE"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Among the employees whose pay frequencies are the highest, how many of them are married?",
+      "evidence": "married refers to MaritalStatus = M; highest pay frequency refers to PayFrequency = 2",
+      "SQL": "SELECT COUNT(T1.BusinessEntityID) FROM EmployeePayHistory AS T1 INNER JOIN Employee AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID WHERE T2.MaritalStatus = 'M' AND T1.PayFrequency = ( SELECT PayFrequency FROM EmployeePayHistory ORDER BY PayFrequency DESC LIMIT 1 )",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "SUBQUERY"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Among the products that are both manufactured in house and salable, how many of them get over 10 reviews?",
+      "evidence": "manufactured in house refers to MakeFlag = 1; salable product refers to FinishedGoodsFlag = 1; over 10 reviews refers to count(comments)>10",
+      "SQL": "SELECT T2.Name FROM ProductReview AS T1 INNER JOIN Product AS T2 USING (ProductID) WHERE T2.FinishedGoodsFlag = 1 AND T2.MakeFlag = 1 GROUP BY T2.Name ORDER BY COUNT(T1.COMMENTS) > 10",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY"
+      ],
+      "domain": "Product"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Among the products that get over at least 1 review, how many of them are from the mountain product line?",
+      "evidence": "mountain product line refers to ProductLine = 'M'",
+      "SQL": "SELECT SUM(CASE WHEN T2.ProductLine = 'M' THEN 1 ELSE 0 END) FROM ProductReview AS T1 INNER JOIN Product AS T2 ON T1.ProductID = T2.ProductID GROUP BY T1.ProductID HAVING COUNT(T1.ProductReviewID) > 1",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY",
+        "HAVING",
+        "CASE"
+      ],
+      "domain": "Product"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Among the salable products from the mountain product line, how many of them have the most reviews?",
+      "evidence": "salable product refers to FinishedGoodsFlag = 1; mountain product line refers to ProductLine = 'M'",
+      "SQL": "SELECT SUM(CASE WHEN T2.ProductLine = 'M' THEN 1 ELSE 0 END) FROM ProductReview AS T1 INNER JOIN Product AS T2 ON T1.ProductID = T2.ProductID WHERE T2.FinishedGoodsFlag = 1 GROUP BY T1.ProductID ORDER BY COUNT(T1.ProductReviewID) DESC LIMIT 1",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY",
+        "CASE"
+      ],
+      "domain": "Product"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Compare the average pay rate of male and female employees.",
+      "evidence": "male refers to Gender = 'M'; female refers to Gender = 'F'; difference in average rate = DIVIDE(AVG(Rate where Gender = 'F')), (AVG(Rate where Gender = 'M'))) as diff;",
+      "SQL": "SELECT AVG(T2.Rate) FROM Employee AS T1 INNER JOIN EmployeePayHistory AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID GROUP BY T1.Gender",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "For the document Control Assistant who was hired on 2009/1/22, what is the percentage of private documents did he/she have?",
+      "evidence": "Document Control Assistant refers  to the  JobTitle = 'Document Control Assistant'; hired on 2009/1/22 means the person's hiring date is HireDate = '2009-01-22'; private documents indicate that DocumentSummary is null; DIVIDE(COUNT(DocumentSummary is null), COUNT(DocumentSummary))*100",
+      "SQL": "SELECT CAST(SUM(CASE WHEN T1.DocumentSummary IS NOT NULL THEN 1 ELSE 0 END) AS REAL) / COUNT(T1.DocumentSummary) FROM Document AS T1 INNER JOIN Employee AS T2 ON T1.Owner = T2.BusinessEntityID WHERE T2.JobTitle = 'Document Control Assistant' AND T2.HireDate = '2009-01-22'",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "CASE"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "For the employees who have the highest pay frequency, please list their vacation hours.",
+      "evidence": "highest pay frequency refers to PayFrequency = 2",
+      "SQL": "SELECT T2.VacationHours FROM EmployeePayHistory AS T1 INNER JOIN Employee AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID WHERE T2.BusinessEntityID = ( SELECT BusinessEntityID FROM EmployeePayHistory ORDER BY Rate DESC LIMIT 1 )",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "SUBQUERY"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "For the on going assembly item Component ID No. 494, what's the Unit measure for it?",
+      "evidence": "On going assembly item means the assembly item haven't been finished, therefore EndDate is null",
+      "SQL": "SELECT T2.Name FROM BillOfMaterials AS T1 INNER JOIN UnitMeasure AS T2 ON T1.UnitMeasureCode = T2.UnitMeasureCode WHERE T1.ComponentID = 494 AND T1.EndDate IS NULL GROUP BY T2.name",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY"
+      ],
+      "domain": "Product"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "How long does it take for the business to receive the item it has purchased? Who is the vendor for business number 1496?",
+      "evidence": "business number refers to BusinessEntityID where BusinessEntityID = 1496; how long does it take refers to AverageLeadTime",
+      "SQL": "SELECT T1.AverageLeadTime, T2.Name FROM ProductVendor AS T1 INNER JOIN Vendor AS T2 USING (businessentityid) WHERE T2.BusinessEntityID = 1496 GROUP BY T1.AverageLeadTime, T2.Name",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY"
+      ],
+      "domain": "Purchasing"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "How many accounts are in Bothell as opposed to Kenmore? What is the name of the State that comprises these two cities?",
+      "evidence": "SUBTRACT(count(city = 'Bothell'), count(city = 'Kenmore'))",
+      "SQL": "SELECT SUM(IIF(T1.city = 'Bothell', 1, 0)) - SUM(IIF(T1.city = 'Kenmore', 1, 0)) , stateprovincecode FROM Address AS T1 INNER JOIN StateProvince AS T2 ON T1.stateprovinceid = T2.stateprovinceid GROUP BY stateprovincecode",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY"
+      ],
+      "domain": "Geography"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "How many times is married non sales employees against single non-sales employees?",
+      "evidence": "non-sales employee refers to PersonType = 'EM'; married refers to MaritalStatus = 'M'; single refers to MaritalStatus = 'S'; percentage = DIVIDE(SUM(MaritalStatus = 'M'), (SUM(MaritalStatus = 'S') as percentage;",
+      "SQL": "SELECT CAST(SUM(CASE WHEN T1.MaritalStatus = 'M' THEN 1 ELSE 0 END) AS REAL) * 100 / SUM(CASE WHEN T1.MaritalStatus = 'S' THEN 1 ELSE 0 END) FROM Employee AS T1 INNER JOIN Person AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID WHERE T2.PersonType = 'EM'",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "CASE"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "How much do the works data saved in English and Arabic differ from one another?",
+      "evidence": "Data saved in English refers to the name of the language where Culture.Name = 'English'; data saved in Arabic refers to the name of the language where Culture.Name = 'Arabic';   SUBTRACT(count(Name = 'English'), count(Name = 'Bothell'))",
+      "SQL": "SELECT SUM(CASE WHEN T1.Name = 'English' THEN 1 ELSE 0 END) - SUM(CASE WHEN T1.Name = 'Arabic' THEN 1 ELSE 0 END) FROM Culture AS T1 INNER JOIN ProductModelProductDescriptionCulture AS T2 ON T1.CultureID = T2.CultureID WHERE T1.Name = 'English' OR T1.Name = 'Arabic'",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "CASE"
+      ],
+      "domain": "Product"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "List all the products with lower than average cost.",
+      "evidence": "cost refers to StandardCost; lower than average cost = StandardCost<(AVG(StandardCost));",
+      "SQL": "SELECT DISTINCT T2.ProductID FROM ProductCostHistory AS T1 INNER JOIN Product AS T2 ON T1.ProductID = T2.ProductID WHERE T1.StandardCost < ( SELECT SUM(StandardCost) / COUNT(ProductID) FROM Product )",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "SUBQUERY"
+      ],
+      "domain": "Product"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "List the full name of all the 'Production Technician - WC50'",
+      "evidence": "full name = FirstName+MiddleName+LastName; Production Technician - WC50 is a job title;",
+      "SQL": "SELECT T2.FirstName, T2.MiddleName, T2.LastName FROM Employee AS T1 INNER JOIN Person AS T2 USING (BusinessEntityID) WHERE T1.JobTitle = 'Production Technician - WC50' GROUP BY T2.FirstName, T2.MiddleName, T2.LastName",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "List the products whereby the standard cost is $80 more than previous standard cost in history.",
+      "evidence": "SUBTRACT(product.StandardCost, CostHistory.StandardCost)>80",
+      "SQL": "SELECT T1.Name FROM Product AS T1 INNER JOIN ProductCostHistory AS T2 ON T1.ProductID = T2.ProductID WHERE T1.StandardCost - T2.StandardCost > 80 GROUP BY T1.Name",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY"
+      ],
+      "domain": "Product"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Please list all the vendors' usual selling prices of the product Hex Nut 5.",
+      "evidence": "vendor's selling price refers to StandardPrice",
+      "SQL": "SELECT T1.StandardPrice FROM ProductVendor AS T1 INNER JOIN Product AS T2 ON T1.ProductID = T2.ProductID WHERE T2.Name = 'Hex Nut 5' GROUP BY T1.StandardPrice ORDER BY COUNT(T1.StandardPrice) DESC LIMIT 1",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY"
+      ],
+      "domain": "Product"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Please list the names of the products that get over 10 reviews and a salable.",
+      "evidence": "salable product refers to FinishedGoodsFlag = 1; over 10 reviews refers to count(comments)>10",
+      "SQL": "SELECT T2.NAME FROM ProductReview AS T1 INNER JOIN Product AS T2 ON T1.ProductID = T2.ProductID WHERE T2.FinishedGoodsFlag = 1 GROUP BY T2.NAME ORDER BY COUNT(T1.comments) > 10",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY"
+      ],
+      "domain": "Product"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "What are the names of the product that has the lowest rating?",
+      "evidence": "lowest rating refers to Rating = 1;",
+      "SQL": "SELECT T2.Name FROM ProductReview AS T1 INNER JOIN Product AS T2 ON T1.ProductID = T2.ProductID WHERE T1.Rating = ( SELECT Rating FROM ProductReview ORDER BY Rating ASC LIMIT 1 )",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "SUBQUERY"
+      ],
+      "domain": "Product"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "What is the name of the product with the almost highest review score?",
+      "evidence": "highest review score refers to Rating = 5;",
+      "SQL": "SELECT T1.Name FROM Product AS T1 INNER JOIN ProductReview AS T2 ON T1.ProductID = T2.ProductID WHERE T2.Rating = ( SELECT Rating FROM ProductReview ORDER BY Rating DESC LIMIT 1 )",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "SUBQUERY"
+      ],
+      "domain": "Product"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Which product ID do not have any work order ID?",
+      "evidence": "Do not have any work order ID means WorkOrderID is null",
+      "SQL": "SELECT ProductID FROM Product WHERE ProductID NOT IN ( SELECT T1.ProductID FROM Product AS T1 INNER JOIN WorkOrder AS T2 ON T1.ProductID = T2.ProductID )",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "SUBQUERY"
+      ],
+      "domain": "Product"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Which product allows the company to make the highest profit on a single item among those that are the fastest to manufacture? Indicate the rating of the product if there any.",
+      "evidence": "profit on a single item = SUBTRACT(ListPrice, StandardCost); length of time to manufacture refers to DaysToManufacture; fastest to manucature refers to MIN(DaysToManufacture);",
+      "SQL": "SELECT T1.Name, T2.Rating FROM Product AS T1 INNER JOIN ProductReview AS T2 ON T1.ProductID = T2.ProductID WHERE T1.DaysToManufacture = ( SELECT DaysToManufacture FROM Product ORDER BY DaysToManufacture LIMIT 1 ) ORDER BY T1.ListPrice - T1.StandardCost DESC LIMIT 1",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "SUBQUERY"
+      ],
+      "domain": "Product"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Among all the employees who don't wish to receive promotion e-mails, how many of them belong to or once belonged to the Engineering Department?",
+      "evidence": "Employees who don't wish to receive e-mail promotions refers to EmailPromotion = 0;",
+      "SQL": "SELECT COUNT(T1.BusinessEntityID) FROM EmployeeDepartmentHistory AS T1 INNER JOIN Person AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN Department AS T3 ON T1.DepartmentID = T3.DepartmentID WHERE T3.Name = 'Engineering' AND T2.EmailPromotion = 0",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Among all the production technicians, how many have a below average pay rate for a production technician?",
+      "evidence": "production technician is a job title; below average rate refers to Rate<AVG(Rate);",
+      "SQL": "SELECT COUNT(T1.BusinessEntityID) FROM Employee AS T1 INNER JOIN EmployeePayHistory AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID WHERE T1.JobTitle LIKE 'Production Technician%' AND T2.Rate < ( SELECT AVG(T2.Rate) FROM Employee AS T1 INNER JOIN EmployeePayHistory AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID WHERE T1.JobTitle LIKE 'Production Technician%' )",
+      "join_count": 2,
+      "features": [
+        "JOIN×2",
+        "SUBQUERY"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Among the employees in the Manufacturing group in 2007, how many of them are store contacts?",
+      "evidence": "store contact refers to PersonType = 'SC'; year(EndDate)>2007 and year(StartDate)<2007;",
+      "SQL": "SELECT COUNT(T1.BusinessEntityID) FROM EmployeeDepartmentHistory AS T1 INNER JOIN Department AS T2 ON T1.DepartmentID = T2.DepartmentID INNER JOIN Person AS T3 ON T1.BusinessEntityID WHERE T3.PersonType = 'SC' AND T2.GroupName = 'Manufacturing' AND STRFTIME('%Y', T1.EndDate) >= '2007' AND STRFTIME('%Y', T1.StartDate) <= '2007'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Among the employees who are married and wish to receive e-mail promotions, how much higher is their highest pay rate from the average pay rate?",
+      "evidence": "married refers to MaritalStatus = 'M'; Contact does wish to receive e-mail promotions from Adventure Works refers to EmailPromotion = 1; Average = Divide (Sum(Rate (MaritalStatus = 'M' & EmailPromotion = 1))), Count (BusinessEntityID (MaritalStatus = 'M' & EmailPromotion = 1)); MAX(Rate (MaritalStatus = 'M' & EmailPromotion = 1) - Average;",
+      "SQL": "SELECT MAX(T1.Rate) - SUM(T1.Rate) / COUNT(T1.BusinessEntityID) FROM EmployeePayHistory AS T1 INNER JOIN Person AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN Employee AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID WHERE T2.EmailPromotion = 2 AND T3.MaritalStatus = 'M'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Among the employees who were born before 1969, what is the work shift of the 6th oldest employee?",
+      "evidence": "oldest employee born before 1969 refers to year(BirthDate)<'1969';",
+      "SQL": "SELECT T3.StartTime, T3.EndTime FROM Employee AS T1 INNER JOIN EmployeeDepartmentHistory AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN Shift AS T3 ON T2.ShiftId = T3.ShiftId WHERE STRFTIME('%Y', T1.BirthDate) < '1969' ORDER BY T1.BirthDate LIMIT 5, 1",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Among the married employees with the highest pay frequency, how many of them have an eastern name style?",
+      "evidence": "married refers to MaritalStatus = 'M'; Eastern name style refers to NameStyle = 1;",
+      "SQL": "SELECT COUNT(T1.BusinessEntityID) FROM Employee AS T1 INNER JOIN Person AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN EmployeePayHistory AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID WHERE T1.MaritalStatus = 'M' AND T2.NameStyle = 1 AND T3.Rate = ( SELECT Rate FROM EmployeePayHistory ORDER BY Rate DESC LIMIT 1 )",
+      "join_count": 2,
+      "features": [
+        "JOIN×2",
+        "SUBQUERY"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Among the products from the mountain product line, how many of them are sold by over 2 vendors?",
+      "evidence": "mountain product line refers to ProductLine = 'M'; sold by over 5 vendors refers to count(Name)>5",
+      "SQL": "SELECT SUM(CASE WHEN T1.ProductLine = 'M' THEN 1 ELSE 0 END) FROM Product AS T1 INNER JOIN ProductVendor AS T2 ON T1.ProductID = T2.ProductID INNER JOIN Vendor AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID GROUP BY T1.ProductID HAVING COUNT(T1.Name) > 2",
+      "join_count": 2,
+      "features": [
+        "JOIN×2",
+        "GROUP_BY",
+        "HAVING",
+        "CASE"
+      ],
+      "domain": "Purchasing"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Among the store contact employees, how many of them have a Vista credit card?",
+      "evidence": "store contact refers to PersonType = 'SC'; type of credit card refers to CardType; CardType = 'vista';",
+      "SQL": "SELECT COUNT(T1.FirstName) FROM Person AS T1 INNER JOIN PersonCreditCard AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN CreditCard AS T3 ON T2.CreditCardID = T3.CreditCardID WHERE T3.CardType = 'Vista' AND T1.PersonType = 'SC'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Sales"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Among the vendors that sell the product Hex Nut 5, how many of them have a good credit rating?",
+      "evidence": "good credit rating refers to CreditRating between 1 and 3",
+      "SQL": "SELECT COUNT(DISTINCT T3.Name) FROM ProductVendor AS T1 INNER JOIN Product AS T2 ON T1.ProductID = T2.ProductID INNER JOIN Vendor AS T3 ON T1.BusinessEntityID = T3.BusinessEntityID WHERE T2.Name = 'Hex Nut 5' AND T3.CreditRating = 1 AND 3",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Purchasing"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Calculate the average age of employee in each department and state which department has the youngest employees.",
+      "evidence": "Average = Divide(Sum(Substract(year(@today),year(BirthDate))),Count(BusinessEntityID) by each Department ID; youngest employee refers to Min(BirthDate);",
+      "SQL": "SELECT STRFTIME('%Y', CURRENT_TIMESTAMP) - STRFTIME('%Y', T1.BirthDate) + 1 , T3.Name FROM Employee AS T1 INNER JOIN EmployeeDepartmentHistory AS T2 USING (BusinessEntityID) INNER JOIN Department AS T3 USING (DepartmentID) ORDER BY T1.BirthDate DESC LIMIT 1",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Calculate the average length of employment for employee working in the Research and Development deparment.",
+      "evidence": "average length of employment = AVG(subtract(2022, year(HireDate)))",
+      "SQL": "SELECT AVG(STRFTIME('%Y', CURRENT_TIMESTAMP) - STRFTIME('%Y', T1.HireDate)) FROM Employee AS T1 INNER JOIN EmployeeDepartmentHistory AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN Department AS T3 ON T2.DepartmentID = T3.DepartmentID WHERE T3.Name = 'Research and Development'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Calculate the average of the total ordered quantity of products purchased whose shipping method was Cargo Transport 5.",
+      "evidence": "shipping method was Cargo Transport 5 refers to Name = 'Cargo Transport 5'; average = DIVIDE(SUM(OrderQty where Name = 'Cargo Transport 5'), COUNT(ShipMethodID))",
+      "SQL": "SELECT CAST(SUM(IIF(T1.ShipMethodID = 5, T3.OrderQty, 0)) AS REAL) / COUNT(T3.ProductID) FROM ShipMethod AS T1 INNER JOIN PurchaseOrderHeader AS T2 ON T1.ShipMethodID = T2.ShipMethodID INNER JOIN PurchaseOrderDetail AS T3 ON T2.PurchaseOrderID = T3.PurchaseOrderID",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Purchasing"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Has the product Chainring Bolts been on any of the sales?",
+      "evidence": "a product that's been on sale refers to SellStartDate NOT null and vice versa;",
+      "SQL": "SELECT CASE WHEN COUNT(T1.Description) >= 1 THEN 'Yes' ELSE 'No' END FROM SpecialOffer AS T1 INNER JOIN SpecialOfferProduct AS T2 ON T1.SpecialOfferID = T2.SpecialOfferID INNER JOIN Product AS T3 ON T2.ProductID = T3.ProductID WHERE T3.Name = 'Chainring Bolts'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2",
+        "CASE"
+      ],
+      "domain": "Sales"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "How many departments did Sheela Ward work in between 1/1/2011 to 12/31/2012",
+      "evidence": "number of departments an employee works for between 2011 and 2012 refers to year(StartDate) BETWEEN 2011 AND 2012 and year(EndDate) BETWEEN 2011 and 2012;",
+      "SQL": "SELECT COUNT(T3.Name) FROM Person AS T1 INNER JOIN EmployeeDepartmentHistory AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN Department AS T3 ON T2.DepartmentID = T3.DepartmentID WHERE T1.FirstName = 'Sheela' AND T1.LastName = 'Word' AND STRFTIME('%Y', T3.ModifiedDate) BETWEEN '2011' AND '2012'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "How many departments have David Bradley been in?",
+      "evidence": "",
+      "SQL": "SELECT COUNT(T3.DepartmentID) FROM Person AS T1 INNER JOIN EmployeeDepartmentHistory AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN Department AS T3 ON T2.DepartmentID = T3.DepartmentID WHERE T1.FirstName = 'David' AND T1.LastName = 'Bradley'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "How many employees in the Information Service department work the evening shift?",
+      "evidence": "Information Service is a name of department;",
+      "SQL": "SELECT COUNT(T2.BusinessEntityID) FROM Department AS T1 INNER JOIN EmployeeDepartmentHistory AS T2 ON T1.DepartmentID = T2.DepartmentID INNER JOIN Shift AS T3 ON T2.ShiftId = T3.ShiftId WHERE T1.Name = 'Information Services' AND T3.Name = 'Evening'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "How many high-class products are sold by preferred vendors?",
+      "evidence": "preferred vendor refers to PreferredVendorStatus = 1; high class refers to Class = 'H'",
+      "SQL": "SELECT COUNT(T2.Name) FROM ProductVendor AS T1 INNER JOIN Product AS T2 USING (ProductID) INNER JOIN Vendor AS T3 ON T1.BusinessEntityID = T3.BusinessEntityID WHERE T3.PreferredVendorStatus = 1 AND T2.Class = 'M'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Purchasing"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "How many people were there in the Engineering Department in the year 2009?",
+      "evidence": "year(EndDate)>2009 and year(StartDate)<2009;",
+      "SQL": "SELECT COUNT(T1.BusinessEntityID) FROM Person AS T1 INNER JOIN EmployeeDepartmentHistory AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN Department AS T3 ON T2.DepartmentID = T3.DepartmentID WHERE T3.Name = 'Engineering' AND STRFTIME('%Y', T2.EndDate) > '2009' AND STRFTIME('%Y', T2.StartDate) < '2009'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "How much more expensive in percentage is the product with the highest selling price from the product with the lowest selling price in the Clothing category?",
+      "evidence": "selling price refers to ListPrice; highest selling price refers to MAX(ListPrice); lowest selling price refers to MIN(ListPrice);",
+      "SQL": "SELECT (MAX(T1.ListPrice) - MIN(T1.ListPrice)) * 100 / MIN(T1.ListPrice) FROM Product AS T1 INNER JOIN ProductSubcategory AS T2 ON T1.ProductSubcategoryID = T2.ProductSubcategoryID INNER JOIN ProductCategory AS T3 ON T2.ProductCategoryID = T3.ProductCategoryID WHERE T3.Name = 'Clothing'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Product"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "If we discount the products that do not have any type of offer, how many different products have been sold in an amount greater than 2 units per order?",
+      "evidence": "do not have any type of offer refers to Description = 'No Discount'; sold in an amount greater than 2 refers to OrderQty>2",
+      "SQL": "SELECT COUNT(DISTINCT T1.ProductID) FROM SalesOrderDetail AS T1 INNER JOIN SpecialOfferProduct AS T2 ON T1.SpecialOfferID = T2.SpecialOfferID INNER JOIN SpecialOffer AS T3 ON T2.SpecialOfferID = T3.SpecialOfferID WHERE T1.OrderQty > 2 AND T1.UnitPriceDiscount = 0",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Sales"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "In which year will the David Bradley's credit card expire?",
+      "evidence": "year of credit card expiration refers to ExpYear;",
+      "SQL": "SELECT T3.ExpYear FROM Person AS T1 INNER JOIN PersonCreditCard AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN CreditCard AS T3 ON T2.CreditCardID = T3.CreditCardID WHERE T1.FirstName = 'David' AND T1.LastName = 'Bradley'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Sales"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "List all product name from Australia Bike Retailer order by product ID.",
+      "evidence": "Australia Bike Retailer is name of vendor",
+      "SQL": "SELECT T3.Name FROM Vendor AS T1 INNER JOIN ProductVendor AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN Product AS T3 ON T2.ProductID = T3.ProductID WHERE T1.Name = 'Australia Bike Retailer'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Purchasing"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "List all product only MOQ of 1,000 and with standard cost more than 17.",
+      "evidence": "MOQ refers to minimum order quantity; MOQ of 1 refers to MinOrderQty = 1; standard cost more than 48 refers to StandardCost > 48;",
+      "SQL": "SELECT T2.Name FROM ProductVendor AS T1 INNER JOIN Product AS T2 ON T1.ProductID = T2.ProductID INNER JOIN Vendor AS T3 ON T1.BusinessEntityID = T3.BusinessEntityID WHERE T1.MaxOrderQty = 1000 AND T2.StandardCost > 17",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Purchasing"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "List down the email address of female single employees.",
+      "evidence": "female refers to Gender = 'F'; single refers to MaritalStatus = 'S';",
+      "SQL": "SELECT T3.EmailAddress FROM Employee AS T1 INNER JOIN Person AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN EmailAddress AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID WHERE T1.Gender = 'F' AND T1.MaritalStatus = 'S'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "List the name of employees who had left the company? When were they hired?",
+      "evidence": "employee that has left the company refers to EndDate is not null",
+      "SQL": "SELECT T1.FirstName, T1.LastName, T2.HireDate FROM Person AS T1 INNER JOIN Employee AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN EmployeeDepartmentHistory AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID WHERE T3.EndDate IS NOT NULL",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "List the name of the rates that apply to the provinces that are in the territory that obtained the greatest increase in sales with respect to the previous year.",
+      "evidence": "sales of previous year refers to SalesLastYear; SalesYTD refers to year to date sales; increase in sales = DIVIDE(SUBTRACT(SalesYTD, SalesLastYear), SalesLastYear)*100",
+      "SQL": "SELECT T2.Name FROM SalesTerritory AS T1 INNER JOIN StateProvince AS T2 ON T1.CountryRegionCode = T2.CountryRegionCode INNER JOIN SalesTaxRate AS T3 ON T2.StateProvinceID = T3.StateProvinceID ORDER BY (T1.SalesYTD - T1.SalesLastYear) / T1.SalesLastYear DESC LIMIT 1",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Sales"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "List the person who owns a distinguish credt card.",
+      "evidence": "distinguish credt card refers to cardType = 'Distinguish'",
+      "SQL": "SELECT T3.FirstName, T3.LastName FROM CreditCard AS T1 INNER JOIN PersonCreditCard AS T2 ON T1.CreditCardID = T2.CreditCardID INNER JOIN Person AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID WHERE T1.CardType = 'Distinguish'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Sales"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Name all products that started selling in 2013. State its respective vendor's name.",
+      "evidence": "Started selling in 2013 refers to year(SellStartDate) = 2013;",
+      "SQL": "SELECT T1.Name, T3.Name FROM Product AS T1 INNER JOIN ProductVendor AS T2 ON T1.ProductID = T2.ProductID INNER JOIN Vendor AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID WHERE STRFTIME('%Y', T1.SellStartDate) = '2013'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Purchasing"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Name the oldest employee who is working on night shift. How old is the employee?",
+      "evidence": "working on night shift refers to ShiftID = 3; oldest employee refers to min(BirthDate); age = 2022-year(BirthDate)+1",
+      "SQL": "SELECT T1.FirstName, T1.LastName , STRFTIME('%Y', CURRENT_TIMESTAMP) - STRFTIME('%Y', BirthDate) FROM Person AS T1 INNER JOIN Employee AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN EmployeeDepartmentHistory AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID WHERE T3.ShiftId = 3 ORDER BY STRFTIME('%Y', CURRENT_TIMESTAMP) - STRFTIME('%Y', BirthDate) DESC LIMIT 1",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Other than the Chief Executive Officer, who is the employee who has the highest payrate? State the rate.",
+      "evidence": "other than the Chief Executive Officer refers to JobTitle! = 'Chief Executive Officer'; highest payrate refers to max(Rate)",
+      "SQL": "SELECT T2.FirstName, T2.LastName FROM EmployeePayHistory AS T1 INNER JOIN Person AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN Employee AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID WHERE T3.JobTitle NOT LIKE 'Chief Executive Officer' ORDER BY T1.Rate DESC LIMIT 1",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Please give the personal information of the married employee who has the highest pay rate.",
+      "evidence": "married refers to MaritalStatus = 'M'; Highest pay rate refers to Max(Rate)",
+      "SQL": "SELECT T2.Demographics FROM Employee AS T1 INNER JOIN Person AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN EmployeePayHistory AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID WHERE T1.MaritalStatus = 'M' ORDER BY T3.Rate DESC LIMIT 1",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Please list the departments that David Bradley used to belong to.",
+      "evidence": "",
+      "SQL": "SELECT T2.DepartmentID FROM Person AS T1 INNER JOIN EmployeeDepartmentHistory AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN Department AS T3 ON T2.DepartmentID = T3.DepartmentID WHERE T1.FirstName = 'David' AND T1.LastName = 'Bradley'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Please list the names of all the store contact employees whose credit cards expired in 2007.",
+      "evidence": "year of credit card expiration refers to ExpYear; ExpYear = 2007; store contact refers to PersonType = 'SC';",
+      "SQL": "SELECT T1.FirstName, T1.LastName FROM Person AS T1 INNER JOIN PersonCreditCard AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN CreditCard AS T3 ON T2.CreditCardID = T3.CreditCardID WHERE T3.ExpYear = 2007 AND T1.PersonType = 'SC'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Sales"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Please list the product names of all the products on the LL Road Frame Sale.",
+      "evidence": "LL Road Frame Sale is a description of special offer",
+      "SQL": "SELECT T3.Name FROM SpecialOffer AS T1 INNER JOIN SpecialOfferProduct AS T2 ON T1.SpecialOfferID = T2.SpecialOfferID INNER JOIN Product AS T3 ON T2.ProductID = T3.ProductID WHERE T1.Description = 'LL Road Frame Sale'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Sales"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Please list the products that are under the Clothing category that are manufactured in-house and salable.",
+      "evidence": "product is manufactured in-house refers to MakeFlag = 1; salable product refers to FinishedGoodsFlag = 1;",
+      "SQL": "SELECT CASE WHEN T1.MakeFlag = 1 THEN T1.Name END FROM Product AS T1 INNER JOIN ProductSubcategory AS T2 ON T1.ProductSubcategoryID = T2.ProductSubcategoryID INNER JOIN ProductCategory AS T3 ON T2.ProductCategoryID = T3.ProductCategoryID WHERE T2.ProductSubcategoryID = 3",
+      "join_count": 2,
+      "features": [
+        "JOIN×2",
+        "CASE"
+      ],
+      "domain": "Product"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Please list the website purchasing links of the vendors from whom the product Hex Nut 5 can be purchased.",
+      "evidence": "website purchasing link refers to PurchasingWebServiceURL",
+      "SQL": "SELECT T3.PurchasingWebServiceURL FROM ProductVendor AS T1 INNER JOIN Product AS T2 ON T1.ProductID = T2.ProductID INNER JOIN Vendor AS T3 ON T1.BusinessEntityID = T3.BusinessEntityID WHERE T2.Name = 'Hex Nut 5'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Purchasing"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Please show the credit card number of David Bradley.",
+      "evidence": "credit card number refers to CardNumber;",
+      "SQL": "SELECT T3.CardNumber FROM Person AS T1 INNER JOIN PersonCreditCard AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN CreditCard AS T3 ON T2.CreditCardID = T3.CreditCardID WHERE T1.FirstName = 'David' AND T1.LastName = 'Bradley'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Sales"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "State the last name and job title of owner for document \"Crank Arm and Tire Maintenance\".",
+      "evidence": "The owner refers to BusinessEntityID",
+      "SQL": "SELECT T1.LastName, T3.JobTitle FROM Person AS T1 INNER JOIN Document AS T2 ON T1.BusinessEntityID = T2.Owner INNER JOIN Employee AS T3 ON T1.BusinessEntityID = T3.BusinessEntityID WHERE T2.Title = 'Crank Arm and Tire Maintenance'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "State the vendor for product number WB-H098.",
+      "evidence": "",
+      "SQL": "SELECT T3.Name FROM Product AS T1 INNER JOIN ProductVendor AS T2 ON T1.ProductID = T2.ProductID INNER JOIN Vendor AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID WHERE T1.ProductNumber = 'WB-H098'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Purchasing"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "What is the average pay rate of the employees who worked in the Engineering Departmentin 2007?",
+      "evidence": "average pay rate = AVG(Rate); work in 2007 refers to year(StartDate)<2007 AND year(EndDate)>2007;",
+      "SQL": "SELECT AVG(T3.Rate) FROM EmployeeDepartmentHistory AS T1 INNER JOIN Department AS T2 ON T1.DepartmentID = T2.DepartmentID INNER JOIN EmployeePayHistory AS T3 ON T1.BusinessEntityID = T3.BusinessEntityID WHERE T2.Name = 'Engineering' AND STRFTIME('%Y', EndDate) > '2007' AND STRFTIME('%Y', T1.StartDate) < '2007'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "What is the average profit of all the products from the Clothing category?",
+      "evidence": "average profit = DIVIDE(SUM(SUBTRACT(ListPrice, StandardCost))), (COUNT(ProductSubcategoryID))));",
+      "SQL": "SELECT SUM(T1.ListPrice - T1.StandardCost) / COUNT(T1.ProductID) FROM Product AS T1 INNER JOIN ProductSubcategory AS T2 ON T1.ProductSubcategoryID = T2.ProductSubcategoryID INNER JOIN ProductCategory AS T3 ON T2.ProductCategoryID = T3.ProductCategoryID WHERE T3.Name = 'Clothing'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Product"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "What is the credit card number for Michelle E Cox?",
+      "evidence": "credit card number refers to CreditCardID",
+      "SQL": "SELECT T3.CreditCardID FROM Person AS T1 INNER JOIN PersonCreditCard AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN CreditCard AS T3 ON T2.CreditCardID = T3.CreditCardID WHERE T1.FirstName = 'Michelle' AND T1.MiddleName = 'E' AND T1.LastName = 'Cox'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Sales"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "What is the currency of Brazil?",
+      "evidence": "",
+      "SQL": "SELECT T1.Name FROM Currency AS T1 INNER JOIN CountryRegionCurrency AS T2 ON T1.CurrencyCode = T2.CurrencyCode INNER JOIN CountryRegion AS T3 ON T2.CountryRegionCode = T3.CountryRegionCode WHERE T3.Name = 'Brazil'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Sales"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "What is the email address of the Facilities Manager?",
+      "evidence": "Facilities Manager is a job title",
+      "SQL": "SELECT T3.EmailAddress FROM Employee AS T1 INNER JOIN Person AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN EmailAddress AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID WHERE T1.JobTitle = 'Facilities Manager'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "What is the full name of the Document Control Manager who is in charge of all Level 1 approved documents?",
+      "evidence": "full Name = FirstName+MiddleName+Last Name; approved document refers to Status = 2;",
+      "SQL": "SELECT T1.FirstName, T1.MiddleName, T1.LastName FROM Person AS T1 INNER JOIN Employee AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN Document AS T3 ON T3.Owner = T2.BusinessEntityID WHERE T2.JobTitle = 'Document Control Manager' AND T3.DocumentLevel = 1 AND T3.Status = 2 GROUP BY T1.FirstName, T1.MiddleName, T1.LastName",
+      "join_count": 2,
+      "features": [
+        "JOIN×2",
+        "GROUP_BY"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "What is the position of the employee with the 10th highest salary? Indicate his/her salary amount and his/her full name.",
+      "evidence": "salary and Rate are synonyms; full name = FirstName+MiddleName+LastName;",
+      "SQL": "SELECT T2.JobTitle, T1.Rate, T3.FirstName, T3.MiddleName, T3.LastName FROM EmployeePayHistory AS T1 INNER JOIN Employee AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN Person AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID ORDER BY T1.Rate DESC LIMIT 9, 1",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "What is the salary rate per hour that the company paid to the first 5 employees that they hired?",
+      "evidence": "salary rate per hour refers to Rate; first 5 employees that were hired refers to 5 oldest HireDate;",
+      "SQL": "SELECT T1.Rate FROM EmployeePayHistory AS T1 INNER JOIN Employee AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN Person AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID ORDER BY T2.HireDate ASC LIMIT 0, 5",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "What is the stocked quantity of products manufactured from location ID 40?",
+      "evidence": "Stocked quantity refers to StockedQty",
+      "SQL": "SELECT COUNT(*) FROM WorkOrderRouting AS T1 INNER JOIN BillOfMaterials AS T2 ON T1.LocationID = T2.ProductAssemblyID INNER JOIN WorkOrder AS T3 ON T3.WorkOrderID = T1.WorkOrderID WHERE T1.LocationID = 40",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Product"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "What is the total amount due of all the purchases made by the company to the vendor that has the lowest selling price amount of a single product? Indicate the name of the vendor to which the purchases was made.",
+      "evidence": "Vendor's selling price of a single product refers to UnitPrice;",
+      "SQL": "SELECT T1.UnitPrice, T3.Name FROM PurchaseOrderDetail AS T1 INNER JOIN PurchaseOrderHeader AS T2 ON T1.PurchaseOrderID = T2.PurchaseOrderID INNER JOIN Vendor AS T3 ON T2.VendorID = T3.BusinessEntityID ORDER BY T1.UnitPrice LIMIT 1",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Purchasing"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "When did the Senior Tool Designer, who was 33 years old at the time he was hired, stopped working in the Engineering department?",
+      "evidence": "Senior Tool Designer is a JobTitle; 33 years old at the time of hiring refers to SUBTRACT(year(HireDate)), (year(BirthDate)) = 33;",
+      "SQL": "SELECT T2.EndDate FROM Employee AS T1 INNER JOIN EmployeeDepartmentHistory AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN Department AS T3 ON T2.DepartmentID = T3.DepartmentID WHERE T1.JobTitle = 'Senior Tool Designer' AND STRFTIME('%Y', T1.HireDate) - STRFTIME('%Y', T1.BirthDate) = 33 AND T2.EndDate IS NOT NULL",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Where can I find the Valley Bicycle Specialists store?",
+      "evidence": "Valley Bicycle Specialists is a name of store; full address = AddressLine1+AddressLine2;",
+      "SQL": "SELECT T2.AddressLine1, T2.AddressLine2 FROM BusinessEntityAddress AS T1 INNER JOIN Address AS T2 ON T1.AddressID = T2.AddressID INNER JOIN Store AS T3 ON T1.BusinessEntityID = T3.BusinessEntityID WHERE T3.Name = 'Valley Bicycle Specialists'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Geography"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Where does the person with the BusinessEntityID \"5555\" live?",
+      "evidence": "where the person live refers addresstype.Name = 'Home'",
+      "SQL": "SELECT T3.City, T3.AddressLine1 FROM BusinessEntityAddress AS T1 INNER JOIN AddressType AS T2 ON T1.AddressTypeID = T2.AddressTypeID INNER JOIN Address AS T3 ON T1.AddressID = T3.AddressID WHERE T1.BusinessEntityID = 5555 AND T2.Name = 'Home'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Geography"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Which address type does \"Fun Toys and Bikes\" fall under?",
+      "evidence": "Fun Toys and Bikes is name of a store",
+      "SQL": "SELECT T2.Name FROM BusinessEntityAddress AS T1 INNER JOIN AddressType AS T2 ON T1.AddressTypeID = T2.AddressTypeID INNER JOIN Store AS T3 ON T1.BusinessEntityID = T3.BusinessEntityID WHERE T3.Name = 'Fun Toys and Bikes'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Geography"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Which chromoly steel product model has AdventureWorks saved in English?",
+      "evidence": "Saved in English refers to product description written in English where Culture.name = 'English'",
+      "SQL": "SELECT T1.ProductModelID FROM ProductModelProductDescriptionCulture AS T1 INNER JOIN Culture AS T2 USING (cultureid) INNER JOIN ProductDescription AS T3 USING (productdescriptionid) WHERE T3.Description LIKE 'Chromoly steel%' AND T2.Name = 'English'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Product"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Which department has the most number of night shifts?",
+      "evidence": "most number of night shift = MAX(count(shift.Name = 'Night'))",
+      "SQL": "SELECT T3.Name FROM Shift AS T1 INNER JOIN EmployeeDepartmentHistory AS T2 ON T1.ShiftId = T2.ShiftId INNER JOIN Department AS T3 ON T2.DepartmentID = T3.DepartmentID GROUP BY T2.DepartmentID ORDER BY COUNT(T1.Name = 'Night') DESC LIMIT 1",
+      "join_count": 2,
+      "features": [
+        "JOIN×2",
+        "GROUP_BY"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Which department, altogether, has the most personnel who work the evening shift?",
+      "evidence": "evening shift also means night shift where Name = 'Night';most personnel in evening shift refers to Max(Count(Shift.ShiftID(Name = 'Night')));",
+      "SQL": "SELECT T3.Name FROM EmployeeDepartmentHistory AS T1 INNER JOIN Shift AS T2 ON T1.ShiftId = T2.ShiftId INNER JOIN Department AS T3 ON T1.DepartmentID = T3.DepartmentID WHERE T2.Name = 'Night' GROUP BY T3.Name ORDER BY COUNT(T1.BusinessEntityID) DESC LIMIT 1",
+      "join_count": 2,
+      "features": [
+        "JOIN×2",
+        "GROUP_BY"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Which employee has been in the Engineering Department the longest? Please give his or her firstname and lastname.",
+      "evidence": "length of stay in a department = SUBTRACT(EndDate, StartDate);",
+      "SQL": "SELECT T1.FirstName, T1.LastName FROM Person AS T1 INNER JOIN EmployeeDepartmentHistory AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN Department AS T3 ON T2.DepartmentID = T3.DepartmentID WHERE T3.Name = 'Engineering' ORDER BY T2.EndDate - T2.StartDate DESC LIMIT 1",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Which geographic area does the city with the second lowest tax rate belongs to? Indicate the name of the state or province as well.",
+      "evidence": "geographic area to which the city belong refers to Group;",
+      "SQL": "SELECT T3.'Group', T2.Name FROM SalesTaxRate AS T1 INNER JOIN StateProvince AS T2 ON T1.StateProvinceID = T2.StateProvinceID INNER JOIN SalesTerritory AS T3 ON T2.TerritoryID = T3.TerritoryID ORDER BY T1.TaxRate LIMIT 1, 1",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Sales"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Which vendor's selling price for Hex Nut 5 is the lowest, please give the vendor's name.",
+      "evidence": "vendor's selling price refers to StandardPrice; lowest selling price = MIN(StandardPrice)",
+      "SQL": "SELECT T3.Name FROM ProductVendor AS T1 INNER JOIN Product AS T2 ON T1.ProductID = T2.ProductID INNER JOIN Vendor AS T3 ON T1.BusinessEntityID = T3.BusinessEntityID WHERE T2.Name = 'Hex Nut 5' ORDER BY T1.StandardPrice, T3.Name LIMIT 1",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Purchasing"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Who are the employees that submitted resume to Human Resource Department and got hired? State the last name.",
+      "evidence": "employees that submitted resume to Human Resource Department and got hired refers to BusinessEntittyID NOT null;",
+      "SQL": "SELECT T3.LastName FROM Employee AS T1 INNER JOIN JobCandidate AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN Person AS T3 ON T1.BusinessEntityID = T3.BusinessEntityID WHERE T1.BusinessEntityID IN (212, 274)",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Who is the \"Next-Door Bike Store\" point of contact?",
+      "evidence": "Next-Door Bike Store is name of a store",
+      "SQL": "SELECT T1.Name FROM ContactType AS T1 INNER JOIN BusinessEntityContact AS T2 ON T1.ContactTypeID = T2.ContactTypeID INNER JOIN Store AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID WHERE T3.Name = 'Next-Door Bike Store'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Geography"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Who is the company's highest-paid single female employee? Include her full name and job title.",
+      "evidence": "full name = FirstName+MiddleName+LastName; highest-paid refers to max(Rate); single refers to Status = 'S'; female refers to Gender = 'F';",
+      "SQL": "SELECT T3.FirstName, T3.MiddleName, T3.LastName, T1.JobTitle FROM Employee AS T1 INNER JOIN EmployeePayHistory AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN Person AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID WHERE T1.MaritalStatus = 'S' AND T1.Gender = 'F' ORDER BY T2.Rate DESC LIMIT 1",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "How many employees working in the Engineering Department in 2007 would have their credit cards expired in the same year?",
+      "evidence": "year(StartDate) 2007; year of credit card expiration refers to ExpYear; ExpYear = 2007;",
+      "SQL": "SELECT COUNT(T1.BusinessEntityID) FROM EmployeeDepartmentHistory AS T1 INNER JOIN Department AS T2 ON T1.DepartmentID = T2.DepartmentID INNER JOIN PersonCreditCard AS T3 ON T1.BusinessEntityID = T3.BusinessEntityID INNER JOIN CreditCard AS T4 ON T3.CreditCardID = T4.CreditCardID WHERE T4.ExpYear = 2007 AND T2.Name = 'Engineering'",
+      "join_count": 3,
+      "features": [
+        "JOIN×3"
+      ],
+      "domain": "Sales"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "List all staff in the Shipping and Receiving department who are hired in 2009.",
+      "evidence": "hired in 2009 refers to year(HireDate) = 2009",
+      "SQL": "SELECT T1.FirstName, T1.LastName FROM Person AS T1 INNER JOIN Employee AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN EmployeeDepartmentHistory AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID INNER JOIN Department AS T4 ON T3.DepartmentID = T4.DepartmentID WHERE STRFTIME('%Y', T2.HireDate) = '2009' AND T4.Name = 'Shipping and Receiving'",
+      "join_count": 3,
+      "features": [
+        "JOIN×3"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Name all stores and its sales representative in France territory.",
+      "evidence": "France territory refers to SalesTerritory.Name = 'France';",
+      "SQL": "SELECT T3.Name, T4.FirstName, T4.LastName FROM SalesTerritory AS T1 INNER JOIN Customer AS T2 ON T1.TerritoryID = T2.TerritoryID INNER JOIN Store AS T3 ON T2.StoreID = T3.BusinessEntityID INNER JOIN Person AS T4 ON T2.PersonID = T4.BusinessEntityID WHERE T1.Name = 'France'",
+      "join_count": 3,
+      "features": [
+        "JOIN×3"
+      ],
+      "domain": "Sales"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Name the sales person for store Area Bike Accessories. Which territory is he / she in?",
+      "evidence": "",
+      "SQL": "SELECT T4.Name FROM Store AS T1 INNER JOIN SalesPerson AS T2 ON T1.SalesPersonID = T2.BusinessEntityID INNER JOIN Person AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID INNER JOIN SalesTerritory AS T4 ON T2.TerritoryID = T4.TerritoryID WHERE T1.Name = 'Area Bike Accessories'",
+      "join_count": 3,
+      "features": [
+        "JOIN×3"
+      ],
+      "domain": "Sales"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Please list the credit card numbers of all the employees who have left the Finance Department.",
+      "evidence": "credit card number refers to CardNumber; employees who left the department refers to EndDate NOT null; Engineering Department is a name of department;",
+      "SQL": "SELECT T3.CardNumber FROM EmployeeDepartmentHistory AS T1 INNER JOIN Department AS T2 ON T1.DepartmentID = T2.DepartmentID INNER JOIN CreditCard AS T3 ON T1.ModifiedDate = T3.ModifiedDate INNER JOIN PersonCreditCard AS T4 ON T3.CreditCardID = T4.CreditCardID WHERE T2.Name = 'Finance' AND T1.EndDate IS NOT NULL",
+      "join_count": 3,
+      "features": [
+        "JOIN×3"
+      ],
+      "domain": "Sales"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "What are the names of the vendors to which the company purchased its women's tights products?",
+      "evidence": "product is purchased refers to MakeFlag = 0; women's refers to Style = 'W'; ProductSubcategoryID = 'Tights';",
+      "SQL": "SELECT DISTINCT T4.Name FROM Product AS T1 INNER JOIN ProductVendor AS T2 ON T1.ProductID = T2.ProductID INNER JOIN ProductSubcategory AS T3 ON T1.ProductSubcategoryID = T3.ProductSubcategoryID INNER JOIN Vendor AS T4 ON T2.BusinessEntityID = T4.BusinessEntityID WHERE T1.MakeFlag = 0 AND T1.Style = 'W' AND T3.Name = 'Tights'",
+      "join_count": 3,
+      "features": [
+        "JOIN×3"
+      ],
+      "domain": "Product"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "What is the average lead time of product ID 843? Calculate for its profit on net and indicate the full location to which the vendor is located.",
+      "evidence": "Profit on net = SUBTRACT(LastReceiptCost, StandardPrice); full location = AddressLine1+AddressLine2+City+PostalCode;",
+      "SQL": "SELECT T1.AverageLeadTime, T1.LastReceiptCost - T1.StandardPrice, T4.AddressLine1, T4.AddressLine2 , T4.City, T4.PostalCode FROM ProductVendor AS T1 INNER JOIN Vendor AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN BusinessEntityAddress AS T3 ON T1.BusinessEntityID = T3.BusinessEntityID INNER JOIN Address AS T4 ON T3.AddressID = T4.AddressID WHERE T1.ProductID = 843",
+      "join_count": 3,
+      "features": [
+        "JOIN×3"
+      ],
+      "domain": "Geography"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "What is the job title of the oldest employee in the company? In which department is he in?",
+      "evidence": "oldest employee refers to min(BirthDate)",
+      "SQL": "SELECT T2.JobTitle, T4.Name FROM Person AS T1 INNER JOIN Employee AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN EmployeeDepartmentHistory AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID INNER JOIN Department AS T4 ON T3.DepartmentID = T4.DepartmentID ORDER BY T2.HireDate LIMIT 1",
+      "join_count": 3,
+      "features": [
+        "JOIN×3"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "How many products from the Clothing category were on the LL Road Frame Sale?",
+      "evidence": "LL Road Frame Sale is a description of special offer",
+      "SQL": "SELECT COUNT(T2.ProductID) FROM SpecialOffer AS T1 INNER JOIN SpecialOfferProduct AS T2 ON T1.SpecialOfferID = T2.SpecialOfferID INNER JOIN Product AS T3 ON T2.ProductID = T3.ProductID INNER JOIN ProductSubcategory AS T4 ON T3.ProductSubcategoryID = T4.ProductSubcategoryID INNER JOIN ProductCategory AS T5 ON T4.ProductCategoryID = T5.ProductCategoryID WHERE T1.Description = 'LL Road Frame Sale' AND T4.Name = 'Clothing'",
+      "join_count": 4,
+      "features": [
+        "JOIN×4"
+      ],
+      "domain": "Product"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "How many employees do not have any suffix and what are their organization level?",
+      "evidence": "Do not have any suffix means Suffix is null",
+      "SQL": "SELECT COUNT(T3.BusinessEntityID) FROM ( SELECT T1.BusinessEntityID FROM Employee AS T1 INNER JOIN Person AS T2 USING (BusinessEntityID) WHERE T2.Suffix IS NULL GROUP BY T1.BusinessEntityID ) AS T3",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY",
+        "SUBQUERY"
+      ],
+      "domain": "HR"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Based on the lastet payrate of each employee, calculate the average hourly payrate for each department.",
+      "evidence": "latest payrate refers to max(RateChangeDate); average hourly payrate = divide(sum(Rate), count(BusinessEntityID)) for each DepartmentID",
+      "SQL": "SELECT AVG(T1.Rate) FROM EmployeePayHistory AS T1 INNER JOIN EmployeeDepartmentHistory AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN Department AS T3 ON T2.DepartmentID = T3.DepartmentID WHERE T1.RateChangeDate = ( SELECT MAX(T1.RateChangeDate) FROM EmployeePayHistory AS T1 INNER JOIN Department AS T2 ON T1.BusinessEntityID = T2.DepartmentID )",
+      "join_count": 3,
+      "features": [
+        "JOIN×3",
+        "SUBQUERY"
+      ],
+      "domain": "HR"
+    }
+  ]
+}

@@ -1,0 +1,177 @@
+[
+  {
+    "id": "A3",
+    "type": "single",
+    "hop": 1,
+    "question": "分级为 PG-13 的电影有多少部?",
+    "gold_sql": "SELECT COUNT(*) AS n FROM film WHERE rtng = 'PG-13'"
+  },
+  {
+    "id": "B1",
+    "type": "join2",
+    "hop": 2,
+    "question": "每位演员出演过多少部电影?只返回名、姓、出演数三列,按出演数降序、名升序、姓升序取前 10。",
+    "gold_sql": "SELECT a.frst_nm, a.last_nm, COUNT(fa.ref2) AS n FROM actr a JOIN flm_act fa ON a.actr_id = fa.ref1 GROUP BY a.actr_id, a.frst_nm, a.last_nm ORDER BY n DESC, a.frst_nm ASC, a.last_nm ASC LIMIT 10"
+  },
+  {
+    "id": "B5",
+    "type": "join34",
+    "hop": 3,
+    "question": "每位客户的总消费金额是多少?只返回名、姓、金额三列,按金额降序、名升序、姓升序取前 10。",
+    "gold_sql": "SELECT c.frst_nm, c.last_nm, SUM(p.amt) AS total FROM pymt p JOIN card cd ON p.ref1 = cd.card_id JOIN cust c ON cd.ref1 = c.cust_id GROUP BY c.cust_id, c.frst_nm, c.last_nm ORDER BY total DESC, c.frst_nm ASC, c.last_nm ASC LIMIT 10"
+  },
+  {
+    "id": "C3",
+    "type": "join34",
+    "hop": 4,
+    "question": "客户 MARY SMITH 一共租过多少部不同的电影?",
+    "gold_sql": "SELECT COUNT(DISTINCT f.flm_id) AS n FROM cust c JOIN rntl r ON c.cust_id = r.ref2 JOIN invt i ON r.ref1 = i.invt_id JOIN film f ON i.ref1 = f.flm_id WHERE c.frst_nm = 'MARY' AND c.last_nm = 'SMITH'"
+  },
+  {
+    "id": "C5",
+    "type": "join34",
+    "hop": 3,
+    "question": "喜剧(Comedy)分类下一共有多少部电影?",
+    "gold_sql": "SELECT COUNT(*) AS n FROM film f JOIN flm_cat fc ON f.flm_id = fc.ref1 JOIN catg c ON fc.ref2 = c.catg_id WHERE c.nm = 'Comedy'"
+  },
+  {
+    "id": "C6",
+    "type": "join34",
+    "hop": 3,
+    "question": "电影 ACADEMY DINOSAUR 有哪些演员?只返回名、姓两列,按名升序、姓升序。",
+    "gold_sql": "SELECT a.frst_nm, a.last_nm FROM film f JOIN flm_act fa ON f.flm_id = fa.ref2 JOIN actr a ON fa.ref1 = a.actr_id WHERE f.ttl = 'ACADEMY DINOSAUR' ORDER BY a.frst_nm ASC, a.last_nm ASC"
+  },
+  {
+    "id": "D1",
+    "type": "cryptic",
+    "hop": 1,
+    "question": "可以租借 7 天的电影有多少部?",
+    "gold_sql": "SELECT COUNT(*) AS n FROM film WHERE rnt_dur = 7"
+  },
+  {
+    "id": "E2",
+    "type": "rule",
+    "hop": 1,
+    "question": "目前活跃的客户有多少位?",
+    "gold_sql": "SELECT COUNT(*) AS n FROM cust WHERE actv = 1"
+  },
+  {
+    "id": "E3",
+    "type": "rule",
+    "hop": 2,
+    "question": "消费总额超过 150 元的客户有多少位?",
+    "gold_sql": "SELECT COUNT(*) AS n FROM (SELECT cd.ref1 FROM pymt p JOIN card cd ON p.ref1 = cd.card_id GROUP BY cd.ref1 HAVING SUM(p.amt) > 150) t"
+  },
+  {
+    "id": "F1",
+    "type": "dict",
+    "hop": 1,
+    "question": "pymt 表里一共有多少个不同的付款方?",
+    "gold_sql": "SELECT COUNT(DISTINCT ref1) AS n FROM pymt"
+  },
+  {
+    "id": "F2",
+    "type": "dict",
+    "hop": 1,
+    "question": "pymt 表里一共有多少个不同的经办人?",
+    "gold_sql": "SELECT COUNT(DISTINCT ref2) AS n FROM pymt"
+  },
+  {
+    "id": "F3",
+    "type": "dict",
+    "hop": 1,
+    "question": "rntl 表里一共有多少个不同的租借方?",
+    "gold_sql": "SELECT COUNT(DISTINCT ref2) AS n FROM rntl"
+  },
+  {
+    "id": "F4",
+    "type": "dict",
+    "hop": 1,
+    "question": "rntl 表里一共有多少个不同的经办人?",
+    "gold_sql": "SELECT COUNT(DISTINCT ref3) AS n FROM rntl"
+  },
+  {
+    "id": "F5",
+    "type": "dict",
+    "hop": 1,
+    "question": "cust 表里一共有多少个不同的归属网点?",
+    "gold_sql": "SELECT COUNT(DISTINCT ref1) AS n FROM cust"
+  },
+  {
+    "id": "G1",
+    "type": "dict",
+    "hop": 1,
+    "question": "awd 表里一共有多少个不同的获奖出演者?",
+    "gold_sql": "SELECT COUNT(DISTINCT ref1) AS n FROM awd"
+  },
+  {
+    "id": "G2",
+    "type": "join2",
+    "hop": 2,
+    "question": "获奖最多的 3 位演员分别是谁?只返回名、姓、获奖数三列,按获奖数降序、名升序、姓升序。",
+    "gold_sql": "SELECT a.frst_nm, a.last_nm, COUNT(*) AS n FROM awd w JOIN actr a ON w.ref1 = a.actr_id GROUP BY a.actr_id, a.frst_nm, a.last_nm ORDER BY n DESC, a.frst_nm ASC, a.last_nm ASC LIMIT 3"
+  },
+  {
+    "id": "H1",
+    "type": "join2",
+    "hop": 2,
+    "question": "用虚拟卡付款的客户有多少位?",
+    "gold_sql": "SELECT COUNT(DISTINCT cd.ref1) AS n FROM pymt p JOIN card cd ON p.ref1 = cd.card_id WHERE cd.crd_typ = '虚拟卡'"
+  },
+  {
+    "id": "H2",
+    "type": "join2",
+    "hop": 2,
+    "question": "用封卡(blocked)状态付款的客户有多少位?",
+    "gold_sql": "SELECT COUNT(DISTINCT cd.ref1) AS n FROM pymt p JOIN card cd ON p.ref1 = cd.card_id WHERE cd.sts = 'blocked'"
+  },
+  {
+    "id": "H3",
+    "type": "join34",
+    "hop": 3,
+    "question": "每位客户用过的付款卡数量是多少?只返回名、姓、卡数三列,按卡数降序、名升序、姓升序取前 10。",
+    "gold_sql": "SELECT c.frst_nm, c.last_nm, COUNT(DISTINCT cd.card_id) AS n FROM pymt p JOIN card cd ON p.ref1 = cd.card_id JOIN cust c ON cd.ref1 = c.cust_id GROUP BY c.cust_id, c.frst_nm, c.last_nm ORDER BY n DESC, c.frst_nm ASC, c.last_nm ASC LIMIT 10"
+  },
+  {
+    "id": "H4",
+    "type": "join2",
+    "hop": 2,
+    "question": "每位客户拥有的付款卡数量是多少?只返回名、姓、卡数三列,按卡数降序、名升序、姓升序取前 10。",
+    "gold_sql": "SELECT c.frst_nm, c.last_nm, COUNT(cd.card_id) AS n FROM cust c JOIN card cd ON c.cust_id = cd.ref1 GROUP BY c.cust_id, c.frst_nm, c.last_nm ORDER BY n DESC, c.frst_nm ASC, c.last_nm ASC LIMIT 10"
+  },
+  {
+    "id": "H5",
+    "type": "rule",
+    "hop": 1,
+    "question": "有多少位客户拥有超过一张付款卡?",
+    "gold_sql": "SELECT COUNT(*) AS n FROM (SELECT ref1 FROM card GROUP BY ref1 HAVING COUNT(*) > 1) t"
+  },
+  {
+    "id": "H6",
+    "type": "single",
+    "hop": 1,
+    "question": "有多少张付款卡处于封卡(blocked)状态?",
+    "gold_sql": "SELECT COUNT(*) AS n FROM card WHERE sts = 'blocked'"
+  },
+  {
+    "id": "Q39",
+    "type": "join34",
+    "hop": 5,
+    "question": "消费总额最高的客户,住在哪个城市?只返回城市名一列。",
+    "gold_sql": "SELECT ci.cty FROM cust c JOIN addr a ON c.ref2 = a.addr_id JOIN city ci ON a.ref1 = ci.cty_id WHERE c.cust_id = (SELECT cd.ref1 FROM pymt p JOIN card cd ON p.ref1 = cd.card_id GROUP BY cd.ref1 ORDER BY SUM(p.amt) DESC LIMIT 1)"
+  },
+  {
+    "id": "Q40",
+    "type": "rule",
+    "hop": 1,
+    "question": "有多少张付款卡从未被任何付款使用过?",
+    "gold_sql": "SELECT COUNT(*) AS n FROM card WHERE card_id NOT IN (SELECT DISTINCT ref1 FROM pymt)"
+  },
+  {
+    "id": "Q41",
+    "type": "join2",
+    "hop": 2,
+    "question": "doc 表覆盖的电影,总片长是多少分钟?只返回一个数值。",
+    "gold_sql": "SELECT SUM(f.lngth) FROM doc d JOIN film f ON d.doc_id = f.flm_id"
+  }
+]

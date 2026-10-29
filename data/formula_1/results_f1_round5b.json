@@ -1,0 +1,203 @@
+{
+  "runs": [
+    {
+      "question_id": 44,
+      "datasource": "formula_1",
+      "chat_id": "8779a2ce64fc4300af7e6443bbc0e8ec",
+      "final_sql": "SELECT rcs.dt FROM rcs JOIN crct ON rcs.ref1 = crct.crct_id WHERE crct.nm = 'Brands Hatch' AND rcs.nm = 'British Grand Prix' ORDER BY rcs.ref2 DESC LIMIT 1;",
+      "sql_history": [
+        "SELECT rcs.dt FROM rcs JOIN crct ON rcs.ref1 = crct.crct_id WHERE crct.nm = 'Brands Hatch' AND rcs.nm = 'British Grand Prix' ORDER BY rcs.ref2 DESC LIMIT 1;"
+      ],
+      "agent_text": "Brands Hatch 最后一次举办英国大奖赛是在 **1986 年**，该场比赛日期为 **1986-07-13**。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 18618,
+        "output": 531,
+        "cache_read": 69248,
+        "cache_write": 0,
+        "reasoning": 260,
+        "total": 88397
+      },
+      "cost_usd": 0.004694,
+      "elapsed_seconds": 17.14,
+      "agent_duration_ms": 9634,
+      "extra_columns": []
+    },
+    {
+      "question_id": 83,
+      "datasource": "formula_1",
+      "chat_id": "7e9cc1c9336947a9b9cc0c5d4faf0498",
+      "final_sql": "SELECT T3.frnm, T3.srnm, T3.drvr_rf FROM rslt AS T1 JOIN rcs AS T2 ON T1.ref4 = T2.rc_id JOIN drvr AS T3 ON T1.ref3 = T3.drvr_id WHERE T2.nm = 'Canadian Grand Prix' AND T2.ref2 = 2007 AND T1.rnk = 1",
+      "sql_history": [
+        "SELECT T3.frnm, T3.srnm, T3.drvr_rf FROM rslt AS T1 JOIN rcs AS T2 ON T1.ref4 = T2.rc_id JOIN drvr AS T3 ON T1.ref3 = T3.drvr_id WHERE T2.nm = 'Canadian Grand Prix' AND T2.ref2 = 2007 AND T1.rnk = 1"
+      ],
+      "agent_text": "加拿大站 2007 年最快圈速第 1 名车手：**Fernando Alonso**，reference name（driverRef）= `alonso`。\n\n- forename: Fernando\n- surname: Alonso\n- driverRef: alonso",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 18872,
+        "output": 5669,
+        "cache_read": 111232,
+        "cache_write": 0,
+        "reasoning": 5209,
+        "total": 135773
+      },
+      "cost_usd": 0.007344,
+      "elapsed_seconds": 47.9,
+      "agent_duration_ms": 40416,
+      "extra_columns": []
+    },
+    {
+      "question_id": 106,
+      "datasource": "formula_1",
+      "chat_id": "e139b2ba83544856a87d795b9d2e8c0c",
+      "final_sql": "SELECT COUNT(cnstr_std.ref2) FROM cnstr_std JOIN cnstr ON cnstr.cnst_id = cnstr_std.ref1 WHERE cnstr.ntnl = 'Japanese' AND cnstr_std.pnts = 0 GROUP BY cnstr_std.ref1 HAVING COUNT(cnstr_std.ref2) = 2",
+      "sql_history": [
+        "SELECT COUNT(cnstr_std.ref2) FROM cnstr_std JOIN cnstr ON cnstr.cnst_id = cnstr_std.ref1 WHERE cnstr.ntnl = 'Japanese' AND cnstr_std.pnts = 0 GROUP BY cnstr_std.ref1 HAVING COUNT(cnstr_std.ref2) = 2"
+      ],
+      "agent_text": "**答案：2**\n\n```sql\nSELECT COUNT(cnstr_std.ref2)\nFROM cnstr_std\nJOIN cnstr ON cnstr.cnst_id = cnstr_std.ref1\nWHERE cnstr.ntnl = 'Japanese' AND cnstr_std.pnts = 0\nGROUP BY cnstr_std.ref1\nHAVING COUNT(cnstr_std.ref2) = 2;\n```\n\n用 `cnstr_std`（constructorStandings）按 constructor 分组，筛日本籍（`cnstr.ntnl = 'Japanese'`）且积分 `pnts = 0`，`HAVING COUNT(ref2) = 2` 取恰好 2 场的，返回每个满足条件的 constructor 的场次数 = **2**。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 18502,
+        "output": 890,
+        "cache_read": 69760,
+        "cache_write": 0,
+        "reasoning": 464,
+        "total": 89152
+      },
+      "cost_usd": 0.004793,
+      "elapsed_seconds": 19.11,
+      "agent_duration_ms": 11527,
+      "extra_columns": []
+    },
+    {
+      "question_id": 113,
+      "datasource": "formula_1",
+      "chat_id": "8f2a1f19e11a4cc684e46bdb17e78e72",
+      "final_sql": "SELECT d.frnm, d.srnm, r.fsts_lp_tm FROM rslt r JOIN drvr d ON r.ref3 = d.drvr_id WHERE r.fsts_lp_tm IS NOT NULL AND r.fsts_lp_tm != '' ORDER BY r.fsts_lp_tm ASC LIMIT 1",
+      "sql_history": [
+        "SELECT d.frnm, d.srnm, r.fsts_lp_tm FROM rslt r JOIN drvr d ON r.ref3 = d.drvr_id WHERE r.fsts_lp_tm IS NOT NULL AND r.fsts_lp_tm != '' ORDER BY r.fsts_lp_tm ASC LIMIT 1"
+      ],
+      "agent_text": "最快圈速的车手是 **Lewis Hamilton**，圈速 **1:07.411**。\n\n| 名 (forename) | 姓 (surname) | 最快圈速 (fsts_lp_tm) |\n|---|---|---|\n| Lewis | Hamilton | 1:07.411 |",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 18544,
+        "output": 607,
+        "cache_read": 69376,
+        "cache_write": 0,
+        "reasoning": 290,
+        "total": 88527
+      },
+      "cost_usd": 0.004709,
+      "elapsed_seconds": 17.64,
+      "agent_duration_ms": 10189,
+      "extra_columns": []
+    },
+    {
+      "question_id": 118,
+      "datasource": "formula_1",
+      "chat_id": "ad6bb08a1db2402497353ab2ac721206",
+      "final_sql": "SELECT COUNT(*) AS french_drivers_under_2min FROM lp_tm JOIN drvr ON lp_tm.ref1 = drvr.drvr_id WHERE drvr.ntnl = 'French' AND (SUBSTR(lp_tm.tm,1,2)*60 + SUBSTR(lp_tm.tm,4,2) + SUBSTR(lp_tm.tm,7,2)/1000) < 120",
+      "sql_history": [
+        "SELECT (SELECT COUNT(*) FROM lp_tm WHERE tm IS NULL OR tm='') AS empty_tm, (SELECT COUNT(*) FROM lp_tm) AS total, (SELECT COUNT(*) FROM drvr WHERE ntnl='French') AS french_drivers",
+        "SELECT COUNT(*) AS french_drivers_under_2min FROM lp_tm JOIN drvr ON lp_tm.ref1 = drvr.drvr_id WHERE drvr.ntnl = 'French' AND (SUBSTR(lp_tm.tm,1,2)*60 + SUBSTR(lp_tm.tm,4,2) + SUBSTR(lp_tm.tm,7,2)/1000) < 120"
+      ],
+      "agent_text": "**答案：24465**\n\n统计口径：`lp_tm`（每圈圈速记录）JOIN `drvr`（`lp_tm.ref1 = drvr.drvr_id`），筛选法国籍车手 `drvr.ntnl = 'French'`，按字符串 `tm` 解析为秒（`SUBSTR(tm,1,2)*60 + SUBSTR(tm,4,2) + SUBSTR(tm,7,2)/1000 < 120`），保留原始逐圈记录行（fan-out，COUNT 不去重）。\n\n最终 SQL（最后执行的一条）：\n```sql\nSELECT COUNT(*) AS french_drivers_under_2min\nFROM lp_tm\nJOIN drvr ON lp_tm.ref1 = drvr.drvr_id\nWHERE drvr.ntnl = 'French'\n  AND (SUBSTR(lp_tm.tm,1,2)*60 + SUBSTR(lp_tm.tm,4,2) + SUBSTR(lp_tm.tm,7,2)/1000) < 120\n```",
+      "tool_calls": 7,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 24225,
+        "output": 3083,
+        "cache_read": 144000,
+        "cache_write": 0,
+        "reasoning": 2142,
+        "total": 171308
+      },
+      "cost_usd": 0.008287,
+      "elapsed_seconds": 36.77,
+      "agent_duration_ms": 29200,
+      "extra_columns": []
+    },
+    {
+      "question_id": 161,
+      "datasource": "formula_1",
+      "chat_id": "2e553dfa7e3b473693e0a8a6db136ead",
+      "final_sql": "SELECT fsts_lp_tm FROM rslt WHERE fsts_lp_tm IS NOT NULL AND fsts_lp_tm != '' ORDER BY fsts_lp_tm ASC LIMIT 1",
+      "sql_history": [
+        "SELECT fsts_lp_tm FROM rslt WHERE fsts_lp_tm IS NOT NULL AND fsts_lp_tm != '' ORDER BY fsts_lp_tm ASC LIMIT 1"
+      ],
+      "agent_text": "最快圈速记录的时间是 **1:07.411**。",
+      "tool_calls": 4,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 18604,
+        "output": 541,
+        "cache_read": 100864,
+        "cache_write": 0,
+        "reasoning": 223,
+        "total": 120009
+      },
+      "cost_usd": 0.00558,
+      "elapsed_seconds": 18.25,
+      "agent_duration_ms": 10729,
+      "extra_columns": []
+    },
+    {
+      "question_id": 172,
+      "datasource": "formula_1",
+      "chat_id": "4274b3f4ebbd49bdb5b5a1613b7b7c16",
+      "final_sql": "SELECT crct.lt, crct.lng FROM lp_tm JOIN rcs ON lp_tm.ref2 = rcs.rc_id JOIN crct ON rcs.ref1 = crct.crct_id WHERE lp_tm.tm = '1:29.488'",
+      "sql_history": [
+        "SELECT crct.lt, crct.lng FROM rslt JOIN rcs ON rslt.ref4 = rcs.rc_id JOIN crct ON rcs.ref1 = crct.crct_id WHERE rslt.fsts_lp_tm = '1:29.488'",
+        "SELECT COUNT(*) AS c FROM lp_tm WHERE tm = '1:29.488'",
+        "SELECT crct.lt, crct.lng FROM lp_tm JOIN rcs ON lp_tm.ref2 = rcs.rc_id JOIN crct ON rcs.ref1 = crct.crct_id WHERE lp_tm.tm = '1:29.488'"
+      ],
+      "agent_text": "共 12 条坐标（保留 fan-out，未去重）：\n\n| lat | lng |\n|---|---|\n| 40.9517 | 29.405 |\n| 40.9517 | 29.405 |\n| 44.3439 | 11.7167 |\n| 45.6156 | 9.28111 |\n| 41.57 | 2.26111 |\n| 43.7347 | 7.42056 |\n| 47.5789 | 19.2486 |\n| 45.6156 | 9.28111 |\n| 28.3487 | 77.5331 |\n| 28.3487 | 77.5331 |\n| 45.6156 | 9.28111 |\n| 45.6156 | 9.28111 |\n\n查询：`lp_tm.tm = '1:29.488'` → `rcs` → `crct`，返回 `crct.lt, crct.lng`（未 DISTINCT，保留每条圈速记录一行）。",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 19078,
+        "output": 2891,
+        "cache_read": 134912,
+        "cache_write": 0,
+        "reasoning": 2223,
+        "total": 156881
+      },
+      "cost_usd": 0.007258,
+      "elapsed_seconds": 34.71,
+      "agent_duration_ms": 27133,
+      "extra_columns": []
+    }
+  ]
+}

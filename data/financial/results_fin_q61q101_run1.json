@@ -1,0 +1,67 @@
+{
+  "runs": [
+    {
+      "question_id": 61,
+      "datasource": "financial",
+      "chat_id": "3799f46496f049a38faf4ff1cd32f681",
+      "final_sql": "SELECT d.typ FROM dsp d JOIN acct a ON d.ref2 = a.accn_id JOIN dstr ds ON a.ref1 = ds.dstr_id WHERE d.typ <> 'OWNER' AND ds.a11 BETWEEN 8000 AND 9000",
+      "sql_history": [
+        "SELECT DISTINCT typ FROM dsp",
+        "SELECT MIN(a11) AS mn, MAX(a11) AS mx FROM dstr",
+        "SELECT d.typ FROM dsp d JOIN acct a ON d.ref2 = a.accn_id JOIN dstr ds ON a.ref1 = ds.dstr_id WHERE d.typ <> 'OWNER' AND ds.a11 BETWEEN 8000 AND 9000"
+      ],
+      "agent_text": "账户类型中**不符合贷款条件**的只有 `DISPONENT`（`OWNER` 才是符合条件的）。其账户所在地区居民平均工资（dstr.a11）落在 8000–9000 区间的记录共 **27 行**，全部为 `DISPONENT`。\n\n查询：\n```sql\nSELECT d.typ\nFROM dsp d\nJOIN acct a ON d.ref2 = a.accn_id\nJOIN dstr ds ON a.ref1 = ds.dstr_id\nWHERE d.typ <> 'OWNER' AND ds.a11 BETWEEN 8000 AND 9000;\n```\n\n结果：`DISPONENT` × 27（按每条 disp 返回一行）",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 16676,
+        "output": 4737,
+        "cache_read": 104704,
+        "cache_write": 0,
+        "reasoning": 4217,
+        "total": 126117
+      },
+      "cost_usd": 0.006593,
+      "elapsed_seconds": 37.24,
+      "agent_duration_ms": 29276,
+      "extra_columns": []
+    },
+    {
+      "question_id": 101,
+      "datasource": "financial",
+      "chat_id": "f301b93d81524b34b0d1863c6112fc2d",
+      "final_sql": "SELECT a.accn_id AS account_number FROM clnt c JOIN dstr d ON c.ref1 = d.dstr_id JOIN dsp ON dsp.ref1 = c.clnt_id JOIN acct a ON dsp.ref2 = a.accn_id WHERE c.gndr = 'F' ORDER BY c.brth_dt ASC, d.a11 ASC LIMIT 1",
+      "sql_history": [
+        "SELECT c.clnt_id, c.brth_dt, d.a11 FROM clnt c JOIN dstr d ON c.ref1 = d.dstr_id WHERE c.gndr = 'F' ORDER BY c.brth_dt ASC, d.a11 ASC LIMIT 10",
+        "SELECT c.clnt_id, a.accn_id, c.brth_dt, d.a11 FROM clnt c JOIN dstr d ON c.ref1 = d.dstr_id JOIN dsp ON dsp.ref1 = c.clnt_id JOIN acct a ON dsp.ref2 = a.accn_id WHERE c.gndr = 'F' ORDER BY c.brth_dt ASC, d.a11 ASC LIMIT 5",
+        "SELECT c.clnt_id, COUNT(a.accn_id) AS n_acct FROM clnt c JOIN dsp ON dsp.ref1 = c.clnt_id JOIN acct a ON dsp.ref2 = a.accn_id WHERE c.clnt_id = 2115 GROUP BY c.clnt_id",
+        "SELECT dsp.dsp_id, dsp.ref1 AS clnt_id, dsp.ref2 AS accn_id, dsp.typ FROM dsp WHERE dsp.ref1 = 2115",
+        "SELECT c.clnt_id, a.accn_id, c.brth_dt, d.a11, dsp.typ FROM clnt c JOIN dstr d ON c.ref1 = d.dstr_id JOIN dsp ON dsp.ref1 = c.clnt_id JOIN acct a ON dsp.ref2 = a.accn_id WHERE c.gndr = 'F' AND dsp.typ = 'OWNER' ORDER BY c.brth_dt ASC, d.a11 ASC LIMIT 3",
+        "SELECT a.accn_id AS account_number FROM clnt c JOIN dstr d ON c.ref1 = d.dstr_id JOIN dsp ON dsp.ref1 = c.clnt_id JOIN acct a ON dsp.ref2 = a.accn_id WHERE c.gndr = 'F' ORDER BY c.brth_dt ASC, d.a11 ASC LIMIT 1"
+      ],
+      "agent_text": "账户号码：**1743**\n\n说明：在 female（`gndr='F'`）客户中，按 `brth_dt ASC`（最年长优先）、`a11 ASC`（所在区平均薪资最低为次）排序取最年长者，其为账户 1743 的持有关系人（clnt→dsp→acct 链）。",
+      "tool_calls": 9,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 9,
+      "tool_rounds": 8,
+      "tokens": {
+        "input": 18279,
+        "output": 10554,
+        "cache_read": 277120,
+        "cache_write": 0,
+        "reasoning": 9492,
+        "total": 305953
+      },
+      "cost_usd": 0.013274,
+      "elapsed_seconds": 72.9,
+      "agent_duration_ms": 64718,
+      "extra_columns": []
+    }
+  ]
+}

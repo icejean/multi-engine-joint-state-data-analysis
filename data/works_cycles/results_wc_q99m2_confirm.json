@@ -1,0 +1,50 @@
+{
+  "runs": [
+    {
+      "question_id": 99,
+      "m_level": "M2",
+      "datasource": "works_cycles_er",
+      "chat_id": "8b9c386d326346e7bfd6c7172b05e094",
+      "final_sql": "WITH RECURSIVE bt(ref2, level) AS ( SELECT ref2, 1 FROM bom WHERE ref3 = (SELECT prdc_id FROM prod WHERE nm = 'HL Road Frame - Black, 58') AND end_dt IS NULL UNION ALL SELECT b.ref2, bt.level + 1 FROM bom b JOIN bt ON b.ref3 = bt.ref2 WHERE b.end_dt IS NULL ) SELECT DISTINCT p.nm AS component, bt.level FROM bt JOIN prod p ON p.prdc_id = bt.ref2 ORDER BY bt.level, p.nm",
+      "sql_history": [
+        "SHOW TABLES",
+        "SELECT table_name FROM information_schema.tables WHERE table_schema = 'works_cycles_er' ORDER BY table_name",
+        "SELECT table_name FROM information_schema.tables WHERE table_schema = 'works_cycles_er' AND table_name > 'po_hdr' ORDER BY table_name",
+        "SELECT table_name FROM information_schema.tables WHERE table_schema = 'works_cycles_er' AND table_name > 'so_rsn' ORDER BY table_name",
+        "SELECT * FROM sys_tables LIMIT 5",
+        "SELECT * FROM sys_table_fields LIMIT 5",
+        "SELECT * FROM sys_foreignkeys LIMIT 10",
+        "SELECT field_name, field_desc FROM sys_table_fields WHERE table_name='bom'",
+        "SELECT field_name, field_desc FROM sys_table_fields WHERE table_name='prod'",
+        "SELECT prdc_id, prdc_nmbr, nm, fnsh_gds_flg FROM prod WHERE nm = 'HL Road Frame - Black, 58'",
+        "SELECT bll_of_mtrl_id, ref3, ref2, ref1, bm_lvl, pr_assm_qty, strt_dt, end_dt FROM bom WHERE ref3 = 680 ORDER BY bm_lvl",
+        "SELECT DISTINCT ref3 FROM bom WHERE ref3 IN (492,804,534,532,533,324,325,327,399,326)",
+        "SELECT count(*) AS n, count(DISTINCT ref3) AS n_asm FROM bom",
+        "SELECT bll_of_mtrl_id, ref3, ref2, ref1, bm_lvl, pr_assm_qty, strt_dt, end_dt FROM bom WHERE ref3 = 804 ORDER BY bm_lvl",
+        "SELECT count(*) AS cnt FROM bom WHERE ref2 = 680",
+        "SELECT bll_of_mtrl_id, ref3, ref2, ref1, bm_lvl, pr_assm_qty, strt_dt, end_dt FROM bom WHERE ref2 = 680",
+        "SELECT DISTINCT bm_lvl FROM bom ORDER BY bm_lvl",
+        "SELECT ref3, ref2, bm_lvl FROM bom WHERE end_dt IS NULL AND ref3 = 680 ORDER BY ref2",
+        "SELECT VERSION() AS v",
+        "SELECT count(*) AS cnt FROM bom WHERE ref2 = 796",
+        "SELECT bll_of_mtrl_id, ref3, ref2, bm_lvl, pr_assm_qty, strt_dt, end_dt FROM bom WHERE ref3 = 796 ORDER BY bm_lvl",
+        "SELECT bll_of_mtrl_id, ref3, ref2, bm_lvl, strt_dt, end_dt FROM bom WHERE ref2 = 796",
+        "SELECT bll_of_mtrl_id, ref3, ref2, bm_lvl, strt_dt, end_dt FROM bom WHERE bm_lvl = 0",
+        "SELECT ref3, ref2, bm_lvl, pr_assm_qty, strt_dt, end_dt FROM bom WHERE ref3 IN (324,327,399,532,533,534,804) ORDER BY ref3, bm_lvl",
+        "WITH RECURSIVE t AS ( SELECT ref2 AS comp, 1 AS lvl, CAST(CONCAT(',', ref2, ',') AS CHAR(4000)) AS path FROM bom WHERE ref3 = 680 AND end_dt IS NULL UNION ALL SELECT b.ref2, t.lvl + 1, CONCAT(t.path, b.ref2, ',') FROM t JOIN bom b ON b.ref3 = t.comp AND b.end_dt IS NULL WHERE t.path NOT LIKE CONCAT('%,', b.ref2, ',%') ) SELECT lvl, comp FROM t ORDER BY lvl, comp",
+        "WITH RECURSIVE t AS ( SELECT ref2 AS comp, 1 AS lvl, CAST(CONCAT(ref2) AS CHAR(4000)) AS path FROM bom WHERE ref3 = 680 AND end_dt IS NULL UNION ALL SELECT b.ref2, t.lvl + 1, CONCAT(t.path, '>', b.ref2) FROM t JOIN bom b ON b.ref3 = t.comp AND b.end_dt IS NULL WHERE t.path NOT LIKE CONCAT('%>', b.ref2, '%') AND t.path <> CAST(b.ref2 AS CHAR) ) SELECT lvl, comp, path FROM t ORDER BY path",
+        "WITH RECURSIVE t AS ( SELECT ref2 AS comp, 1 AS lvl, CAST(CONCAT(ref2) AS CHAR(5000)) AS path FROM bom WHERE ref3 = 680 UNION ALL SELECT b.ref2, t.lvl + 1, CONCAT(t.path, '>', b.ref2) FROM t JOIN bom b ON b.ref3 = t.comp WHERE FIND_IN_SET(b.ref2, REPLACE(t.path,'>',',')) = 0 ) SELECT lvl, comp, path FROM t ORDER BY path",
+        "SELECT prdc_id, nm FROM prod WHERE prdc_id IN (324,325,326,327,399,492,532,533,534,804,316,331,350,478,482,483,484,485,486,487,531,680,796) ORDER BY prdc_id",
+        "SELECT ref3, ref2, bm_lvl, pr_assm_qty, strt_dt, end_dt FROM bom WHERE ref3 IN (324,316,331,350,478,482,483,484,485,486,487,531,532,533,534,327,399,804) ORDER BY ref3, bm_lvl, ref2",
+        "SELECT bll_of_mtrl_id, ref3, ref2, bm_lvl FROM bom WHERE ref3 = ref2",
+        "SELECT a.ref3 AS x, a.ref2 AS y FROM bom a JOIN bom b ON a.ref3=b.ref2 AND a.ref2=b.ref3 WHERE a.ref3 <> a.ref2 LIMIT 20",
+        "SELECT bm_lvl, count(*) AS n FROM bom GROUP BY bm_lvl ORDER BY bm_lvl",
+        "WITH RECURSIVE bt(ref2, level) AS ( SELECT ref2, 1 FROM bom WHERE ref3 = (SELECT prdc_id FROM prod WHERE nm = 'HL Road Frame - Black, 58') AND end_dt IS NULL UNION ALL SELECT b.ref2, bt.level + 1 FROM bom b JOIN bt ON b.ref3 = bt.ref2 WHERE b.end_dt IS NULL ) SELECT DISTINCT p.nm AS component, bt.level FROM bt JOIN prod p ON p.prdc_id = bt.ref2 ORDER BY bt.level, p.nm"
+      ],
+      "agent_text": "**'HL Road Frame - Black, 58'（prdc_id=680）装配所需全部组件（直接 + 嵌套）及装配层级：**\n\n| 层级 | 组件 |\n|---|---|\n| **1（直接）** | Chain Stays、Decal 1、Decal 2、Down Tube、HL Fork、Head Tube、Paint - Black、Seat Stays、Seat Tube、Top Tube |\n| **2（嵌套）** | Blade、Fork Crown、Fork End、Metal Bar 2、Metal Sheet 2、Metal Sheet 3、Metal Sheet 4、Metal Sheet 5、Metal Sheet 7、Steerer |\n| **3（嵌套）** | Metal Sheet 2、Metal Sheet 5、Metal Sheet 6 |\n\n- 共 **23 条**（按组件去重，同一组件在不同层级出现会分别列出，如 Metal Sheet 2 在 level 2 和 3、Metal Sheet 5 在 level 2 和 3）。\n- 说明：`bom` 为自引用表，`ref3`=装配产品、`ref2`=组件；已过滤历史行（`end_dt IS NULL`），只保留当前有效装配（未过滤时会是 28 行）。\n- 最终执行 SQL：\n\n```sql\nWITH RECURSIVE bt(ref2, level) AS (\n  SELECT ref2, 1 FROM bom\n  WHERE ref3 = (SELECT prdc_id FROM prod WHERE nm = 'HL Road Frame - Black, 58') AND end_dt IS NULL\n  UNION ALL\n  SELECT b.ref2, bt.level + 1 FROM bom b JOIN bt ON b.ref3 = bt.ref2 WHERE b.end_dt IS NULL\n)\nSELECT DISTINCT p.nm AS component, bt.level\nFROM bt JOIN prod p ON p.prdc_id = bt.ref2\nORDER BY bt.level, p.nm\n```",
+      "tool_calls": 42,
+      "pass": true,
+      "error": null
+    }
+  ]
+}

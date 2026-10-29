@@ -1,0 +1,33 @@
+{
+  "runs": [
+    {
+      "question_id": 1,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "272ea92f10c3402b8c614ddc221a4246",
+      "final_sql": "SELECT (SELECT COUNT(DISTINCT ref1) FROM biz_addr WHERE ref2 = 2) AS home_addr_biz_count, (SELECT COUNT(DISTINCT ref1) FROM biz_addr WHERE ref2 = 5) AS shipping_addr_biz_count",
+      "sql_history": [
+        "SELECT (SELECT COUNT(DISTINCT ref1) FROM biz_addr WHERE ref2 = 2) AS home_addr_biz_count, (SELECT COUNT(DISTINCT ref1) FROM biz_addr WHERE ref2 = 5) AS shipping_addr_biz_count"
+      ],
+      "agent_text": "两个计数结果如下：\n\n- 以家庭地址作为地址的业务实体（AddressTypeID = 2）：**18774**\n- 拥有收货地址的业务实体（AddressTypeID = 5）：**35**",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 36005,
+        "output": 802,
+        "cache_read": 81536,
+        "cache_write": 0,
+        "reasoning": 542,
+        "total": 118343
+      },
+      "cost_usd": 0.007548,
+      "elapsed_seconds": 17.01,
+      "agent_duration_ms": 8895,
+      "extra_columns": []
+    }
+  ]
+}

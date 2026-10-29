@@ -1,0 +1,33 @@
+{
+  "runs": [
+    {
+      "question_id": 1,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "8f409fc9de46406a901624b1e3605098",
+      "final_sql": "SELECT SUM(CASE WHEN ref2 = 2 THEN 1 ELSE 0 END) AS home_address_count, SUM(CASE WHEN ref2 = 5 THEN 1 ELSE 0 END) AS shipping_address_count FROM ( SELECT DISTINCT ref1, ref2 FROM biz_addr WHERE ref2 IN (2, 5) ) t",
+      "sql_history": [
+        "SELECT SUM(CASE WHEN ref2 = 2 THEN 1 ELSE 0 END) AS home_address_count, SUM(CASE WHEN ref2 = 5 THEN 1 ELSE 0 END) AS shipping_address_count FROM ( SELECT DISTINCT ref1, ref2 FROM biz_addr WHERE ref2 IN (2, 5) ) t"
+      ],
+      "agent_text": "两个计数结果：\n\n| 以家庭地址作为地址的企业数 | 拥有收货地址的企业数 |\n|---|---|\n| 18774 | 35 |\n\n- **家庭地址（AddressTypeID = 2）**：18,774 个企业\n- **收货地址（AddressTypeID = 5）**：35 个企业\n\nSQL 逻辑：从 `biz_addr` 关联表中按 `(ref1, ref2)` 去重后，分别统计 `ref2 = 2`（家庭地址）和 `ref2 = 5`（收货地址）的企业数量。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 90778,
+        "output": 860,
+        "cache_read": 24192,
+        "cache_write": 0,
+        "reasoning": 576,
+        "total": 115830
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 27.48,
+      "agent_duration_ms": 19938,
+      "extra_columns": []
+    }
+  ]
+}

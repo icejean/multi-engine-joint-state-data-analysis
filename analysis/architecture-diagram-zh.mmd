@@ -1,0 +1,28 @@
+flowchart TB
+    subgraph gov["治理层：执行级审计 × OS 多租户隔离 × 私有化 / 信创"]
+        direction TB
+
+        sc["schema.json  +  notes.md<br/>（确定性 grounding，一次性注入）"]
+        llm["LLM · 一个对话上下文<br/>（语义理解 / 推理 / 编排，非计算）"]
+
+        sc -->|"一次性注入（确定性来源）"| llm
+
+        py["Python kernel<br/>（ML 数据）"]
+        r["R kernel<br/>（ML 数据）"]
+        sql["SQL → RDB<br/>（关系型数据）"]
+        cy["Cypher → GraphDB<br/>（图数据）"]
+
+        llm -->|"执行反馈闭环"| py
+        llm --> r
+        llm --> sql
+        llm --> cy
+
+        flow["⇄ 状态跨引擎流动（CSV 共享层）＋ grounding 复用（notes.md）"]
+        py <--> flow
+        r <--> flow
+        sql <--> flow
+        cy <--> flow
+    end
+
+    classDef novelty stroke:#c0392b,stroke-width:3px,stroke-dasharray:5 3;
+    class flow novelty;

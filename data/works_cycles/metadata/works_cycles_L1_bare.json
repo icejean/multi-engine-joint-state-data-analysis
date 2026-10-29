@@ -1,0 +1,3067 @@
+{
+  "database": "works_cycles",
+  "gradient": "L1_bare",
+  "gradient_label": "裸数据",
+  "stats": {
+    "table_count": 65,
+    "column_count": 455,
+    "foreign_key_count": 0
+  },
+  "tables": [
+    {
+      "name": "Address",
+      "columns": [
+        {
+          "name": "AddressID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "AddressLine1",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "AddressLine2",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "City",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "StateProvinceID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "PostalCode",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "SpatialLocation",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "AddressType",
+      "columns": [
+        {
+          "name": "AddressTypeID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "BillOfMaterials",
+      "columns": [
+        {
+          "name": "BillOfMaterialsID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "ProductAssemblyID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "ComponentID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "StartDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "EndDate",
+          "type": "DATETIME",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "UnitMeasureCode",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "BOMLevel",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "PerAssemblyQty",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "BusinessEntity",
+      "columns": [
+        {
+          "name": "BusinessEntityID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "BusinessEntityAddress",
+      "columns": [
+        {
+          "name": "BusinessEntityID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "AddressID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "AddressTypeID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "BusinessEntityContact",
+      "columns": [
+        {
+          "name": "BusinessEntityID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "PersonID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "ContactTypeID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "ContactType",
+      "columns": [
+        {
+          "name": "ContactTypeID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "CountryRegion",
+      "columns": [
+        {
+          "name": "CountryRegionCode",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "CountryRegionCurrency",
+      "columns": [
+        {
+          "name": "CountryRegionCode",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "CurrencyCode",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "CreditCard",
+      "columns": [
+        {
+          "name": "CreditCardID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "CardType",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "CardNumber",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ExpMonth",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ExpYear",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "Culture",
+      "columns": [
+        {
+          "name": "CultureID",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "Currency",
+      "columns": [
+        {
+          "name": "CurrencyCode",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "CurrencyRate",
+      "columns": [
+        {
+          "name": "CurrencyRateID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "CurrencyRateDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "FromCurrencyCode",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ToCurrencyCode",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "AverageRate",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "EndOfDayRate",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "Customer",
+      "columns": [
+        {
+          "name": "CustomerID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "PersonID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "StoreID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "TerritoryID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "AccountNumber",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "Department",
+      "columns": [
+        {
+          "name": "DepartmentID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "GroupName",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "Document",
+      "columns": [
+        {
+          "name": "DocumentNode",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "DocumentLevel",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "Title",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "Owner",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "FolderFlag",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "FileName",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "FileExtension",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "Revision",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ChangeNumber",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "Status",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "DocumentSummary",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "Document",
+          "type": "BLOB",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "EmailAddress",
+      "columns": [
+        {
+          "name": "BusinessEntityID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "EmailAddressID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "EmailAddress",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "Employee",
+      "columns": [
+        {
+          "name": "BusinessEntityID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "NationalIDNumber",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "LoginID",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "OrganizationNode",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "OrganizationLevel",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "JobTitle",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "BirthDate",
+          "type": "DATE",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "MaritalStatus",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "Gender",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "HireDate",
+          "type": "DATE",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "SalariedFlag",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "VacationHours",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "SickLeaveHours",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "CurrentFlag",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "EmployeeDepartmentHistory",
+      "columns": [
+        {
+          "name": "BusinessEntityID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "DepartmentID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "ShiftID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "StartDate",
+          "type": "DATE",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "EndDate",
+          "type": "DATE",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "EmployeePayHistory",
+      "columns": [
+        {
+          "name": "BusinessEntityID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "RateChangeDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "Rate",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "PayFrequency",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "JobCandidate",
+      "columns": [
+        {
+          "name": "JobCandidateID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "BusinessEntityID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "Resume",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "Location",
+      "columns": [
+        {
+          "name": "LocationID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "CostRate",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "Availability",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "Password",
+      "columns": [
+        {
+          "name": "BusinessEntityID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "PasswordHash",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "PasswordSalt",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "Person",
+      "columns": [
+        {
+          "name": "BusinessEntityID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "PersonType",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "NameStyle",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "Title",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "FirstName",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "MiddleName",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "LastName",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "Suffix",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "EmailPromotion",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "AdditionalContactInfo",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "Demographics",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "PersonCreditCard",
+      "columns": [
+        {
+          "name": "BusinessEntityID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "CreditCardID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "PhoneNumberType",
+      "columns": [
+        {
+          "name": "PhoneNumberTypeID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "Product",
+      "columns": [
+        {
+          "name": "ProductID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ProductNumber",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "MakeFlag",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "FinishedGoodsFlag",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "Color",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "SafetyStockLevel",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ReorderPoint",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "StandardCost",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ListPrice",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "Size",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "SizeUnitMeasureCode",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "WeightUnitMeasureCode",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "Weight",
+          "type": "REAL",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "DaysToManufacture",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ProductLine",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "Class",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "Style",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "ProductSubcategoryID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "ProductModelID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "SellStartDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "SellEndDate",
+          "type": "DATETIME",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "DiscontinuedDate",
+          "type": "DATETIME",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "ProductCategory",
+      "columns": [
+        {
+          "name": "ProductCategoryID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "ProductCostHistory",
+      "columns": [
+        {
+          "name": "ProductID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "StartDate",
+          "type": "DATE",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "EndDate",
+          "type": "DATE",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "StandardCost",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "ProductDescription",
+      "columns": [
+        {
+          "name": "ProductDescriptionID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "Description",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "ProductDocument",
+      "columns": [
+        {
+          "name": "ProductID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "DocumentNode",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "ProductInventory",
+      "columns": [
+        {
+          "name": "ProductID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "LocationID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "Shelf",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "Bin",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "Quantity",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "ProductListPriceHistory",
+      "columns": [
+        {
+          "name": "ProductID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "StartDate",
+          "type": "DATE",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "EndDate",
+          "type": "DATE",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "ListPrice",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "ProductModel",
+      "columns": [
+        {
+          "name": "ProductModelID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "CatalogDescription",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "Instructions",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "ProductModelProductDescriptionCulture",
+      "columns": [
+        {
+          "name": "ProductModelID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "ProductDescriptionID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "CultureID",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "ProductPhoto",
+      "columns": [
+        {
+          "name": "ProductPhotoID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "ThumbNailPhoto",
+          "type": "BLOB",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "ThumbnailPhotoFileName",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "LargePhoto",
+          "type": "BLOB",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "LargePhotoFileName",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "ProductProductPhoto",
+      "columns": [
+        {
+          "name": "ProductID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "ProductPhotoID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "Primary",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "ProductReview",
+      "columns": [
+        {
+          "name": "ProductReviewID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "ProductID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ReviewerName",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ReviewDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "EmailAddress",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "Rating",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "Comments",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "ProductSubcategory",
+      "columns": [
+        {
+          "name": "ProductSubcategoryID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "ProductCategoryID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "ProductVendor",
+      "columns": [
+        {
+          "name": "ProductID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "BusinessEntityID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "AverageLeadTime",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "StandardPrice",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "LastReceiptCost",
+          "type": "REAL",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "LastReceiptDate",
+          "type": "DATETIME",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "MinOrderQty",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "MaxOrderQty",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "OnOrderQty",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "UnitMeasureCode",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "PurchaseOrderDetail",
+      "columns": [
+        {
+          "name": "PurchaseOrderID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "PurchaseOrderDetailID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "DueDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "OrderQty",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ProductID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "UnitPrice",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "LineTotal",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ReceivedQty",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "RejectedQty",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "StockedQty",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "PurchaseOrderHeader",
+      "columns": [
+        {
+          "name": "PurchaseOrderID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "RevisionNumber",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "Status",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "EmployeeID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "VendorID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ShipMethodID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "OrderDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ShipDate",
+          "type": "DATETIME",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "SubTotal",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "TaxAmt",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "Freight",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "TotalDue",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "SalesOrderDetail",
+      "columns": [
+        {
+          "name": "SalesOrderID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "SalesOrderDetailID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "CarrierTrackingNumber",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "OrderQty",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ProductID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "SpecialOfferID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "UnitPrice",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "UnitPriceDiscount",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "LineTotal",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "SalesOrderHeader",
+      "columns": [
+        {
+          "name": "SalesOrderID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "RevisionNumber",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "OrderDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "DueDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ShipDate",
+          "type": "DATETIME",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "Status",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "OnlineOrderFlag",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "SalesOrderNumber",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "PurchaseOrderNumber",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "AccountNumber",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "CustomerID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "SalesPersonID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "TerritoryID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "BillToAddressID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ShipToAddressID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ShipMethodID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "CreditCardID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "CreditCardApprovalCode",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "CurrencyRateID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "SubTotal",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "TaxAmt",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "Freight",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "TotalDue",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "Comment",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "SalesOrderHeaderSalesReason",
+      "columns": [
+        {
+          "name": "SalesOrderID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "SalesReasonID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "SalesPerson",
+      "columns": [
+        {
+          "name": "BusinessEntityID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "TerritoryID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "SalesQuota",
+          "type": "REAL",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "Bonus",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "CommissionPct",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "SalesYTD",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "SalesLastYear",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "SalesPersonQuotaHistory",
+      "columns": [
+        {
+          "name": "BusinessEntityID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "QuotaDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "SalesQuota",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "SalesReason",
+      "columns": [
+        {
+          "name": "SalesReasonID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ReasonType",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "SalesTaxRate",
+      "columns": [
+        {
+          "name": "SalesTaxRateID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "StateProvinceID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "TaxType",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "TaxRate",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "SalesTerritory",
+      "columns": [
+        {
+          "name": "TerritoryID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "CountryRegionCode",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "Group",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "SalesYTD",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "SalesLastYear",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "CostYTD",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "CostLastYear",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "SalesTerritoryHistory",
+      "columns": [
+        {
+          "name": "BusinessEntityID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "TerritoryID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "StartDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "EndDate",
+          "type": "DATETIME",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "ScrapReason",
+      "columns": [
+        {
+          "name": "ScrapReasonID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "Shift",
+      "columns": [
+        {
+          "name": "ShiftID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "StartTime",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "EndTime",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "ShipMethod",
+      "columns": [
+        {
+          "name": "ShipMethodID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ShipBase",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ShipRate",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "ShoppingCartItem",
+      "columns": [
+        {
+          "name": "ShoppingCartItemID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "ShoppingCartID",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "Quantity",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ProductID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "DateCreated",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "SpecialOffer",
+      "columns": [
+        {
+          "name": "SpecialOfferID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "Description",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "DiscountPct",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "Type",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "Category",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "StartDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "EndDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "MinQty",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "MaxQty",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "SpecialOfferProduct",
+      "columns": [
+        {
+          "name": "SpecialOfferID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "ProductID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "StateProvince",
+      "columns": [
+        {
+          "name": "StateProvinceID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "StateProvinceCode",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "CountryRegionCode",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "IsOnlyStateProvinceFlag",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "TerritoryID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "Store",
+      "columns": [
+        {
+          "name": "BusinessEntityID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "SalesPersonID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "Demographics",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "TransactionHistory",
+      "columns": [
+        {
+          "name": "TransactionID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "ProductID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ReferenceOrderID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ReferenceOrderLineID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "TransactionDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "TransactionType",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "Quantity",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ActualCost",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "TransactionHistoryArchive",
+      "columns": [
+        {
+          "name": "TransactionID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "ProductID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ReferenceOrderID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ReferenceOrderLineID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "TransactionDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "TransactionType",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "Quantity",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ActualCost",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "UnitMeasure",
+      "columns": [
+        {
+          "name": "UnitMeasureCode",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "Vendor",
+      "columns": [
+        {
+          "name": "BusinessEntityID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "AccountNumber",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "CreditRating",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "PreferredVendorStatus",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ActiveFlag",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "PurchasingWebServiceURL",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "WorkOrder",
+      "columns": [
+        {
+          "name": "WorkOrderID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true
+        },
+        {
+          "name": "ProductID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "OrderQty",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "StockedQty",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ScrappedQty",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "StartDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "EndDate",
+          "type": "DATETIME",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "DueDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ScrapReasonID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    },
+    {
+      "name": "WorkOrderRouting",
+      "columns": [
+        {
+          "name": "WorkOrderID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "ProductID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "OperationSequence",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true
+        },
+        {
+          "name": "LocationID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ScheduledStartDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ScheduledEndDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ActualStartDate",
+          "type": "DATETIME",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "ActualEndDate",
+          "type": "DATETIME",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "ActualResourceHrs",
+          "type": "REAL",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "PlannedCost",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false
+        },
+        {
+          "name": "ActualCost",
+          "type": "REAL",
+          "nullable": true,
+          "primary_key": false
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "runs": [
+    {
+      "question_id": 37,
+      "datasource": "financial",
+      "chat_id": "aeef787375744b3f876228218c916caf",
+      "final_sql": "SELECT (a13 - a12) * 100 / a12 AS unemployment_rate_increment FROM ln JOIN acct ON ln.ref1 = acct.accn_id JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE ln.stts = 'D'",
+      "sql_history": [
+        "SELECT (a13 - a12) * 100 / a12 AS unemployment_rate_increment FROM ln JOIN acct ON ln.ref1 = acct.accn_id JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE ln.stts = 'D'"
+      ],
+      "agent_text": "已完成。按每条 `stts='D'`（仍在运行且客户欠款）的贷款返回一行失业率增量（`(a13-a12)*100/a12`），共 27 行。\n\n📁 结果已在 Console 中执行，单列 `unemployment_rate_increment`。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 16558,
+        "output": 1782,
+        "cache_read": 68864,
+        "cache_write": 0,
+        "reasoning": 1483,
+        "total": 87204
+      },
+      "cost_usd": 0.004745,
+      "elapsed_seconds": 22.84,
+      "agent_duration_ms": 14801,
+      "extra_columns": []
+    }
+  ]
+}

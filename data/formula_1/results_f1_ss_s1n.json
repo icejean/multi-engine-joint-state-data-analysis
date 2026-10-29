@@ -1,0 +1,2598 @@
+{
+  "runs": [
+    {
+      "question_id": "1",
+      "s_level": "S1N",
+      "final_sql": "SELECT drvr.drvr_rf\nFROM qlfy\nJOIN drvr ON qlfy.ref2 = drvr.drvr_id\nWHERE qlfy.ref3 = 20\n  AND qlfy.q1 IS NOT NULL\n  AND qlfy.q1 != ''\nORDER BY qlfy.q1 DESC\nLIMIT 5",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4936,
+        "output": 722,
+        "total": 5658
+      },
+      "elapsed_seconds": 4.18,
+      "extra_columns": []
+    },
+    {
+      "question_id": "3",
+      "s_level": "S1N",
+      "final_sql": "SELECT DISTINCT rcs.ref2 FROM rcs JOIN crct ON rcs.ref1 = crct.crct_id WHERE crct.lctn = 'Shanghai'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4896,
+        "output": 345,
+        "total": 5241
+      },
+      "elapsed_seconds": 2.34,
+      "extra_columns": []
+    },
+    {
+      "question_id": "4",
+      "s_level": "S1N",
+      "final_sql": "SELECT crct.url FROM crct WHERE crct.nm = 'Circuit de Barcelona-Catalunya'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4911,
+        "output": 242,
+        "total": 5153
+      },
+      "elapsed_seconds": 1.89,
+      "extra_columns": []
+    },
+    {
+      "question_id": "5",
+      "s_level": "S1N",
+      "final_sql": "SELECT DISTINCT rcs.nm FROM rcs JOIN crct ON rcs.ref1 = crct.crct_id WHERE crct.cntr = 'Germany'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4894,
+        "output": 2975,
+        "total": 7869
+      },
+      "elapsed_seconds": 13.95,
+      "extra_columns": []
+    },
+    {
+      "question_id": "6",
+      "s_level": "S1N",
+      "final_sql": "SELECT DISTINCT cs.pstn\nFROM cnstr AS c\nJOIN cnstr_std AS cs ON c.cnst_id = cs.ref1\nJOIN rcs AS r ON cs.ref2 = r.rc_id\nJOIN crct AS ct ON r.ref1 = ct.crct_id\nWHERE c.nm = 'Renault'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4894,
+        "output": 5571,
+        "total": 10465
+      },
+      "elapsed_seconds": 28.35,
+      "extra_columns": []
+    },
+    {
+      "question_id": "7",
+      "s_level": "S1N",
+      "final_sql": "SELECT COUNT(*) FROM rcs JOIN crct ON rcs.ref1 = crct.crct_id WHERE rcs.ref2 = 2010 AND crct.cntr NOT IN ('Bahrain','Malaysia','China','Spain','Monaco','Turkey','UK','Germany','Hungary','Belgium','Italy','Singapore','Japan','Korea','UAE')",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4877,
+        "output": 3049,
+        "total": 7926
+      },
+      "elapsed_seconds": 14.3,
+      "extra_columns": []
+    },
+    {
+      "question_id": "8",
+      "s_level": "S1N",
+      "final_sql": "SELECT rcs.nm\nFROM rcs\nJOIN crct ON rcs.ref1 = crct.crct_id\nWHERE crct.cntr = 'Spain'",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4894,
+        "output": 2226,
+        "total": 7120
+      },
+      "elapsed_seconds": 11.3,
+      "extra_columns": []
+    },
+    {
+      "question_id": "9",
+      "s_level": "S1N",
+      "final_sql": "SELECT DISTINCT crct.lt, crct.lng FROM rcs JOIN crct ON rcs.ref1 = crct.crct_id WHERE rcs.nm = 'Australian Grand Prix'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4913,
+        "output": 521,
+        "total": 5434
+      },
+      "elapsed_seconds": 3.16,
+      "extra_columns": []
+    },
+    {
+      "question_id": "10",
+      "s_level": "S1N",
+      "final_sql": "SELECT crct.url FROM crct WHERE crct.nm = 'Sepang International Circuit'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4896,
+        "output": 166,
+        "total": 5062
+      },
+      "elapsed_seconds": 1.36,
+      "extra_columns": []
+    },
+    {
+      "question_id": "11",
+      "s_level": "S1N",
+      "final_sql": "SELECT DISTINCT rcs.tm FROM rcs JOIN crct ON rcs.ref1 = crct.crct_id WHERE crct.nm = 'Sepang International Circuit'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4919,
+        "output": 223,
+        "total": 5142
+      },
+      "elapsed_seconds": 1.61,
+      "extra_columns": []
+    },
+    {
+      "question_id": "12",
+      "s_level": "S1N",
+      "final_sql": "SELECT DISTINCT crct.lt, crct.lng FROM rcs JOIN crct ON rcs.ref1 = crct.crct_id WHERE rcs.nm = 'Abu Dhabi Grand Prix'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4911,
+        "output": 540,
+        "total": 5451
+      },
+      "elapsed_seconds": 3.46,
+      "extra_columns": []
+    },
+    {
+      "question_id": "13",
+      "s_level": "S1N",
+      "final_sql": "SELECT DISTINCT c.ntnl FROM cnstr_rslt cr JOIN cnstr c ON c.cnst_id = cr.ref1 WHERE cr.ref2 = 24 AND cr.pnts = 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4899,
+        "output": 544,
+        "total": 5443
+      },
+      "elapsed_seconds": 3.2,
+      "extra_columns": []
+    },
+    {
+      "question_id": "14",
+      "s_level": "S1N",
+      "final_sql": "SELECT qlfy.q1\nFROM qlfy\nJOIN drvr ON qlfy.ref2 = drvr.drvr_id\nWHERE drvr.frnm = 'Bruno' AND drvr.srnm = 'Senna' AND qlfy.ref3 = 354",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4926,
+        "output": 273,
+        "total": 5199
+      },
+      "elapsed_seconds": 1.97,
+      "extra_columns": []
+    },
+    {
+      "question_id": "15",
+      "s_level": "S1N",
+      "final_sql": "SELECT d.ntnl\nFROM qlfy q\nJOIN drvr d ON q.ref2 = d.drvr_id\nWHERE q.ref3 = 355 AND q.q2 = '0:01:40'",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4910,
+        "output": 669,
+        "total": 5579
+      },
+      "elapsed_seconds": 3.83,
+      "extra_columns": []
+    },
+    {
+      "question_id": "16",
+      "s_level": "S1N",
+      "final_sql": "SELECT nmbr FROM qlfy WHERE ref3 = 903 AND q3 LIKE '1:54%'",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4929,
+        "output": 1479,
+        "total": 6408
+      },
+      "elapsed_seconds": 6.71,
+      "extra_columns": []
+    },
+    {
+      "question_id": "17",
+      "s_level": "S1N",
+      "final_sql": "SELECT COUNT(*)\nFROM rslt\nJOIN rcs ON rslt.ref4 = rcs.rc_id\nWHERE rcs.nm = 'Bahrain Grand Prix'\n  AND rcs.ref2 = 2007\n  AND rslt.tm IS NULL",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4926,
+        "output": 696,
+        "total": 5622
+      },
+      "elapsed_seconds": 4.0,
+      "extra_columns": []
+    },
+    {
+      "question_id": "18",
+      "s_level": "S1N",
+      "final_sql": "SELECT ssn.url FROM ssn JOIN rcs ON rcs.ref2 = ssn.yr WHERE rcs.rc_id = 901",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4897,
+        "output": 286,
+        "total": 5183
+      },
+      "elapsed_seconds": 2.01,
+      "extra_columns": []
+    },
+    {
+      "question_id": "19",
+      "s_level": "S1N",
+      "final_sql": "SELECT COUNT(rslt.ref3) FROM rslt JOIN rcs ON rslt.ref4 = rcs.rc_id WHERE rcs.dt = '2015-11-29' AND rslt.tm IS NOT NULL",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4910,
+        "output": 789,
+        "total": 5699
+      },
+      "elapsed_seconds": 4.2,
+      "extra_columns": []
+    },
+    {
+      "question_id": "20",
+      "s_level": "S1N",
+      "final_sql": "SELECT d.frnm, d.srnm FROM drvr d JOIN rslt r ON r.ref3 = d.drvr_id WHERE r.ref4 = 592 AND r.tm IS NOT NULL AND d.db IS NOT NULL ORDER BY d.db ASC LIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4946,
+        "output": 522,
+        "total": 5468
+      },
+      "elapsed_seconds": 3.36,
+      "extra_columns": []
+    },
+    {
+      "question_id": "21",
+      "s_level": "S1N",
+      "final_sql": "SELECT DISTINCT d.frnm, d.srnm, d.url FROM lp_tm lt JOIN drvr d ON lt.ref1 = d.drvr_id WHERE lt.ref2 = 161 AND lt.tm LIKE '1:27%'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4947,
+        "output": 1305,
+        "total": 6252
+      },
+      "elapsed_seconds": 7.19,
+      "extra_columns": []
+    },
+    {
+      "question_id": "22",
+      "s_level": "S1N",
+      "final_sql": "SELECT d.ntnl\nFROM rslt r\nJOIN drvr d ON r.ref3 = d.drvr_id\nWHERE r.ref4 = 933\n  AND r.fsts_lp_spd IS NOT NULL\n  AND r.fsts_lp_spd != ''\nORDER BY r.fsts_lp_spd DESC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4908,
+        "output": 638,
+        "total": 5546
+      },
+      "elapsed_seconds": 3.66,
+      "extra_columns": []
+    },
+    {
+      "question_id": "23",
+      "s_level": "S1N",
+      "final_sql": "SELECT DISTINCT crct.lt, crct.lng FROM rcs JOIN crct ON rcs.ref1 = crct.crct_id WHERE rcs.nm = 'Malaysian Grand Prix'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4910,
+        "output": 300,
+        "total": 5210
+      },
+      "elapsed_seconds": 2.42,
+      "extra_columns": []
+    },
+    {
+      "question_id": "24",
+      "s_level": "S1N",
+      "final_sql": "SELECT c.url\nFROM cnstr_rslt cr\nJOIN cnstr c ON cr.ref1 = c.cnst_id\nWHERE cr.ref2 = 9\nORDER BY cr.pnts DESC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4927,
+        "output": 329,
+        "total": 5256
+      },
+      "elapsed_seconds": 2.19,
+      "extra_columns": []
+    },
+    {
+      "question_id": "25",
+      "s_level": "S1N",
+      "final_sql": "SELECT q.q1\nFROM qlfy q\nJOIN drvr d ON q.ref2 = d.drvr_id\nWHERE q.ref3 = 345\n  AND d.frnm = 'Lucas'\n  AND d.srnm = 'di Grassi'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4898,
+        "output": 444,
+        "total": 5342
+      },
+      "elapsed_seconds": 2.54,
+      "extra_columns": []
+    },
+    {
+      "question_id": "26",
+      "s_level": "S1N",
+      "final_sql": "SELECT drvr.ntnl FROM qlfy JOIN drvr ON qlfy.ref2 = drvr.drvr_id WHERE qlfy.ref3 = 347 AND qlfy.q2 LIKE '1:15%'",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4945,
+        "output": 371,
+        "total": 5316
+      },
+      "elapsed_seconds": 2.34,
+      "extra_columns": []
+    },
+    {
+      "question_id": "27",
+      "s_level": "S1N",
+      "final_sql": "SELECT d.cd\nFROM qlfy q\nJOIN drvr d ON q.ref2 = d.drvr_id\nWHERE q.ref3 = 45\nAND q.q3 LIKE '1:33%'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4935,
+        "output": 785,
+        "total": 5720
+      },
+      "elapsed_seconds": 4.29,
+      "extra_columns": []
+    },
+    {
+      "question_id": "28",
+      "s_level": "S1N",
+      "final_sql": "SELECT rslt.tm FROM rslt JOIN drvr ON rslt.ref3 = drvr.drvr_id WHERE drvr.frnm = 'Bruce' AND drvr.srnm = 'McLaren' AND rslt.ref4 = 743",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4896,
+        "output": 708,
+        "total": 5604
+      },
+      "elapsed_seconds": 4.14,
+      "extra_columns": []
+    },
+    {
+      "question_id": "29",
+      "s_level": "S1N",
+      "final_sql": "SELECT d.frnm, d.srnm\nFROM rslt r\nJOIN rcs ra ON r.ref4 = ra.rc_id\nJOIN drvr d ON r.ref3 = d.drvr_id\nWHERE ra.nm = 'San Marino Grand Prix'\n  AND ra.ref2 = 2006\n  AND r.pstn = 2",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4896,
+        "output": 519,
+        "total": 5415
+      },
+      "elapsed_seconds": 3.04,
+      "extra_columns": []
+    },
+    {
+      "question_id": "30",
+      "s_level": "S1N",
+      "final_sql": "SELECT ssn.url\nFROM ssn\nJOIN rcs ON rcs.ref2 = ssn.yr\nWHERE rcs.rc_id = 901",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4904,
+        "output": 276,
+        "total": 5180
+      },
+      "elapsed_seconds": 2.18,
+      "extra_columns": []
+    },
+    {
+      "question_id": "31",
+      "s_level": "S1N",
+      "final_sql": "SELECT COUNT(*)\nFROM rslt\nJOIN rcs ON rslt.ref4 = rcs.rc_id\nWHERE rcs.dt = '2015-11-29' AND rslt.tm IS NULL",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4914,
+        "output": 1052,
+        "total": 5966
+      },
+      "elapsed_seconds": 5.47,
+      "extra_columns": []
+    },
+    {
+      "question_id": "32",
+      "s_level": "S1N",
+      "final_sql": "SELECT drvr.frnm, drvr.srnm\nFROM rslt\nJOIN drvr ON rslt.ref3 = drvr.drvr_id\nWHERE rslt.ref4 = 872\n  AND rslt.tm IS NOT NULL\n  AND rslt.tm != ''\n  AND drvr.db IS NOT NULL\nORDER BY drvr.db DESC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4921,
+        "output": 473,
+        "total": 5394
+      },
+      "elapsed_seconds": 3.12,
+      "extra_columns": []
+    },
+    {
+      "question_id": "33",
+      "s_level": "S1N",
+      "final_sql": "SELECT drvr.frnm, drvr.srnm\nFROM lp_tm\nJOIN drvr ON lp_tm.ref1 = drvr.drvr_id\nWHERE lp_tm.ref2 = 348 AND lp_tm.tm IS NOT NULL AND lp_tm.tm <> ''\nORDER BY lp_tm.tm ASC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4912,
+        "output": 2204,
+        "total": 7116
+      },
+      "elapsed_seconds": 10.86,
+      "extra_columns": []
+    },
+    {
+      "question_id": "34",
+      "s_level": "S1N",
+      "final_sql": "SELECT d.ntnl\nFROM rslt r\nJOIN drvr d ON r.ref3 = d.drvr_id\nWHERE r.fsts_lp_spd IS NOT NULL AND r.fsts_lp_spd <> ''\nORDER BY r.fsts_lp_spd DESC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4902,
+        "output": 341,
+        "total": 5243
+      },
+      "elapsed_seconds": 2.85,
+      "extra_columns": []
+    },
+    {
+      "question_id": "35",
+      "s_level": "S1N",
+      "final_sql": "SELECT ((CAST(r853.fsts_lp_spd AS DECIMAL(10,3)) - CAST(r854.fsts_lp_spd AS DECIMAL(10,3))) * 100 / CAST(r853.fsts_lp_spd AS DECIMAL(10,3))) AS percent_faster\nFROM rslt r853\nJOIN drvr d ON d.drvr_id = r853.ref3\nJOIN rslt r854 ON r854.ref3 = d.drvr_id AND r854.ref4 = 854\nWHERE d.frnm = 'Paul' AND d.srnm = 'di Resta' AND r853.ref4 = 853",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 5003,
+        "output": 1835,
+        "total": 6838
+      },
+      "elapsed_seconds": 8.34,
+      "extra_columns": []
+    },
+    {
+      "question_id": "36",
+      "s_level": "S1N",
+      "final_sql": "SELECT COUNT(CASE WHEN r.tm IS NOT NULL AND r.tm <> '' THEN r.ref3 END) * 100.0 / COUNT(r.ref3) AS completion_rate\nFROM rslt r\nJOIN rcs rc ON r.ref4 = rc.rc_id\nWHERE rc.dt = '1983-07-16'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4941,
+        "output": 773,
+        "total": 5714
+      },
+      "elapsed_seconds": 4.32,
+      "extra_columns": []
+    },
+    {
+      "question_id": "37",
+      "s_level": "S1N",
+      "final_sql": "SELECT ref2 FROM rcs WHERE nm = 'Singapore Grand Prix' ORDER BY ref2 ASC LIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4893,
+        "output": 168,
+        "total": 5061
+      },
+      "elapsed_seconds": 1.69,
+      "extra_columns": []
+    },
+    {
+      "question_id": "38",
+      "s_level": "S1N",
+      "final_sql": "SELECT nm FROM rcs WHERE ref2 = 2005 ORDER BY nm DESC",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4875,
+        "output": 4417,
+        "total": 9292
+      },
+      "elapsed_seconds": 19.69,
+      "extra_columns": []
+    },
+    {
+      "question_id": "39",
+      "s_level": "S1N",
+      "final_sql": "SELECT nm FROM rcs WHERE YEAR(dt) = (SELECT YEAR(MIN(dt)) FROM rcs) AND MONTH(dt) = (SELECT MONTH(MIN(dt)) FROM rcs)",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4910,
+        "output": 379,
+        "total": 5289
+      },
+      "elapsed_seconds": 2.29,
+      "extra_columns": []
+    },
+    {
+      "question_id": "40",
+      "s_level": "S1N",
+      "final_sql": "SELECT nm, dt FROM rcs WHERE ref2 = 1999 ORDER BY rnd DESC LIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4899,
+        "output": 206,
+        "total": 5105
+      },
+      "elapsed_seconds": 1.65,
+      "extra_columns": []
+    },
+    {
+      "question_id": "41",
+      "s_level": "S1N",
+      "final_sql": "SELECT ref2 FROM rcs GROUP BY ref2 ORDER BY MAX(rnd) DESC LIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4893,
+        "output": 344,
+        "total": 5237
+      },
+      "elapsed_seconds": 2.39,
+      "extra_columns": []
+    },
+    {
+      "question_id": "42",
+      "s_level": "S1N",
+      "final_sql": "SELECT nm FROM rcs WHERE ref2 = 2017 AND nm NOT IN (SELECT nm FROM rcs WHERE ref2 = 2000)",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4897,
+        "output": 2082,
+        "total": 6979
+      },
+      "elapsed_seconds": 9.68,
+      "extra_columns": []
+    },
+    {
+      "question_id": "43",
+      "s_level": "S1N",
+      "final_sql": "SELECT crct.cntr, crct.nm, crct.lctn\nFROM rcs\nJOIN crct ON rcs.ref1 = crct.crct_id\nWHERE rcs.nm = 'European Grand Prix'\nORDER BY rcs.ref2 ASC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4897,
+        "output": 579,
+        "total": 5476
+      },
+      "elapsed_seconds": 3.02,
+      "extra_columns": [
+        "nm"
+      ]
+    },
+    {
+      "question_id": "44",
+      "s_level": "S1N",
+      "final_sql": "SELECT rcs.dt FROM rcs JOIN crct ON rcs.ref1 = crct.crct_id WHERE crct.nm = 'Brands Hatch' AND rcs.nm = 'British Grand Prix' ORDER BY rcs.ref2 DESC LIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4930,
+        "output": 397,
+        "total": 5327
+      },
+      "elapsed_seconds": 2.41,
+      "extra_columns": []
+    },
+    {
+      "question_id": "45",
+      "s_level": "S1N",
+      "final_sql": "SELECT COUNT(DISTINCT rcs.ref2) FROM rcs JOIN crct ON rcs.ref1 = crct.crct_id WHERE crct.nm = 'Silverstone Circuit' AND rcs.nm = 'British Grand Prix'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4905,
+        "output": 441,
+        "total": 5346
+      },
+      "elapsed_seconds": 2.92,
+      "extra_columns": []
+    },
+    {
+      "question_id": "46",
+      "s_level": "S1N",
+      "final_sql": "SELECT drvr.frnm, drvr.srnm\nFROM drvr_std\nJOIN rcs ON drvr_std.ref2 = rcs.rc_id\nJOIN drvr ON drvr_std.ref1 = drvr.drvr_id\nWHERE rcs.ref2 = 2010 AND rcs.nm = 'Singapore Grand Prix'\nORDER BY drvr_std.pstn ASC",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4949,
+        "output": 746,
+        "total": 5695
+      },
+      "elapsed_seconds": 3.88,
+      "extra_columns": []
+    },
+    {
+      "question_id": "47",
+      "s_level": "S1N",
+      "final_sql": "SELECT drvr.frnm, drvr.srnm, drvr_std.pnts\nFROM drvr\nJOIN drvr_std ON drvr.drvr_id = drvr_std.ref1\nORDER BY drvr_std.pnts DESC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4916,
+        "output": 483,
+        "total": 5399
+      },
+      "elapsed_seconds": 2.79,
+      "extra_columns": []
+    },
+    {
+      "question_id": "48",
+      "s_level": "S1N",
+      "final_sql": "SELECT drvr.frnm, drvr.srnm, drvr_std.pnts\nFROM drvr_std\nJOIN drvr ON drvr_std.ref1 = drvr.drvr_id\nJOIN rcs ON drvr_std.ref2 = rcs.rc_id\nWHERE rcs.nm = 'Chinese Grand Prix' AND rcs.ref2 = 2017\nORDER BY drvr_std.pstn ASC\nLIMIT 3",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4877,
+        "output": 755,
+        "total": 5632
+      },
+      "elapsed_seconds": 4.27,
+      "extra_columns": []
+    },
+    {
+      "question_id": "49",
+      "s_level": "S1N",
+      "final_sql": "SELECT drvr.frnm, drvr.srnm, rcs.nm, lp_tm.mlls\nFROM lp_tm\nJOIN drvr ON lp_tm.ref1 = drvr.drvr_id\nJOIN rcs ON lp_tm.ref2 = rcs.rc_id\nWHERE lp_tm.mlls IS NOT NULL\nORDER BY lp_tm.mlls ASC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4925,
+        "output": 5152,
+        "total": 10077
+      },
+      "elapsed_seconds": 21.79,
+      "extra_columns": []
+    },
+    {
+      "question_id": "50",
+      "s_level": "S1N",
+      "final_sql": "SELECT AVG(lp_tm.mlls)\nFROM lp_tm\nJOIN drvr ON lp_tm.ref1 = drvr.drvr_id\nJOIN rcs ON lp_tm.ref2 = rcs.rc_id\nWHERE drvr.frnm = 'Lewis'\n  AND drvr.srnm = 'Hamilton'\n  AND rcs.nm = 'Malaysian Grand Prix'\n  AND rcs.ref2 = 2009",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4949,
+        "output": 376,
+        "total": 5325
+      },
+      "elapsed_seconds": 2.41,
+      "extra_columns": []
+    },
+    {
+      "question_id": "51",
+      "s_level": "S1N",
+      "final_sql": "SELECT (SUM(CASE WHEN ds.pstn <> 1 THEN 1 ELSE 0 END) / COUNT(ds.ref2)) * 100 AS percentage\nFROM drvr_std ds\nJOIN drvr d ON ds.ref1 = d.drvr_id\nJOIN rcs r ON ds.ref2 = r.rc_id\nWHERE d.srnm = 'Hamilton' AND r.ref2 >= 2010",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4986,
+        "output": 1067,
+        "total": 6053
+      },
+      "elapsed_seconds": 5.7,
+      "extra_columns": []
+    },
+    {
+      "question_id": "52",
+      "s_level": "S1N",
+      "final_sql": "SELECT d.frnm, d.srnm, d.ntnl, MAX(ds.pnts) AS max_points\nFROM drvr d\nJOIN drvr_std ds ON ds.ref1 = d.drvr_id\nGROUP BY d.drvr_id, d.frnm, d.srnm, d.ntnl\nORDER BY COUNT(ds.wns) DESC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4928,
+        "output": 9097,
+        "total": 14025
+      },
+      "elapsed_seconds": 39.98,
+      "extra_columns": []
+    },
+    {
+      "question_id": "53",
+      "s_level": "S1N",
+      "final_sql": "SELECT YEAR(CURRENT_TIMESTAMP) - YEAR(db) AS age, frnm, srnm\nFROM drvr\nWHERE ntnl = 'Japanese' AND db IS NOT NULL\nORDER BY db DESC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4932,
+        "output": 331,
+        "total": 5263
+      },
+      "elapsed_seconds": 2.42,
+      "extra_columns": []
+    },
+    {
+      "question_id": "54",
+      "s_level": "S1N",
+      "final_sql": "SELECT crct.nm\nFROM crct\nJOIN rcs ON crct.crct_id = rcs.ref1\nWHERE YEAR(rcs.dt) BETWEEN 1990 AND 2000\nGROUP BY crct.crct_id, crct.nm\nHAVING COUNT(rcs.rc_id) = 4",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4915,
+        "output": 1237,
+        "total": 6152
+      },
+      "elapsed_seconds": 6.09,
+      "extra_columns": []
+    },
+    {
+      "question_id": "55",
+      "s_level": "S1N",
+      "final_sql": "SELECT crct.nm, crct.lctn, rcs.nm\nFROM crct\nJOIN rcs ON crct.crct_id = rcs.ref1\nWHERE crct.cntr = 'USA' AND rcs.ref2 = 2006",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4887,
+        "output": 665,
+        "total": 5552
+      },
+      "elapsed_seconds": 4.05,
+      "extra_columns": []
+    },
+    {
+      "question_id": "56",
+      "s_level": "S1N",
+      "final_sql": "SELECT rcs.nm, crct.nm, crct.lctn\nFROM rcs\nJOIN crct ON rcs.ref1 = crct.crct_id\nWHERE YEAR(rcs.dt) = 2005 AND MONTH(rcs.dt) = 9",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4917,
+        "output": 208,
+        "total": 5125
+      },
+      "elapsed_seconds": 1.95,
+      "extra_columns": []
+    },
+    {
+      "question_id": "57",
+      "s_level": "S1N",
+      "final_sql": "SELECT rcs.nm FROM drvr JOIN drvr_std ON drvr.drvr_id = drvr_std.ref1 JOIN rcs ON drvr_std.ref2 = rcs.rc_id WHERE drvr.frnm = 'Alex' AND drvr.srnm = 'Yoong' AND drvr_std.pstn < 20",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4932,
+        "output": 2405,
+        "total": 7337
+      },
+      "elapsed_seconds": 11.85,
+      "extra_columns": []
+    },
+    {
+      "question_id": "58",
+      "s_level": "S1N",
+      "final_sql": "SELECT SUM(drvr_std.wns) FROM drvr_std JOIN drvr ON drvr_std.ref1 = drvr.drvr_id JOIN rcs ON drvr_std.ref2 = rcs.rc_id JOIN crct ON rcs.ref1 = crct.crct_id WHERE drvr.frnm = 'Michael' AND drvr.srnm = 'Schumacher' AND crct.nm = 'Sepang International Circuit'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4949,
+        "output": 3626,
+        "total": 8575
+      },
+      "elapsed_seconds": 17.68,
+      "extra_columns": []
+    },
+    {
+      "question_id": "59",
+      "s_level": "S1N",
+      "final_sql": "SELECT rcs.nm, rcs.ref2 FROM lp_tm JOIN drvr ON lp_tm.ref1 = drvr.drvr_id JOIN rcs ON lp_tm.ref2 = rcs.rc_id WHERE drvr.frnm = 'Michael' AND drvr.srnm = 'Schumacher' AND lp_tm.mlls IS NOT NULL ORDER BY lp_tm.mlls ASC LIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4976,
+        "output": 690,
+        "total": 5666
+      },
+      "elapsed_seconds": 3.92,
+      "extra_columns": []
+    },
+    {
+      "question_id": "60",
+      "s_level": "S1N",
+      "final_sql": "SELECT AVG(ds.pnts) FROM drvr_std ds JOIN drvr d ON ds.ref1 = d.drvr_id JOIN rcs r ON ds.ref2 = r.rc_id WHERE d.frnm = 'Eddie' AND d.srnm = 'Irvine' AND r.ref2 = 2000",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4901,
+        "output": 1013,
+        "total": 5914
+      },
+      "elapsed_seconds": 5.46,
+      "extra_columns": []
+    },
+    {
+      "question_id": "61",
+      "s_level": "S1N",
+      "final_sql": "SELECT rcs.nm, rslt.pnts\nFROM drvr\nJOIN rslt ON rslt.ref3 = drvr.drvr_id\nJOIN rcs ON rcs.rc_id = rslt.ref4\nWHERE drvr.frnm = 'Lewis' AND drvr.srnm = 'Hamilton'\nORDER BY rcs.ref2 ASC, rcs.rnd ASC, rcs.dt ASC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4927,
+        "output": 1754,
+        "total": 6681
+      },
+      "elapsed_seconds": 8.89,
+      "extra_columns": []
+    },
+    {
+      "question_id": "62",
+      "s_level": "S1N",
+      "final_sql": "SELECT rcs.nm, crct.cntr\nFROM rcs\nJOIN crct ON rcs.ref1 = crct.crct_id\nWHERE rcs.ref2 = 2017\nORDER BY rcs.dt ASC",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4875,
+        "output": 445,
+        "total": 5320
+      },
+      "elapsed_seconds": 3.0,
+      "extra_columns": []
+    },
+    {
+      "question_id": "64",
+      "s_level": "S1N",
+      "final_sql": "SELECT COUNT(CASE WHEN crct.cntr = 'Germany' THEN 1 END) / COUNT(*) * 100 AS percentage\nFROM rcs\nJOIN crct ON rcs.ref1 = crct.crct_id\nWHERE rcs.nm = 'European Grand Prix'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4943,
+        "output": 387,
+        "total": 5330
+      },
+      "elapsed_seconds": 2.55,
+      "extra_columns": []
+    },
+    {
+      "question_id": "65",
+      "s_level": "S1N",
+      "final_sql": "SELECT lt, lng FROM crct WHERE nm = 'Silverstone Circuit'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4906,
+        "output": 107,
+        "total": 5013
+      },
+      "elapsed_seconds": 1.73,
+      "extra_columns": []
+    },
+    {
+      "question_id": "66",
+      "s_level": "S1N",
+      "final_sql": "SELECT nm FROM crct WHERE nm IN ('Silverstone Circuit', 'Hockenheimring', 'Hungaroring') ORDER BY lt DESC LIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4905,
+        "output": 397,
+        "total": 5302
+      },
+      "elapsed_seconds": 2.53,
+      "extra_columns": []
+    },
+    {
+      "question_id": "67",
+      "s_level": "S1N",
+      "final_sql": "SELECT crct_rf FROM crct WHERE nm = 'Marina Bay Street Circuit'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4907,
+        "output": 109,
+        "total": 5016
+      },
+      "elapsed_seconds": 1.24,
+      "extra_columns": []
+    },
+    {
+      "question_id": "68",
+      "s_level": "S1N",
+      "final_sql": "SELECT cntr FROM crct WHERE alt IS NOT NULL ORDER BY alt DESC LIMIT 1",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4895,
+        "output": 135,
+        "total": 5030
+      },
+      "elapsed_seconds": 1.46,
+      "extra_columns": []
+    },
+    {
+      "question_id": "69",
+      "s_level": "S1N",
+      "final_sql": "SELECT COUNT(*) FROM drvr WHERE cd IS NULL",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4893,
+        "output": 147,
+        "total": 5040
+      },
+      "elapsed_seconds": 1.49,
+      "extra_columns": []
+    },
+    {
+      "question_id": "70",
+      "s_level": "S1N",
+      "final_sql": "SELECT ntnl FROM drvr WHERE db IS NOT NULL ORDER BY db ASC LIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4906,
+        "output": 159,
+        "total": 5065
+      },
+      "elapsed_seconds": 1.59,
+      "extra_columns": []
+    },
+    {
+      "question_id": "71",
+      "s_level": "S1N",
+      "final_sql": "SELECT srnm FROM drvr WHERE ntnl = 'italian'",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4918,
+        "output": 222,
+        "total": 5140
+      },
+      "elapsed_seconds": 2.11,
+      "extra_columns": []
+    },
+    {
+      "question_id": "72",
+      "s_level": "S1N",
+      "final_sql": "SELECT url FROM drvr WHERE frnm = 'Anthony' AND srnm = 'Davidson'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4894,
+        "output": 181,
+        "total": 5075
+      },
+      "elapsed_seconds": 1.67,
+      "extra_columns": []
+    },
+    {
+      "question_id": "73",
+      "s_level": "S1N",
+      "final_sql": "SELECT drvr_rf FROM drvr WHERE frnm = 'Lewis' AND srnm = 'Hamilton'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4888,
+        "output": 91,
+        "total": 4979
+      },
+      "elapsed_seconds": 1.37,
+      "extra_columns": []
+    },
+    {
+      "question_id": "74",
+      "s_level": "S1N",
+      "final_sql": "SELECT crct.nm FROM rcs JOIN crct ON rcs.ref1 = crct.crct_id WHERE rcs.ref2 = 2009 AND rcs.nm = 'Spanish Grand Prix'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4869,
+        "output": 231,
+        "total": 5100
+      },
+      "elapsed_seconds": 1.83,
+      "extra_columns": []
+    },
+    {
+      "question_id": "75",
+      "s_level": "S1N",
+      "final_sql": "SELECT DISTINCT rcs.ref2 FROM rcs JOIN crct ON rcs.ref1 = crct.crct_id WHERE crct.nm = 'Silverstone Circuit' ORDER BY rcs.ref2",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4875,
+        "output": 380,
+        "total": 5255
+      },
+      "elapsed_seconds": 2.39,
+      "extra_columns": []
+    },
+    {
+      "question_id": "76",
+      "s_level": "S1N",
+      "final_sql": "SELECT rcs.url\nFROM rcs\nJOIN crct ON rcs.ref1 = crct.crct_id\nWHERE crct.nm = 'Silverstone Circuit'",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4896,
+        "output": 549,
+        "total": 5445
+      },
+      "elapsed_seconds": 3.39,
+      "extra_columns": []
+    },
+    {
+      "question_id": "77",
+      "s_level": "S1N",
+      "final_sql": "SELECT rcs.dt, rcs.tm FROM rcs JOIN crct ON rcs.ref1 = crct.crct_id WHERE rcs.ref2 = 2010 AND crct.lctn = 'Abu Dhabi'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4878,
+        "output": 2294,
+        "total": 7172
+      },
+      "elapsed_seconds": 10.16,
+      "extra_columns": []
+    },
+    {
+      "question_id": "78",
+      "s_level": "S1N",
+      "final_sql": "SELECT COUNT(*) FROM rcs JOIN crct ON rcs.ref1 = crct.crct_id WHERE crct.cntr = 'Italy'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4871,
+        "output": 232,
+        "total": 5103
+      },
+      "elapsed_seconds": 1.82,
+      "extra_columns": []
+    },
+    {
+      "question_id": "79",
+      "s_level": "S1N",
+      "final_sql": "SELECT DISTINCT rcs.dt FROM rcs JOIN crct ON rcs.ref1 = crct.crct_id WHERE crct.nm = 'Circuit de Barcelona-Catalunya' ORDER BY rcs.dt",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4879,
+        "output": 491,
+        "total": 5370
+      },
+      "elapsed_seconds": 3.25,
+      "extra_columns": []
+    },
+    {
+      "question_id": "80",
+      "s_level": "S1N",
+      "final_sql": "SELECT crct.url\nFROM rcs\nJOIN crct ON rcs.ref1 = crct.crct_id\nWHERE rcs.nm = 'Spanish Grand Prix' AND rcs.ref2 = 2009",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4905,
+        "output": 258,
+        "total": 5163
+      },
+      "elapsed_seconds": 2.0,
+      "extra_columns": []
+    },
+    {
+      "question_id": "81",
+      "s_level": "S1N",
+      "final_sql": "SELECT r.fsts_lp_tm\nFROM rslt r\nJOIN drvr d ON r.ref3 = d.drvr_id\nWHERE d.frnm = 'Lewis'\n  AND d.srnm = 'Hamilton'\n  AND r.fsts_lp_tm IS NOT NULL\n  AND r.fsts_lp_tm <> ''\nORDER BY r.fsts_lp_tm ASC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4902,
+        "output": 704,
+        "total": 5606
+      },
+      "elapsed_seconds": 3.94,
+      "extra_columns": []
+    },
+    {
+      "question_id": "82",
+      "s_level": "S1N",
+      "final_sql": "SELECT d.frnm, d.srnm\nFROM rslt r\nJOIN drvr d ON d.drvr_id = r.ref3\nWHERE r.fsts_lp_spd IS NOT NULL\n  AND r.fsts_lp_spd <> ''\nORDER BY r.fsts_lp_spd DESC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4880,
+        "output": 395,
+        "total": 5275
+      },
+      "elapsed_seconds": 2.22,
+      "extra_columns": []
+    },
+    {
+      "question_id": "83",
+      "s_level": "S1N",
+      "final_sql": "SELECT drvr.frnm, drvr.srnm, drvr.drvr_rf\nFROM rslt\nJOIN rcs ON rslt.ref4 = rcs.rc_id\nJOIN drvr ON rslt.ref3 = drvr.drvr_id\nWHERE rcs.nm = 'Canadian Grand Prix'\n  AND rcs.ref2 = 2007\n  AND rslt.rnk = 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 5009,
+        "output": 520,
+        "total": 5529
+      },
+      "elapsed_seconds": 3.03,
+      "extra_columns": []
+    },
+    {
+      "question_id": "84",
+      "s_level": "S1N",
+      "final_sql": "SELECT rcs.nm\nFROM drvr\nJOIN rslt ON rslt.ref3 = drvr.drvr_id\nJOIN rcs ON rcs.rc_id = rslt.ref4\nWHERE drvr.frnm = 'Lewis' AND drvr.srnm = 'Hamilton'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4921,
+        "output": 1031,
+        "total": 5952
+      },
+      "elapsed_seconds": 5.86,
+      "extra_columns": []
+    },
+    {
+      "question_id": "85",
+      "s_level": "S1N",
+      "final_sql": "SELECT DISTINCT rcs.nm\nFROM rslt\nJOIN drvr ON rslt.ref3 = drvr.drvr_id\nJOIN rcs ON rslt.ref4 = rcs.rc_id\nWHERE drvr.frnm = 'Lewis'\n  AND drvr.srnm = 'Hamilton'\n  AND rslt.rnk = 1",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4971,
+        "output": 560,
+        "total": 5531
+      },
+      "elapsed_seconds": 3.1,
+      "extra_columns": []
+    },
+    {
+      "question_id": "86",
+      "s_level": "S1N",
+      "final_sql": "SELECT MAX(rslt.fsts_lp_spd)\nFROM rslt\nJOIN rcs ON rslt.ref4 = rcs.rc_id\nWHERE rcs.ref2 = 2009\n  AND rcs.nm = 'Spanish Grand Prix'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4920,
+        "output": 608,
+        "total": 5528
+      },
+      "elapsed_seconds": 3.71,
+      "extra_columns": []
+    },
+    {
+      "question_id": "87",
+      "s_level": "S1N",
+      "final_sql": "SELECT DISTINCT rcs.ref2 AS yr FROM drvr JOIN rslt ON drvr.drvr_id = rslt.ref3 JOIN rcs ON rslt.ref4 = rcs.rc_id WHERE drvr.frnm = 'Lewis' AND drvr.srnm = 'Hamilton' ORDER BY rcs.ref2",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4871,
+        "output": 361,
+        "total": 5232
+      },
+      "elapsed_seconds": 2.18,
+      "extra_columns": []
+    },
+    {
+      "question_id": "88",
+      "s_level": "S1N",
+      "final_sql": "SELECT rslt.pstn_ordr\nFROM rslt\nJOIN drvr ON rslt.ref3 = drvr.drvr_id\nJOIN rcs ON rslt.ref4 = rcs.rc_id\nWHERE drvr.frnm = 'Lewis'\n  AND drvr.srnm = 'Hamilton'\n  AND rcs.nm = 'Chinese Grand Prix'\n  AND rcs.ref2 = 2008",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4936,
+        "output": 457,
+        "total": 5393
+      },
+      "elapsed_seconds": 2.52,
+      "extra_columns": []
+    },
+    {
+      "question_id": "89",
+      "s_level": "S1N",
+      "final_sql": "SELECT drvr.frnm, drvr.srnm\nFROM rslt\nJOIN drvr ON rslt.ref3 = drvr.drvr_id\nJOIN rcs ON rslt.ref4 = rcs.rc_id\nWHERE rcs.ref2 = 1989\n  AND rcs.nm = 'Australian Grand Prix'\n  AND rslt.grd = 4",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4919,
+        "output": 315,
+        "total": 5234
+      },
+      "elapsed_seconds": 2.19,
+      "extra_columns": []
+    },
+    {
+      "question_id": "90",
+      "s_level": "S1N",
+      "final_sql": "SELECT COUNT(*) FROM rslt JOIN rcs ON rslt.ref4 = rcs.rc_id WHERE rcs.ref2 = 2008 AND rcs.nm = 'Australian Grand Prix' AND rslt.tm IS NOT NULL",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4902,
+        "output": 501,
+        "total": 5403
+      },
+      "elapsed_seconds": 2.9,
+      "extra_columns": []
+    },
+    {
+      "question_id": "91",
+      "s_level": "S1N",
+      "final_sql": "SELECT rslt.fsts_lp\nFROM rslt\nJOIN drvr ON rslt.ref3 = drvr.drvr_id\nJOIN rcs ON rslt.ref4 = rcs.rc_id\nWHERE drvr.frnm = 'Lewis'\n  AND drvr.srnm = 'Hamilton'\n  AND rcs.ref2 = 2008\n  AND rcs.nm = 'Australian Grand Prix'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4874,
+        "output": 464,
+        "total": 5338
+      },
+      "elapsed_seconds": 2.34,
+      "extra_columns": []
+    },
+    {
+      "question_id": "92",
+      "s_level": "S1N",
+      "final_sql": "SELECT rslt.tm FROM rslt JOIN rcs ON rslt.ref4 = rcs.rc_id WHERE rcs.ref2 = 2008 AND rcs.nm = 'Chinese Grand Prix' AND rslt.rnk = 2",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4967,
+        "output": 399,
+        "total": 5366
+      },
+      "elapsed_seconds": 2.36,
+      "extra_columns": []
+    },
+    {
+      "question_id": "93",
+      "s_level": "S1N",
+      "final_sql": "SELECT drvr.frnm, drvr.srnm, drvr.url\nFROM rcs\nJOIN rslt ON rslt.ref4 = rcs.rc_id\nJOIN drvr ON drvr.drvr_id = rslt.ref3\nWHERE rcs.ref2 = 2008\nAND rcs.nm = 'Australian Grand Prix'\nAND rslt.pstn_ordr = 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4920,
+        "output": 531,
+        "total": 5451
+      },
+      "elapsed_seconds": 2.96,
+      "extra_columns": []
+    },
+    {
+      "question_id": "94",
+      "s_level": "S1N",
+      "final_sql": "SELECT COUNT(*) AS driver_count\nFROM rslt r\nJOIN rcs ra ON r.ref4 = ra.rc_id\nJOIN drvr d ON r.ref3 = d.drvr_id\nWHERE ra.ref2 = 2008\n  AND ra.nm = 'Australian Grand Prix'\n  AND d.ntnl = 'British'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4938,
+        "output": 490,
+        "total": 5428
+      },
+      "elapsed_seconds": 3.26,
+      "extra_columns": []
+    },
+    {
+      "question_id": "95",
+      "s_level": "S1N",
+      "final_sql": "SELECT COUNT(rslt.ref3)\nFROM rslt\nJOIN rcs ON rcs.rc_id = rslt.ref4\nWHERE rcs.ref2 = 2008\n  AND rcs.nm = 'Chinese Grand Prix'\n  AND rslt.tm IS NOT NULL\n  AND rslt.tm <> ''",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4928,
+        "output": 3512,
+        "total": 8440
+      },
+      "elapsed_seconds": 17.6,
+      "extra_columns": []
+    },
+    {
+      "question_id": "96",
+      "s_level": "S1N",
+      "final_sql": "SELECT SUM(rslt.pnts) FROM rslt JOIN drvr ON rslt.ref3 = drvr.drvr_id WHERE drvr.frnm = 'Lewis' AND drvr.srnm = 'Hamilton'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4876,
+        "output": 719,
+        "total": 5595
+      },
+      "elapsed_seconds": 4.43,
+      "extra_columns": []
+    },
+    {
+      "question_id": "97",
+      "s_level": "S1N",
+      "final_sql": "SELECT AVG(\n  CAST(SUBSTRING_INDEX(rslt.fsts_lp_tm, ':', 1) AS DECIMAL(10,3)) * 60\n  + CAST(SUBSTRING_INDEX(rslt.fsts_lp_tm, ':', -1) AS DECIMAL(10,3))\n) AS avg_fastest_lap_time_seconds\nFROM rslt\nJOIN drvr ON rslt.ref3 = drvr.drvr_id\nWHERE drvr.frnm = 'Lewis'\n  AND drvr.srnm = 'Hamilton'\n  AND rslt.fsts_lp_tm IS NOT NULL\n  AND rslt.fsts_lp_tm != ''",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4918,
+        "output": 1608,
+        "total": 6526
+      },
+      "elapsed_seconds": 7.77,
+      "extra_columns": []
+    },
+    {
+      "question_id": "98",
+      "s_level": "S1N",
+      "final_sql": "SELECT (COUNT(CASE WHEN r.tm IS NOT NULL THEN 1 END) / COUNT(r.ref4)) * 100 AS rate FROM rslt r JOIN rcs c ON r.ref4 = c.rc_id WHERE c.ref2 = 2008 AND c.nm = 'Australian Grand Prix'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4924,
+        "output": 483,
+        "total": 5407
+      },
+      "elapsed_seconds": 3.03,
+      "extra_columns": []
+    },
+    {
+      "question_id": "99",
+      "s_level": "S1N",
+      "final_sql": "SELECT (last_mlls - champion_mlls) / last_mlls * 100 AS percentage\nFROM (\n    SELECT mlls AS champion_mlls\n    FROM rslt\n    JOIN rcs ON rslt.ref4 = rcs.rc_id\n    WHERE rcs.ref2 = 2008\n      AND rcs.nm = 'Australian Grand Prix'\n      AND rslt.pstn_ordr = 1\n    LIMIT 1\n) AS champ\nCROSS JOIN (\n    SELECT mlls AS last_mlls\n    FROM rslt\n    JOIN rcs ON rslt.ref4 = rcs.rc_id\n    WHERE rcs.ref2 = 2008\n      AND rcs.nm = 'Australian Grand Prix'\n      AND rslt.mlls IS NOT NULL\n    ORDER BY rslt.pstn_ordr DESC\n    LIMIT 1\n) AS last_driver",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4963,
+        "output": 12872,
+        "total": 17835
+      },
+      "elapsed_seconds": 56.01,
+      "extra_columns": []
+    },
+    {
+      "question_id": "100",
+      "s_level": "S1N",
+      "final_sql": "SELECT COUNT(*) AS count FROM crct WHERE lctn = 'Adelaide' AND cntr = 'Australia'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4895,
+        "output": 324,
+        "total": 5219
+      },
+      "elapsed_seconds": 1.99,
+      "extra_columns": []
+    },
+    {
+      "question_id": "101",
+      "s_level": "S1N",
+      "final_sql": "SELECT lt, lng FROM crct WHERE cntr = 'USA'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4902,
+        "output": 456,
+        "total": 5358
+      },
+      "elapsed_seconds": 3.15,
+      "extra_columns": []
+    },
+    {
+      "question_id": "102",
+      "s_level": "S1N",
+      "final_sql": "SELECT COUNT(*) FROM drvr WHERE ntnl = 'British' AND YEAR(db) > 1980",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4899,
+        "output": 224,
+        "total": 5123
+      },
+      "elapsed_seconds": 2.02,
+      "extra_columns": []
+    },
+    {
+      "question_id": "103",
+      "s_level": "S1N",
+      "final_sql": "SELECT MAX(cs.pnts) FROM cnstr_std cs JOIN cnstr c ON cs.ref1 = c.cnst_id WHERE c.ntnl = 'British'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4895,
+        "output": 303,
+        "total": 5198
+      },
+      "elapsed_seconds": 2.07,
+      "extra_columns": []
+    },
+    {
+      "question_id": "104",
+      "s_level": "S1N",
+      "final_sql": "SELECT c.nm\nFROM cnstr_std cs\nJOIN cnstr c ON c.cnst_id = cs.ref1\nORDER BY cs.pnts DESC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4864,
+        "output": 585,
+        "total": 5449
+      },
+      "elapsed_seconds": 3.7,
+      "extra_columns": []
+    },
+    {
+      "question_id": "105",
+      "s_level": "S1N",
+      "final_sql": "SELECT cnstr.nm\nFROM cnstr_rslt\nJOIN cnstr ON cnstr_rslt.ref1 = cnstr.cnst_id\nWHERE cnstr_rslt.ref2 = 291 AND cnstr_rslt.pnts = 0",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4899,
+        "output": 1236,
+        "total": 6135
+      },
+      "elapsed_seconds": 7.09,
+      "extra_columns": []
+    },
+    {
+      "question_id": "106",
+      "s_level": "S1N",
+      "final_sql": "SELECT COUNT(cnstr_std.ref2)\nFROM cnstr_std\nJOIN cnstr ON cnstr.cnst_id = cnstr_std.ref1\nWHERE cnstr.ntnl = 'Japanese' AND cnstr_std.pnts = 0\nGROUP BY cnstr_std.ref1\nHAVING COUNT(cnstr_std.ref2) = 2",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4979,
+        "output": 966,
+        "total": 5945
+      },
+      "elapsed_seconds": 4.75,
+      "extra_columns": []
+    },
+    {
+      "question_id": "107",
+      "s_level": "S1N",
+      "final_sql": "SELECT DISTINCT c.nm\nFROM cnstr_std cs\nJOIN cnstr c ON cs.ref1 = c.cnst_id\nWHERE cs.pstn = 1",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4911,
+        "output": 344,
+        "total": 5255
+      },
+      "elapsed_seconds": 2.32,
+      "extra_columns": []
+    },
+    {
+      "question_id": "108",
+      "s_level": "S1N",
+      "final_sql": "SELECT COUNT(DISTINCT c.cnst_id) FROM cnstr c JOIN rslt r ON r.ref2 = c.cnst_id WHERE c.ntnl = 'French' AND r.lps > 50",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4937,
+        "output": 327,
+        "total": 5264
+      },
+      "elapsed_seconds": 2.21,
+      "extra_columns": []
+    },
+    {
+      "question_id": "109",
+      "s_level": "S1N",
+      "final_sql": "SELECT (COUNT(rslt.tm) / COUNT(rslt.ref3)) * 100 AS completion_percentage\nFROM rslt\nJOIN drvr ON rslt.ref3 = drvr.drvr_id\nJOIN rcs ON rslt.ref4 = rcs.rc_id\nWHERE drvr.ntnl = 'Japanese'\nAND rcs.ref2 BETWEEN 2007 AND 2009",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4962,
+        "output": 764,
+        "total": 5726
+      },
+      "elapsed_seconds": 4.76,
+      "extra_columns": []
+    },
+    {
+      "question_id": "110",
+      "s_level": "S1N",
+      "final_sql": "SELECT rcs.ref2 AS race_year, AVG(SUBSTR(rslt.tm, 1, 1) * 3600 + SUBSTR(rslt.tm, 3, 2) * 60 + SUBSTR(rslt.tm, 6, 2) + SUBSTR(rslt.tm, 9) / 1000) AS average_time_seconds\nFROM rslt\nJOIN rcs ON rslt.ref4 = rcs.rc_id\nWHERE rcs.ref2 < 1975\n  AND rslt.pstn = 1\n  AND rslt.tm IS NOT NULL\n  AND rslt.tm <> ''\nGROUP BY rcs.ref2",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 5030,
+        "output": 3508,
+        "total": 8538
+      },
+      "elapsed_seconds": 15.16,
+      "extra_columns": []
+    },
+    {
+      "question_id": "111",
+      "s_level": "S1N",
+      "final_sql": "SELECT DISTINCT d.frnm, d.srnm\nFROM drvr d\nJOIN rslt r ON r.ref3 = d.drvr_id\nWHERE YEAR(d.db) > 1975\n  AND r.rnk = 2",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4909,
+        "output": 638,
+        "total": 5547
+      },
+      "elapsed_seconds": 3.54,
+      "extra_columns": []
+    },
+    {
+      "question_id": "112",
+      "s_level": "S1N",
+      "final_sql": "SELECT COUNT(*) FROM rslt r JOIN drvr d ON r.ref3 = d.drvr_id WHERE d.ntnl = 'Italian' AND r.tm IS NULL",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4894,
+        "output": 806,
+        "total": 5700
+      },
+      "elapsed_seconds": 4.77,
+      "extra_columns": []
+    },
+    {
+      "question_id": "113",
+      "s_level": "S1N",
+      "final_sql": "SELECT drvr.frnm, drvr.srnm, rslt.fsts_lp_tm FROM rslt JOIN drvr ON rslt.ref3 = drvr.drvr_id WHERE rslt.fsts_lp_tm IS NOT NULL AND rslt.fsts_lp_tm != '' ORDER BY rslt.fsts_lp_tm ASC LIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4922,
+        "output": 265,
+        "total": 5187
+      },
+      "elapsed_seconds": 1.61,
+      "extra_columns": []
+    },
+    {
+      "question_id": "114",
+      "s_level": "S1N",
+      "final_sql": "SELECT r.fsts_lp\nFROM rslt AS r\nJOIN rcs AS ra ON r.ref4 = ra.rc_id\nWHERE ra.ref2 = 2009\n  AND r.ref3 = (\n    SELECT ds.ref1\n    FROM drvr_std AS ds\n    JOIN rcs AS rr ON ds.ref2 = rr.rc_id\n    WHERE rr.ref2 = 2009\n    ORDER BY rr.rnd DESC, ds.pstn ASC\n    LIMIT 1\n  )\n  AND r.fsts_lp_tm IS NOT NULL\n  AND r.fsts_lp_tm != ''\nORDER BY r.fsts_lp_tm ASC\nLIMIT 1",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4920,
+        "output": 5912,
+        "total": 10832
+      },
+      "elapsed_seconds": 27.12,
+      "extra_columns": []
+    },
+    {
+      "question_id": "115",
+      "s_level": "S1N",
+      "final_sql": "SELECT AVG(rslt.fsts_lp_spd)\nFROM rslt\nJOIN rcs ON rslt.ref4 = rcs.rc_id\nWHERE rcs.nm = 'Spanish Grand Prix' AND rcs.ref2 = 2009",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4922,
+        "output": 436,
+        "total": 5358
+      },
+      "elapsed_seconds": 2.89,
+      "extra_columns": []
+    },
+    {
+      "question_id": "116",
+      "s_level": "S1N",
+      "final_sql": "SELECT rcs.nm, rcs.ref2 FROM rslt JOIN rcs ON rslt.ref4 = rcs.rc_id WHERE rslt.mlls IS NOT NULL ORDER BY rslt.mlls ASC LIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4906,
+        "output": 365,
+        "total": 5271
+      },
+      "elapsed_seconds": 2.05,
+      "extra_columns": []
+    },
+    {
+      "question_id": "117",
+      "s_level": "S1N",
+      "final_sql": "SELECT SUM(CASE WHEN YEAR(drvr.db) < 1985 AND rslt.lps > 50 THEN 1 ELSE 0 END) * 100.0 / COUNT(*) AS percentage\nFROM rslt\nJOIN rcs ON rslt.ref4 = rcs.rc_id\nJOIN drvr ON rslt.ref3 = drvr.drvr_id\nWHERE rcs.ref2 BETWEEN 2000 AND 2005",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 5020,
+        "output": 1028,
+        "total": 6048
+      },
+      "elapsed_seconds": 4.73,
+      "extra_columns": []
+    },
+    {
+      "question_id": "118",
+      "s_level": "S1N",
+      "final_sql": "SELECT COUNT(*) FROM lp_tm JOIN drvr ON lp_tm.ref1 = drvr.drvr_id WHERE drvr.ntnl = 'French' AND lp_tm.tm IS NOT NULL AND lp_tm.tm <> '' AND CAST(SUBSTR(lp_tm.tm, 1, 2) AS UNSIGNED) * 60 + CAST(SUBSTR(lp_tm.tm, 4, 2) AS UNSIGNED) + CAST(SUBSTR(lp_tm.tm, 7, 2) AS UNSIGNED) / 1000 < 120",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4989,
+        "output": 2392,
+        "total": 7381
+      },
+      "elapsed_seconds": 11.35,
+      "extra_columns": []
+    },
+    {
+      "question_id": "119",
+      "s_level": "S1N",
+      "final_sql": "SELECT cd FROM drvr WHERE ntnl = 'American'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4917,
+        "output": 1582,
+        "total": 6499
+      },
+      "elapsed_seconds": 7.66,
+      "extra_columns": []
+    },
+    {
+      "question_id": "120",
+      "s_level": "S1N",
+      "final_sql": "SELECT rc_id FROM rcs WHERE ref2 = 2009",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4872,
+        "output": 125,
+        "total": 4997
+      },
+      "elapsed_seconds": 1.52,
+      "extra_columns": []
+    },
+    {
+      "question_id": "121",
+      "s_level": "S1N",
+      "final_sql": "SELECT COUNT(*) FROM drvr_std WHERE ref2 = 18",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4926,
+        "output": 250,
+        "total": 5176
+      },
+      "elapsed_seconds": 1.83,
+      "extra_columns": []
+    },
+    {
+      "question_id": "122",
+      "s_level": "S1N",
+      "final_sql": "WITH top3 AS (\n    SELECT cd, ntnl\n    FROM drvr\n    WHERE db IS NOT NULL\n    ORDER BY db DESC\n    LIMIT 3\n), dutch_count AS (\n    SELECT COUNT(*) AS cnt\n    FROM top3\n    WHERE ntnl = 'Dutch'\n)\nSELECT top3.cd, dutch_count.cnt\nFROM top3\nCROSS JOIN dutch_count",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4917,
+        "output": 13447,
+        "total": 18364
+      },
+      "elapsed_seconds": 59.59,
+      "extra_columns": []
+    },
+    {
+      "question_id": "123",
+      "s_level": "S1N",
+      "final_sql": "SELECT drvr_rf FROM drvr WHERE frnm = 'Robert' AND srnm = 'Kubica'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4889,
+        "output": 210,
+        "total": 5099
+      },
+      "elapsed_seconds": 1.63,
+      "extra_columns": []
+    },
+    {
+      "question_id": "124",
+      "s_level": "S1N",
+      "final_sql": "SELECT COUNT(*) FROM drvr WHERE ntnl = 'British' AND YEAR(db) = 1980",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4901,
+        "output": 195,
+        "total": 5096
+      },
+      "elapsed_seconds": 1.8,
+      "extra_columns": []
+    },
+    {
+      "question_id": "125",
+      "s_level": "S1N",
+      "final_sql": "SELECT d.frnm, d.srnm\nFROM drvr d\nJOIN lp_tm lt ON lt.ref1 = d.drvr_id\nWHERE d.ntnl = 'German'\n  AND YEAR(d.db) BETWEEN 1980 AND 1990\n  AND lt.mlls IS NOT NULL\nGROUP BY d.drvr_id, d.frnm, d.srnm\nORDER BY MIN(lt.mlls) ASC\nLIMIT 3",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4976,
+        "output": 646,
+        "total": 5622
+      },
+      "elapsed_seconds": 3.46,
+      "extra_columns": []
+    },
+    {
+      "question_id": "126",
+      "s_level": "S1N",
+      "final_sql": "SELECT drvr_rf FROM drvr WHERE ntnl = 'German' AND db IS NOT NULL ORDER BY YEAR(db) ASC LIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4901,
+        "output": 295,
+        "total": 5196
+      },
+      "elapsed_seconds": 2.26,
+      "extra_columns": []
+    },
+    {
+      "question_id": "127",
+      "s_level": "S1N",
+      "final_sql": "SELECT DISTINCT d.drvr_id, d.cd\nFROM drvr AS d\nJOIN rslt AS r ON d.drvr_id = r.ref3\nWHERE YEAR(d.db) = 1971\n  AND r.fsts_lp_tm IS NOT NULL\n  AND r.fsts_lp_tm <> ''",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4930,
+        "output": 2820,
+        "total": 7750
+      },
+      "elapsed_seconds": 13.21,
+      "extra_columns": []
+    },
+    {
+      "question_id": "128",
+      "s_level": "S1N",
+      "final_sql": "SELECT drvr.frnm, drvr.srnm\nFROM drvr\nJOIN lp_tm ON lp_tm.ref1 = drvr.drvr_id\nWHERE drvr.ntnl = 'Spanish'\n  AND YEAR(drvr.db) < 1982\nGROUP BY drvr.drvr_id, drvr.frnm, drvr.srnm\nORDER BY MAX(lp_tm.mlls) DESC\nLIMIT 10",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4969,
+        "output": 452,
+        "total": 5421
+      },
+      "elapsed_seconds": 2.84,
+      "extra_columns": []
+    },
+    {
+      "question_id": "129",
+      "s_level": "S1N",
+      "final_sql": "SELECT DISTINCT rcs.ref2 FROM rcs JOIN rslt ON rslt.ref4 = rcs.rc_id WHERE rslt.fsts_lp_tm IS NOT NULL AND rslt.fsts_lp_tm <> '' ORDER BY rcs.ref2",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4900,
+        "output": 1062,
+        "total": 5962
+      },
+      "elapsed_seconds": 5.48,
+      "extra_columns": []
+    },
+    {
+      "question_id": "130",
+      "s_level": "S1N",
+      "final_sql": "SELECT rcs.ref2\nFROM lp_tm\nJOIN rcs ON lp_tm.ref2 = rcs.rc_id\nWHERE lp_tm.tm IS NOT NULL AND lp_tm.tm != ''\nORDER BY lp_tm.tm DESC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4894,
+        "output": 1632,
+        "total": 6526
+      },
+      "elapsed_seconds": 8.13,
+      "extra_columns": []
+    },
+    {
+      "question_id": "131",
+      "s_level": "S1N",
+      "final_sql": "SELECT ref1 FROM lp_tm WHERE lp = 1 AND tm IS NOT NULL AND tm != '' GROUP BY ref1 ORDER BY MIN(tm) DESC LIMIT 5",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4907,
+        "output": 2441,
+        "total": 7348
+      },
+      "elapsed_seconds": 11.76,
+      "extra_columns": []
+    },
+    {
+      "question_id": "132",
+      "s_level": "S1N",
+      "final_sql": "SELECT COUNT(*) FROM rslt WHERE ref4 > 50 AND ref4 < 100 AND ref1 = 2 AND tm IS NOT NULL",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4931,
+        "output": 384,
+        "total": 5315
+      },
+      "elapsed_seconds": 2.55,
+      "extra_columns": []
+    },
+    {
+      "question_id": "133",
+      "s_level": "S1N",
+      "final_sql": "SELECT DISTINCT crct.lctn, crct.lt, crct.lng FROM crct WHERE crct.cntr = 'Austria'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4952,
+        "output": 212,
+        "total": 5164
+      },
+      "elapsed_seconds": 1.54,
+      "extra_columns": []
+    },
+    {
+      "question_id": "134",
+      "s_level": "S1N",
+      "final_sql": "SELECT ref4 FROM rslt GROUP BY ref4 ORDER BY COUNT(*) DESC LIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4964,
+        "output": 599,
+        "total": 5563
+      },
+      "elapsed_seconds": 3.59,
+      "extra_columns": []
+    },
+    {
+      "question_id": "135",
+      "s_level": "S1N",
+      "final_sql": "SELECT drvr.drvr_rf, drvr.ntnl, drvr.db FROM qlfy JOIN drvr ON qlfy.ref2 = drvr.drvr_id WHERE qlfy.ref3 = 23 AND qlfy.q2 IS NOT NULL",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4935,
+        "output": 331,
+        "total": 5266
+      },
+      "elapsed_seconds": 1.98,
+      "extra_columns": []
+    },
+    {
+      "question_id": "136",
+      "s_level": "S1N",
+      "final_sql": "SELECT rcs.ref2, rcs.nm, rcs.dt, rcs.tm FROM drvr JOIN qlfy ON qlfy.ref2 = drvr.drvr_id JOIN rcs ON rcs.rc_id = qlfy.ref3 WHERE drvr.drvr_id = (SELECT drvr_id FROM drvr WHERE db IS NOT NULL ORDER BY db DESC LIMIT 1) ORDER BY rcs.dt ASC LIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4934,
+        "output": 1328,
+        "total": 6262
+      },
+      "elapsed_seconds": 6.53,
+      "extra_columns": []
+    },
+    {
+      "question_id": "137",
+      "s_level": "S1N",
+      "final_sql": "SELECT COUNT(*)\nFROM drvr\nJOIN rslt ON drvr.drvr_id = rslt.ref3\nJOIN stat ON rslt.ref1 = stat.stts_id\nWHERE drvr.ntnl = 'American'\nAND stat.stts = 'Puncture'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4891,
+        "output": 1482,
+        "total": 6373
+      },
+      "elapsed_seconds": 7.33,
+      "extra_columns": []
+    },
+    {
+      "question_id": "138",
+      "s_level": "S1N",
+      "final_sql": "SELECT cnstr.nm, cnstr.url\nFROM cnstr\nJOIN cnstr_std ON cnstr_std.ref1 = cnstr.cnst_id\nWHERE cnstr.ntnl = 'Italian'\nORDER BY cnstr_std.pnts DESC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4902,
+        "output": 1306,
+        "total": 6208
+      },
+      "elapsed_seconds": 6.81,
+      "extra_columns": [
+        "nm"
+      ]
+    },
+    {
+      "question_id": "139",
+      "s_level": "S1N",
+      "final_sql": "SELECT c.url FROM cnstr_std cs JOIN cnstr c ON cs.ref1 = c.cnst_id ORDER BY cs.wns DESC LIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4943,
+        "output": 348,
+        "total": 5291
+      },
+      "elapsed_seconds": 2.56,
+      "extra_columns": []
+    },
+    {
+      "question_id": "140",
+      "s_level": "S1N",
+      "final_sql": "SELECT d.frnm, d.srnm\nFROM lp_tm l\nJOIN rcs r ON l.ref2 = r.rc_id\nJOIN drvr d ON l.ref1 = d.drvr_id\nWHERE r.nm = 'French Grand Prix'\n  AND l.lp = 3\n  AND l.tm IS NOT NULL\n  AND l.tm != ''\nORDER BY l.tm DESC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4905,
+        "output": 1272,
+        "total": 6177
+      },
+      "elapsed_seconds": 6.33,
+      "extra_columns": []
+    },
+    {
+      "question_id": "141",
+      "s_level": "S1N",
+      "final_sql": "SELECT mlls FROM lp_tm WHERE lp = 1 AND tm IS NOT NULL AND tm != '' ORDER BY tm ASC LIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4943,
+        "output": 441,
+        "total": 5384
+      },
+      "elapsed_seconds": 2.97,
+      "extra_columns": []
+    },
+    {
+      "question_id": "142",
+      "s_level": "S1N",
+      "final_sql": "SELECT AVG(rslt.fsts_lp_tm) FROM rslt JOIN rcs ON rslt.ref4 = rcs.rc_id WHERE rcs.ref2 = 2006 AND rcs.nm = 'United States Grand Prix' AND rslt.rnk < 11",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4914,
+        "output": 2198,
+        "total": 7112
+      },
+      "elapsed_seconds": 10.65,
+      "extra_columns": []
+    },
+    {
+      "question_id": "143",
+      "s_level": "S1N",
+      "final_sql": "SELECT d.frnm, d.srnm, AVG(p.mlls) AS avg_pit_stop_duration\nFROM drvr d\nJOIN pt_stp p ON p.ref1 = d.drvr_id\nWHERE d.ntnl = 'German' AND YEAR(d.db) BETWEEN 1980 AND 1985\nGROUP BY d.drvr_id, d.frnm, d.srnm\nORDER BY AVG(p.mlls) ASC\nLIMIT 3",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4962,
+        "output": 6721,
+        "total": 11683
+      },
+      "elapsed_seconds": 29.77,
+      "extra_columns": [
+        "avg_pit_stop_duration"
+      ]
+    },
+    {
+      "question_id": "144",
+      "s_level": "S1N",
+      "final_sql": "SELECT drvr.frnm, drvr.srnm, rslt.tm\nFROM rcs\nJOIN rslt ON rslt.ref4 = rcs.rc_id\nJOIN drvr ON drvr.drvr_id = rslt.ref3\nWHERE rcs.nm = 'Canadian Grand Prix'\n  AND rcs.ref2 = 2008\n  AND rslt.pstn_ordr = 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4914,
+        "output": 672,
+        "total": 5586
+      },
+      "elapsed_seconds": 3.95,
+      "extra_columns": [
+        "frnm",
+        "srnm"
+      ]
+    },
+    {
+      "question_id": "145",
+      "s_level": "S1N",
+      "final_sql": "SELECT c.cnst_rf, c.url FROM rcs r JOIN rslt res ON res.ref4 = r.rc_id JOIN cnstr c ON c.cnst_id = res.ref2 WHERE r.ref2 = 2009 AND r.nm = 'Singapore Grand Prix' AND res.pstn_ordr = 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4932,
+        "output": 1000,
+        "total": 5932
+      },
+      "elapsed_seconds": 5.22,
+      "extra_columns": []
+    },
+    {
+      "question_id": "146",
+      "s_level": "S1N",
+      "final_sql": "SELECT frnm, srnm, db FROM drvr WHERE ntnl = 'Austrian' AND YEAR(db) BETWEEN 1981 AND 1991",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4930,
+        "output": 273,
+        "total": 5203
+      },
+      "elapsed_seconds": 2.19,
+      "extra_columns": []
+    },
+    {
+      "question_id": "147",
+      "s_level": "S1N",
+      "final_sql": "SELECT frnm, srnm, url, db FROM drvr WHERE ntnl = 'German' AND YEAR(db) BETWEEN 1971 AND 1985 ORDER BY db DESC",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4948,
+        "output": 305,
+        "total": 5253
+      },
+      "elapsed_seconds": 2.07,
+      "extra_columns": []
+    },
+    {
+      "question_id": "148",
+      "s_level": "S1N",
+      "final_sql": "SELECT lctn, cntr, lt, lng FROM crct WHERE nm = 'Hungaroring'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4909,
+        "output": 292,
+        "total": 5201
+      },
+      "elapsed_seconds": 2.27,
+      "extra_columns": [
+        "lctn"
+      ]
+    },
+    {
+      "question_id": "149",
+      "s_level": "S1N",
+      "final_sql": "SELECT SUM(cnstr_rslt.pnts) AS score, cnstr.nm, cnstr.ntnl\nFROM cnstr_rslt\nJOIN rcs ON cnstr_rslt.ref2 = rcs.rc_id\nJOIN cnstr ON cnstr_rslt.ref1 = cnstr.cnst_id\nWHERE rcs.nm = 'Monaco Grand Prix'\n  AND rcs.ref2 BETWEEN 1980 AND 2010\nGROUP BY cnstr.cnst_id, cnstr.nm, cnstr.ntnl\nORDER BY score DESC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 5004,
+        "output": 449,
+        "total": 5453
+      },
+      "elapsed_seconds": 2.63,
+      "extra_columns": []
+    },
+    {
+      "question_id": "150",
+      "s_level": "S1N",
+      "final_sql": "SELECT AVG(drvr_std.pnts) FROM drvr_std JOIN drvr ON drvr_std.ref1 = drvr.drvr_id JOIN rcs ON drvr_std.ref2 = rcs.rc_id WHERE drvr.frnm = 'Lewis' AND drvr.srnm = 'Hamilton' AND rcs.nm = 'Turkish Grand Prix'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4896,
+        "output": 2084,
+        "total": 6980
+      },
+      "elapsed_seconds": 10.42,
+      "extra_columns": []
+    },
+    {
+      "question_id": "151",
+      "s_level": "S1N",
+      "final_sql": "SELECT SUM(CASE WHEN ref2 BETWEEN 2000 AND 2010 THEN 1 ELSE 0 END) / 10 AS annual_average FROM rcs",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4969,
+        "output": 689,
+        "total": 5658
+      },
+      "elapsed_seconds": 3.45,
+      "extra_columns": []
+    },
+    {
+      "question_id": "152",
+      "s_level": "S1N",
+      "final_sql": "SELECT ntnl FROM drvr WHERE ntnl IS NOT NULL GROUP BY ntnl ORDER BY COUNT(*) DESC LIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4903,
+        "output": 203,
+        "total": 5106
+      },
+      "elapsed_seconds": 1.98,
+      "extra_columns": []
+    },
+    {
+      "question_id": "153",
+      "s_level": "S1N",
+      "final_sql": "SELECT wns FROM drvr_std WHERE pnts = 91",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4907,
+        "output": 2560,
+        "total": 7467
+      },
+      "elapsed_seconds": 13.08,
+      "extra_columns": []
+    },
+    {
+      "question_id": "154",
+      "s_level": "S1N",
+      "final_sql": "SELECT r.nm\nFROM rcs r\nJOIN rslt rr ON rr.ref4 = r.rc_id\nWHERE rr.fsts_lp_tm IS NOT NULL AND rr.fsts_lp_tm <> ''\nORDER BY rr.fsts_lp_tm ASC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4913,
+        "output": 494,
+        "total": 5407
+      },
+      "elapsed_seconds": 2.38,
+      "extra_columns": []
+    },
+    {
+      "question_id": "155",
+      "s_level": "S1N",
+      "final_sql": "SELECT crct.nm, crct.lctn, crct.cntr FROM rcs JOIN crct ON rcs.ref1 = crct.crct_id WHERE rcs.dt IS NOT NULL ORDER BY rcs.dt DESC LIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4904,
+        "output": 847,
+        "total": 5751
+      },
+      "elapsed_seconds": 4.3,
+      "extra_columns": [
+        "nm",
+        "cntr"
+      ]
+    },
+    {
+      "question_id": "156",
+      "s_level": "S1N",
+      "final_sql": "SELECT drvr.frnm, drvr.srnm\nFROM qlfy\nJOIN rcs ON qlfy.ref3 = rcs.rc_id\nJOIN crct ON rcs.ref1 = crct.crct_id\nJOIN drvr ON qlfy.ref2 = drvr.drvr_id\nWHERE crct.nm = 'Marina Bay Street Circuit'\n  AND rcs.ref2 = 2008\n  AND qlfy.q3 IS NOT NULL\n  AND qlfy.q3 <> ''\nORDER BY qlfy.q3 ASC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4943,
+        "output": 1230,
+        "total": 6173
+      },
+      "elapsed_seconds": 5.56,
+      "extra_columns": []
+    },
+    {
+      "question_id": "157",
+      "s_level": "S1N",
+      "final_sql": "SELECT d.frnm, d.srnm, d.ntnl, r.nm\nFROM drvr d\nJOIN rslt res ON res.ref3 = d.drvr_id\nJOIN rcs r ON r.rc_id = res.ref4\nWHERE d.drvr_id = (\n  SELECT drvr_id\n  FROM drvr\n  WHERE db IS NOT NULL\n  ORDER BY db DESC\n  LIMIT 1\n)\nORDER BY r.dt ASC, r.rc_id ASC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4924,
+        "output": 1257,
+        "total": 6181
+      },
+      "elapsed_seconds": 6.39,
+      "extra_columns": []
+    },
+    {
+      "question_id": "158",
+      "s_level": "S1N",
+      "final_sql": "SELECT COUNT(*) AS accident_count\nFROM rslt AS r\nWHERE r.ref1 = 3\n  AND r.ref3 = (\n    SELECT r2.ref3\n    FROM rslt AS r2\n    JOIN rcs AS rc ON rc.rc_id = r2.ref4\n    WHERE rc.nm = 'Canadian Grand Prix'\n      AND r2.ref1 = 3\n    GROUP BY r2.ref3\n    ORDER BY COUNT(*) DESC\n    LIMIT 1\n  )",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4916,
+        "output": 2769,
+        "total": 7685
+      },
+      "elapsed_seconds": 13.42,
+      "extra_columns": []
+    },
+    {
+      "question_id": "159",
+      "s_level": "S1N",
+      "final_sql": "SELECT d.frnm, d.srnm, MAX(ds.wns) FROM drvr d JOIN drvr_std ds ON d.drvr_id = ds.ref1 WHERE d.db = (SELECT MIN(d2.db) FROM drvr d2 WHERE d2.db IS NOT NULL) GROUP BY d.drvr_id, d.frnm, d.srnm",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4910,
+        "output": 3978,
+        "total": 8888
+      },
+      "elapsed_seconds": 20.45,
+      "extra_columns": []
+    },
+    {
+      "question_id": "160",
+      "s_level": "S1N",
+      "final_sql": "SELECT MAX(drtn) FROM pt_stp",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4901,
+        "output": 757,
+        "total": 5658
+      },
+      "elapsed_seconds": 4.8,
+      "extra_columns": []
+    },
+    {
+      "question_id": "161",
+      "s_level": "S1N",
+      "final_sql": "SELECT tm FROM lp_tm WHERE tm IS NOT NULL AND tm != '' ORDER BY tm ASC LIMIT 1",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4876,
+        "output": 412,
+        "total": 5288
+      },
+      "elapsed_seconds": 3.02,
+      "extra_columns": []
+    },
+    {
+      "question_id": "162",
+      "s_level": "S1N",
+      "final_sql": "SELECT MAX(pt_stp.drtn)\nFROM pt_stp\nJOIN drvr ON pt_stp.ref1 = drvr.drvr_id\nWHERE drvr.frnm = 'Lewis' AND drvr.srnm = 'Hamilton'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4898,
+        "output": 809,
+        "total": 5707
+      },
+      "elapsed_seconds": 5.04,
+      "extra_columns": []
+    },
+    {
+      "question_id": "163",
+      "s_level": "S1N",
+      "final_sql": "SELECT pt_stp.lp\nFROM pt_stp\nJOIN drvr ON pt_stp.ref1 = drvr.drvr_id\nJOIN rcs ON pt_stp.ref2 = rcs.rc_id\nWHERE drvr.frnm = 'Lewis'\n  AND drvr.srnm = 'Hamilton'\n  AND rcs.ref2 = 2011\n  AND rcs.nm = 'Australian Grand Prix'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4876,
+        "output": 460,
+        "total": 5336
+      },
+      "elapsed_seconds": 3.83,
+      "extra_columns": []
+    },
+    {
+      "question_id": "164",
+      "s_level": "S1N",
+      "final_sql": "SELECT pt_stp.drtn FROM pt_stp JOIN rcs ON pt_stp.ref2 = rcs.rc_id WHERE rcs.ref2 = 2011 AND rcs.nm = 'Australian Grand Prix'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4902,
+        "output": 7863,
+        "total": 12765
+      },
+      "elapsed_seconds": 35.96,
+      "extra_columns": []
+    },
+    {
+      "question_id": "165",
+      "s_level": "S1N",
+      "final_sql": "SELECT rslt.fsts_lp_tm\nFROM rslt\nJOIN drvr ON rslt.ref3 = drvr.drvr_id\nWHERE drvr.frnm = 'Lewis' AND drvr.srnm = 'Hamilton'\nAND rslt.fsts_lp_tm IS NOT NULL AND rslt.fsts_lp_tm <> ''\nORDER BY rslt.fsts_lp_tm ASC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4902,
+        "output": 1554,
+        "total": 6456
+      },
+      "elapsed_seconds": 7.75,
+      "extra_columns": []
+    },
+    {
+      "question_id": "166",
+      "s_level": "S1N",
+      "final_sql": "SELECT d.frnm, d.srnm\nFROM rslt r\nJOIN drvr d ON r.ref3 = d.drvr_id\nJOIN drvr_std ds ON d.drvr_id = ds.ref1\nWHERE r.fsts_lp_tm IS NOT NULL AND r.fsts_lp_tm <> ''\n  AND ds.pstn <= 20\nORDER BY r.fsts_lp_tm ASC\nLIMIT 1",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4943,
+        "output": 10890,
+        "total": 15833
+      },
+      "elapsed_seconds": 46.37,
+      "extra_columns": []
+    },
+    {
+      "question_id": "167",
+      "s_level": "S1N",
+      "final_sql": "SELECT lt.pstn FROM lp_tm AS lt JOIN drvr AS d ON lt.ref1 = d.drvr_id WHERE d.frnm = 'Lewis' AND d.srnm = 'Hamilton' AND lt.tm IS NOT NULL AND lt.tm != '' ORDER BY lt.tm ASC LIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4901,
+        "output": 1197,
+        "total": 6098
+      },
+      "elapsed_seconds": 6.3,
+      "extra_columns": []
+    },
+    {
+      "question_id": "168",
+      "s_level": "S1N",
+      "final_sql": "SELECT rslt.fsts_lp_tm\nFROM rslt\nJOIN rcs ON rslt.ref4 = rcs.rc_id\nWHERE rcs.nm = 'Austrian Grand Prix'\nAND rslt.fsts_lp_tm IS NOT NULL\nAND rslt.fsts_lp_tm != ''\nORDER BY rslt.fsts_lp_tm ASC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4897,
+        "output": 7518,
+        "total": 12415
+      },
+      "elapsed_seconds": 34.54,
+      "extra_columns": []
+    },
+    {
+      "question_id": "169",
+      "s_level": "S1N",
+      "final_sql": "SELECT rslt.fsts_lp_tm\nFROM rslt\nJOIN rcs ON rslt.ref4 = rcs.rc_id\nJOIN crct ON rcs.ref1 = crct.crct_id\nWHERE crct.cntr = 'Italy'\n  AND rslt.fsts_lp_tm IS NOT NULL\n  AND rslt.fsts_lp_tm != ''\nORDER BY rslt.fsts_lp_tm ASC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4953,
+        "output": 444,
+        "total": 5397
+      },
+      "elapsed_seconds": 2.21,
+      "extra_columns": []
+    },
+    {
+      "question_id": "170",
+      "s_level": "S1N",
+      "final_sql": "SELECT rcs.nm FROM rslt JOIN rcs ON rslt.ref4 = rcs.rc_id JOIN crct ON rcs.ref1 = crct.crct_id WHERE crct.nm = 'Austrian Grand Prix Circuit' AND rslt.fsts_lp_tm IS NOT NULL AND rslt.fsts_lp_tm != '' ORDER BY rslt.fsts_lp_tm ASC LIMIT 1",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4903,
+        "output": 8837,
+        "total": 13740
+      },
+      "elapsed_seconds": 37.95,
+      "extra_columns": []
+    },
+    {
+      "question_id": "171",
+      "s_level": "S1N",
+      "final_sql": "SELECT ps.drtn\nFROM pt_stp ps\nJOIN rslt r ON ps.ref2 = r.ref4 AND ps.ref1 = r.ref3\nJOIN rcs ra ON r.ref4 = ra.rc_id\nJOIN crct c ON ra.ref1 = c.crct_id\nWHERE c.nm = 'Austrian Grand Prix Circuit'\n  AND r.fsts_lp_tm IS NOT NULL AND r.fsts_lp_tm != ''\nORDER BY r.fsts_lp_tm ASC\nLIMIT 1",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4925,
+        "output": 33937,
+        "total": 38862
+      },
+      "elapsed_seconds": 135.33,
+      "extra_columns": []
+    },
+    {
+      "question_id": "172",
+      "s_level": "S1N",
+      "final_sql": "SELECT crct.lt, crct.lng FROM lp_tm JOIN rcs ON lp_tm.ref2 = rcs.rc_id JOIN crct ON rcs.ref1 = crct.crct_id WHERE lp_tm.tm = '1:29.488'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4959,
+        "output": 555,
+        "total": 5514
+      },
+      "elapsed_seconds": 3.12,
+      "extra_columns": []
+    },
+    {
+      "question_id": "173",
+      "s_level": "S1N",
+      "final_sql": "SELECT AVG(pt_stp.mlls) FROM pt_stp JOIN drvr ON pt_stp.ref1 = drvr.drvr_id WHERE drvr.frnm = 'Lewis' AND drvr.srnm = 'Hamilton'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4909,
+        "output": 276,
+        "total": 5185
+      },
+      "elapsed_seconds": 1.7,
+      "extra_columns": []
+    },
+    {
+      "question_id": "174",
+      "s_level": "S1N",
+      "final_sql": "SELECT AVG(lp_tm.mlls) FROM lp_tm JOIN rcs ON lp_tm.ref2 = rcs.rc_id JOIN crct ON rcs.ref1 = crct.crct_id WHERE crct.cntr = 'Italy'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4902,
+        "output": 375,
+        "total": 5277
+      },
+      "elapsed_seconds": 2.31,
+      "extra_columns": []
+    }
+  ]
+}

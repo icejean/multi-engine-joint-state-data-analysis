@@ -1,0 +1,3713 @@
+{
+  "runs": [
+    {
+      "question_id": 1,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "4936ddca16e64777b035d3571859e6ee",
+      "final_sql": "SELECT COUNT(DISTINCT CASE WHEN ref2 = 2 THEN ref1 END) AS home_address_count, COUNT(DISTINCT CASE WHEN ref2 = 5 THEN ref1 END) AS shipping_address_count FROM biz_addr",
+      "sql_history": [
+        "SELECT COUNT(DISTINCT CASE WHEN ref2 = 2 THEN ref1 END) AS home_address_count, COUNT(DISTINCT CASE WHEN ref2 = 5 THEN ref1 END) AS shipping_address_count FROM biz_addr"
+      ],
+      "agent_text": "结果：\n\n- **Home address (AddressTypeID = 2)**：18,774 个业务实体\n- **Shipping address (AddressTypeID = 5)**：35 个业务实体",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 23790,
+        "output": 699,
+        "cache_read": 92992,
+        "cache_write": 0,
+        "reasoning": 476,
+        "total": 117481
+      },
+      "cost_usd": 0.053662,
+      "elapsed_seconds": 23.96,
+      "agent_duration_ms": 16202,
+      "extra_columns": []
+    },
+    {
+      "question_id": 2,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "4381da6dacae483287b23566469e95cc",
+      "final_sql": "SELECT COUNT(CASE WHEN vctn_hrs > 20 THEN 1 END) / COUNT(*) * 100 AS percentage FROM emp WHERE crrn_flg = 1 AND sck_lv_hrs > 10",
+      "sql_history": [
+        "SELECT COUNT(CASE WHEN vctn_hrs > 20 THEN 1 END) / COUNT(*) * 100 AS percentage FROM emp WHERE crrn_flg = 1 AND sck_lv_hrs > 10"
+      ],
+      "agent_text": "结果：**80.69%**\n\n在 `works_cycles` 数据源中，`emp` 表的 `crrn_flg=1` 表示在职员工，`sck_lv_hrs` 是病假小时数，`vctn_hrs` 是年假小时数。\n\n```sql\nSELECT \n    COUNT(CASE WHEN vctn_hrs > 20 THEN 1 END) / COUNT(*) * 100 AS percentage\nFROM emp\nWHERE crrn_flg = 1 AND sck_lv_hrs > 10\n```\n\n- 分母：在职且病假 >10 小时的员工数\n- 分子：其中年假 >20 小时的员工数（`CASE WHEN` 计数）\n- 百分比 ≈ **80.69%**",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 69909,
+        "output": 1064,
+        "cache_read": 47168,
+        "cache_write": 0,
+        "reasoning": 771,
+        "total": 118141
+      },
+      "cost_usd": 0.099467,
+      "elapsed_seconds": 48.99,
+      "agent_duration_ms": 41340,
+      "extra_columns": []
+    },
+    {
+      "question_id": 3,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "3a52c0f7f95143f69403fd305fcf7189",
+      "final_sql": "SELECT COUNT(*) AS male_count FROM emp e JOIN emp_pay_hist ph ON e.ref1 = ph.ref1 WHERE e.gndr = 'M' AND ph.rt > 40 AND ph.rt_chng_dt = ( SELECT MAX(ph2.rt_chng_dt) FROM emp_pay_hist ph2 WHERE ph2.ref1 = ph.ref1 )",
+      "sql_history": [
+        "SELECT COUNT(*) AS male_count FROM emp e JOIN emp_pay_hist ph ON e.ref1 = ph.ref1 WHERE e.gndr = 'M' AND ph.rt > 40 AND ph.rt_chng_dt = ( SELECT MAX(ph2.rt_chng_dt) FROM emp_pay_hist ph2 WHERE ph2.ref1 = ph.ref1 )"
+      ],
+      "agent_text": "**8** 名男性员工的时薪高于 40。\n\n最终 SQL 取每人最新一条调薪记录（`rt_chng_dt = 该员工内 MAX`），筛选 `rt > 40` 且 `gndr = 'M'` 后计数。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 27601,
+        "output": 1311,
+        "cache_read": 89664,
+        "cache_write": 0,
+        "reasoning": 1033,
+        "total": 118576
+      },
+      "cost_usd": 0.059885,
+      "elapsed_seconds": 33.87,
+      "agent_duration_ms": 26471,
+      "extra_columns": []
+    },
+    {
+      "question_id": 4,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "88250b5f6aa949a097b5ee1b2ab962a8",
+      "final_sql": "SELECT ROUND(SUM(e.gndr = 'F') / SUM(e.gndr = 'F' OR e.gndr = 'M') * 100, 2) AS percentage FROM emp e JOIN prsn p ON e.ref1 = p.ref1 WHERE p.eml_prmt = 1",
+      "sql_history": [
+        "SELECT ROUND(SUM(e.gndr = 'F') / SUM(e.gndr = 'F' OR e.gndr = 'M') * 100, 2) AS percentage FROM emp e JOIN prsn p ON e.ref1 = p.ref1 WHERE p.eml_prmt = 1"
+      ],
+      "agent_text": "在愿意接收邮件促销的员工中，女性占比 **29.51%**。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 26237,
+        "output": 3073,
+        "cache_read": 92992,
+        "cache_write": 0,
+        "reasoning": 2859,
+        "total": 122302
+      },
+      "cost_usd": 0.066094,
+      "elapsed_seconds": 62.22,
+      "agent_duration_ms": 54575,
+      "extra_columns": []
+    },
+    {
+      "question_id": 5,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "9cfc1f2cee534fd3bfdb3c2e9713d777",
+      "final_sql": "SELECT COUNT(*) AS married_count FROM emp e INNER JOIN ( SELECT ref1, py_frqn FROM emp_pay_hist eph WHERE (ref1, rt_chng_dt) IN ( SELECT ref1, MAX(rt_chng_dt) FROM emp_pay_hist GROUP BY ref1 ) ) latest ON e.ref1 = latest.ref1 WHERE latest.py_frqn = 2 AND e.mrtl_stts = 'M'",
+      "sql_history": [
+        "SELECT COUNT(*) AS married_count FROM emp e INNER JOIN ( SELECT ref1, py_frqn FROM emp_pay_hist eph WHERE (ref1, rt_chng_dt) IN ( SELECT ref1, MAX(rt_chng_dt) FROM emp_pay_hist GROUP BY ref1 ) ) latest ON e.ref1 = latest.ref1 WHERE latest.py_frqn = 2 AND e.mrtl_stts = 'M'"
+      ],
+      "agent_text": "**66** 名已婚员工。\n\n思路：从 `emp_pay_hist` 取每位员工最新一条调薪记录（`rt_chng_dt` = 该员工内 MAX），筛选 `py_frqn = 2`（最高发薪频率），再 JOIN `emp` 表统计 `mrtl_stts = 'M'`（已婚）的人数。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 24456,
+        "output": 1454,
+        "cache_read": 93056,
+        "cache_write": 0,
+        "reasoning": 1076,
+        "total": 118966
+      },
+      "cost_usd": 0.057497,
+      "elapsed_seconds": 46.02,
+      "agent_duration_ms": 38227,
+      "extra_columns": []
+    },
+    {
+      "question_id": 6,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "38e12d7e3b334a44bd2cdb6a763f71ff",
+      "final_sql": "SELECT COUNT(*) AS cnt FROM ( SELECT p.prdc_id FROM prod p JOIN prod_rvw r ON r.ref1 = p.prdc_id WHERE p.mk_flg = 1 AND p.fnsh_gds_flg = 1 GROUP BY p.prdc_id HAVING COUNT(*) > 10 ) AS sub",
+      "sql_history": [
+        "SELECT COUNT(*) AS cnt FROM ( SELECT p.prdc_id FROM prod p JOIN prod_rvw r ON r.ref1 = p.prdc_id WHERE p.mk_flg = 1 AND p.fnsh_gds_flg = 1 GROUP BY p.prdc_id HAVING COUNT(*) > 10 ) AS sub"
+      ],
+      "agent_text": "结果为 **0**。\n\n在同时满足「自制（`mk_flg = 1`）」和「可售（`fnsh_gds_flg = 1`）」的产品中，没有任何产品的评论数超过 10 条。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 24351,
+        "output": 1342,
+        "cache_read": 92992,
+        "cache_write": 0,
+        "reasoning": 1060,
+        "total": 118685
+      },
+      "cost_usd": 0.056907,
+      "elapsed_seconds": 71.21,
+      "agent_duration_ms": 63597,
+      "extra_columns": []
+    },
+    {
+      "question_id": 7,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "fa5c79d99a9d4735b11a7ae64e2718f7",
+      "final_sql": "SELECT COUNT(*) FROM (SELECT pr.ref1 FROM prod_rvw pr JOIN prod p ON p.prdc_id = pr.ref1 WHERE p.prdc_ln = 'M' GROUP BY pr.ref1 HAVING COUNT(*) > 1) AS t",
+      "sql_history": [
+        "SELECT COUNT(*) FROM (SELECT pr.ref1 FROM prod_rvw pr JOIN prod p ON p.prdc_id = pr.ref1 WHERE p.prdc_ln = 'M' GROUP BY pr.ref1 HAVING COUNT(*) > 1) AS t"
+      ],
+      "agent_text": "答案是 **1**。\n\n在拥有超过 1 条评论的产品中，来自山地产品线（ProductLine = 'M'）的产品有 1 个。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 23906,
+        "output": 775,
+        "cache_read": 93056,
+        "cache_write": 0,
+        "reasoning": 540,
+        "total": 117737
+      },
+      "cost_usd": 0.054121,
+      "elapsed_seconds": 28.36,
+      "agent_duration_ms": 20674,
+      "extra_columns": []
+    },
+    {
+      "question_id": 8,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "1d56ef51c8824b0794432135e2025914",
+      "final_sql": "WITH review_counts AS ( SELECT p.prdc_id, COUNT(*) AS review_cnt FROM prod p JOIN prod_rvw pr ON pr.ref1 = p.prdc_id WHERE p.fnsh_gds_flg = 1 AND p.prdc_ln = 'M' GROUP BY p.prdc_id ) SELECT COUNT(*) FROM review_counts WHERE review_cnt = (SELECT MAX(review_cnt) FROM review_counts)",
+      "sql_history": [
+        "WITH review_counts AS ( SELECT p.prdc_id, COUNT(*) AS review_cnt FROM prod p JOIN prod_rvw pr ON pr.ref1 = p.prdc_id WHERE p.fnsh_gds_flg = 1 AND p.prdc_ln = 'M' GROUP BY p.prdc_id ) SELECT COUNT(*) FROM review_counts WHERE review_cnt = (SELECT MAX(review_cnt) FROM review_counts)"
+      ],
+      "agent_text": "结果：**1**。\n\n在山地产品线（`ProductLine = 'M'`）的可售产品（`FinishedGoodsFlag = 1`）中，有 **1** 个产品拥有最多评论数。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 47696,
+        "output": 1421,
+        "cache_read": 69824,
+        "cache_write": 0,
+        "reasoning": 1203,
+        "total": 118941
+      },
+      "cost_usd": 0.079677,
+      "elapsed_seconds": 37.05,
+      "agent_duration_ms": 29427,
+      "extra_columns": []
+    },
+    {
+      "question_id": 9,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "16b4a3d0f9f841da89560d5c31b6530e",
+      "final_sql": "SELECT e.gndr AS Gender, AVG(latest.rt) AS AveragePayRate FROM emp e JOIN ( SELECT ref1, rt, ROW_NUMBER() OVER (PARTITION BY ref1 ORDER BY rt_chng_dt DESC) AS rn FROM emp_pay_hist ) latest ON latest.ref1 = e.ref1 AND latest.rn = 1 WHERE e.gndr IN ('M', 'F') GROUP BY e.gndr",
+      "sql_history": [
+        "SELECT e.gndr AS Gender, AVG(latest.rt) AS AveragePayRate FROM emp e JOIN ( SELECT ref1, rt, ROW_NUMBER() OVER (PARTITION BY ref1 ORDER BY rt_chng_dt DESC) AS rn FROM emp_pay_hist ) latest ON latest.ref1 = e.ref1 AND latest.rn = 1 WHERE e.gndr IN ('M', 'F') GROUP BY e.gndr"
+      ],
+      "agent_text": "结果：\n\n| Gender | AveragePayRate |\n|--------|----------------|\n| M | 17.76 |\n| F | 19.23 |\n\n男性员工平均时薪约 **17.76**，女性员工平均时薪约 **19.23**。女性员工的平均薪资率高于男性。\n\nSQL 逻辑：对 `emp_pay_hist` 按员工分区取 `rt_chng_dt` 最新一条记录（每人当前最新时薪），再关联 `emp` 表按性别分组求 `AVG(rt)`。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 24022,
+        "output": 964,
+        "cache_read": 92992,
+        "cache_write": 0,
+        "reasoning": 628,
+        "total": 117978
+      },
+      "cost_usd": 0.055,
+      "elapsed_seconds": 26.59,
+      "agent_duration_ms": 19056,
+      "extra_columns": [
+        "Gender"
+      ]
+    },
+    {
+      "question_id": 10,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "c0c9d208cb714246bf01eba9349460f3",
+      "final_sql": "SELECT COUNT(CASE WHEN d.dcmn_smmr IS NULL THEN 1 END) * 100.0 / COUNT(*) AS percentage FROM emp e JOIN doc d ON d.ref1 = e.ref1 WHERE e.jb_ttl = 'Document Control Assistant' AND DATE(e.hr_dt) = '2009-01-22'",
+      "sql_history": [
+        "SELECT COUNT(CASE WHEN d.dcmn_smmr IS NULL THEN 1 END) * 100.0 / COUNT(*) AS percentage FROM emp e JOIN doc d ON d.ref1 = e.ref1 WHERE e.jb_ttl = 'Document Control Assistant' AND DATE(e.hr_dt) = '2009-01-22'"
+      ],
+      "agent_text": "结果：该 Document Control Assistant（入职日期 2009-01-22）的私密文档占比为 **50%**。\n\n即其名下文档中，一半的 `dcmn_smmr`（文档摘要）为 NULL（私密文档），另一半非空。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 73094,
+        "output": 4199,
+        "cache_read": 47296,
+        "cache_write": 0,
+        "reasoning": 3989,
+        "total": 124589
+      },
+      "cost_usd": 0.11586,
+      "elapsed_seconds": 86.74,
+      "agent_duration_ms": 79028,
+      "extra_columns": []
+    },
+    {
+      "question_id": 11,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "267f13ce09e845a6b72f3a07e8d77cb7",
+      "final_sql": "SELECT e.vctn_hrs FROM emp e WHERE e.ref1 IN ( SELECT ph.ref1 FROM emp_pay_hist ph WHERE ph.py_frqn = 2 AND ph.rt_chng_dt = ( SELECT MAX(ph2.rt_chng_dt) FROM emp_pay_hist ph2 WHERE ph2.ref1 = ph.ref1 ) )",
+      "sql_history": [
+        "SELECT e.vctn_hrs FROM emp e WHERE e.ref1 IN ( SELECT ph.ref1 FROM emp_pay_hist ph WHERE ph.py_frqn = 2 AND ph.rt_chng_dt = ( SELECT MAX(ph2.rt_chng_dt) FROM emp_pay_hist ph2 WHERE ph2.ref1 = ph.ref1 ) )"
+      ],
+      "agent_text": "已返回 pay frequency 为 2（最高）的员工的 vacation hours 列表，共 27 行。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 27276,
+        "output": 1873,
+        "cache_read": 90816,
+        "cache_write": 0,
+        "reasoning": 1619,
+        "total": 119965
+      },
+      "cost_usd": 0.062019,
+      "elapsed_seconds": 53.84,
+      "agent_duration_ms": 46326,
+      "extra_columns": []
+    },
+    {
+      "question_id": 12,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "1a4f57976712411c9fa8f33d1612b0ec",
+      "final_sql": "SELECT DISTINCT um.nm FROM bom b JOIN unit_msr um ON b.ref1 = um.unt_msr_cd WHERE b.ref2 = 494 AND b.end_dt IS NULL",
+      "sql_history": [
+        "SELECT DISTINCT um.nm FROM bom b JOIN unit_msr um ON b.ref1 = um.unt_msr_cd WHERE b.ref2 = 494 AND b.end_dt IS NULL"
+      ],
+      "agent_text": "Component ID 494 对应的 ongoing assembly item 的计量单位是 **Ounces**。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 46925,
+        "output": 732,
+        "cache_read": 69824,
+        "cache_write": 0,
+        "reasoning": 591,
+        "total": 117481
+      },
+      "cost_usd": 0.075996,
+      "elapsed_seconds": 28.77,
+      "agent_duration_ms": 21061,
+      "extra_columns": []
+    },
+    {
+      "question_id": 13,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "8cfde227e5ea44f884db791aebe58fc6",
+      "final_sql": "SELECT pv.avrg_ld_tm, v.nm FROM prod_vnd pv JOIN vnd v ON pv.ref2 = v.ref1 WHERE v.ref1 = 1496",
+      "sql_history": [
+        "SELECT pv.avrg_ld_tm, v.nm FROM prod_vnd pv JOIN vnd v ON pv.ref2 = v.ref1 WHERE v.ref1 = 1496"
+      ],
+      "agent_text": "结果已出：\n\n- **AverageLeadTime（平均交货期）**：**17 天**\n- **Vendor（供应商）**：**Advanced Bicycles**\n\n对应业务实体编号（BusinessEntityID）1496 的供应商是 Advanced Bicycles，其采购平均交货周期为 17 天。",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 49666,
+        "output": 3257,
+        "cache_read": 69696,
+        "cache_write": 0,
+        "reasoning": 3017,
+        "total": 122619
+      },
+      "cost_usd": 0.089354,
+      "elapsed_seconds": 59.81,
+      "agent_duration_ms": 52013,
+      "extra_columns": []
+    },
+    {
+      "question_id": 14,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "b0de3a34455d43d6bd4d958b211520af",
+      "final_sql": "SELECT SUM(CASE WHEN a.cty = 'Bothell' THEN 1 ELSE 0 END) - SUM(CASE WHEN a.cty = 'Kenmore' THEN 1 ELSE 0 END) AS account_diff, s.nm AS state_name FROM addr a JOIN st_prv s ON a.ref1 = s.stt_prvn_id WHERE a.cty IN ('Bothell', 'Kenmore') GROUP BY s.nm",
+      "sql_history": [
+        "SELECT SUM(CASE WHEN a.cty = 'Bothell' THEN 1 ELSE 0 END) - SUM(CASE WHEN a.cty = 'Kenmore' THEN 1 ELSE 0 END) AS account_diff, s.nm AS state_name FROM addr a JOIN st_prv s ON a.ref1 = s.stt_prvn_id WHERE a.cty IN ('Bothell', 'Kenmore') GROUP BY s.nm"
+      ],
+      "agent_text": "结果：\n\n- **Bothell 比 Kenmore 多 13 个账户**（Bothell 的账户数 − Kenmore 的账户数 = 13）\n- **所在州名：Washington**\n\n两个城市都位于华盛顿州（Washington），`addr.ref1 = 79` 关联到 `st_prv` 表得到的州名为 Washington。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 50608,
+        "output": 2169,
+        "cache_read": 115520,
+        "cache_write": 0,
+        "reasoning": 1855,
+        "total": 168297
+      },
+      "cost_usd": 0.09713,
+      "elapsed_seconds": 45.43,
+      "agent_duration_ms": 37788,
+      "extra_columns": []
+    },
+    {
+      "question_id": 15,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "b57621bb6ab84c5885774d0426a27cbe",
+      "final_sql": "SELECT SUM(CASE WHEN e.mrtl_stts = 'M' THEN 1 ELSE 0 END) * 1.0 / SUM(CASE WHEN e.mrtl_stts = 'S' THEN 1 ELSE 0 END) AS ratio FROM emp e JOIN prsn p ON e.ref1 = p.ref1 WHERE p.prsn_typ = 'EM'",
+      "sql_history": [
+        "SELECT SUM(CASE WHEN e.mrtl_stts = 'M' THEN 1 ELSE 0 END) * 1.0 / SUM(CASE WHEN e.mrtl_stts = 'S' THEN 1 ELSE 0 END) AS ratio FROM emp e JOIN prsn p ON e.ref1 = p.ref1 WHERE p.prsn_typ = 'EM'"
+      ],
+      "agent_text": "已婚非销售员工数量是单身非销售员工数量的 **0.9927 倍**（约 137:138）。\n\n最终 SQL：\n\n```sql\nSELECT \n  SUM(CASE WHEN e.mrtl_stts = 'M' THEN 1 ELSE 0 END) * 1.0 / \n  SUM(CASE WHEN e.mrtl_stts = 'S' THEN 1 ELSE 0 END) AS ratio\nFROM emp e\nJOIN prsn p ON e.ref1 = p.ref1\nWHERE p.prsn_typ = 'EM'\n```",
+      "tool_calls": 5,
+      "pass": false,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 63624,
+        "output": 3864,
+        "cache_read": 170112,
+        "cache_write": 0,
+        "reasoning": 3455,
+        "total": 237600
+      },
+      "cost_usd": 0.132632,
+      "elapsed_seconds": 61.24,
+      "agent_duration_ms": 53630,
+      "extra_columns": []
+    },
+    {
+      "question_id": 16,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "a85c6fdcfe0248f4810092b277c6505b",
+      "final_sql": "SELECT (SELECT COUNT(*) FROM pmdc p JOIN cult c ON p.ref1 = c.cltr_id WHERE c.nm = 'English') - (SELECT COUNT(*) FROM pmdc p JOIN cult c ON p.ref1 = c.cltr_id WHERE c.nm = 'Arabic') AS difference",
+      "sql_history": [
+        "SELECT (SELECT COUNT(*) FROM pmdc p JOIN cult c ON p.ref1 = c.cltr_id WHERE c.nm = 'English') - (SELECT COUNT(*) FROM pmdc p JOIN cult c ON p.ref1 = c.cltr_id WHERE c.nm = 'Arabic') AS difference"
+      ],
+      "agent_text": "English 和 Arabic 的 works data 数量差为 **0**，两者数量完全相同。\n\n最终 SQL：\n```sql\nSELECT \n  (SELECT COUNT(*) FROM pmdc p JOIN cult c ON p.ref1 = c.cltr_id WHERE c.nm = 'English') \n  - \n  (SELECT COUNT(*) FROM pmdc p JOIN cult c ON p.ref1 = c.cltr_id WHERE c.nm = 'Arabic') \n  AS difference\n```",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 25401,
+        "output": 2143,
+        "cache_read": 140864,
+        "cache_write": 0,
+        "reasoning": 1873,
+        "total": 168408
+      },
+      "cost_usd": 0.072861,
+      "elapsed_seconds": 41.39,
+      "agent_duration_ms": 33781,
+      "extra_columns": []
+    },
+    {
+      "question_id": 17,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "d5c823c4364e4738aca0802d69eac5af",
+      "final_sql": "SELECT nm FROM prod WHERE stnd_cst < (SELECT AVG(stnd_cst) FROM prod)",
+      "sql_history": [
+        "SELECT nm FROM prod WHERE stnd_cst < (SELECT AVG(stnd_cst) FROM prod)"
+      ],
+      "agent_text": "返回了 27 个标准成本低于全体产品平均标准成本的产品名称。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 23702,
+        "output": 339,
+        "cache_read": 92864,
+        "cache_write": 0,
+        "reasoning": 224,
+        "total": 116905
+      },
+      "cost_usd": 0.052086,
+      "elapsed_seconds": 19.98,
+      "agent_duration_ms": 12045,
+      "extra_columns": []
+    },
+    {
+      "question_id": 18,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "72f15823534d482495c402e904872e41",
+      "final_sql": "SELECT p.frst_nm, p.mddl_nm, p.lst_nm FROM emp e JOIN prsn p ON e.ref1 = p.ref1 WHERE e.jb_ttl = 'Production Technician - WC50'",
+      "sql_history": [
+        "SELECT p.frst_nm, p.mddl_nm, p.lst_nm FROM emp e JOIN prsn p ON e.ref1 = p.ref1 WHERE e.jb_ttl = 'Production Technician - WC50'"
+      ],
+      "agent_text": "查询返回了 26 名职位为 \"Production Technician - WC50\" 的员工全名（FirstName, MiddleName, LastName 三列）。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 48356,
+        "output": 1518,
+        "cache_read": 69696,
+        "cache_write": 0,
+        "reasoning": 1367,
+        "total": 119570
+      },
+      "cost_usd": 0.080826,
+      "elapsed_seconds": 39.12,
+      "agent_duration_ms": 31356,
+      "extra_columns": []
+    },
+    {
+      "question_id": 19,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "9825b71c11b2439c873d038969042ac1",
+      "final_sql": "SELECT DISTINCT p.nm FROM prod p JOIN prod_cst_hist h ON p.prdc_id = h.ref1 WHERE p.stnd_cst - h.stnd_cst > 80",
+      "sql_history": [
+        "SELECT DISTINCT p.nm FROM prod p JOIN prod_cst_hist h ON p.prdc_id = h.ref1 WHERE p.stnd_cst - h.stnd_cst > 80"
+      ],
+      "agent_text": "查询返回了 27 个产品，这些产品的当前标准成本比历史标准成本高出 $80 以上。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 48765,
+        "output": 2179,
+        "cache_read": 69824,
+        "cache_write": 0,
+        "reasoning": 1972,
+        "total": 120768
+      },
+      "cost_usd": 0.083992,
+      "elapsed_seconds": 50.37,
+      "agent_duration_ms": 42647,
+      "extra_columns": []
+    },
+    {
+      "question_id": 20,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "c46119ff40a64316850bcd1dab76cd76",
+      "final_sql": "SELECT vnd.nm AS vendor_name, prod_vnd.stnd_prc AS standard_price FROM prod JOIN prod_vnd ON prod_vnd.ref3 = prod.prdc_id JOIN vnd ON vnd.ref1 = prod_vnd.ref2 WHERE prod.nm = 'Hex Nut 5'",
+      "sql_history": [
+        "SELECT nm FROM prod WHERE nm LIKE '%Hex Nut 5%'",
+        "SELECT vnd.nm AS vendor_name, prod_vnd.stnd_prc AS standard_price FROM prod JOIN prod_vnd ON prod_vnd.ref3 = prod.prdc_id JOIN vnd ON vnd.ref1 = prod_vnd.ref2 WHERE prod.nm = 'Hex Nut 5'"
+      ],
+      "agent_text": "产品 **Hex Nut 5** 的各供应商售价（StandardPrice）如下：\n\n| 供应商 | 标准价格 |\n|---|---|\n| Cruger Bike Company | 41.28 |\n| Norstan Bike Hut | 41.21 |\n| Mountain Works | 41.21 |\n\n共 3 家供应商，标准价格在 41.21–41.28 之间。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 48785,
+        "output": 2485,
+        "cache_read": 116096,
+        "cache_write": 0,
+        "reasoning": 2222,
+        "total": 167366
+      },
+      "cost_usd": 0.096345,
+      "elapsed_seconds": 63.29,
+      "agent_duration_ms": 55705,
+      "extra_columns": [
+        "vendor_name"
+      ]
+    },
+    {
+      "question_id": 21,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "8d86f831e3024f02a0393fbf4e66f27b",
+      "final_sql": "SELECT COUNT(*) FROM ( SELECT p.prdc_id FROM prod p JOIN prod_rvw r ON r.ref1 = p.prdc_id WHERE p.fnsh_gds_flg = 1 GROUP BY p.prdc_id HAVING COUNT(*) > 10 ) t",
+      "sql_history": [
+        "SELECT COUNT(*) FROM ( SELECT p.prdc_id FROM prod p JOIN prod_rvw r ON r.ref1 = p.prdc_id WHERE p.fnsh_gds_flg = 1 GROUP BY p.prdc_id HAVING COUNT(*) > 10 ) t"
+      ],
+      "agent_text": "结果为 **0**。\n\n没有任何产品同时满足「可售（FinishedGoodsFlag=1）」且「评论数超过 10 条」这两个条件。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 24113,
+        "output": 1664,
+        "cache_read": 92992,
+        "cache_write": 0,
+        "reasoning": 1419,
+        "total": 118769
+      },
+      "cost_usd": 0.05791,
+      "elapsed_seconds": 38.41,
+      "agent_duration_ms": 30941,
+      "extra_columns": []
+    },
+    {
+      "question_id": 22,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "2b25c7d1b7a2410eb0986e860c4f7c09",
+      "final_sql": "SELECT p.nm FROM prod p JOIN prod_rvw r ON p.prdc_id = r.ref1 WHERE r.rtng = (SELECT MIN(rtng) FROM prod_rvw)",
+      "sql_history": [
+        "SELECT p.nm FROM prod p JOIN prod_rvw r ON p.prdc_id = r.ref1 WHERE r.rtng = (SELECT MIN(rtng) FROM prod_rvw)"
+      ],
+      "agent_text": "最低评分（2 分）对应的产品是 **HL Mountain Pedal**。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 43760,
+        "output": 357,
+        "cache_read": 72640,
+        "cache_write": 0,
+        "reasoning": 224,
+        "total": 116757
+      },
+      "cost_usd": 0.071374,
+      "elapsed_seconds": 20.62,
+      "agent_duration_ms": 13094,
+      "extra_columns": []
+    },
+    {
+      "question_id": 23,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "f78bb01aa7714c3c92fc98fd7c30c5b6",
+      "final_sql": "SELECT DISTINCT p.nm FROM prod p JOIN prod_rvw r ON r.ref1 = p.prdc_id WHERE r.rtng = 4",
+      "sql_history": [
+        "SELECT DISTINCT p.nm FROM prod p JOIN prod_rvw r ON r.ref1 = p.prdc_id WHERE r.rtng = 4"
+      ],
+      "agent_text": "产品名：**HL Mountain Pedal**",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 26590,
+        "output": 1384,
+        "cache_read": 90816,
+        "cache_write": 0,
+        "reasoning": 1209,
+        "total": 118790
+      },
+      "cost_usd": 0.05924,
+      "elapsed_seconds": 33.16,
+      "agent_duration_ms": 25688,
+      "extra_columns": []
+    },
+    {
+      "question_id": 24,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "74ba340bfa5741e5a41de9f2733a3bf1",
+      "final_sql": "SELECT p.prdc_id FROM prod p LEFT JOIN wo w ON p.prdc_id = w.ref2 WHERE w.wrk_ordr_id IS NULL",
+      "sql_history": [
+        "SELECT p.prdc_id FROM prod p LEFT JOIN wo w ON p.prdc_id = w.ref2 WHERE w.wrk_ordr_id IS NULL"
+      ],
+      "agent_text": "结果返回了 27 个没有工单的产品 ID：1, 2, 4, 317–323, 325–326, 332, 341–349, 351–352, 355–357。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 26385,
+        "output": 883,
+        "cache_read": 90688,
+        "cache_write": 0,
+        "reasoning": 630,
+        "total": 117956
+      },
+      "cost_usd": 0.056959,
+      "elapsed_seconds": 29.2,
+      "agent_duration_ms": 21338,
+      "extra_columns": []
+    },
+    {
+      "question_id": 25,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "81e38368962441db946d66fbfcdefd9a",
+      "final_sql": "SELECT p.nm, pr.rtng FROM prod p LEFT JOIN prod_rvw pr ON pr.ref1 = p.prdc_id WHERE p.prdc_id = ( SELECT p2.prdc_id FROM prod p2 WHERE p2.dys_to_mnfc = (SELECT MIN(dys_to_mnfc) FROM prod) ORDER BY (p2.lst_prc - p2.stnd_cst) DESC, p2.nm LIMIT 1 )",
+      "sql_history": [
+        "SELECT p.nm, pr.rtng FROM prod p LEFT JOIN prod_rvw pr ON pr.ref1 = p.prdc_id WHERE p.prdc_id = ( SELECT p2.prdc_id FROM prod p2 WHERE p2.dys_to_mnfc = (SELECT MIN(dys_to_mnfc) FROM prod) ORDER BY (p2.lst_prc - p2.stnd_cst) DESC, p2.nm LIMIT 1 )"
+      ],
+      "agent_text": "**All-Purpose Bike Stand** — 在制造天数最短的产品中利润最高。该产品没有任何评分（NULL）。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 28601,
+        "output": 3375,
+        "cache_read": 90880,
+        "cache_write": 0,
+        "reasoning": 3033,
+        "total": 122856
+      },
+      "cost_usd": 0.069632,
+      "elapsed_seconds": 55.32,
+      "agent_duration_ms": 47957,
+      "extra_columns": []
+    },
+    {
+      "question_id": 26,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "3ff6837c309f4d1580a9f23f8176c1c6",
+      "final_sql": "SELECT COUNT(DISTINCT e.ref1) AS cnt FROM prsn p JOIN emp e ON e.ref1 = p.ref1 JOIN emp_dept_hist h ON h.ref3 = e.ref1 JOIN dept d ON d.dprt_id = h.ref2 WHERE p.eml_prmt = 0 AND d.nm = 'Engineering'",
+      "sql_history": [
+        "SELECT COUNT(DISTINCT e.ref1) AS cnt FROM prsn p JOIN emp e ON e.ref1 = p.ref1 JOIN emp_dept_hist h ON h.ref3 = e.ref1 JOIN dept d ON d.dprt_id = h.ref2 WHERE p.eml_prmt = 0 AND d.nm = 'Engineering'"
+      ],
+      "agent_text": "**4 人。**\n\n在 `prsn.eml_prmt = 0`（不接收促销邮件）的员工中，有 **4 名** 员工在 `emp_dept_hist` 中存在归属于 Engineering 部门的记录（含现任与历史，不限定 `end_dt`）。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 53459,
+        "output": 3643,
+        "cache_read": 115584,
+        "cache_write": 0,
+        "reasoning": 3402,
+        "total": 172686
+      },
+      "cost_usd": 0.106463,
+      "elapsed_seconds": 57.96,
+      "agent_duration_ms": 50323,
+      "extra_columns": []
+    },
+    {
+      "question_id": 27,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "263ef145307c4e64894647d70a9b2ef6",
+      "final_sql": "WITH tech_rates AS ( SELECT e.ref1, p.rt FROM emp e JOIN emp_pay_hist p ON e.ref1 = p.ref1 WHERE e.jb_ttl LIKE 'Production Technician%' AND p.rt_chng_dt = ( SELECT MAX(p2.rt_chng_dt) FROM emp_pay_hist p2 WHERE p2.ref1 = e.ref1 ) ) SELECT COUNT(*) AS below_avg_count FROM tech_rates WHERE rt < (SELECT AVG(rt) FROM tech_rates)",
+      "sql_history": [
+        "SELECT DISTINCT jb_ttl FROM emp WHERE jb_ttl LIKE '%roduction%echnician%'",
+        "WITH tech_rates AS ( SELECT e.ref1, p.rt FROM emp e JOIN emp_pay_hist p ON e.ref1 = p.ref1 WHERE e.jb_ttl LIKE 'Production Technician%' AND p.rt_chng_dt = ( SELECT MAX(p2.rt_chng_dt) FROM emp_pay_hist p2 WHERE p2.ref1 = e.ref1 ) ) SELECT COUNT(*) AS below_avg_count FROM tech_rates WHERE rt < (SELECT AVG(rt) FROM tech_rates)"
+      ],
+      "agent_text": "**66** 名生产技术员的时薪低于所有生产技术员的平均时薪。\n\nSQL 逻辑：\n- `emp` 表筛选 `jb_ttl LIKE 'Production Technician%'`（覆盖 WC10~WC60 等所有变体）\n- `emp_pay_hist` 每人取最新一条（`rt_chng_dt = 该员工内 MAX`），避免历史行重复加权\n- 对最新时薪求 AVG，再统计 `rt < AVG(rt)` 的人数",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 25831,
+        "output": 1477,
+        "cache_read": 188160,
+        "cache_write": 0,
+        "reasoning": 1048,
+        "total": 215468
+      },
+      "cost_usd": 0.082064,
+      "elapsed_seconds": 40.94,
+      "agent_duration_ms": 33583,
+      "extra_columns": []
+    },
+    {
+      "question_id": 28,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "89a54887c34e47a9a27b631e9f9bbeb9",
+      "final_sql": "SELECT COUNT(DISTINCT e.ref1) AS store_contact_count FROM emp_dept_hist edh JOIN dept d ON edh.ref2 = d.dprt_id JOIN emp e ON edh.ref3 = e.ref1 JOIN prsn p ON e.ref1 = p.ref1 WHERE d.grp_nm = 'Manufacturing' AND YEAR(edh.strt_dt) < 2007 AND YEAR(edh.end_dt) > 2007 AND p.prsn_typ = 'SC'",
+      "sql_history": [
+        "SELECT COUNT(DISTINCT e.ref1) AS store_contact_count FROM emp_dept_hist edh JOIN dept d ON edh.ref2 = d.dprt_id JOIN emp e ON edh.ref3 = e.ref1 JOIN prsn p ON e.ref1 = p.ref1 WHERE d.grp_nm = 'Manufacturing' AND YEAR(edh.strt_dt) < 2007 AND YEAR(edh.end_dt) > 2007 AND p.prsn_typ = 'SC'"
+      ],
+      "agent_text": "**0**\n\nManufacturing 组在 2007 年的员工中，没有任何人是 store contact（PersonType = 'SC'）。这在逻辑上是合理的——员工的 PersonType 通常是 'EM'，而 'SC'（门店联系人）是独立的人员类型，两者不重叠。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 26326,
+        "output": 2947,
+        "cache_read": 140864,
+        "cache_write": 0,
+        "reasoning": 2680,
+        "total": 170137
+      },
+      "cost_usd": 0.077187,
+      "elapsed_seconds": 52.72,
+      "agent_duration_ms": 45038,
+      "extra_columns": []
+    },
+    {
+      "question_id": 29,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "bb7c70600afa4311ad92cdd31e6733ba",
+      "final_sql": "SELECT MAX(latest_rate.rt) - AVG(latest_rate.rt) AS difference FROM ( SELECT eph.ref1, eph.rt FROM emp_pay_hist eph WHERE eph.rt_chng_dt = ( SELECT MAX(eph2.rt_chng_dt) FROM emp_pay_hist eph2 WHERE eph2.ref1 = eph.ref1 ) ) AS latest_rate JOIN emp ON emp.ref1 = latest_rate.ref1 JOIN prsn ON prsn.ref1 = emp.ref1 WHERE emp.mrtl_stts = 'M' AND prsn.eml_prmt = 1",
+      "sql_history": [
+        "SELECT MAX(latest_rate.rt) - AVG(latest_rate.rt) AS difference FROM ( SELECT eph.ref1, eph.rt FROM emp_pay_hist eph WHERE eph.rt_chng_dt = ( SELECT MAX(eph2.rt_chng_dt) FROM emp_pay_hist eph2 WHERE eph2.ref1 = eph.ref1 ) ) AS latest_rate JOIN emp ON emp.ref1 = latest_rate.ref1 JOIN prsn ON prsn.ref1 = emp.ref1 WHERE emp.mrtl_stts = 'M' AND prsn.eml_prmt = 1"
+      ],
+      "agent_text": "已婚且愿接收邮件促销的员工中，最高时薪比平均时薪高出 **42.059028125**。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 28306,
+        "output": 5165,
+        "cache_read": 93184,
+        "cache_write": 0,
+        "reasoning": 4835,
+        "total": 126655
+      },
+      "cost_usd": 0.076991,
+      "elapsed_seconds": 67.69,
+      "agent_duration_ms": 59867,
+      "extra_columns": []
+    },
+    {
+      "question_id": 30,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "50b5c708b9f740a3b62e38815f70e4b3",
+      "final_sql": "SELECT s.strt_tm, s.end_tm FROM emp e JOIN emp_dept_hist h ON h.ref3 = e.ref1 AND h.end_dt IS NULL JOIN shft s ON s.shft_id = h.ref1 WHERE YEAR(e.brth_dt) < 1969 ORDER BY e.brth_dt ASC, e.ref1 ASC LIMIT 5, 1",
+      "sql_history": [
+        "SELECT s.strt_tm, s.end_tm FROM emp e JOIN emp_dept_hist h ON h.ref3 = e.ref1 AND h.end_dt IS NULL JOIN shft s ON s.shft_id = h.ref1 WHERE YEAR(e.brth_dt) < 1969 ORDER BY e.brth_dt ASC, e.ref1 ASC LIMIT 5, 1"
+      ],
+      "agent_text": "第 6 老员工的班次时段：\n\n| strt_tm | end_tm |\n|---------|--------|\n| 23:00:00 | 07:00:00 |\n\n即夜班（23:00–07:00）。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 24912,
+        "output": 1794,
+        "cache_read": 93056,
+        "cache_write": 0,
+        "reasoning": 1461,
+        "total": 119762
+      },
+      "cost_usd": 0.059404,
+      "elapsed_seconds": 36.84,
+      "agent_duration_ms": 29161,
+      "extra_columns": []
+    },
+    {
+      "question_id": 31,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "e0a52afed7394ef1a41a8d2a559b2c4e",
+      "final_sql": "WITH latest_pay AS ( SELECT e.ref1 AS emp_ref, ph.py_frqn FROM emp e JOIN emp_pay_hist ph ON ph.ref1 = e.ref1 WHERE e.mrtl_stts = 'M' AND ph.rt_chng_dt = (SELECT MAX(rt_chng_dt) FROM emp_pay_hist WHERE ref1 = e.ref1) ) SELECT COUNT(*) AS cnt FROM latest_pay lp JOIN prsn p ON p.ref1 = lp.emp_ref WHERE lp.py_frqn = (SELECT MAX(py_frqn) FROM latest_pay) AND p.nm_styl = 1",
+      "sql_history": [
+        "WITH latest_pay AS ( SELECT e.ref1 AS emp_ref, ph.py_frqn FROM emp e JOIN emp_pay_hist ph ON ph.ref1 = e.ref1 WHERE e.mrtl_stts = 'M' AND ph.rt_chng_dt = (SELECT MAX(rt_chng_dt) FROM emp_pay_hist WHERE ref1 = e.ref1) ) SELECT COUNT(*) AS cnt FROM latest_pay lp JOIN prsn p ON p.ref1 = lp.emp_ref WHERE lp.py_frqn = (SELECT MAX(py_frqn) FROM latest_pay) AND p.nm_styl = 1"
+      ],
+      "agent_text": "结果为 **0**。\n\n在已婚员工（`mrtl_stts = 'M'`）中，拥有最高发薪频率（`py_frqn`）的员工里，没有任何人使用东方姓名风格（`nm_styl = 1`）。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 53848,
+        "output": 7766,
+        "cache_read": 69824,
+        "cache_write": 0,
+        "reasoning": 7502,
+        "total": 131438
+      },
+      "cost_usd": 0.112439,
+      "elapsed_seconds": 125.21,
+      "agent_duration_ms": 117668,
+      "extra_columns": []
+    },
+    {
+      "question_id": 32,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "d8fcee5dafe14b94b633fba3d1ed472e",
+      "final_sql": "SELECT COUNT(*) AS cnt FROM ( SELECT pv.ref3 FROM prod_vnd pv JOIN prod p ON pv.ref3 = p.prdc_id WHERE p.prdc_ln = 'M' GROUP BY pv.ref3 HAVING COUNT(DISTINCT pv.ref2) > 2 ) AS sub",
+      "sql_history": [
+        "SELECT COUNT(*) AS cnt FROM ( SELECT pv.ref3 FROM prod_vnd pv JOIN prod p ON pv.ref3 = p.prdc_id WHERE p.prdc_ln = 'M' GROUP BY pv.ref3 HAVING COUNT(DISTINCT pv.ref2) > 2 ) AS sub",
+        "SELECT p.prdc_ln, COUNT(DISTINCT p.prdc_id) AS product_cnt, COUNT(DISTINCT pv.ref2) AS vendor_cnt, COUNT(*) AS pairs FROM prod p JOIN prod_vnd pv ON p.prdc_id = pv.ref3 GROUP BY p.prdc_ln",
+        "SELECT pv.ref3, COUNT(DISTINCT pv.ref2) AS vc FROM prod_vnd pv JOIN prod p ON pv.ref3 = p.prdc_id WHERE p.prdc_ln = 'M' GROUP BY pv.ref3 ORDER BY vc DESC",
+        "SELECT COUNT(*) AS cnt FROM ( SELECT pv.ref3 FROM prod_vnd pv JOIN prod p ON pv.ref3 = p.prdc_id WHERE p.prdc_ln = 'M' GROUP BY pv.ref3 HAVING COUNT(DISTINCT pv.ref2) > 2 ) AS sub"
+      ],
+      "agent_text": "**答案：0**\n\n数据源 `works_cycles` 中，山地产品线（`prdc_ln = 'M'`）共 22 个产品有供应商关联，但每个产品最多只有 2 个供应商。因此「超过 2 个供应商」（>2）的产品数为 **0**。",
+      "tool_calls": 6,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 6,
+      "tool_rounds": 5,
+      "tokens": {
+        "input": 62588,
+        "output": 7822,
+        "cache_read": 218240,
+        "cache_write": 0,
+        "reasoning": 7208,
+        "total": 288650
+      },
+      "cost_usd": 0.158771,
+      "elapsed_seconds": 135.91,
+      "agent_duration_ms": 128203,
+      "extra_columns": []
+    },
+    {
+      "question_id": 33,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "50fa5306ee094d848bd3ce550970e37e",
+      "final_sql": "SELECT COUNT(DISTINCT p.ref1) AS cnt FROM prsn p JOIN prsn_crd pc ON pc.ref1 = p.ref1 JOIN crd c ON c.crdt_crd_id = pc.ref2 WHERE p.prsn_typ = 'SC' AND c.crd_typ = 'Vista'",
+      "sql_history": [
+        "SELECT COUNT(DISTINCT p.ref1) AS cnt FROM prsn p JOIN prsn_crd pc ON pc.ref1 = p.ref1 JOIN crd c ON c.crdt_crd_id = pc.ref2 WHERE p.prsn_typ = 'SC' AND c.crd_typ = 'Vista'"
+      ],
+      "agent_text": "**163** 名门店联系人（PersonType = 'SC'）拥有 Vista 信用卡。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 24485,
+        "output": 1364,
+        "cache_read": 92992,
+        "cache_write": 0,
+        "reasoning": 1133,
+        "total": 118841
+      },
+      "cost_usd": 0.057156,
+      "elapsed_seconds": 38.56,
+      "agent_duration_ms": 30936,
+      "extra_columns": []
+    },
+    {
+      "question_id": 34,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "0359a97fa2a54b968ce613238f396edd",
+      "final_sql": "SELECT COUNT(*) AS good_credit_vendor_count FROM prod_vnd pv JOIN vnd v ON pv.ref2 = v.ref1 JOIN prod p ON pv.ref3 = p.prdc_id WHERE p.nm = 'Hex Nut 5' AND v.crdt_rtng BETWEEN 1 AND 3",
+      "sql_history": [
+        "SELECT prdc_id, nm FROM prod WHERE nm LIKE '%Hex Nut 5%'",
+        "SELECT COUNT(*) AS good_credit_vendor_count FROM prod_vnd pv JOIN vnd v ON pv.ref2 = v.ref1 JOIN prod p ON pv.ref3 = p.prdc_id WHERE p.nm = 'Hex Nut 5' AND v.crdt_rtng BETWEEN 1 AND 3"
+      ],
+      "agent_text": "**3** 个供应商。\n\n销售 \"Hex Nut 5\" 的供应商中，信用评级在 1~3（good credit rating）之间的有 3 家。",
+      "tool_calls": 6,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 27864,
+        "output": 3367,
+        "cache_read": 189376,
+        "cache_write": 0,
+        "reasoning": 3100,
+        "total": 220607
+      },
+      "cost_usd": 0.092355,
+      "elapsed_seconds": 67.76,
+      "agent_duration_ms": 60045,
+      "extra_columns": []
+    },
+    {
+      "question_id": 35,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "54356fbf1d1b4ab8835b30132bccf335",
+      "final_sql": "SELECT d.nm AS department_name, SUM(YEAR(CURRENT_TIMESTAMP) - YEAR(e.brth_dt)) / COUNT(e.ref1) AS avg_age FROM emp_dept_hist h JOIN emp e ON h.ref3 = e.ref1 JOIN dept d ON h.ref2 = d.dprt_id WHERE h.end_dt IS NULL GROUP BY d.dprt_id, d.nm ORDER BY avg_age ASC",
+      "sql_history": [
+        "SELECT d.nm AS department_name, SUM(YEAR(CURRENT_TIMESTAMP) - YEAR(e.brth_dt)) / COUNT(e.ref1) AS avg_age FROM emp_dept_hist h JOIN emp e ON h.ref3 = e.ref1 JOIN dept d ON h.ref2 = d.dprt_id WHERE h.end_dt IS NULL GROUP BY d.dprt_id, d.nm ORDER BY avg_age ASC"
+      ],
+      "agent_text": "结果已出。各部门员工平均年龄如上表，**Research and Development** 部门员工最年轻，平均年龄 42 岁。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 27271,
+        "output": 4027,
+        "cache_read": 92992,
+        "cache_write": 0,
+        "reasoning": 3716,
+        "total": 124290
+      },
+      "cost_usd": 0.071151,
+      "elapsed_seconds": 70.06,
+      "agent_duration_ms": 62343,
+      "extra_columns": []
+    },
+    {
+      "question_id": 36,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "978b2fa62b3840d2a09f2ec283537086",
+      "final_sql": "SELECT AVG(YEAR(CURRENT_TIMESTAMP) - YEAR(e.hr_dt)) AS avg_employment_length FROM emp e JOIN emp_dept_hist h ON h.ref3 = e.ref1 JOIN dept d ON d.dprt_id = h.ref2 WHERE d.nm = 'Research and Development' AND h.end_dt IS NULL",
+      "sql_history": [
+        "SELECT dprt_id, nm FROM dept WHERE nm LIKE 'Research%'",
+        "SELECT AVG(YEAR(CURRENT_TIMESTAMP) - YEAR(e.hr_dt)) AS avg_employment_length FROM emp e JOIN emp_dept_hist h ON h.ref3 = e.ref1 JOIN dept d ON d.dprt_id = h.ref2 WHERE d.nm = 'Research and Development' AND h.end_dt IS NULL"
+      ],
+      "agent_text": "平均工龄为 **17.25 年**。\n\n最终 SQL：\n\n```sql\nSELECT AVG(YEAR(CURRENT_TIMESTAMP) - YEAR(e.hr_dt)) AS avg_employment_length\nFROM emp e\nJOIN emp_dept_hist h ON h.ref3 = e.ref1\nJOIN dept d ON d.dprt_id = h.ref2\nWHERE d.nm = 'Research and Development'\n  AND h.end_dt IS NULL\n```\n\n逻辑：\n- `emp_dept_hist`（`ref3`→`emp.ref1`，`ref2`→`dept.dprt_id`）关联员工与部门，`end_dt IS NULL` 筛选当前在职记录\n- `dept.nm = 'Research and Development'` 定位 R&D 部门\n- 按外部知识公式 `AVG(当前年份 - YEAR(HireDate))` 计算平均工龄",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 49440,
+        "output": 1697,
+        "cache_read": 162304,
+        "cache_write": 0,
+        "reasoning": 1287,
+        "total": 213441
+      },
+      "cost_usd": 0.105069,
+      "elapsed_seconds": 39.19,
+      "agent_duration_ms": 31483,
+      "extra_columns": []
+    },
+    {
+      "question_id": 37,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "3794d6a7a90d420391a34fabf6e8719a",
+      "final_sql": "SELECT SUM(d.ordr_qty) / COUNT(h.ref1) AS avg_total_ordered_quantity FROM po_dtl d JOIN po_hdr h ON d.ref2 = h.prch_ordr_id JOIN shp_mth s ON h.ref1 = s.shp_mthd_id WHERE s.nm = 'CARGO TRANSPORT 5'",
+      "sql_history": [
+        "SELECT shp_mthd_id, nm, LENGTH(nm) AS len FROM shp_mth",
+        "SELECT SUM(d.ordr_qty) / COUNT(h.ref1) AS avg_total_ordered_quantity FROM po_dtl d JOIN po_hdr h ON d.ref2 = h.prch_ordr_id JOIN shp_mth s ON h.ref1 = s.shp_mthd_id WHERE s.nm = 'CARGO TRANSPORT 5'"
+      ],
+      "agent_text": "结果：**227.8096**\n\nSQL 逻辑：将采购订单明细 `po_dtl` 关联到订单头 `po_hdr`（`ref2 → prch_ordr_id`），再关联运输方式 `shp_mth`（`ref1 → shp_mthd_id`），筛选 `nm = 'CARGO TRANSPORT 5'`，按外部知识给定的加权平均公式 `SUM(ordr_qty) / COUNT(ShipMethodID)` 计算。",
+      "tool_calls": 5,
+      "pass": false,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 49961,
+        "output": 3097,
+        "cache_read": 164480,
+        "cache_write": 0,
+        "reasoning": 2725,
+        "total": 217538
+      },
+      "cost_usd": 0.111816,
+      "elapsed_seconds": 77.61,
+      "agent_duration_ms": 69746,
+      "extra_columns": []
+    },
+    {
+      "question_id": 38,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "44f78b0b11a944ee9e1f3d33d0a8c3d8",
+      "final_sql": "SELECT CASE WHEN COUNT(*) > 0 THEN 'Yes' ELSE 'No' END AS has_been_on_sale FROM prod p JOIN spcl_prod sp ON sp.ref1 = p.prdc_id WHERE p.nm = 'Chainring Bolts'",
+      "sql_history": [
+        "SELECT CASE WHEN COUNT(*) > 0 THEN 'Yes' ELSE 'No' END AS has_been_on_sale FROM prod p JOIN spcl_prod sp ON sp.ref1 = p.prdc_id WHERE p.nm = 'Chainring Bolts'"
+      ],
+      "agent_text": "**No** — 产品 \"Chainring Bolts\" 没有任何促销记录（`spcl_offr` / `spcl_prod` 中无关联），即未曾参与过促销销售。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 24262,
+        "output": 1273,
+        "cache_read": 92992,
+        "cache_write": 0,
+        "reasoning": 1099,
+        "total": 118527
+      },
+      "cost_usd": 0.056524,
+      "elapsed_seconds": 31.84,
+      "agent_duration_ms": 24347,
+      "extra_columns": []
+    },
+    {
+      "question_id": 39,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "b8f23b0c6782435d929ba4f4633f56bb",
+      "final_sql": "SELECT COUNT(DISTINCT h.ref2) AS department_count FROM prsn p JOIN emp_dept_hist h ON h.ref3 = p.ref1 WHERE p.frst_nm = 'Sheela' AND p.lst_nm = 'Word' AND h.strt_dt <= '2012-12-31' AND (h.end_dt IS NULL OR h.end_dt >= '2011-01-01')",
+      "sql_history": [
+        "SELECT COUNT(DISTINCT h.ref2) AS department_count FROM prsn p JOIN emp_dept_hist h ON h.ref3 = p.ref1 WHERE p.frst_nm = 'Sheela' AND p.lst_nm = 'Word' AND h.strt_dt <= '2012-12-31' AND (h.end_dt IS NULL OR h.end_dt >= '2011-01-01')"
+      ],
+      "agent_text": "**3** 个部门。\n\nSheela Word 在 2011/1/1 至 2012/12/31 期间，其部门任职历史中与之重叠的记录涉及 3 个不同的部门。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 49865,
+        "output": 3440,
+        "cache_read": 69696,
+        "cache_write": 0,
+        "reasoning": 3078,
+        "total": 123001
+      },
+      "cost_usd": 0.090325,
+      "elapsed_seconds": 65.61,
+      "agent_duration_ms": 57911,
+      "extra_columns": []
+    },
+    {
+      "question_id": 40,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "7719bf42baab4bbf99eb5dff88bf9513",
+      "final_sql": "SELECT COUNT(DISTINCT h.ref2) AS department_count FROM prsn p JOIN emp_dept_hist h ON h.ref3 = p.ref1 WHERE p.frst_nm = 'David' AND p.lst_nm = 'Bradley'",
+      "sql_history": [
+        "SELECT COUNT(DISTINCT h.ref2) AS department_count FROM prsn p JOIN emp_dept_hist h ON h.ref3 = p.ref1 WHERE p.frst_nm = 'David' AND p.lst_nm = 'Bradley'"
+      ],
+      "agent_text": "David Bradley 待过 **2** 个部门。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 25672,
+        "output": 2652,
+        "cache_read": 92864,
+        "cache_write": 0,
+        "reasoning": 2452,
+        "total": 121188
+      },
+      "cost_usd": 0.063702,
+      "elapsed_seconds": 52.44,
+      "agent_duration_ms": 44567,
+      "extra_columns": []
+    },
+    {
+      "question_id": 41,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "101d9e6e5b484f7a8dcd46813de303d6",
+      "final_sql": "SELECT COUNT(DISTINCT h.ref3) AS emp_count FROM emp_dept_hist h JOIN dept d ON h.ref2 = d.dprt_id JOIN shft s ON h.ref1 = s.shft_id WHERE d.nm = 'Information Services' AND s.nm = 'Evening' AND h.end_dt IS NULL",
+      "sql_history": [
+        "SELECT dprt_id, nm, grp_nm FROM dept",
+        "SELECT COUNT(DISTINCT h.ref3) AS emp_count FROM emp_dept_hist h JOIN dept d ON h.ref2 = d.dprt_id JOIN shft s ON h.ref1 = s.shft_id WHERE d.nm = 'Information Services' AND s.nm = 'Evening' AND h.end_dt IS NULL"
+      ],
+      "agent_text": "Information Services 部门当前上晚班（Evening）的员工有 **1 人**。",
+      "tool_calls": 6,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 49617,
+        "output": 1008,
+        "cache_read": 161792,
+        "cache_write": 0,
+        "reasoning": 755,
+        "total": 212417
+      },
+      "cost_usd": 0.102402,
+      "elapsed_seconds": 34.96,
+      "agent_duration_ms": 27540,
+      "extra_columns": []
+    },
+    {
+      "question_id": 42,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "33900580c6124275a5623539aae7324f",
+      "final_sql": "SELECT COUNT(DISTINCT p.prdc_id) AS cnt FROM prod p JOIN prod_vnd pv ON pv.ref3 = p.prdc_id JOIN vnd v ON v.ref1 = pv.ref2 WHERE p.clss = 'H' AND v.prfr_vndr_stts = 1",
+      "sql_history": [
+        "SELECT COUNT(DISTINCT p.prdc_id) AS cnt FROM prod p JOIN prod_vnd pv ON pv.ref3 = p.prdc_id JOIN vnd v ON v.ref1 = pv.ref2 WHERE p.clss = 'H' AND v.prfr_vndr_stts = 1"
+      ],
+      "agent_text": "**7** 个高等级产品由首选供应商售卖。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 50817,
+        "output": 3990,
+        "cache_read": 118784,
+        "cache_write": 0,
+        "reasoning": 3712,
+        "total": 173591
+      },
+      "cost_usd": 0.105449,
+      "elapsed_seconds": 68.62,
+      "agent_duration_ms": 60833,
+      "extra_columns": []
+    },
+    {
+      "question_id": 43,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "f2816c8c51784c35a46c6cd680c84e2c",
+      "final_sql": "SELECT COUNT(DISTINCT h.ref3) AS people_count FROM emp_dept_hist h JOIN dept d ON h.ref2 = d.dprt_id WHERE d.nm = 'Engineering' AND h.strt_dt <= '2009-12-31' AND (h.end_dt IS NULL OR h.end_dt >= '2009-01-01')",
+      "sql_history": [
+        "SELECT COUNT(DISTINCT h.ref3) AS people_count FROM emp_dept_hist h JOIN dept d ON h.ref2 = d.dprt_id WHERE d.nm = 'Engineering' AND h.strt_dt <= '2009-12-31' AND (h.end_dt IS NULL OR h.end_dt >= '2009-01-01')"
+      ],
+      "agent_text": "Engineering Department 在 2009 年共有 **5 人**。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 48039,
+        "output": 746,
+        "cache_read": 115520,
+        "cache_write": 0,
+        "reasoning": 555,
+        "total": 164305
+      },
+      "cost_usd": 0.088356,
+      "elapsed_seconds": 32.25,
+      "agent_duration_ms": 24751,
+      "extra_columns": []
+    },
+    {
+      "question_id": 44,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "04579e6df21a46858355764daf6db3c1",
+      "final_sql": "SELECT (MAX(p.lst_prc) - MIN(p.lst_prc)) / MIN(p.lst_prc) * 100 AS pct_more_expensive FROM prod p JOIN prod_sub ps ON p.ref2 = ps.prdc_sbct_id JOIN prod_cat pc ON ps.ref1 = pc.prdc_ctgr_id WHERE pc.nm = 'Clothing'",
+      "sql_history": [
+        "SELECT (MAX(p.lst_prc) - MIN(p.lst_prc)) / MIN(p.lst_prc) * 100 AS pct_more_expensive FROM prod p JOIN prod_sub ps ON p.ref2 = ps.prdc_sbct_id JOIN prod_cat pc ON ps.ref1 = pc.prdc_ctgr_id WHERE pc.nm = 'Clothing'"
+      ],
+      "agent_text": "Clothing 类目中，最高售价产品比最低售价产品贵 **901.00%**。\n\n计算方式：`((MAX(lst_prc) - MIN(lst_prc)) / MIN(lst_prc)) * 100`",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 26606,
+        "output": 1161,
+        "cache_read": 137472,
+        "cache_write": 0,
+        "reasoning": 913,
+        "total": 165239
+      },
+      "cost_usd": 0.069564,
+      "elapsed_seconds": 30.37,
+      "agent_duration_ms": 22732,
+      "extra_columns": []
+    },
+    {
+      "question_id": 45,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "b803ea91dfc04e45a5cd8c82b8a40d76",
+      "final_sql": "SELECT COUNT(DISTINCT s.ref2) FROM so_dtl s INNER JOIN spcl_prod sp ON s.ref2 = sp.ref1 WHERE s.ordr_qty > 2",
+      "sql_history": [
+        "SELECT COUNT(DISTINCT ref2) FROM so_dtl WHERE unt_prc_dscn > 0 AND ordr_qty > 2",
+        "SELECT COUNT(*) AS total_rows, SUM(CASE WHEN unt_prc_dscn > 0 THEN 1 ELSE 0 END) AS has_discount, SUM(CASE WHEN unt_prc_dscn = 0 THEN 1 ELSE 0 END) AS no_discount FROM so_dtl",
+        "SELECT COUNT(*) AS total, SUM(CASE WHEN ref1 IS NOT NULL THEN 1 ELSE 0 END) AS has_offer, SUM(CASE WHEN ref1 IS NULL THEN 1 ELSE 0 END) AS no_offer FROM so_dtl",
+        "SELECT DISTINCT ref1 FROM so_dtl ORDER BY ref1 LIMIT 20",
+        "SELECT COUNT(DISTINCT ref1) AS products_with_offer FROM spcl_prod",
+        "SELECT COUNT(*) AS total_products FROM prod",
+        "SELECT COUNT(DISTINCT s.ref2) FROM so_dtl s INNER JOIN spcl_prod sp ON s.ref2 = sp.ref1 WHERE s.ordr_qty > 2"
+      ],
+      "agent_text": "**249**\n\n最终答案 SQL：\n```sql\nSELECT COUNT(DISTINCT s.ref2)\nFROM so_dtl s\nINNER JOIN spcl_prod sp ON s.ref2 = sp.ref1\nWHERE s.ordr_qty > 2\n```\n\n逻辑：\n- `spcl_prod` 是促销-产品关联表，`ref1`=产品编号——`INNER JOIN` 排除了没有任何 offer 的产品\n- `so_dtl.ordr_qty > 2` 筛选单笔订单销售量大于 2 的记录\n- `COUNT(DISTINCT s.ref2)` 统计不同产品数",
+      "tool_calls": 10,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 10,
+      "tool_rounds": 9,
+      "tokens": {
+        "input": 57434,
+        "output": 5835,
+        "cache_read": 418624,
+        "cache_write": 0,
+        "reasoning": 4984,
+        "total": 481893
+      },
+      "cost_usd": 0.192731,
+      "elapsed_seconds": 122.17,
+      "agent_duration_ms": 114463,
+      "extra_columns": []
+    },
+    {
+      "question_id": 46,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "5b9c6b9d7dbe41a0b229640d103d8b72",
+      "final_sql": "SELECT c.exp_yr FROM prsn p JOIN prsn_crd pc ON pc.ref1 = p.ref1 JOIN crd c ON c.crdt_crd_id = pc.ref2 WHERE p.frst_nm = 'David' AND p.lst_nm = 'Bradley'",
+      "sql_history": [
+        "SELECT c.exp_yr FROM prsn p JOIN prsn_crd pc ON pc.ref1 = p.ref1 JOIN crd c ON c.crdt_crd_id = pc.ref2 WHERE p.frst_nm = 'David' AND p.lst_nm = 'Bradley'"
+      ],
+      "agent_text": "David Bradley 的信用卡将在 **2006** 年到期。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 48002,
+        "output": 1766,
+        "cache_read": 69760,
+        "cache_write": 0,
+        "reasoning": 1614,
+        "total": 119528
+      },
+      "cost_usd": 0.081409,
+      "elapsed_seconds": 54.47,
+      "agent_duration_ms": 46545,
+      "extra_columns": []
+    },
+    {
+      "question_id": 47,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "14f36b67a71a4d9a9309a2ba679bbeb6",
+      "final_sql": "SELECT p.nm FROM prod p JOIN prod_vnd pv ON pv.ref3 = p.prdc_id JOIN vnd v ON v.ref1 = pv.ref2 WHERE v.nm = 'Australia Bike Retailer' ORDER BY p.prdc_id",
+      "sql_history": [
+        "SELECT nm FROM vnd WHERE nm LIKE 'Australia%'",
+        "SELECT p.nm FROM prod p JOIN prod_vnd pv ON pv.ref3 = p.prdc_id JOIN vnd v ON v.ref1 = pv.ref2 WHERE v.nm = 'Australia Bike Retailer' ORDER BY p.prdc_id"
+      ],
+      "agent_text": "Australia Bike Retailer 供应了 16 款产品，全部为 Thin-Jam Lock Nut 系列（编号 1–16），按产品 ID 排序如上。",
+      "tool_calls": 6,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 62506,
+        "output": 5813,
+        "cache_read": 163840,
+        "cache_write": 0,
+        "reasoning": 5553,
+        "total": 232159
+      },
+      "cost_usd": 0.137581,
+      "elapsed_seconds": 121.24,
+      "agent_duration_ms": 113647,
+      "extra_columns": []
+    },
+    {
+      "question_id": 48,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "7f31eb1170404a0b83986cc8ef3c46ae",
+      "final_sql": "SELECT DISTINCT p.nm FROM prod p JOIN prod_vnd pv ON pv.ref3 = p.prdc_id WHERE pv.mn_ordr_qty = 1000 AND p.stnd_cst > 17",
+      "sql_history": [
+        "SELECT DISTINCT p.nm FROM prod p JOIN prod_vnd pv ON pv.ref3 = p.prdc_id WHERE pv.mn_ordr_qty = 1000 AND p.stnd_cst > 17"
+      ],
+      "agent_text": "返回了 6 个产品，满足 MOQ = 1000 且标准成本 > 17：\n\n- Classic Vest, S\n- Classic Vest, M\n- Classic Vest, L\n- Women's Mountain Shorts, S\n- Women's Mountain Shorts, M\n- Women's Mountain Shorts, L",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 26755,
+        "output": 1489,
+        "cache_read": 90944,
+        "cache_write": 0,
+        "reasoning": 1300,
+        "total": 119188
+      },
+      "cost_usd": 0.059889,
+      "elapsed_seconds": 39.38,
+      "agent_duration_ms": 31570,
+      "extra_columns": []
+    },
+    {
+      "question_id": 49,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "212dca8de0914f3f84c817560bf35814",
+      "final_sql": "SELECT eml.eml_addr FROM emp JOIN eml ON emp.ref1 = eml.ref1 WHERE emp.gndr = 'F' AND emp.mrtl_stts = 'S'",
+      "sql_history": [
+        "SELECT eml.eml_addr FROM emp JOIN eml ON emp.ref1 = eml.ref1 WHERE emp.gndr = 'F' AND emp.mrtl_stts = 'S'"
+      ],
+      "agent_text": "查询完成。返回了 27 条女性单身员工的邮箱地址，通过 `emp` 表筛选 `gndr = 'F'` 且 `mrtl_stts = 'S'`，再 JOIN `eml` 表获取邮箱。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 24832,
+        "output": 1360,
+        "cache_read": 92864,
+        "cache_write": 0,
+        "reasoning": 1137,
+        "total": 119056
+      },
+      "cost_usd": 0.057526,
+      "elapsed_seconds": 38.78,
+      "agent_duration_ms": 30768,
+      "extra_columns": []
+    },
+    {
+      "question_id": 50,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "09dc2e2a96fe42d1997386d582424d1b",
+      "final_sql": "SELECT DISTINCT p.frst_nm, p.lst_nm, e.hr_dt FROM emp e JOIN emp_dept_hist h ON e.ref1 = h.ref3 JOIN prsn p ON e.ref1 = p.ref1 WHERE h.end_dt IS NOT NULL",
+      "sql_history": [
+        "SELECT DISTINCT p.frst_nm, p.lst_nm, e.hr_dt FROM emp e JOIN emp_dept_hist h ON e.ref1 = h.ref3 JOIN prsn p ON e.ref1 = p.ref1 WHERE h.end_dt IS NOT NULL"
+      ],
+      "agent_text": "已离职员工及其入职日期如下：\n\n| 名 | 姓 | 入职日期 |\n|---|---|---|\n| Rob | Walters | 2007-12-05 |\n| David | Bradley | 2007-12-20 |\n| William | Vong | 2009-01-07 |\n| Laura | Norman | 2009-01-31 |\n| Sheela | Word | 2011-02-25 |\n\n**SQL 逻辑：** `emp_dept_hist` 表中 `end_dt IS NOT NULL` 表示员工已离职（据 BIRD 官方 evidence），通过 `ref3` 关联 `emp` 表拿到入职日期 `hr_dt`，再通过 `ref1` 关联 `prsn` 表取姓名，用 `DISTINCT` 去重避免一人多部门历史记录导致的重复行。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 50254,
+        "output": 3935,
+        "cache_read": 69696,
+        "cache_write": 0,
+        "reasoning": 3622,
+        "total": 123885
+      },
+      "cost_usd": 0.092772,
+      "elapsed_seconds": 80.08,
+      "agent_duration_ms": 72162,
+      "extra_columns": []
+    },
+    {
+      "question_id": 51,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "7d98a20530014358a84ec3e1ab545354",
+      "final_sql": "SELECT st.nm FROM sls_tax st JOIN st_prv sp ON st.ref1 = sp.stt_prvn_id JOIN sls_terr t ON sp.ref1 = t.trrt_id WHERE t.trrt_id = ( SELECT trrt_id FROM sls_terr WHERE sls_lst_yr > 0 ORDER BY (sls_ytd - sls_lst_yr) / sls_lst_yr DESC, trrt_id LIMIT 1 )",
+      "sql_history": [
+        "SELECT st.nm FROM sls_tax st JOIN st_prv sp ON st.ref1 = sp.stt_prvn_id JOIN sls_terr t ON sp.ref1 = t.trrt_id WHERE t.trrt_id = ( SELECT trrt_id FROM sls_terr WHERE sls_lst_yr > 0 ORDER BY (sls_ytd - sls_lst_yr) / sls_lst_yr DESC, trrt_id LIMIT 1 )"
+      ],
+      "agent_text": "**United Kingdom Output Tax**\n\n销售增长率最高的区域是英国（United Kingdom），其下省份对应的税率名称为 `United Kingdom Output Tax`。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 25925,
+        "output": 2849,
+        "cache_read": 93056,
+        "cache_write": 0,
+        "reasoning": 2514,
+        "total": 121830
+      },
+      "cost_usd": 0.064839,
+      "elapsed_seconds": 47.82,
+      "agent_duration_ms": 39493,
+      "extra_columns": []
+    },
+    {
+      "question_id": 52,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "1ad06592351141b18c2dd7bd6038254e",
+      "final_sql": "SELECT DISTINCT p.frst_nm, p.lst_nm FROM prsn_crd pc JOIN crd c ON pc.ref2 = c.crdt_crd_id JOIN prsn p ON pc.ref1 = p.ref1 WHERE c.crd_typ = 'Distinguish'",
+      "sql_history": [
+        "SELECT DISTINCT p.frst_nm, p.lst_nm FROM prsn_crd pc JOIN crd c ON pc.ref2 = c.crdt_crd_id JOIN prsn p ON pc.ref1 = p.ref1 WHERE c.crd_typ = 'Distinguish'"
+      ],
+      "agent_text": "返回了 27 位拥有 Distinguish 类型信用卡的人员，列为 `frst_nm`（名）和 `lst_nm`（姓）。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 27550,
+        "output": 1595,
+        "cache_read": 137280,
+        "cache_write": 0,
+        "reasoning": 1380,
+        "total": 166425
+      },
+      "cost_usd": 0.072387,
+      "elapsed_seconds": 36.47,
+      "agent_duration_ms": 28489,
+      "extra_columns": []
+    },
+    {
+      "question_id": 53,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "4b8e5016e48548c3886600587adf286f",
+      "final_sql": "SELECT p.nm AS product_name, v.nm AS vendor_name FROM prod p JOIN prod_vnd pv ON pv.ref3 = p.prdc_id JOIN vnd v ON v.ref1 = pv.ref2 WHERE YEAR(p.sll_strt_dt) = 2013",
+      "sql_history": [
+        "SELECT p.nm AS product_name, v.nm AS vendor_name FROM prod p JOIN prod_vnd pv ON pv.ref3 = p.prdc_id JOIN vnd v ON v.ref1 = pv.ref2 WHERE YEAR(p.sll_strt_dt) = 2013"
+      ],
+      "agent_text": "结果已返回。2013年开售的产品及其对应供应商如上表所示，共27条产品-供应商记录。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 27438,
+        "output": 1700,
+        "cache_read": 90752,
+        "cache_write": 0,
+        "reasoning": 1453,
+        "total": 119890
+      },
+      "cost_usd": 0.061506,
+      "elapsed_seconds": 38.69,
+      "agent_duration_ms": 30762,
+      "extra_columns": []
+    },
+    {
+      "question_id": 54,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "e9506241c635419eb89658ca16dfad34",
+      "final_sql": "SELECT p.frst_nm, p.lst_nm, YEAR(CURRENT_TIMESTAMP) - YEAR(e.brth_dt) AS age FROM emp_dept_hist h JOIN shft s ON h.ref1 = s.shft_id JOIN emp e ON h.ref3 = e.ref1 JOIN prsn p ON e.ref1 = p.ref1 WHERE s.nm = 'Night' AND h.end_dt IS NULL ORDER BY e.brth_dt ASC LIMIT 1",
+      "sql_history": [
+        "SELECT p.frst_nm, p.lst_nm, YEAR(CURRENT_TIMESTAMP) - YEAR(e.brth_dt) AS age FROM emp_dept_hist h JOIN shft s ON h.ref1 = s.shft_id JOIN emp e ON h.ref3 = e.ref1 JOIN prsn p ON e.ref1 = p.ref1 WHERE s.nm = 'Night' AND h.end_dt IS NULL ORDER BY e.brth_dt ASC LIMIT 1"
+      ],
+      "agent_text": "当前夜班（Night shift）中年龄最大的员工是 **Jo Berry**，**72 岁**。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 48759,
+        "output": 2276,
+        "cache_read": 116480,
+        "cache_write": 0,
+        "reasoning": 2063,
+        "total": 167515
+      },
+      "cost_usd": 0.09557,
+      "elapsed_seconds": 50.41,
+      "agent_duration_ms": 42533,
+      "extra_columns": []
+    },
+    {
+      "question_id": 55,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "b125c854881748e78e49f5182d1b6431",
+      "final_sql": "SELECT p.frst_nm, p.lst_nm, eph.rt FROM emp e JOIN emp_pay_hist eph ON eph.ref1 = e.ref1 JOIN prsn p ON e.ref1 = p.ref1 WHERE e.jb_ttl != 'Chief Executive Officer' AND eph.rt_chng_dt = ( SELECT MAX(eph2.rt_chng_dt) FROM emp_pay_hist eph2 WHERE eph2.ref1 = eph.ref1 ) ORDER BY eph.rt DESC, p.lst_nm LIMIT 1",
+      "sql_history": [
+        "SELECT p.frst_nm, p.lst_nm, eph.rt FROM emp e JOIN emp_pay_hist eph ON eph.ref1 = e.ref1 JOIN prsn p ON e.ref1 = p.ref1 WHERE e.jb_ttl != 'Chief Executive Officer' AND eph.rt_chng_dt = ( SELECT MAX(eph2.rt_chng_dt) FROM emp_pay_hist eph2 WHERE eph2.ref1 = eph.ref1 ) ORDER BY eph.rt DESC, p.lst_nm LIMIT 1"
+      ],
+      "agent_text": "除 CEO 外，时薪最高的员工是 **James Hamilton**，时薪 **84.1346**。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 24965,
+        "output": 1829,
+        "cache_read": 92928,
+        "cache_write": 0,
+        "reasoning": 1537,
+        "total": 119722
+      },
+      "cost_usd": 0.059577,
+      "elapsed_seconds": 36.44,
+      "agent_duration_ms": 28834,
+      "extra_columns": []
+    },
+    {
+      "question_id": 56,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "3e934b461e344e9cb56ee9f871620d60",
+      "final_sql": "WITH latest_rates AS ( SELECT ph.ref1 AS emp_id, ph.rt FROM emp_pay_hist ph JOIN emp e ON ph.ref1 = e.ref1 WHERE e.mrtl_stts = 'M' AND ph.rt_chng_dt = ( SELECT MAX(ph2.rt_chng_dt) FROM emp_pay_hist ph2 WHERE ph2.ref1 = ph.ref1 ) ) SELECT p.frst_nm, p.mddl_nm, p.lst_nm, e.brth_dt, e.gndr, e.mrtl_stts, e.jb_ttl, e.hr_dt, e.lgn_id, e.ntnl_id_nmbr, e.slrd_flg, e.sck_lv_hrs, e.vctn_hrs FROM emp e JOIN prsn p ON e.ref1 = p.ref1 JOIN latest_rates lr ON lr.emp_id = e.ref1 WHERE lr.rt = (SELECT MAX(rt) FROM latest_rates) ORDER BY p.frst_nm, p.lst_nm",
+      "sql_history": [
+        "WITH latest_rates AS ( SELECT ph.ref1 AS emp_id, ph.rt FROM emp_pay_hist ph JOIN emp e ON ph.ref1 = e.ref1 WHERE e.mrtl_stts = 'M' AND ph.rt_chng_dt = ( SELECT MAX(ph2.rt_chng_dt) FROM emp_pay_hist ph2 WHERE ph2.ref1 = ph.ref1 ) ) SELECT p.frst_nm, p.mddl_nm, p.lst_nm, e.brth_dt, e.gndr, e.mrtl_stts, e.jb_ttl, e.hr_dt, e.lgn_id, e.ntnl_id_nmbr, e.slrd_flg, e.sck_lv_hrs, e.vctn_hrs FROM emp e JOIN prsn p ON e.ref1 = p.ref1 JOIN latest_rates lr ON lr.emp_id = e.ref1 WHERE lr.rt = (SELECT MAX(rt) FROM latest_rates) ORDER BY p.frst_nm, p.lst_nm"
+      ],
+      "agent_text": "已婚员工中时薪最高的是 **Laura F Norman**，Chief Financial Officer，1976-01-06 出生，2009-01-31 入职，性别 F，身份证号 184188301，登录账号 `adventure-works\\laura1`，月薪制（slrd_flg=1），可用病假 20 小时，年假 0 小时。",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 50811,
+        "output": 4487,
+        "cache_read": 69824,
+        "cache_write": 0,
+        "reasoning": 4099,
+        "total": 125122
+      },
+      "cost_usd": 0.095679,
+      "elapsed_seconds": 66.42,
+      "agent_duration_ms": 58717,
+      "extra_columns": []
+    },
+    {
+      "question_id": 57,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "27245b4706614388b6ae5c4b864bd675",
+      "final_sql": "SELECT DISTINCT d.nm FROM emp_dept_hist h JOIN dept d ON h.ref2 = d.dprt_id JOIN prsn p ON h.ref3 = p.ref1 WHERE p.frst_nm = 'David' AND p.lst_nm = 'Bradley' AND p.prsn_typ = 'EM'",
+      "sql_history": [
+        "SELECT frst_nm, lst_nm, ref1 FROM prsn WHERE lst_nm LIKE '%Bradley%' AND frst_nm LIKE '%David%' LIMIT 5",
+        "SELECT p.frst_nm, p.lst_nm, p.ref1, p.prsn_typ FROM prsn p WHERE p.lst_nm = 'Bradley' AND p.frst_nm = 'David' AND p.prsn_typ = 'EM'",
+        "SELECT DISTINCT d.nm FROM emp_dept_hist h JOIN dept d ON h.ref2 = d.dprt_id JOIN prsn p ON h.ref3 = p.ref1 WHERE p.frst_nm = 'David' AND p.lst_nm = 'Bradley' AND p.prsn_typ = 'EM'"
+      ],
+      "agent_text": "David Bradley 曾经属于以下部门：\n\n- **Purchasing**（采购部）\n- **Marketing**（市场部）",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 27445,
+        "output": 1967,
+        "cache_read": 184960,
+        "cache_write": 0,
+        "reasoning": 1670,
+        "total": 214372
+      },
+      "cost_usd": 0.085192,
+      "elapsed_seconds": 43.59,
+      "agent_duration_ms": 35674,
+      "extra_columns": []
+    },
+    {
+      "question_id": 58,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "f8b78a47b34b436e989fe23c5dd8d534",
+      "final_sql": "SELECT DISTINCT p.frst_nm, p.lst_nm FROM prsn p JOIN prsn_crd pc ON pc.ref1 = p.ref1 JOIN crd c ON c.crdt_crd_id = pc.ref2 WHERE p.prsn_typ = 'SC' AND c.exp_yr = 2007",
+      "sql_history": [
+        "SELECT DISTINCT p.frst_nm, p.lst_nm FROM prsn p JOIN prsn_crd pc ON pc.ref1 = p.ref1 JOIN crd c ON c.crdt_crd_id = pc.ref2 WHERE p.prsn_typ = 'SC' AND c.exp_yr = 2007"
+      ],
+      "agent_text": "结果已出：27 名 store contact (PersonType='SC') 员工的信用卡在 2007 年到期，返回他们的名和姓两列。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 48225,
+        "output": 1621,
+        "cache_read": 69824,
+        "cache_write": 0,
+        "reasoning": 1306,
+        "total": 119670
+      },
+      "cost_usd": 0.081112,
+      "elapsed_seconds": 38.75,
+      "agent_duration_ms": 31089,
+      "extra_columns": []
+    },
+    {
+      "question_id": 59,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "5bfa82cfb429476095b0f76d90038e16",
+      "final_sql": "SELECT p.nm FROM spcl_prod sp JOIN prod p ON sp.ref1 = p.prdc_id JOIN spcl_offr so ON sp.ref2 = so.spcl_offr_id WHERE so.dscr = 'LL Road Frame Sale'",
+      "sql_history": [
+        "SELECT spcl_offr_id, dscr FROM spcl_offr WHERE dscr LIKE '%LL Road Frame%'",
+        "SELECT p.nm FROM spcl_prod sp JOIN prod p ON sp.ref1 = p.prdc_id JOIN spcl_offr so ON sp.ref2 = so.spcl_offr_id WHERE so.dscr = 'LL Road Frame Sale'"
+      ],
+      "agent_text": "结果如上，共 12 个产品，均为 LL Road Frame 的不同颜色/尺寸变体。",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 49971,
+        "output": 934,
+        "cache_read": 162240,
+        "cache_write": 0,
+        "reasoning": 712,
+        "total": 213145
+      },
+      "cost_usd": 0.102639,
+      "elapsed_seconds": 34.52,
+      "agent_duration_ms": 26369,
+      "extra_columns": []
+    },
+    {
+      "question_id": 60,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "e95c9327e80b48c483b53aa784c383b6",
+      "final_sql": "SELECT COUNT(*) AS product_count FROM prod p JOIN prod_sub ps ON p.ref2 = ps.prdc_sbct_id JOIN prod_cat pc ON ps.ref1 = pc.prdc_ctgr_id WHERE pc.nm = 'Clothing' AND p.mk_flg = 1 AND p.fnsh_gds_flg = 1",
+      "sql_history": [
+        "SELECT COUNT(*) AS product_count FROM prod p JOIN prod_sub ps ON p.ref2 = ps.prdc_sbct_id JOIN prod_cat pc ON ps.ref1 = pc.prdc_ctgr_id WHERE pc.nm = 'Clothing' AND p.mk_flg = 1 AND p.fnsh_gds_flg = 1"
+      ],
+      "agent_text": "**结果：0**\n\n在 Clothing 类别下，没有同时满足「自制（`mk_flg = 1`）」和「可售（`fnsh_gds_flg = 1`）」条件的产品。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 23985,
+        "output": 729,
+        "cache_read": 139264,
+        "cache_write": 0,
+        "reasoning": 490,
+        "total": 163978
+      },
+      "cost_usd": 0.065121,
+      "elapsed_seconds": 34.65,
+      "agent_duration_ms": 26562,
+      "extra_columns": []
+    },
+    {
+      "question_id": 61,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "e4c430d8b69c49eaa899308f6a900947",
+      "final_sql": "SELECT vnd.prch_wb_srvc_url FROM prod JOIN prod_vnd ON prod_vnd.ref3 = prod.prdc_id JOIN vnd ON vnd.ref1 = prod_vnd.ref2 WHERE prod.nm = 'Hex Nut 5'",
+      "sql_history": [
+        "SELECT nm FROM prod WHERE nm LIKE '%Hex Nut 5%'",
+        "SELECT vnd.prch_wb_srvc_url FROM prod JOIN prod_vnd ON prod_vnd.ref3 = prod.prdc_id JOIN vnd ON vnd.ref1 = prod_vnd.ref2 WHERE prod.nm = 'Hex Nut 5'"
+      ],
+      "agent_text": "查询结果如下：\n\n产品 **Hex Nut 5** 可从 3 个供应商处采购，但这 3 个供应商的 `prch_wb_srvc_url`（PurchasingWebServiceURL）均为 NULL——即这些供应商都没有设置网站采购链接。\n\n最终 SQL：\n\n```sql\nSELECT vnd.prch_wb_srvc_url\nFROM prod\nJOIN prod_vnd ON prod_vnd.ref3 = prod.prdc_id\nJOIN vnd ON vnd.ref1 = prod_vnd.ref2\nWHERE prod.nm = 'Hex Nut 5'\n```\n\n返回 3 行，`prch_wb_srvc_url` 全为 NULL。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 27205,
+        "output": 2977,
+        "cache_read": 137920,
+        "cache_write": 0,
+        "reasoning": 2669,
+        "total": 168102
+      },
+      "cost_usd": 0.077655,
+      "elapsed_seconds": 57.57,
+      "agent_duration_ms": 49250,
+      "extra_columns": []
+    },
+    {
+      "question_id": 62,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "602ed34adc154cebb11569334faed4d6",
+      "final_sql": "SELECT c.crd_nmbr FROM prsn p JOIN prsn_crd pc ON pc.ref1 = p.ref1 JOIN crd c ON c.crdt_crd_id = pc.ref2 WHERE LOWER(p.frst_nm) = 'david' AND LOWER(p.lst_nm) = 'bradley'",
+      "sql_history": [
+        "SELECT c.crd_nmbr FROM prsn p JOIN prsn_crd pc ON pc.ref1 = p.ref1 JOIN crd c ON c.crdt_crd_id = pc.ref2 WHERE LOWER(p.frst_nm) = 'david' AND LOWER(p.lst_nm) = 'bradley'"
+      ],
+      "agent_text": "David Bradley 的信用卡号为：**11119467874930**",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 48096,
+        "output": 1879,
+        "cache_read": 69760,
+        "cache_write": 0,
+        "reasoning": 1670,
+        "total": 119735
+      },
+      "cost_usd": 0.081974,
+      "elapsed_seconds": 39.88,
+      "agent_duration_ms": 31736,
+      "extra_columns": []
+    },
+    {
+      "question_id": 63,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "d11b31b47be64415aef0bcc374a5aeb7",
+      "final_sql": "SELECT p.lst_nm, e.jb_ttl FROM doc d JOIN emp e ON d.ref1 = e.ref1 JOIN prsn p ON e.ref1 = p.ref1 WHERE d.ttl = 'Crank Arm and Tire Maintenance'",
+      "sql_history": [
+        "SELECT ttl, ref1 FROM doc WHERE ttl LIKE '%Crank Arm%' OR ttl LIKE '%Tire Maintenance%'",
+        "SELECT p.lst_nm, e.jb_ttl FROM doc d JOIN emp e ON d.ref1 = e.ref1 JOIN prsn p ON e.ref1 = p.ref1 WHERE d.ttl = 'Crank Arm and Tire Maintenance'"
+      ],
+      "agent_text": "结果：\n\n| Last Name | Job Title |\n|-----------|-----------|\n| Chai | Document Control Assistant |\n\n文档 \"Crank Arm and Tire Maintenance\" 的 owner（BusinessEntityID = 219）对应的员工姓 **Chai**，职位是 **Document Control Assistant**。",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 48804,
+        "output": 1250,
+        "cache_read": 161984,
+        "cache_write": 0,
+        "reasoning": 993,
+        "total": 212038
+      },
+      "cost_usd": 0.102441,
+      "elapsed_seconds": 40.24,
+      "agent_duration_ms": 31745,
+      "extra_columns": []
+    },
+    {
+      "question_id": 64,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "f02e4e038acd4f2480c57787e9bd8337",
+      "final_sql": "SELECT v.nm FROM prod p JOIN prod_vnd pv ON p.prdc_id = pv.ref3 JOIN vnd v ON pv.ref2 = v.ref1 WHERE p.prdc_nmbr = 'WB-H098'",
+      "sql_history": [
+        "SELECT p.prdc_id, p.prdc_nmbr, pv.ref2 AS vnd_ref FROM prod p JOIN prod_vnd pv ON p.prdc_id = pv.ref3 WHERE p.prdc_nmbr = 'WB-H098'",
+        "SELECT v.nm FROM prod p JOIN prod_vnd pv ON p.prdc_id = pv.ref3 JOIN vnd v ON pv.ref2 = v.ref1 WHERE p.prdc_nmbr = 'WB-H098'"
+      ],
+      "agent_text": "产品编号 WB-H098 的供应商是 **Green Lake Bike Company**。",
+      "tool_calls": 6,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 6,
+      "tool_rounds": 5,
+      "tokens": {
+        "input": 31170,
+        "output": 6689,
+        "cache_read": 246400,
+        "cache_write": 0,
+        "reasoning": 6423,
+        "total": 284259
+      },
+      "cost_usd": 0.123296,
+      "elapsed_seconds": 93.09,
+      "agent_duration_ms": 84938,
+      "extra_columns": []
+    },
+    {
+      "question_id": 65,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "470a5322713049ffb46daed2f41068a1",
+      "final_sql": "SELECT AVG(ep.rt) AS avg_pay_rate FROM ( SELECT DISTINCT edh.ref3 AS emp_id FROM emp_dept_hist edh JOIN dept d ON edh.ref2 = d.dprt_id WHERE d.nm = 'Engineering' AND YEAR(edh.strt_dt) <= 2007 AND (edh.end_dt IS NULL OR YEAR(edh.end_dt) >= 2007) ) AS eng_emps JOIN emp_pay_hist ep ON eng_emps.emp_id = ep.ref1 WHERE (ep.ref1, ep.rt_chng_dt) IN ( SELECT ref1, MAX(rt_chng_dt) FROM emp_pay_hist GROUP BY ref1 )",
+      "sql_history": [
+        "SELECT AVG(ep.rt) AS avg_pay_rate FROM ( SELECT DISTINCT edh.ref3 AS emp_id FROM emp_dept_hist edh JOIN dept d ON edh.ref2 = d.dprt_id WHERE d.nm = 'Engineering' AND YEAR(edh.strt_dt) <= 2007 AND (edh.end_dt IS NULL OR YEAR(edh.end_dt) >= 2007) ) AS eng_emps JOIN emp_pay_hist ep ON eng_emps.emp_id = ep.ref1 WHERE (ep.ref1, ep.rt_chng_dt) IN ( SELECT ref1, MAX(rt_chng_dt) FROM emp_pay_hist GROUP BY ref1 )"
+      ],
+      "agent_text": "**平均时薪为 36.5577**\n\n最终 SQL 逻辑：\n1. 从 `emp_dept_hist` 关联 `dept` 筛选 2007 年在 Engineering 部门任职过的员工（`YEAR(strt_dt) <= 2007 AND (end_dt IS NULL OR YEAR(end_dt) >= 2007)`），取 DISTINCT 员工 ID\n2. 从 `emp_pay_hist` 取每人最新一条薪资记录（`rt_chng_dt = 该员工内 MAX`），避免历史行重复加权\n3. 对这些最新时薪 `AVG(rt)` 得到平均时薪 **≈ 36.56**",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 54552,
+        "output": 5816,
+        "cache_read": 115520,
+        "cache_write": 0,
+        "reasoning": 5320,
+        "total": 175888
+      },
+      "cost_usd": 0.116451,
+      "elapsed_seconds": 87.97,
+      "agent_duration_ms": 80275,
+      "extra_columns": []
+    },
+    {
+      "question_id": 66,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "9592b87052f44aa395ac02afe940f39c",
+      "final_sql": "SELECT SUM(p.lst_prc - p.stnd_cst) / COUNT(p.ref2) AS avg_profit FROM prod p JOIN prod_sub ps ON p.ref2 = ps.prdc_sbct_id JOIN prod_cat pc ON ps.ref1 = pc.prdc_ctgr_id WHERE pc.nm = 'Clothing'",
+      "sql_history": [
+        "SELECT SUM(p.lst_prc - p.stnd_cst) / COUNT(p.ref2) AS avg_profit FROM prod p JOIN prod_sub ps ON p.ref2 = ps.prdc_sbct_id JOIN prod_cat pc ON ps.ref1 = pc.prdc_ctgr_id WHERE pc.nm = 'Clothing'"
+      ],
+      "agent_text": "Clothing 类别所有产品的平均利润为 **26.18826**。\n\n计算公式（来自 BIRD evidence）：`SUM(ListPrice - StandardCost) / COUNT(ProductSubcategoryID)`，即利润总和除以产品数。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 25205,
+        "output": 1071,
+        "cache_read": 138560,
+        "cache_write": 0,
+        "reasoning": 851,
+        "total": 164836
+      },
+      "cost_usd": 0.067784,
+      "elapsed_seconds": 30.2,
+      "agent_duration_ms": 22237,
+      "extra_columns": []
+    },
+    {
+      "question_id": 67,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "5e65d7783723486bb4082989bfe4f692",
+      "final_sql": "SELECT c.crd_nmbr FROM prsn p JOIN prsn_crd pc ON pc.ref1 = p.ref1 JOIN crd c ON c.crdt_crd_id = pc.ref2 WHERE p.frst_nm = 'Michelle' AND p.mddl_nm = 'E' AND p.lst_nm = 'Cox'",
+      "sql_history": [
+        "SELECT c.crd_nmbr FROM prsn p JOIN prsn_crd pc ON pc.ref1 = p.ref1 JOIN crd c ON c.crdt_crd_id = pc.ref2 WHERE p.frst_nm = 'Michelle' AND p.mddl_nm = 'E' AND p.lst_nm = 'Cox'"
+      ],
+      "agent_text": "Michelle E Cox 的信用卡号是 **11111462416609**。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 27025,
+        "output": 1764,
+        "cache_read": 90752,
+        "cache_write": 0,
+        "reasoning": 1552,
+        "total": 119541
+      },
+      "cost_usd": 0.061266,
+      "elapsed_seconds": 32.51,
+      "agent_duration_ms": 24956,
+      "extra_columns": []
+    },
+    {
+      "question_id": 68,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "2b7505737cea40d1bc8b9bcee1a8b402",
+      "final_sql": "SELECT cur.nm FROM cnty JOIN cnty_cur ON cnty_cur.ref2 = cnty.cntr_rgn_cd JOIN cur ON cur.crrn_cd = cnty_cur.ref1 WHERE cnty.nm = 'Brazil'",
+      "sql_history": [
+        "SELECT cur.nm FROM cnty JOIN cnty_cur ON cnty_cur.ref2 = cnty.cntr_rgn_cd JOIN cur ON cur.crrn_cd = cnty_cur.ref1 WHERE cnty.nm = 'Brazil'"
+      ],
+      "agent_text": "Brazil 的货币是 **Brazilian Real**。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 23574,
+        "output": 529,
+        "cache_read": 92928,
+        "cache_write": 0,
+        "reasoning": 389,
+        "total": 117031
+      },
+      "cost_usd": 0.052708,
+      "elapsed_seconds": 19.95,
+      "agent_duration_ms": 12108,
+      "extra_columns": []
+    },
+    {
+      "question_id": 69,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "b71ee00f04144b8a99be96bdaf2215b5",
+      "final_sql": "SELECT e.eml_addr FROM emp JOIN eml e ON emp.ref1 = e.ref1 WHERE emp.jb_ttl = 'Facilities Manager'",
+      "sql_history": [
+        "SELECT DISTINCT jb_ttl FROM emp WHERE jb_ttl LIKE '%acilit%'",
+        "SELECT e.eml_addr FROM emp JOIN eml e ON emp.ref1 = e.ref1 WHERE emp.jb_ttl = 'Facilities Manager'"
+      ],
+      "agent_text": "Facilities Manager 的邮箱地址是 `gary1@adventure-works.com`。",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 57949,
+        "output": 1316,
+        "cache_read": 162176,
+        "cache_write": 0,
+        "reasoning": 1096,
+        "total": 221441
+      },
+      "cost_usd": 0.113725,
+      "elapsed_seconds": 37.57,
+      "agent_duration_ms": 29955,
+      "extra_columns": []
+    },
+    {
+      "question_id": 70,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "5f4889ea2f54490fbcd53daff766dd6e",
+      "final_sql": "SELECT p.frst_nm, p.mddl_nm, p.lst_nm FROM emp e JOIN prsn p ON e.ref1 = p.ref1 WHERE e.jb_ttl = 'Document Control Manager' AND e.ref1 IN ( SELECT d.ref1 FROM doc d WHERE d.dcmn_lvl = 1 AND d.stts = 2 GROUP BY d.ref1 HAVING COUNT(*) = (SELECT COUNT(*) FROM doc WHERE dcmn_lvl = 1 AND stts = 2) )",
+      "sql_history": [
+        "SELECT p.frst_nm, p.mddl_nm, p.lst_nm FROM emp e JOIN prsn p ON e.ref1 = p.ref1 WHERE e.jb_ttl = 'Document Control Manager' AND e.ref1 IN ( SELECT d.ref1 FROM doc d WHERE d.dcmn_lvl = 1 AND d.stts = 2 GROUP BY d.ref1 HAVING COUNT(*) = (SELECT COUNT(*) FROM doc WHERE dcmn_lvl = 1 AND stts = 2) )"
+      ],
+      "agent_text": "Full name: **Zainal T Arifin**\n\n- FirstName: Zainal\n- MiddleName: T\n- LastName: Arifin",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 50821,
+        "output": 4484,
+        "cache_read": 69824,
+        "cache_write": 0,
+        "reasoning": 4192,
+        "total": 125129
+      },
+      "cost_usd": 0.095679,
+      "elapsed_seconds": 86.77,
+      "agent_duration_ms": 79247,
+      "extra_columns": []
+    },
+    {
+      "question_id": 71,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "66a8a2f2b575410aada62f25b262c04c",
+      "final_sql": "SELECT e.jb_ttl AS position, p.rt AS salary, p2.frst_nm AS first_name, p2.mddl_nm AS middle_name, p2.lst_nm AS last_name FROM emp_pay_hist p JOIN emp e ON e.ref1 = p.ref1 JOIN prsn p2 ON p2.ref1 = e.ref1 ORDER BY p.rt DESC, p.ref1 LIMIT 9, 1",
+      "sql_history": [
+        "SELECT e.jb_ttl AS position, p.rt AS salary, p2.frst_nm AS first_name, p2.mddl_nm AS middle_name, p2.lst_nm AS last_name FROM emp_pay_hist p JOIN emp e ON e.ref1 = p.ref1 JOIN prsn p2 ON p2.ref1 = e.ref1 ORDER BY p.rt DESC, p.ref1 LIMIT 9, 1"
+      ],
+      "agent_text": "**第10高薪员工：**\n\n| 字段 | 值 |\n|---|---|\n| Position | Pacific Sales Manager |\n| Salary | 48.101 |\n| First Name | Syed |\n| Middle Name | E |\n| Last Name | Abbas |",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 27068,
+        "output": 3996,
+        "cache_read": 92992,
+        "cache_write": 0,
+        "reasoning": 3649,
+        "total": 124056
+      },
+      "cost_usd": 0.070784,
+      "elapsed_seconds": 61.03,
+      "agent_duration_ms": 53280,
+      "extra_columns": []
+    },
+    {
+      "question_id": 72,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "5758dfa9bec841efbea0ce5eadc34cff",
+      "final_sql": "SELECT eph.rt FROM emp e JOIN emp_pay_hist eph ON e.ref1 = eph.ref1 WHERE eph.rt_chng_dt = ( SELECT MIN(eph2.rt_chng_dt) FROM emp_pay_hist eph2 WHERE eph2.ref1 = e.ref1 ) ORDER BY e.hr_dt ASC, e.ref1 ASC LIMIT 5",
+      "sql_history": [
+        "SELECT eph.rt FROM emp e JOIN emp_pay_hist eph ON e.ref1 = eph.ref1 WHERE eph.rt_chng_dt = ( SELECT MIN(eph2.rt_chng_dt) FROM emp_pay_hist eph2 WHERE eph2.ref1 = e.ref1 ) ORDER BY e.hr_dt ASC, e.ref1 ASC LIMIT 5"
+      ],
+      "agent_text": "结果如下（按入职日期最早的 5 名员工，每人取入职时的时薪）：\n\n| rt |\n|---|\n| 12.45 |\n| 13.4615 |\n| 43.2692 |\n| 8.62 |\n| 25.0 |",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 26465,
+        "output": 1150,
+        "cache_read": 90816,
+        "cache_write": 0,
+        "reasoning": 862,
+        "total": 118431
+      },
+      "cost_usd": 0.058154,
+      "elapsed_seconds": 44.55,
+      "agent_duration_ms": 36872,
+      "extra_columns": []
+    },
+    {
+      "question_id": 73,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "2f5de14c2fc64bc29b81f662c17cf1bc",
+      "final_sql": "SELECT SUM(stck_qty) AS StockedQty FROM wo WHERE EXISTS (SELECT 1 FROM wo_rtg WHERE wo_rtg.ref2 = wo.wrk_ordr_id AND wo_rtg.ref1 = 40)",
+      "sql_history": [
+        "SELECT SUM(stck_qty) AS StockedQty FROM wo WHERE EXISTS (SELECT 1 FROM wo_rtg WHERE wo_rtg.ref2 = wo.wrk_ordr_id AND wo_rtg.ref1 = 40)"
+      ],
+      "agent_text": "**StockedQty = 8431**\n\nLocation ID 40 制造的产品的入库总量为 **8431**。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 27350,
+        "output": 2112,
+        "cache_read": 90752,
+        "cache_write": 0,
+        "reasoning": 1869,
+        "total": 120214
+      },
+      "cost_usd": 0.063048,
+      "elapsed_seconds": 43.34,
+      "agent_duration_ms": 35278,
+      "extra_columns": []
+    },
+    {
+      "question_id": 74,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "75a4e1430df44212be58b3a7d4581d32",
+      "final_sql": "SELECT v.nm AS vendor_name, SUM(p.ttl_due) AS total_amount_due FROM po_hdr p JOIN vnd v ON p.ref2 = v.ref1 WHERE v.ref1 = ( SELECT v2.ref1 FROM po_dtl d JOIN po_hdr p2 ON d.ref2 = p2.prch_ordr_id JOIN vnd v2 ON p2.ref2 = v2.ref1 ORDER BY d.unt_prc ASC, v2.nm LIMIT 1 ) GROUP BY v.nm",
+      "sql_history": [
+        "SELECT v.nm AS vendor_name, SUM(p.ttl_due) AS total_amount_due FROM po_hdr p JOIN vnd v ON p.ref2 = v.ref1 WHERE v.ref1 = ( SELECT v2.ref1 FROM po_dtl d JOIN po_hdr p2 ON d.ref2 = p2.prch_ordr_id JOIN vnd v2 ON p2.ref2 = v2.ref1 ORDER BY d.unt_prc ASC, v2.nm LIMIT 1 ) GROUP BY v.nm"
+      ],
+      "agent_text": "最终结果：\n\n- **供应商名称：** SUPERSALES INC.\n- **应付总额：** 29,006.25",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 58596,
+        "output": 3910,
+        "cache_read": 115520,
+        "cache_write": 0,
+        "reasoning": 3423,
+        "total": 178026
+      },
+      "cost_usd": 0.11368,
+      "elapsed_seconds": 58.3,
+      "agent_duration_ms": 50535,
+      "extra_columns": []
+    },
+    {
+      "question_id": 75,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "11e0bf0cc4f4438bb3ecf2bc782e5de3",
+      "final_sql": "SELECT h.end_dt FROM emp e JOIN emp_dept_hist h ON h.ref3 = e.ref1 JOIN dept d ON h.ref2 = d.dprt_id WHERE e.jb_ttl = 'Senior Tool Designer' AND YEAR(e.hr_dt) - YEAR(e.brth_dt) = 33 AND d.nm = 'Engineering' AND h.end_dt IS NOT NULL",
+      "sql_history": [
+        "SELECT h.end_dt FROM emp e JOIN emp_dept_hist h ON h.ref3 = e.ref1 JOIN dept d ON h.ref2 = d.dprt_id WHERE e.jb_ttl = 'Senior Tool Designer' AND YEAR(e.hr_dt) - YEAR(e.brth_dt) = 33 AND d.nm = 'Engineering' AND h.end_dt IS NOT NULL"
+      ],
+      "agent_text": "该 Senior Tool Designer 在 Engineering 部门停止工作的日期是 **2010-05-30**。",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 26716,
+        "output": 2137,
+        "cache_read": 140928,
+        "cache_write": 0,
+        "reasoning": 1808,
+        "total": 169781
+      },
+      "cost_usd": 0.07443,
+      "elapsed_seconds": 45.55,
+      "agent_duration_ms": 38077,
+      "extra_columns": []
+    },
+    {
+      "question_id": 76,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "a59d95ecdb5e4a70919a3f6d51ca6919",
+      "final_sql": "SELECT s.nm AS store_name, a.addr_ln1, a.addr_ln2 FROM stor s JOIN biz_addr ba ON ba.ref1 = s.ref2 JOIN addr a ON a.addr_id = ba.ref3 WHERE s.nm = 'Valley Bicycle Specialists'",
+      "sql_history": [
+        "SELECT s.nm AS store_name, a.addr_ln1, a.addr_ln2 FROM stor s JOIN biz_addr ba ON ba.ref1 = s.ref2 JOIN addr a ON a.addr_id = ba.ref3 WHERE s.nm = 'Valley Bicycle Specialists'"
+      ],
+      "agent_text": "Valley Bicycle Specialists 的地址在 **Blue Ridge Mall**（地址第二行为空）。\n\n最终执行的 SQL：\n\n```sql\nSELECT s.nm AS store_name, a.addr_ln1, a.addr_ln2\nFROM stor s\nJOIN biz_addr ba ON ba.ref1 = s.ref2\nJOIN addr a ON a.addr_id = ba.ref3\nWHERE s.nm = 'Valley Bicycle Specialists'\n```",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 50276,
+        "output": 1897,
+        "cache_read": 115328,
+        "cache_write": 0,
+        "reasoning": 1651,
+        "total": 167501
+      },
+      "cost_usd": 0.095598,
+      "elapsed_seconds": 41.91,
+      "agent_duration_ms": 34257,
+      "extra_columns": [
+        "store_name"
+      ]
+    },
+    {
+      "question_id": 77,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "e2dac65ac507408db2004d70e2df5eb9",
+      "final_sql": "SELECT a.addr_ln1, a.addr_ln2, a.cty, s.nm AS state_province, a.pstl_cd FROM biz_addr ba JOIN addr_typ at ON ba.ref2 = at.addr_typ_id JOIN addr a ON ba.ref3 = a.addr_id LEFT JOIN st_prv s ON a.ref1 = s.stt_prvn_id WHERE ba.ref1 = 5555 AND at.nm = 'Home'",
+      "sql_history": [
+        "SELECT a.addr_ln1, a.addr_ln2, a.cty, s.nm AS state_province, a.pstl_cd FROM biz_addr ba JOIN addr_typ at ON ba.ref2 = at.addr_typ_id JOIN addr a ON ba.ref3 = a.addr_id LEFT JOIN st_prv s ON a.ref1 = s.stt_prvn_id WHERE ba.ref1 = 5555 AND at.nm = 'Home'"
+      ],
+      "agent_text": "BusinessEntityID 5555 的人住在：\n\n| 地址行1 | 地址行2 | 城市 | 州 | 邮编 |\n|---|---|---|---|---|\n| 2537 I St. | NULL | Redmond | Washington | 98052 |",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 25312,
+        "output": 1972,
+        "cache_read": 140288,
+        "cache_write": 0,
+        "reasoning": 1685,
+        "total": 167572
+      },
+      "cost_usd": 0.071932,
+      "elapsed_seconds": 38.4,
+      "agent_duration_ms": 30677,
+      "extra_columns": [
+        "addr_ln2",
+        "state_province",
+        "pstl_cd"
+      ]
+    },
+    {
+      "question_id": 78,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "9028141297e840c2b536cd8f65ff4995",
+      "final_sql": "SELECT at.nm AS address_type FROM stor s JOIN biz_addr ba ON ba.ref1 = s.ref2 JOIN addr_typ at ON at.addr_typ_id = ba.ref2 WHERE s.nm = 'Fun Toys and Bikes'",
+      "sql_history": [
+        "SELECT s.nm, s.ref2 AS biz_ent_id FROM stor s WHERE s.nm LIKE '%Fun Toys%'",
+        "SELECT at.nm AS address_type FROM stor s JOIN biz_addr ba ON ba.ref1 = s.ref2 JOIN addr_typ at ON at.addr_typ_id = ba.ref2 WHERE s.nm = 'Fun Toys and Bikes'"
+      ],
+      "agent_text": "\"Fun Toys and Bikes\" 的地址类型是 **Main Office**。",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 48944,
+        "output": 916,
+        "cache_read": 161856,
+        "cache_write": 0,
+        "reasoning": 700,
+        "total": 211716
+      },
+      "cost_usd": 0.101242,
+      "elapsed_seconds": 70.56,
+      "agent_duration_ms": 62760,
+      "extra_columns": []
+    },
+    {
+      "question_id": 79,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "3180779c53184a7d90762ea1738a1c82",
+      "final_sql": "SELECT pm.nm AS model_name FROM prod_mdl pm JOIN pmdc ON pmdc.ref3 = pm.prdc_mdl_id JOIN cult c ON c.cltr_id = pmdc.ref1 JOIN prod_dsc pd ON pd.prdc_dscr_id = pmdc.ref2 WHERE c.nm = 'English' AND pd.dscr LIKE '%Chromoly%'",
+      "sql_history": [
+        "SELECT pm.nm AS model_name FROM prod_mdl pm JOIN pmdc ON pmdc.ref3 = pm.prdc_mdl_id JOIN cult c ON c.cltr_id = pmdc.ref1 JOIN prod_dsc pd ON pd.prdc_dscr_id = pmdc.ref2 WHERE c.nm = 'English' AND pd.dscr LIKE '%Chromoly%'"
+      ],
+      "agent_text": "最终答案 SQL 已执行完毕，结果为 **LL Bottom Bracket**。\n\n该查询通过 `prod_mdl` → `pmdc` → `cult` + `prod_dsc` 的关联，找出描述中包含 \"Chromoly\" 且文化为 English 的产品型号名称。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 27247,
+        "output": 1744,
+        "cache_read": 137792,
+        "cache_write": 0,
+        "reasoning": 1493,
+        "total": 166783
+      },
+      "cost_usd": 0.072742,
+      "elapsed_seconds": 36.78,
+      "agent_duration_ms": 29180,
+      "extra_columns": []
+    },
+    {
+      "question_id": 80,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "1b8024d7a4394b2ab1b40370666d89a9",
+      "final_sql": "SELECT d.nm FROM emp_dept_hist h JOIN shft s ON h.ref1 = s.shft_id JOIN dept d ON h.ref2 = d.dprt_id WHERE s.nm = 'Night' AND h.end_dt IS NULL GROUP BY d.dprt_id, d.nm ORDER BY COUNT(*) DESC LIMIT 1",
+      "sql_history": [
+        "SELECT d.nm FROM emp_dept_hist h JOIN shft s ON h.ref1 = s.shft_id JOIN dept d ON h.ref2 = d.dprt_id WHERE s.nm = 'Night' AND h.end_dt IS NULL GROUP BY d.dprt_id, d.nm ORDER BY COUNT(*) DESC LIMIT 1"
+      ],
+      "agent_text": "**Production** 部门拥有最多的夜班人数。\n\n最终 SQL 逻辑：通过 `emp_dept_hist`（员工-部门任职历史表）关联 `shft`（班次表）和 `dept`（部门表），筛选当前生效（`end_dt IS NULL`）且班次为 `Night` 的记录，按部门分组计数，取最多的一条。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 25189,
+        "output": 1869,
+        "cache_read": 139776,
+        "cache_write": 0,
+        "reasoning": 1598,
+        "total": 166834
+      },
+      "cost_usd": 0.071249,
+      "elapsed_seconds": 41.44,
+      "agent_duration_ms": 33849,
+      "extra_columns": []
+    },
+    {
+      "question_id": 81,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "5ba5dc5b8c5a454daaba2ce1cf5a8bd7",
+      "final_sql": "SELECT d.nm FROM emp_dept_hist h JOIN shft s ON h.ref1 = s.shft_id JOIN dept d ON h.ref2 = d.dprt_id WHERE s.nm = 'Evening' AND h.end_dt IS NULL GROUP BY d.dprt_id, d.nm ORDER BY COUNT(DISTINCT h.ref3) DESC, d.nm LIMIT 1",
+      "sql_history": [
+        "SELECT d.nm FROM emp_dept_hist h JOIN shft s ON h.ref1 = s.shft_id JOIN dept d ON h.ref2 = d.dprt_id WHERE s.nm = 'Evening' AND h.end_dt IS NULL GROUP BY d.dprt_id, d.nm ORDER BY COUNT(DISTINCT h.ref3) DESC, d.nm LIMIT 1"
+      ],
+      "agent_text": "**Production** 部门当前上晚班（Evening shift）的人数最多。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 49362,
+        "output": 2941,
+        "cache_read": 117632,
+        "cache_write": 0,
+        "reasoning": 2734,
+        "total": 169935
+      },
+      "cost_usd": 0.09923,
+      "elapsed_seconds": 58.34,
+      "agent_duration_ms": 50825,
+      "extra_columns": []
+    },
+    {
+      "question_id": 82,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "17af9f93a8d64ede8d7d4971b78b281d",
+      "final_sql": "SELECT p.frst_nm, p.lst_nm FROM emp_dept_hist h JOIN emp e ON h.ref3 = e.ref1 JOIN prsn p ON e.ref1 = p.ref1 JOIN dept d ON h.ref2 = d.dprt_id WHERE d.nm = 'Engineering' ORDER BY DATEDIFF(COALESCE(h.end_dt, CURRENT_TIMESTAMP), h.strt_dt) DESC, p.frst_nm, p.lst_nm LIMIT 1",
+      "sql_history": [
+        "SELECT p.frst_nm, p.lst_nm FROM emp_dept_hist h JOIN emp e ON h.ref3 = e.ref1 JOIN prsn p ON e.ref1 = p.ref1 JOIN dept d ON h.ref2 = d.dprt_id WHERE d.nm = 'Engineering' ORDER BY DATEDIFF(COALESCE(h.end_dt, CURRENT_TIMESTAMP), h.strt_dt) DESC, p.frst_nm, p.lst_nm LIMIT 1"
+      ],
+      "agent_text": "在 Engineering Department 任职时间最长的员工是 **Roberto Tamburello**（名：Roberto，姓：Tamburello）。",
+      "tool_calls": 4,
+      "pass": false,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 53948,
+        "output": 7368,
+        "cache_read": 117440,
+        "cache_write": 0,
+        "reasoning": 7037,
+        "total": 178756
+      },
+      "cost_usd": 0.122395,
+      "elapsed_seconds": 123.91,
+      "agent_duration_ms": 116017,
+      "extra_columns": []
+    },
+    {
+      "question_id": 83,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "d9a9f4b2b0414dd9898f31b4d10884a8",
+      "final_sql": "SELECT sls_terr.grp AS geographic_area, st_prv.nm AS state_or_province FROM sls_tax JOIN st_prv ON sls_tax.ref1 = st_prv.stt_prvn_id JOIN sls_terr ON st_prv.ref1 = sls_terr.trrt_id ORDER BY sls_tax.tx_rt ASC, sls_tax.sls_tx_rt_id LIMIT 1 OFFSET 1",
+      "sql_history": [
+        "SELECT sls_terr.grp AS geographic_area, st_prv.nm AS state_or_province FROM sls_tax JOIN st_prv ON sls_tax.ref1 = st_prv.stt_prvn_id JOIN sls_terr ON st_prv.ref1 = sls_terr.trrt_id ORDER BY sls_tax.tx_rt ASC, sls_tax.sls_tx_rt_id LIMIT 1 OFFSET 1"
+      ],
+      "agent_text": "第二低税率所在的城市属于 **North America** 地理区域，所在的州/省为 **Minnesota**。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 50577,
+        "output": 4375,
+        "cache_read": 69824,
+        "cache_write": 0,
+        "reasoning": 4184,
+        "total": 124776
+      },
+      "cost_usd": 0.09495,
+      "elapsed_seconds": 76.99,
+      "agent_duration_ms": 69508,
+      "extra_columns": []
+    },
+    {
+      "question_id": 84,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "69b9fdc53100400d9a118011cc5823e8",
+      "final_sql": "SELECT v.nm AS vendor_name FROM prod_vnd pv JOIN vnd v ON pv.ref2 = v.ref1 JOIN prod p ON pv.ref3 = p.prdc_id WHERE p.nm = 'Hex Nut 5' ORDER BY pv.stnd_prc ASC LIMIT 1",
+      "sql_history": [
+        "SELECT prdc_id, nm FROM prod WHERE nm LIKE '%Hex Nut 5%'",
+        "SELECT v.nm AS vendor_name FROM prod_vnd pv JOIN vnd v ON pv.ref2 = v.ref1 JOIN prod p ON pv.ref3 = p.prdc_id WHERE p.nm = 'Hex Nut 5' ORDER BY pv.stnd_prc ASC LIMIT 1"
+      ],
+      "agent_text": "**Mountain Works** 是 Hex Nut 5 售价（StandardPrice）最低的供应商。",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 25616,
+        "output": 1110,
+        "cache_read": 188416,
+        "cache_write": 0,
+        "reasoning": 885,
+        "total": 215142
+      },
+      "cost_usd": 0.080399,
+      "elapsed_seconds": 49.99,
+      "agent_duration_ms": 42460,
+      "extra_columns": []
+    },
+    {
+      "question_id": 85,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "dbea2f2fad8f481a83e8a74ef6e57745",
+      "final_sql": "SELECT p.lst_nm FROM prsn p WHERE p.ref1 IN ( SELECT jc.ref1 FROM job_cand jc WHERE jc.ref1 IS NOT NULL )",
+      "sql_history": [
+        "SELECT p.lst_nm FROM prsn p WHERE p.ref1 IN ( SELECT jc.ref1 FROM job_cand jc WHERE jc.ref1 IS NOT NULL )"
+      ],
+      "agent_text": "结果返回了 2 位通过 HR 招聘入职的员工：\n\n| lst_nm |\n|--------|\n| Jiang |\n| Wu |\n\n**SQL 逻辑：** `job_cand.ref1` 是员工编号（BusinessEntityID），`IS NOT NULL` 表示该求职者已被录用。通过 `prsn.ref1` 关联拿到 `lst_nm`（姓）。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 29994,
+        "output": 4789,
+        "cache_read": 90816,
+        "cache_write": 0,
+        "reasoning": 4512,
+        "total": 125599
+      },
+      "cost_usd": 0.076945,
+      "elapsed_seconds": 83.14,
+      "agent_duration_ms": 75518,
+      "extra_columns": []
+    },
+    {
+      "question_id": 86,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "712646a97eaa417c9f4d78ae5524a7e0",
+      "final_sql": "SELECT p.frst_nm, p.lst_nm, ct.nm AS contact_type FROM prsn p JOIN biz_cnt bc ON p.ref1 = bc.ref1 JOIN stor s ON bc.ref3 = s.ref2 JOIN cnt_typ ct ON bc.ref2 = ct.cntc_typ_id WHERE s.nm = 'Next-Door Bike Store'",
+      "sql_history": [
+        "SELECT p.frst_nm, p.lst_nm FROM prsn p JOIN stor s ON p.ref1 = s.ref2 WHERE s.nm = 'Next-Door Bike Store' AND p.prsn_typ = 'SC'",
+        "SELECT nm FROM stor WHERE nm LIKE '%Next-Door%'",
+        "SELECT p.frst_nm, p.lst_nm, p.prsn_typ FROM prsn p JOIN stor s ON p.ref1 = s.ref2 WHERE s.nm = 'Next-Door Bike Store'",
+        "SELECT p.frst_nm, p.lst_nm, ct.nm AS contact_type FROM prsn p JOIN biz_cnt bc ON p.ref1 = bc.ref1 JOIN stor s ON bc.ref3 = s.ref2 JOIN cnt_typ ct ON bc.ref2 = ct.cntc_typ_id WHERE s.nm = 'Next-Door Bike Store'"
+      ],
+      "agent_text": "**Next-Door Bike Store** 的联系人是 **Gustavo Achong**（联系人类型：Owner）。\n\n最终 SQL：\n\n```sql\nSELECT p.frst_nm, p.lst_nm\nFROM prsn p\nJOIN biz_cnt bc ON p.ref1 = bc.ref1\nJOIN stor s ON bc.ref3 = s.ref2\nJOIN cnt_typ ct ON bc.ref2 = ct.cntc_typ_id\nWHERE s.nm = 'Next-Door Bike Store'\n```",
+      "tool_calls": 8,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 8,
+      "tool_rounds": 7,
+      "tokens": {
+        "input": 27207,
+        "output": 2412,
+        "cache_read": 332544,
+        "cache_write": 0,
+        "reasoning": 1952,
+        "total": 362163
+      },
+      "cost_usd": 0.122107,
+      "elapsed_seconds": 48.46,
+      "agent_duration_ms": 40529,
+      "extra_columns": [
+        "contact_type"
+      ]
+    },
+    {
+      "question_id": 87,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "e6af30a6a7314f76abaf80d37e6dc327",
+      "final_sql": "SELECT p.frst_nm, p.mddl_nm, p.lst_nm, e.jb_ttl FROM emp e JOIN prsn p ON e.ref1 = p.ref1 JOIN emp_pay_hist ph ON ph.ref1 = e.ref1 WHERE e.gndr = 'F' AND e.mrtl_stts = 'S' AND ph.rt_chng_dt = ( SELECT MAX(ph2.rt_chng_dt) FROM emp_pay_hist ph2 WHERE ph2.ref1 = ph.ref1 ) ORDER BY ph.rt DESC, p.lst_nm LIMIT 1",
+      "sql_history": [
+        "SELECT p.frst_nm, p.mddl_nm, p.lst_nm, e.jb_ttl FROM emp e JOIN prsn p ON e.ref1 = p.ref1 JOIN emp_pay_hist ph ON ph.ref1 = e.ref1 WHERE e.gndr = 'F' AND e.mrtl_stts = 'S' AND ph.rt_chng_dt = ( SELECT MAX(ph2.rt_chng_dt) FROM emp_pay_hist ph2 WHERE ph2.ref1 = ph.ref1 ) ORDER BY ph.rt DESC, p.lst_nm LIMIT 1"
+      ],
+      "agent_text": "公司薪水最高的单身女性员工是 **Terri Lee Duffy**，职位 **Vice President of Engineering**。\n\n- First Name: Terri\n- Middle Name: Lee\n- Last Name: Duffy\n- Job Title: Vice President of Engineering",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 48038,
+        "output": 1727,
+        "cache_read": 69824,
+        "cache_write": 0,
+        "reasoning": 1474,
+        "total": 119589
+      },
+      "cost_usd": 0.081311,
+      "elapsed_seconds": 34.62,
+      "agent_duration_ms": 27117,
+      "extra_columns": []
+    },
+    {
+      "question_id": 89,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "b24a249c387d471fa0382ead38614964",
+      "final_sql": "SELECT p.frst_nm, p.lst_nm FROM emp e JOIN prsn p ON e.ref1 = p.ref1 JOIN emp_dept_hist h ON h.ref3 = e.ref1 JOIN dept d ON h.ref2 = d.dprt_id WHERE d.nm = 'Shipping and Receiving' AND h.end_dt IS NULL AND YEAR(e.hr_dt) = 2009",
+      "sql_history": [
+        "SELECT dprt_id, nm, grp_nm FROM dept",
+        "SELECT p.frst_nm, p.lst_nm FROM emp e JOIN prsn p ON e.ref1 = p.ref1 JOIN emp_dept_hist h ON h.ref3 = e.ref1 JOIN dept d ON h.ref2 = d.dprt_id WHERE d.nm = 'Shipping and Receiving' AND h.end_dt IS NULL AND YEAR(e.hr_dt) = 2009"
+      ],
+      "agent_text": "结果如下，Shipping and Receiving 部门中 2009 年入职的员工共 3 人：\n\n| 名 | 姓 |\n|---|---|\n| Pilar | Ackerman |\n| Matthias | Berndt |\n| Jimmy | Bischoff |\n\nSQL 逻辑：\n- `emp_dept_hist`（`end_dt IS NULL` = 当前在职部门）关联 `dept`（`nm = 'Shipping and Receiving'`）定位部门\n- `emp.hr_dt` 取 `YEAR() = 2009` 筛选入职年份\n- `prsn` 表返回名（`frst_nm`）和姓（`lst_nm`）",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 49580,
+        "output": 2751,
+        "cache_read": 165568,
+        "cache_write": 0,
+        "reasoning": 2387,
+        "total": 217899
+      },
+      "cost_usd": 0.110236,
+      "elapsed_seconds": 59.88,
+      "agent_duration_ms": 52203,
+      "extra_columns": []
+    },
+    {
+      "question_id": 90,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "b3bf9c8eec1541368ecb08e66f8602ff",
+      "final_sql": "SELECT DISTINCT s.nm AS store_name, p.frst_nm AS first_name, p.lst_nm AS last_name FROM stor s JOIN biz_ent be ON s.ref2 = be.bsns_entt_id JOIN biz_addr ba ON be.bsns_entt_id = ba.ref1 JOIN addr a ON ba.ref3 = a.addr_id JOIN st_prv sp ON a.ref1 = sp.stt_prvn_id JOIN sls_terr st ON sp.ref1 = st.trrt_id JOIN sls_prsn sp2 ON s.ref1 = sp2.ref2 JOIN emp e ON sp2.ref2 = e.ref1 JOIN prsn p ON e.ref1 = p.ref1 WHERE st.nm = 'France'",
+      "sql_history": [
+        "SELECT DISTINCT s.nm AS store_name, p.frst_nm AS first_name, p.lst_nm AS last_name FROM stor s JOIN biz_ent be ON s.ref2 = be.bsns_entt_id JOIN biz_addr ba ON be.bsns_entt_id = ba.ref1 JOIN addr a ON ba.ref3 = a.addr_id JOIN st_prv sp ON a.ref1 = sp.stt_prvn_id JOIN sls_terr st ON sp.ref1 = st.trrt_id JOIN sls_prsn sp2 ON s.ref1 = sp2.ref2 JOIN emp e ON sp2.ref2 = e.ref1 JOIN prsn p ON e.ref1 = p.ref1 WHERE st.nm = 'France'"
+      ],
+      "agent_text": "法国区域的 27 家门店及其销售员如下：\n\n| Store Name | Salesperson First Name | Salesperson Last Name |\n|---|---|---|\n| Country Parts Shop | Ranjit | Varkey Chudukatil |\n| Favorite Toy Distributor | Ranjit | Varkey Chudukatil |\n| Atypical Bike Company | Ranjit | Varkey Chudukatil |\n| Full Sports Supply | Ranjit | Varkey Chudukatil |\n| Racing Store | Ranjit | Varkey Chudukatil |\n| Ace Bicycle Supply | Ranjit | Varkey Chudukatil |\n| Registered Cycle Store | Ranjit | Varkey Chudukatil |\n| First Center | Ranjit | Varkey Chudukatil |\n| Brand New Bikes | Ranjit | Varkey Chudukatil |\n| Wheels Inc. | Ranjit | Varkey Chudukatil |\n| Racing Supply Distributors | Ranjit | Varkey Chudukatil |\n| Spa and Exercise Outfitters | Ranjit | Varkey Chudukatil |\n| Steel Inc. | Ranjit | Varkey Chudukatil |\n| Outdoor Toy Store | Ranjit | Varkey Chudukatil |\n| Community Department Stores | Ranjit | Varkey Chudukatil |\n| Major Amusement Company | Ranjit | Varkey Chudukatil |\n| Instant Cycle Store | Ranjit | Varkey Chudukatil |\n| Pretty Bikes and Toys | Ranjit | Varkey Chudukatil |\n| Township Inn | Ranjit | Varkey Chudukatil |\n| Spare Parts Co. | Ranjit | Varkey Chudukatil |\n| Roadway Bicycle Supply | Ranjit | Varkey Chudukatil |\n| Self-Contained Cycle Parts Company | Ranjit | Varkey Chudukatil |\n| Neighborhood Bicycle Storehouse | Ranjit | Varkey Chudukatil |\n| Perfect Toys | Ranjit | Varkey Chudukatil |\n| Metro Sports Equipment | Ranjit | Varkey Chudukatil |\n| Impervious Paint Company | Ranjit | Varkey Chudukatil |\n| Finer Sporting Goods | Ranjit | Varkey Chudukatil |\n\n全部 27 家门店均由销售员 **Ranjit Varkey Chudukatil** 负责。",
+      "tool_calls": 4,
+      "pass": false,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 57562,
+        "output": 5750,
+        "cache_read": 115456,
+        "cache_write": 0,
+        "reasoning": 4965,
+        "total": 178768
+      },
+      "cost_usd": 0.119784,
+      "elapsed_seconds": 85.07,
+      "agent_duration_ms": 77488,
+      "extra_columns": []
+    },
+    {
+      "question_id": 91,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "20a1d4a80fa04a419c7d72c14a2b8779",
+      "final_sql": "SELECT p.frst_nm, p.lst_nm, t.nm AS territory FROM stor s JOIN sls_prsn sp ON s.ref1 = sp.ref2 JOIN emp e ON sp.ref2 = e.ref1 JOIN prsn p ON e.ref1 = p.ref1 JOIN sls_terr t ON sp.ref1 = t.trrt_id WHERE s.nm = 'Area Bike Accessories'",
+      "sql_history": [
+        "SELECT p.frst_nm, p.lst_nm, t.nm AS territory FROM stor s JOIN sls_prsn sp ON s.ref1 = sp.ref2 JOIN emp e ON sp.ref2 = e.ref1 JOIN prsn p ON e.ref1 = p.ref1 JOIN sls_terr t ON sp.ref1 = t.trrt_id WHERE s.nm = 'Area Bike Accessories'"
+      ],
+      "agent_text": "销售员是 **Shu Ito**，所在销售区域是 **Southwest**。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 48038,
+        "output": 1306,
+        "cache_read": 116608,
+        "cache_write": 0,
+        "reasoning": 1115,
+        "total": 165952
+      },
+      "cost_usd": 0.090856,
+      "elapsed_seconds": 33.98,
+      "agent_duration_ms": 26060,
+      "extra_columns": []
+    },
+    {
+      "question_id": 93,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "452ed05000034875836c1b738f3813d2",
+      "final_sql": "SELECT DISTINCT v.nm FROM prod p JOIN prod_sub ps ON p.ref2 = ps.prdc_sbct_id JOIN prod_vnd pv ON pv.ref3 = p.prdc_id JOIN vnd v ON pv.ref2 = v.ref1 WHERE p.mk_flg = 0 AND p.styl = 'W' AND ps.nm = 'Tights'",
+      "sql_history": [
+        "SELECT DISTINCT v.nm FROM prod p JOIN prod_sub ps ON p.ref2 = ps.prdc_sbct_id JOIN prod_vnd pv ON pv.ref3 = p.prdc_id JOIN vnd v ON pv.ref2 = v.ref1 WHERE p.mk_flg = 0 AND p.styl = 'W' AND ps.nm = 'Tights'"
+      ],
+      "agent_text": "结果：公司采购女士紧身裤（women's tights）产品的供应商是 **Fitness Association**。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 28590,
+        "output": 3283,
+        "cache_read": 90816,
+        "cache_write": 0,
+        "reasoning": 2980,
+        "total": 122689
+      },
+      "cost_usd": 0.069236,
+      "elapsed_seconds": 67.37,
+      "agent_duration_ms": 59650,
+      "extra_columns": []
+    },
+    {
+      "question_id": 94,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "0ba0d1186f06408d9faeda6ac2f6b74f",
+      "final_sql": "SELECT pv.avrg_ld_tm, pv.lst_rcpt_cst - pv.stnd_prc AS profit_on_net, a.addr_ln1, a.addr_ln2, a.cty, a.pstl_cd FROM prod_vnd pv JOIN vnd v ON v.ref1 = pv.ref2 JOIN biz_addr ba ON ba.ref1 = v.ref1 JOIN addr a ON a.addr_id = ba.ref3 WHERE pv.ref3 = 843",
+      "sql_history": [
+        "SELECT pv.avrg_ld_tm, pv.lst_rcpt_cst - pv.stnd_prc AS profit_on_net, a.addr_ln1, a.addr_ln2, a.cty, a.pstl_cd FROM prod_vnd pv JOIN vnd v ON v.ref1 = pv.ref2 JOIN biz_addr ba ON ba.ref1 = v.ref1 JOIN addr a ON a.addr_id = ba.ref3 WHERE pv.ref3 = 843"
+      ],
+      "agent_text": "结果如下：\n\n| 字段 | 值 |\n|---|---|\n| **Average Lead Time** | 10 (天) |\n| **Profit on Net** | 1.81 |\n| **AddressLine1** | 8844 Garcia |\n| **AddressLine2** | NULL |\n| **City** | West Covina |\n| **PostalCode** | 91791 |\n\n- 平均交货期为 **10 天**\n- Profit on net（LastReceiptCost − StandardPrice）= **1.81**\n- 供应商地址位于 **West Covina, 91791**",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 50620,
+        "output": 4380,
+        "cache_read": 69824,
+        "cache_write": 0,
+        "reasoning": 3914,
+        "total": 124824
+      },
+      "cost_usd": 0.095022,
+      "elapsed_seconds": 79.2,
+      "agent_duration_ms": 71570,
+      "extra_columns": []
+    },
+    {
+      "question_id": 95,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "0c7501f145a447728f6230c41bc87e6b",
+      "final_sql": "SELECT e.jb_ttl, d.nm FROM emp e JOIN emp_dept_hist h ON h.ref3 = e.ref1 AND h.end_dt IS NULL JOIN dept d ON d.dprt_id = h.ref2 WHERE e.crrn_flg = 1 ORDER BY e.brth_dt ASC, e.ref1 ASC LIMIT 1",
+      "sql_history": [
+        "SELECT e.jb_ttl, d.nm FROM emp e JOIN emp_dept_hist h ON h.ref3 = e.ref1 AND h.end_dt IS NULL JOIN dept d ON d.dprt_id = h.ref2 WHERE e.crrn_flg = 1 ORDER BY e.brth_dt ASC, e.ref1 ASC LIMIT 1"
+      ],
+      "agent_text": "最年长员工的信息：\n\n- **职位（Job Title）：** North American Sales Manager\n- **部门（Department）：** Sales",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 24426,
+        "output": 1296,
+        "cache_read": 92864,
+        "cache_write": 0,
+        "reasoning": 1034,
+        "total": 118586
+      },
+      "cost_usd": 0.056783,
+      "elapsed_seconds": 30.07,
+      "agent_duration_ms": 22161,
+      "extra_columns": []
+    },
+    {
+      "question_id": 96,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "e2af96ed0a07495d90ed39747be8bdea",
+      "final_sql": "SELECT COUNT(*) FROM spcl_prod sp JOIN spcl_offr so ON sp.ref2 = so.spcl_offr_id JOIN prod p ON sp.ref1 = p.prdc_id JOIN prod_sub ps ON p.ref2 = ps.prdc_sbct_id JOIN prod_cat pc ON ps.ref1 = pc.prdc_ctgr_id WHERE so.dscr = 'LL Road Frame Sale' AND pc.nm = 'Clothing'",
+      "sql_history": [
+        "SELECT spcl_offr_id, dscr FROM spcl_offr WHERE dscr LIKE '%LL Road Frame%'",
+        "SELECT COUNT(*) FROM spcl_prod sp JOIN spcl_offr so ON sp.ref2 = so.spcl_offr_id JOIN prod p ON sp.ref1 = p.prdc_id JOIN prod_sub ps ON p.ref2 = ps.prdc_sbct_id JOIN prod_cat pc ON ps.ref1 = pc.prdc_ctgr_id WHERE so.dscr = 'LL Road Frame Sale' AND pc.nm = 'Clothing'",
+        "SELECT prdc_ctgr_id, nm FROM prod_cat",
+        "SELECT p.prdc_id, p.nm, ps.nm AS subcat_nm, pc.nm AS cat_nm FROM spcl_prod sp JOIN prod p ON sp.ref1 = p.prdc_id JOIN prod_sub ps ON p.ref2 = ps.prdc_sbct_id JOIN prod_cat pc ON ps.ref1 = pc.prdc_ctgr_id WHERE sp.ref2 = 12",
+        "SELECT COUNT(*) FROM spcl_prod sp JOIN spcl_offr so ON sp.ref2 = so.spcl_offr_id JOIN prod p ON sp.ref1 = p.prdc_id JOIN prod_sub ps ON p.ref2 = ps.prdc_sbct_id JOIN prod_cat pc ON ps.ref1 = pc.prdc_ctgr_id WHERE so.dscr = 'LL Road Frame Sale' AND pc.nm = 'Clothing'"
+      ],
+      "agent_text": "LL Road Frame Sale（`spcl_offr_id = 12`）关联的 12 个产品全部属于 **Components** 大类下的 **Road Frames** 子类，没有一个是 Clothing 大类的。所以答案是 **0**。",
+      "tool_calls": 8,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 8,
+      "tool_rounds": 7,
+      "tokens": {
+        "input": 54279,
+        "output": 3835,
+        "cache_read": 307008,
+        "cache_write": 0,
+        "reasoning": 3343,
+        "total": 365122
+      },
+      "cost_usd": 0.154157,
+      "elapsed_seconds": 81.98,
+      "agent_duration_ms": 74427,
+      "extra_columns": []
+    },
+    {
+      "question_id": 97,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "bc3232a72ff840cb873076c35b952a85",
+      "final_sql": "SELECT COUNT(*) AS emp_count, orgn_lvl FROM emp JOIN prsn ON emp.ref1 = prsn.ref1 WHERE prsn.sffx IS NULL GROUP BY orgn_lvl",
+      "sql_history": [
+        "SELECT COUNT(*) AS emp_count, orgn_lvl FROM emp JOIN prsn ON emp.ref1 = prsn.ref1 WHERE prsn.sffx IS NULL GROUP BY orgn_lvl"
+      ],
+      "agent_text": "结果如下：\n\n| 员工数 | 组织层级 (orgn_lvl) |\n|--------|---------------------|\n| 1 | NULL |\n| 6 | 1 |\n| 25 | 2 |\n| 66 | 3 |\n| 190 | 4 |\n\n共 288 名员工没有后缀（Suffix 为 NULL），分布在 4 个组织层级（另有 1 人层级为 NULL）。层级越深人数越多，第 4 层占绝大多数（190 人）。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 48976,
+        "output": 2874,
+        "cache_read": 69760,
+        "cache_write": 0,
+        "reasoning": 2611,
+        "total": 121610
+      },
+      "cost_usd": 0.08701,
+      "elapsed_seconds": 61.6,
+      "agent_duration_ms": 53930,
+      "extra_columns": []
+    },
+    {
+      "question_id": 98,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "4f8483baec214d969f75369f003ca189",
+      "final_sql": "WITH latest_payrate AS ( SELECT ref1 AS emp_id, rt FROM emp_pay_hist eph WHERE rt_chng_dt = ( SELECT MAX(rt_chng_dt) FROM emp_pay_hist sub WHERE sub.ref1 = eph.ref1 ) ), current_dept AS ( SELECT ref3 AS emp_id, ref2 AS dept_id FROM emp_dept_hist WHERE end_dt IS NULL ) SELECT d.nm AS department_name, SUM(l.rt) / COUNT(l.emp_id) AS avg_hourly_payrate FROM latest_payrate l JOIN current_dept c ON l.emp_id = c.emp_id JOIN dept d ON c.dept_id = d.dprt_id GROUP BY d.dprt_id, d.nm",
+      "sql_history": [
+        "WITH latest_payrate AS ( SELECT ref1 AS emp_id, rt FROM emp_pay_hist eph WHERE rt_chng_dt = ( SELECT MAX(rt_chng_dt) FROM emp_pay_hist sub WHERE sub.ref1 = eph.ref1 ) ), current_dept AS ( SELECT ref3 AS emp_id, ref2 AS dept_id FROM emp_dept_hist WHERE end_dt IS NULL ) SELECT d.nm AS department_name, SUM(l.rt) / COUNT(l.emp_id) AS avg_hourly_payrate FROM latest_payrate l JOIN current_dept c ON l.emp_id = c.emp_id JOIN dept d ON c.dept_id = d.dprt_id GROUP BY d.dprt_id, d.nm"
+      ],
+      "agent_text": "结果已返回，16 个部门的平均时薪如上。最终 SQL 已执行完毕。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 25182,
+        "output": 1742,
+        "cache_read": 92928,
+        "cache_write": 0,
+        "reasoning": 1409,
+        "total": 119852
+      },
+      "cost_usd": 0.059489,
+      "elapsed_seconds": 35.28,
+      "agent_duration_ms": 27581,
+      "extra_columns": []
+    },
+    {
+      "question_id": 99,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "00c7d0a648fe4adab92be55c69efd88e",
+      "final_sql": "WITH RECURSIVE bom_tree AS ( SELECT b.ref2 AS component_id, p.nm AS component_name, 1 AS lvl FROM bom b JOIN prod p ON p.prdc_id = b.ref2 WHERE b.ref3 = 680 AND b.end_dt IS NULL UNION ALL SELECT b.ref2, p.nm, bt.lvl + 1 FROM bom b JOIN prod p ON p.prdc_id = b.ref2 JOIN bom_tree bt ON bt.component_id = b.ref3 WHERE b.end_dt IS NULL ) SELECT DISTINCT component_name, lvl FROM bom_tree ORDER BY lvl, component_name",
+      "sql_history": [
+        "SELECT prdc_id, nm FROM prod WHERE nm LIKE 'HL Road Frame%'",
+        "WITH RECURSIVE bom_tree AS ( SELECT b.ref2 AS component_id, p.nm AS component_name, 1 AS lvl FROM bom b JOIN prod p ON p.prdc_id = b.ref2 WHERE b.ref3 = 680 AND b.end_dt IS NULL UNION ALL SELECT b.ref2, p.nm, bt.lvl + 1 FROM bom b JOIN prod p ON p.prdc_id = b.ref2 JOIN bom_tree bt ON bt.component_id = b.ref3 WHERE b.end_dt IS NULL ) SELECT DISTINCT component_name, lvl FROM bom_tree ORDER BY lvl, component_name"
+      ],
+      "agent_text": "结果如下，共 23 个组件（去重后），分布在 3 个装配层级：\n\n| 组件名称 | 层级 |\n|---|---|\n| Chain Stays | 1 |\n| Decal 1 | 1 |\n| Decal 2 | 1 |\n| Down Tube | 1 |\n| HL Fork | 1 |\n| Head Tube | 1 |\n| Paint - Black | 1 |\n| Seat Stays | 1 |\n| Seat Tube | 1 |\n| Top Tube | 1 |\n| Blade | 2 |\n| Fork Crown | 2 |\n| Fork End | 2 |\n| Metal Bar 2 | 2 |\n| Metal Sheet 2 | 2 |\n| Metal Sheet 3 | 2 |\n| Metal Sheet 4 | 2 |\n| Metal Sheet 5 | 2 |\n| Metal Sheet 7 | 2 |\n| Steerer | 2 |\n| Metal Sheet 2 | 3 |\n| Metal Sheet 5 | 3 |\n| Metal Sheet 6 | 3 |\n\n- **Level 1**（直接组件，10 个）：车架管材、贴花、前叉、黑色漆\n- **Level 2**（嵌套组件，通过 HL Fork 等递归展开，10 个）：前叉的子件如 Blade、Fork Crown、Steerer 等\n- **Level 3**（深层嵌套，3 个）：Metal Sheet 2/5/6，是 Level 2 组件的子件\n\n递归 CTE 以 `ref3=680`（HL Road Frame - Black, 58）为起点，沿 `bom.ref2→ref3` 逐层展开，每层 `end_dt IS NULL` 过滤当前生效记录，`level+1` 累加装配深度。",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 49702,
+        "output": 1865,
+        "cache_read": 164544,
+        "cache_write": 0,
+        "reasoning": 1192,
+        "total": 216111
+      },
+      "cost_usd": 0.106593,
+      "elapsed_seconds": 41.89,
+      "agent_duration_ms": 34192,
+      "extra_columns": []
+    },
+    {
+      "question_id": 100,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "630712d0181c43309712dd8e5da903b1",
+      "final_sql": "WITH RECURSIVE bom_tree AS ( SELECT b.ref2 AS component_id, 1 AS lvl FROM bom b WHERE b.ref3 = 680 AND b.end_dt IS NULL UNION ALL SELECT b.ref2, bt.lvl + 1 FROM bom b JOIN bom_tree bt ON bt.component_id = b.ref3 WHERE b.end_dt IS NULL ) SELECT COUNT(DISTINCT component_id) AS total_components FROM bom_tree",
+      "sql_history": [
+        "SELECT prdc_id, nm FROM prod WHERE nm LIKE '%HL Road Frame%'",
+        "WITH RECURSIVE bom_tree AS ( SELECT b.ref2 AS component_id, 1 AS lvl FROM bom b WHERE b.ref3 = 680 AND b.end_dt IS NULL UNION ALL SELECT b.ref2, bt.lvl + 1 FROM bom b JOIN bom_tree bt ON bt.component_id = b.ref3 WHERE b.end_dt IS NULL ) SELECT COUNT(DISTINCT component_id) AS total_components FROM bom_tree"
+      ],
+      "agent_text": "**21** 个组件（计入所有嵌套层级）用于装配 'HL Road Frame - Black, 58'。\n\n递归 CTE 从产品 ID 680 出发，沿 `bom` 表 `ref3→ref2`（父→子）逐层展开所有当前生效（`end_dt IS NULL`）的装配关系，对 `component_id` 取 `DISTINCT` 去重后计数。",
+      "tool_calls": 4,
+      "pass": false,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 51518,
+        "output": 2701,
+        "cache_read": 115328,
+        "cache_write": 0,
+        "reasoning": 2359,
+        "total": 169547
+      },
+      "cost_usd": 0.100304,
+      "elapsed_seconds": 151.36,
+      "agent_duration_ms": 143644,
+      "extra_columns": []
+    },
+    {
+      "question_id": 101,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "a7d89430a125480f8c35801fee96d43e",
+      "final_sql": "WITH RECURSIVE bom_tree AS ( SELECT b.ref2 AS component_id, 1 AS lvl FROM bom b WHERE b.ref3 = 680 AND b.end_dt IS NULL UNION ALL SELECT b.ref2, bt.lvl + 1 FROM bom b JOIN bom_tree bt ON b.ref3 = bt.component_id WHERE b.end_dt IS NULL ) SELECT MAX(lvl) AS deepest_assembly_level FROM bom_tree",
+      "sql_history": [
+        "SELECT prdc_id, nm FROM prod WHERE nm LIKE '%HL Road Frame%'",
+        "WITH RECURSIVE bom_tree AS ( SELECT b.ref2 AS component_id, 1 AS lvl FROM bom b WHERE b.ref3 = 680 AND b.end_dt IS NULL UNION ALL SELECT b.ref2, bt.lvl + 1 FROM bom b JOIN bom_tree bt ON b.ref3 = bt.component_id WHERE b.end_dt IS NULL ) SELECT MAX(lvl) AS deepest_assembly_level FROM bom_tree"
+      ],
+      "agent_text": "'HL Road Frame - Black, 58'（产品 ID 680）的物料清单最深装配层级为 **3** 层。\n\n递归 CTE 从该产品出发，沿 `bom` 表的 `ref3`（父/装配产品）→ `ref2`（子/组件）向下遍历，每层 `level + 1`，仅取 `end_dt IS NULL`（当前生效）的装配关系，最终 `MAX(level) = 3`。",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 50854,
+        "output": 1292,
+        "cache_read": 163136,
+        "cache_write": 0,
+        "reasoning": 942,
+        "total": 215282
+      },
+      "cost_usd": 0.105345,
+      "elapsed_seconds": 36.95,
+      "agent_duration_ms": 29146,
+      "extra_columns": []
+    },
+    {
+      "question_id": 102,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "2f9248c8543d4f8d8354e0a400a09d9a",
+      "final_sql": "WITH RECURSIVE bom_tree AS ( SELECT b.ref2 AS component_id, b.pr_assm_qty AS cumulative_qty, 1 AS lvl FROM bom b JOIN prod p ON b.ref3 = p.prdc_id WHERE p.nm = 'HL Road Frame - Black, 58' AND b.end_dt IS NULL UNION ALL SELECT b.ref2 AS component_id, bt.cumulative_qty * b.pr_assm_qty AS cumulative_qty, bt.lvl + 1 AS lvl FROM bom b JOIN bom_tree bt ON b.ref3 = bt.component_id WHERE b.end_dt IS NULL ) SELECT SUM(p.stnd_cst * bt.cumulative_qty) AS total_standard_cost FROM bom_tree bt JOIN prod p ON bt.component_id = p.prdc_id",
+      "sql_history": [
+        "SELECT prdc_id, nm, stnd_cst FROM prod WHERE nm LIKE '%HL Road Frame%Black%58%'",
+        "WITH RECURSIVE bom_tree AS ( SELECT b.ref2 AS component_id, b.pr_assm_qty AS cumulative_qty, 1 AS lvl FROM bom b JOIN prod p ON b.ref3 = p.prdc_id WHERE p.nm = 'HL Road Frame - Black, 58' AND b.end_dt IS NULL UNION ALL SELECT b.ref2 AS component_id, bt.cumulative_qty * b.pr_assm_qty AS cumulative_qty, bt.lvl + 1 AS lvl FROM bom b JOIN bom_tree bt ON b.ref3 = bt.component_id WHERE b.end_dt IS NULL ) SELECT SUM(p.stnd_cst * bt.cumulative_qty) AS total_standard_cost FROM bom_tree bt JOIN prod p ON bt.component_id = p.prdc_id"
+      ],
+      "agent_text": "**HL Road Frame - Black, 58** 的 BOM 所有层级组件标准成本总计为 **101.8936**。\n\n该 SQL 通过递归 CTE 从产品 'HL Road Frame - Black, 58' 出发，逐层展开 BOM（`bom.ref3`=父装配产品，`bom.ref2`=组件），每层用 `pr_assm_qty` 累乘数量，最终 `SUM(标准成本 × 累计数量)` 得到总成本。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 51678,
+        "output": 3491,
+        "cache_read": 115456,
+        "cache_write": 0,
+        "reasoning": 3004,
+        "total": 170625
+      },
+      "cost_usd": 0.103687,
+      "elapsed_seconds": 114.3,
+      "agent_duration_ms": 106575,
+      "extra_columns": []
+    },
+    {
+      "question_id": 103,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "aeed58544c6040e78df1381ec2d5199f",
+      "final_sql": "WITH RECURSIVE bom_up AS ( SELECT b.ref3 AS prdc_id FROM bom b WHERE b.ref2 = (SELECT prdc_id FROM prod WHERE nm = 'Adjustable Race') AND b.end_dt IS NULL UNION SELECT b.ref3 AS prdc_id FROM bom b JOIN bom_up u ON b.ref2 = u.prdc_id WHERE b.end_dt IS NULL ) SELECT DISTINCT p.nm FROM bom_up u JOIN prod p ON p.prdc_id = u.prdc_id ORDER BY p.nm",
+      "sql_history": [
+        "WITH RECURSIVE bom_up AS ( SELECT b.ref3 AS prdc_id FROM bom b WHERE b.ref2 = (SELECT prdc_id FROM prod WHERE nm = 'Adjustable Race') AND b.end_dt IS NULL UNION SELECT b.ref3 AS prdc_id FROM bom b JOIN bom_up u ON b.ref2 = u.prdc_id WHERE b.end_dt IS NULL ) SELECT DISTINCT p.nm FROM bom_up u JOIN prod p ON p.prdc_id = u.prdc_id ORDER BY p.nm"
+      ],
+      "agent_text": "使用 'Adjustable Race' 作为组件（直接或间接）的产品共 27 个，均为 Headset 系列和 Mountain 系列自行车。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 25591,
+        "output": 999,
+        "cache_read": 140288,
+        "cache_write": 0,
+        "reasoning": 710,
+        "total": 166878
+      },
+      "cost_usd": 0.068374,
+      "elapsed_seconds": 32.78,
+      "agent_duration_ms": 24912,
+      "extra_columns": []
+    },
+    {
+      "question_id": 104,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "6c5677ee42674b9882fc8701b3fd50e6",
+      "final_sql": "SELECT COUNT(*) AS intermediate_component_count FROM ( SELECT DISTINCT b1.ref2 AS product_id FROM bom b1 WHERE b1.end_dt IS NULL AND b1.ref2 IN ( SELECT DISTINCT b2.ref3 FROM bom b2 WHERE b2.end_dt IS NULL ) ) AS intermediate",
+      "sql_history": [
+        "SELECT COUNT(*) AS intermediate_component_count FROM ( SELECT DISTINCT b1.ref2 AS product_id FROM bom b1 WHERE b1.end_dt IS NULL AND b1.ref2 IN ( SELECT DISTINCT b2.ref3 FROM bom b2 WHERE b2.end_dt IS NULL ) ) AS intermediate"
+      ],
+      "agent_text": "**238**\n\n这些产品在当前生效的 BOM 记录中既作为组件（`ref2`）出现、又作为装配父件（`ref3`）出现，即中间组件。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 23690,
+        "output": 676,
+        "cache_read": 92992,
+        "cache_write": 0,
+        "reasoning": 482,
+        "total": 117358
+      },
+      "cost_usd": 0.05345,
+      "elapsed_seconds": 21.76,
+      "agent_duration_ms": 14116,
+      "extra_columns": []
+    },
+    {
+      "question_id": 105,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "e6b96afc3de2467d943d35791fa8e717",
+      "final_sql": "SELECT COUNT(DISTINCT ref8) AS customer_count FROM so_hdr WHERE ordr_dt >= '2013-01-01' AND ordr_dt < '2014-01-01'",
+      "sql_history": [
+        "SELECT COUNT(DISTINCT ref8) AS customer_count FROM so_hdr WHERE ordr_dt >= '2013-01-01' AND ordr_dt < '2014-01-01'"
+      ],
+      "agent_text": "**11,095** 个客户在 2013 年下了至少一笔订单。\n\n最终 SQL：\n\n```sql\nSELECT COUNT(DISTINCT ref8) AS customer_count\nFROM so_hdr\nWHERE ordr_dt >= '2013-01-01' AND ordr_dt < '2014-01-01'\n```\n\n逻辑：从销售订单头表 `so_hdr` 中，筛选 2013 年的订单（`ordr_dt` 在 2013 年内），对客户编号列 `ref8`（外键指向 `cust.cstm_id`）做 `COUNT(DISTINCT)` 去重计数。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 46550,
+        "output": 532,
+        "cache_read": 69760,
+        "cache_write": 0,
+        "reasoning": 278,
+        "total": 116842
+      },
+      "cost_usd": 0.07473,
+      "elapsed_seconds": 23.28,
+      "agent_duration_ms": 15257,
+      "extra_columns": []
+    },
+    {
+      "question_id": 106,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "eb514c7fdb304de1a51e6f8131bd3aac",
+      "final_sql": "SELECT t.nm AS territory_name, SUM(h.ttl_due) AS total_order_value FROM so_hdr h JOIN sls_terr t ON h.ref6 = t.trrt_id GROUP BY t.nm ORDER BY total_order_value DESC",
+      "sql_history": [
+        "SELECT t.nm AS territory_name, SUM(h.ttl_due) AS total_order_value FROM so_hdr h JOIN sls_terr t ON h.ref6 = t.trrt_id GROUP BY t.nm ORDER BY total_order_value DESC"
+      ],
+      "agent_text": "结果如上，按销售区域（`sls_terr.nm`）汇总销售订单应付总额（`so_hdr.ttl_due`），从高到低排列。Southwest 以 ~2715 万居首，Germany 以 ~548 万垫底。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 46772,
+        "output": 416,
+        "cache_read": 69760,
+        "cache_write": 0,
+        "reasoning": 228,
+        "total": 116948
+      },
+      "cost_usd": 0.074533,
+      "elapsed_seconds": 22.32,
+      "agent_duration_ms": 14631,
+      "extra_columns": []
+    },
+    {
+      "question_id": 107,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "3be60c3752624645a6b0ea05931830b2",
+      "final_sql": "SELECT so.sls_ordr_nmbr, ba.cty AS billing_city, sa.cty AS shipping_city FROM so_hdr so JOIN addr ba ON so.ref5 = ba.addr_id JOIN addr sa ON so.ref4 = sa.addr_id WHERE ba.cty <> sa.cty",
+      "sql_history": [
+        "SELECT so.sls_ordr_nmbr, ba.cty AS billing_city, sa.cty AS shipping_city FROM so_hdr so JOIN addr ba ON so.ref5 = ba.addr_id JOIN addr sa ON so.ref4 = sa.addr_id WHERE ba.cty <> sa.cty"
+      ],
+      "agent_text": "返回 13 笔账单地址与收货地址在不同城市的销售订单，列出了订单号及两个城市。",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 23959,
+        "output": 658,
+        "cache_read": 92864,
+        "cache_write": 0,
+        "reasoning": 440,
+        "total": 117481
+      },
+      "cost_usd": 0.05367,
+      "elapsed_seconds": 22.23,
+      "agent_duration_ms": 14264,
+      "extra_columns": []
+    },
+    {
+      "question_id": 108,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "c1714779464f4bc08662b338ca72b666",
+      "final_sql": "SELECT pc.nm AS product_category, SUM(d.ordr_qty) AS total_quantity_sold, SUM(d.ln_ttl) AS total_revenue FROM prod_cat pc JOIN prod_sub ps ON ps.ref1 = pc.prdc_ctgr_id JOIN prod p ON p.ref2 = ps.prdc_sbct_id JOIN so_dtl d ON d.ref2 = p.prdc_id GROUP BY pc.prdc_ctgr_id, pc.nm ORDER BY pc.nm",
+      "sql_history": [
+        "SELECT pc.nm AS product_category, SUM(d.ordr_qty) AS total_quantity_sold, SUM(d.ln_ttl) AS total_revenue FROM prod_cat pc JOIN prod_sub ps ON ps.ref1 = pc.prdc_ctgr_id JOIN prod p ON p.ref2 = ps.prdc_sbct_id JOIN so_dtl d ON d.ref2 = p.prdc_id GROUP BY pc.prdc_ctgr_id, pc.nm ORDER BY pc.nm"
+      ],
+      "agent_text": "结果如下：\n\n| Product Category | Total Quantity Sold | Total Revenue |\n|---|---|---|\n| Accessories | 61,932 | 1,271,371.00 |\n| Bikes | 90,268 | 94,649,354.00 |\n| Clothing | 73,670 | 2,120,419.00 |\n| Components | 49,044 | 11,802,915.00 |\n\nBikes 是收入主力（约 9465 万），远超其他三类；Accessories 数量不少但客单价低，收入最低。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 25790,
+        "output": 664,
+        "cache_read": 90752,
+        "cache_write": 0,
+        "reasoning": 296,
+        "total": 117206
+      },
+      "cost_usd": 0.055384,
+      "elapsed_seconds": 35.01,
+      "agent_duration_ms": 27257,
+      "extra_columns": []
+    },
+    {
+      "question_id": 109,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "984714ec42cf4cb59dc215627b47de3d",
+      "final_sql": "SELECT COUNT(DISTINCT c.cstm_id) AS customer_count FROM cust c INNER JOIN prsn_crd pc ON c.ref3 = pc.ref1 INNER JOIN so_hdr s ON s.ref8 = c.cstm_id WHERE YEAR(s.ordr_dt) = 2013",
+      "sql_history": [
+        "SELECT COUNT(DISTINCT c.cstm_id) AS customer_count FROM cust c INNER JOIN prsn_crd pc ON c.ref3 = pc.ref1 INNER JOIN so_hdr s ON s.ref8 = c.cstm_id WHERE YEAR(s.ordr_dt) = 2013"
+      ],
+      "agent_text": "**11,094** 位客户同时满足：有信用卡存档（`prsn_crd` 中有记录）且在 2013 年至少下过一单。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 25442,
+        "output": 2416,
+        "cache_read": 92864,
+        "cache_write": 0,
+        "reasoning": 2132,
+        "total": 120722
+      },
+      "cost_usd": 0.062482,
+      "elapsed_seconds": 50.55,
+      "agent_duration_ms": 42918,
+      "extra_columns": []
+    },
+    {
+      "question_id": 110,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "de3f950e6b5442d4a9c29b9dec59a6f2",
+      "final_sql": "SELECT p.frst_nm, p.lst_nm, SUM(s.ttl_due) AS total_due FROM so_hdr s JOIN cust c ON s.ref8 = c.cstm_id JOIN prsn p ON c.ref3 = p.ref1 WHERE c.ref3 IS NOT NULL GROUP BY c.cstm_id, p.frst_nm, p.lst_nm ORDER BY total_due DESC, p.lst_nm, p.frst_nm LIMIT 5",
+      "sql_history": [
+        "SELECT p.frst_nm, p.lst_nm, SUM(s.ttl_due) AS total_due FROM so_hdr s JOIN cust c ON s.ref8 = c.cstm_id JOIN prsn p ON c.ref3 = p.ref1 WHERE c.ref3 IS NOT NULL GROUP BY c.cstm_id, p.frst_nm, p.lst_nm ORDER BY total_due DESC, p.lst_nm, p.frst_nm LIMIT 5"
+      ],
+      "agent_text": "Top 5 customers by total order value (TotalDue):\n\n| First Name | Last Name | Total Due |\n|---|---|---|\n| Roger | Harui | 989,184.08 |\n| Andrew | Dixon | 961,675.86 |\n| Reuben | D'sa | 954,021.92 |\n| Robert | Vessa | 919,801.82 |\n| Ryan | Calafato | 901,346.86 |\n\n过滤条件：`cust.ref3 IS NOT NULL`（仅自然人客户，排除门店）；按 `SUM(so_hdr.ttl_due)` 降序取前 5，以 `lst_nm, frst_nm` 做 tiebreaker。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 26414,
+        "output": 1139,
+        "cache_read": 90752,
+        "cache_write": 0,
+        "reasoning": 813,
+        "total": 118305
+      },
+      "cost_usd": 0.058033,
+      "elapsed_seconds": 59.25,
+      "agent_duration_ms": 51293,
+      "extra_columns": []
+    },
+    {
+      "question_id": 111,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "0f1fc29e16774c82bd809c0959ae710e",
+      "final_sql": "SELECT COUNT(*) AS order_count FROM so_hdr h WHERE YEAR(h.ordr_dt) = 2013 AND EXISTS ( SELECT 1 FROM cust c JOIN biz_addr ba ON COALESCE(c.ref3, c.ref1) = ba.ref1 JOIN addr a ON ba.ref3 = a.addr_id JOIN st_prv sp ON a.ref1 = sp.stt_prvn_id JOIN cnty cn ON sp.ref2 = cn.cntr_rgn_cd WHERE c.cstm_id = h.ref8 AND cn.nm = 'Canada' )",
+      "sql_history": [
+        "SELECT * FROM cnty WHERE nm LIKE '%Canada%'",
+        "SELECT COUNT(*) AS order_count FROM so_hdr h WHERE YEAR(h.ordr_dt) = 2013 AND EXISTS ( SELECT 1 FROM cust c JOIN biz_addr ba ON COALESCE(c.ref3, c.ref1) = ba.ref1 JOIN addr a ON ba.ref3 = a.addr_id JOIN st_prv sp ON a.ref1 = sp.stt_prvn_id JOIN cnty cn ON sp.ref2 = cn.cntr_rgn_cd WHERE c.cstm_id = h.ref8 AND cn.nm = 'Canada' )"
+      ],
+      "agent_text": "**2013年加拿大客户的订单数：1623**\n\n最终 SQL 逻辑：\n- `so_hdr` 按 `YEAR(ordr_dt) = 2013` 筛选订单\n- 通过 `ref8` 关联客户，再用 `COALESCE(ref3, ref1)` 取得业务实体 ID（个人客户走 `ref3`→`prsn`，门店客户走 `ref1`→`stor`）\n- 经 `biz_addr` → `addr` → `st_prv` → `cnty` 链路判断客户地址是否在 Canada\n- 用 `EXISTS` 避免一人多地址导致的 fan-out 重复计数",
+      "tool_calls": 5,
+      "pass": false,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 59737,
+        "output": 7584,
+        "cache_read": 166464,
+        "cache_write": 0,
+        "reasoning": 7085,
+        "total": 233785
+      },
+      "cost_usd": 0.141972,
+      "elapsed_seconds": 111.66,
+      "agent_duration_ms": 103806,
+      "extra_columns": []
+    },
+    {
+      "question_id": 112,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "59141c50466c476ea84799dcc7a0d9b4",
+      "final_sql": "SELECT p.frst_nm, p.lst_nm, COUNT(*) AS order_count FROM so_hdr h JOIN emp e ON h.ref7 = e.ref1 JOIN prsn p ON e.ref1 = p.ref1 WHERE YEAR(h.ordr_dt) = 2013 GROUP BY e.ref1, p.frst_nm, p.lst_nm ORDER BY order_count DESC, p.lst_nm, p.frst_nm",
+      "sql_history": [
+        "SELECT p.frst_nm, p.lst_nm, COUNT(*) AS order_count FROM so_hdr h JOIN emp e ON h.ref7 = e.ref1 JOIN prsn p ON e.ref1 = p.ref1 WHERE YEAR(h.ordr_dt) = 2013 GROUP BY e.ref1, p.frst_nm, p.lst_nm ORDER BY order_count DESC, p.lst_nm, p.frst_nm"
+      ],
+      "agent_text": "2013年各销售员处理的订单数如下，按订单数降序排列：\n\n| 名 | 姓 | 订单数 |\n|---|---|---|\n| Jillian | Carson | 185 |\n| Michael | Blythe | 175 |\n| Jae | Pak | 170 |\n| Linda | Mitchell | 162 |\n| Tsvi | Reiter | 159 |\n| Shu | Ito | 98 |\n| Ranjit | Varkey Chudukatil | 94 |\n| Garrett | Vargas | 89 |\n| José | Saraiva | 86 |\n| Rachel | Valdez | 86 |\n| Tete | Mensa-Annan | 82 |\n| David | Campbell | 72 |\n| Lynn | Tsoflias | 66 |\n| Amy | Alberts | 29 |\n| Pamela | Ansman-Wolfe | 19 |\n| Stephen | Jiang | 14 |\n| Syed | Abbas | 12 |\n\n共17位销售员在2013年处理了订单，Jillian Carson 最多（185单），Syed Abbas 最少（12单）。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 50282,
+        "output": 4060,
+        "cache_read": 69760,
+        "cache_write": 0,
+        "reasoning": 3601,
+        "total": 124102
+      },
+      "cost_usd": 0.093321,
+      "elapsed_seconds": 77.83,
+      "agent_duration_ms": 70041,
+      "extra_columns": []
+    },
+    {
+      "question_id": 113,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "23b09434ac4a422985ccf7566ba51d16",
+      "final_sql": "SELECT p.nm FROM prod p WHERE p.fnsh_gds_flg = 1 AND NOT EXISTS (SELECT 1 FROM so_dtl s WHERE s.ref2 = p.prdc_id)",
+      "sql_history": [
+        "SELECT p.nm FROM prod p WHERE p.fnsh_gds_flg = 1 AND NOT EXISTS (SELECT 1 FROM so_dtl s WHERE s.ref2 = p.prdc_id)"
+      ],
+      "agent_text": "27 个成品从未被下单过，名称如上所列。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 47046,
+        "output": 555,
+        "cache_read": 69696,
+        "cache_write": 0,
+        "reasoning": 421,
+        "total": 117297
+      },
+      "cost_usd": 0.075402,
+      "elapsed_seconds": 29.46,
+      "agent_duration_ms": 21762,
+      "extra_columns": []
+    },
+    {
+      "question_id": 114,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "3291d2e94e5b4c93bff3653fce30198b",
+      "final_sql": "SELECT substr(ordr_dt,1,7) AS month, AVG(ttl_due) AS avg_total_due FROM so_hdr WHERE substr(ordr_dt,1,4) = '2013' GROUP BY substr(ordr_dt,1,7)",
+      "sql_history": [
+        "SELECT substr(ordr_dt,1,7) AS month, AVG(ttl_due) AS avg_total_due FROM so_hdr WHERE substr(ordr_dt,1,4) = '2013' GROUP BY substr(ordr_dt,1,7)"
+      ],
+      "agent_text": "结果如上：2013年每月的平均订单金额（TotalDue），按 `substr(ordr_dt,1,7)` 分组得到 2013-01 到 2013-12 共12个月的平均值。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 46959,
+        "output": 462,
+        "cache_read": 69824,
+        "cache_write": 0,
+        "reasoning": 284,
+        "total": 117245
+      },
+      "cost_usd": 0.074957,
+      "elapsed_seconds": 32.21,
+      "agent_duration_ms": 24144,
+      "extra_columns": []
+    },
+    {
+      "question_id": 115,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "e0465c1ceca44298afd9dc45dc80f26f",
+      "final_sql": "SELECT AVG(cnt) AS avg_line_items_per_order FROM ( SELECT d.ref3, COUNT(*) AS cnt FROM so_dtl d JOIN so_hdr h ON d.ref3 = h.sls_ordr_id WHERE YEAR(h.ordr_dt) = 2013 GROUP BY d.ref3 ) t",
+      "sql_history": [
+        "SELECT AVG(cnt) AS avg_line_items_per_order FROM ( SELECT d.ref3, COUNT(*) AS cnt FROM so_dtl d JOIN so_hdr h ON d.ref3 = h.sls_ordr_id WHERE YEAR(h.ordr_dt) = 2013 GROUP BY d.ref3 ) t"
+      ],
+      "agent_text": "2013年每个销售订单的平均行项目数为 **3.99**（即平均每个订单约4个明细行）。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 24023,
+        "output": 1015,
+        "cache_read": 92864,
+        "cache_write": 0,
+        "reasoning": 840,
+        "total": 117902
+      },
+      "cost_usd": 0.055175,
+      "elapsed_seconds": 26.75,
+      "agent_duration_ms": 18860,
+      "extra_columns": []
+    },
+    {
+      "question_id": 116,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "d6b93831b238481ab82e00e5fe801294",
+      "final_sql": "SELECT d.nm AS department, COUNT(*) AS headcount FROM emp_dept_hist h JOIN dept d ON h.ref2 = d.dprt_id WHERE h.end_dt IS NULL GROUP BY d.dprt_id, d.nm ORDER BY headcount DESC",
+      "sql_history": [
+        "SELECT d.nm AS department, COUNT(*) AS headcount FROM emp_dept_hist h JOIN dept d ON h.ref2 = d.dprt_id WHERE h.end_dt IS NULL GROUP BY d.dprt_id, d.nm ORDER BY headcount DESC"
+      ],
+      "agent_text": "结果如上：Production 部门当前在职人数最多（179人），Executive 最少（2人），共 16 个部门。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 47710,
+        "output": 1361,
+        "cache_read": 69760,
+        "cache_write": 0,
+        "reasoning": 1197,
+        "total": 118831
+      },
+      "cost_usd": 0.079438,
+      "elapsed_seconds": 37.87,
+      "agent_duration_ms": 29872,
+      "extra_columns": []
+    },
+    {
+      "question_id": 117,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "823d8e75d2ac4eb48b0c33d57b485346",
+      "final_sql": "SELECT p.frst_nm, p.lst_nm, COUNT(DISTINCT h.ref2) AS dept_count FROM emp_dept_hist h JOIN emp e ON h.ref3 = e.ref1 JOIN prsn p ON e.ref1 = p.ref1 GROUP BY h.ref3, p.frst_nm, p.lst_nm HAVING COUNT(DISTINCT h.ref2) > 1",
+      "sql_history": [
+        "SELECT p.frst_nm, p.lst_nm, COUNT(DISTINCT h.ref2) AS dept_count FROM emp_dept_hist h JOIN emp e ON h.ref3 = e.ref1 JOIN prsn p ON e.ref1 = p.ref1 GROUP BY h.ref3, p.frst_nm, p.lst_nm HAVING COUNT(DISTINCT h.ref2) > 1"
+      ],
+      "agent_text": "结果如下：\n\n| 名 | 姓 | 部门数 |\n|---|---|---|\n| Rob | Walters | 2 |\n| David | Bradley | 2 |\n| William | Vong | 2 |\n| Laura | Norman | 2 |\n| Sheela | Word | 3 |\n\n共 5 名员工曾在多个部门工作。其中 Sheela Word 经历过 3 个部门，其余 4 人各经历过 2 个部门。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 24790,
+        "output": 1580,
+        "cache_read": 92672,
+        "cache_write": 0,
+        "reasoning": 1205,
+        "total": 119042
+      },
+      "cost_usd": 0.058309,
+      "elapsed_seconds": 38.04,
+      "agent_duration_ms": 30300,
+      "extra_columns": []
+    },
+    {
+      "question_id": 118,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "4dc8340309704b2abbbdf8017b12bab5",
+      "final_sql": "SELECT p.frst_nm, p.lst_nm, COUNT(*) AS change_count FROM emp_pay_hist h JOIN emp e ON h.ref1 = e.ref1 JOIN prsn p ON e.ref1 = p.ref1 GROUP BY p.ref1, p.frst_nm, p.lst_nm ORDER BY change_count DESC, p.lst_nm, p.frst_nm",
+      "sql_history": [
+        "SELECT p.frst_nm, p.lst_nm, COUNT(*) AS change_count FROM emp_pay_hist h JOIN emp e ON h.ref1 = e.ref1 JOIN prsn p ON e.ref1 = p.ref1 GROUP BY p.ref1, p.frst_nm, p.lst_nm ORDER BY change_count DESC, p.lst_nm, p.frst_nm"
+      ],
+      "agent_text": "结果已出：\n\n- **13 名员工**的薪资变动 3 次（最多）\n- 其余员工均为 1 次\n\nSQL 逻辑：`emp_pay_hist` 每行代表一次调薪记录（`rt_chng_dt`），按员工 `ref1` 关联 `emp` → `prsn` 取姓名，`COUNT(*)` 即变动次数，按次数降序排列。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 51779,
+        "output": 5241,
+        "cache_read": 69696,
+        "cache_write": 0,
+        "reasoning": 4885,
+        "total": 126716
+      },
+      "cost_usd": 0.099826,
+      "elapsed_seconds": 103.29,
+      "agent_duration_ms": 95305,
+      "extra_columns": []
+    },
+    {
+      "question_id": 119,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "5a80957de83744879dcf34b07565fb6d",
+      "final_sql": "SELECT v.nm AS vendor_name, COUNT(DISTINCT pv.ref3) AS product_count FROM vnd v JOIN prod_vnd pv ON v.ref1 = pv.ref2 GROUP BY v.ref1, v.nm ORDER BY product_count DESC, v.nm LIMIT 10",
+      "sql_history": [
+        "SELECT v.nm AS vendor_name, COUNT(DISTINCT pv.ref3) AS product_count FROM vnd v JOIN prod_vnd pv ON v.ref1 = pv.ref2 GROUP BY v.ref1, v.nm ORDER BY product_count DESC, v.nm LIMIT 10"
+      ],
+      "agent_text": "结果如上。Top 10 供应商按供应不同产品数降序排列，Mountain Works 以 30 个产品居首。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 48443,
+        "output": 2124,
+        "cache_read": 69760,
+        "cache_write": 0,
+        "reasoning": 1849,
+        "total": 120327
+      },
+      "cost_usd": 0.08337,
+      "elapsed_seconds": 39.81,
+      "agent_duration_ms": 32236,
+      "extra_columns": []
+    },
+    {
+      "question_id": 120,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "606efb04041f41e9b4a6a3289dce28df",
+      "final_sql": "SELECT v.nm AS vendor_name, COUNT(*) AS purchase_order_count FROM po_hdr p JOIN vnd v ON p.ref2 = v.ref1 GROUP BY v.ref1, v.nm ORDER BY purchase_order_count DESC, v.nm",
+      "sql_history": [
+        "SELECT v.nm AS vendor_name, COUNT(*) AS purchase_order_count FROM po_hdr p JOIN vnd v ON p.ref2 = v.ref1 GROUP BY v.ref1, v.nm ORDER BY purchase_order_count DESC, v.nm"
+      ],
+      "agent_text": "结果如上：每个供应商的采购订单数量，按数量降序排列。所有供应商各有 51 笔采购订单，按供应商名称作为次级排序键排列。",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 57010,
+        "output": 4013,
+        "cache_read": 164224,
+        "cache_write": 0,
+        "reasoning": 3764,
+        "total": 225247
+      },
+      "cost_usd": 0.123878,
+      "elapsed_seconds": 66.37,
+      "agent_duration_ms": 58558,
+      "extra_columns": []
+    },
+    {
+      "question_id": 121,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "fdc0b834a30b48f3bc28daa1cc88ba6c",
+      "final_sql": "SELECT COUNT(*) AS product_count FROM ( SELECT ref3 FROM prod_vnd GROUP BY ref3 HAVING COUNT(DISTINCT ref2) > 1 ) t",
+      "sql_history": [
+        "SELECT COUNT(*) AS product_count FROM ( SELECT ref3 FROM prod_vnd GROUP BY ref3 HAVING COUNT(DISTINCT ref2) > 1 ) t"
+      ],
+      "agent_text": "**152** 个产品由不止一个供应商供应。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 25473,
+        "output": 328,
+        "cache_read": 90752,
+        "cache_write": 0,
+        "reasoning": 196,
+        "total": 116553
+      },
+      "cost_usd": 0.05366,
+      "elapsed_seconds": 19.4,
+      "agent_duration_ms": 11741,
+      "extra_columns": []
+    },
+    {
+      "question_id": 122,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "c782be163e704ad58baa383af2ca5c09",
+      "final_sql": "SELECT jb_ttl, COUNT(*) AS cnt FROM emp GROUP BY jb_ttl ORDER BY cnt DESC, jb_ttl LIMIT 5",
+      "sql_history": [
+        "SELECT jb_ttl, COUNT(*) AS cnt FROM emp GROUP BY jb_ttl ORDER BY cnt DESC, jb_ttl LIMIT 5"
+      ],
+      "agent_text": "Top 5 最常见职位：\n\n| 职位 | 人数 |\n|---|---|\n| Production Technician - WC40 | 26 |\n| Production Technician - WC50 | 26 |\n| Production Technician - WC60 | 26 |\n| Production Technician - WC30 | 25 |\n| Production Technician - WC20 | 22 |",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 25601,
+        "output": 427,
+        "cache_read": 90752,
+        "cache_write": 0,
+        "reasoning": 253,
+        "total": 116780
+      },
+      "cost_usd": 0.05421,
+      "elapsed_seconds": 21.83,
+      "agent_duration_ms": 14162,
+      "extra_columns": []
+    },
+    {
+      "question_id": 123,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "a69b1c9535a04f30aad4d978fcc75948",
+      "final_sql": "SELECT p.frst_nm, p.mddl_nm, p.lst_nm, e.jb_ttl FROM emp_dept_hist h JOIN dept d ON h.ref2 = d.dprt_id JOIN emp e ON h.ref3 = e.ref1 JOIN prsn p ON e.ref1 = p.ref1 WHERE d.nm = 'Sales' AND h.end_dt IS NULL ORDER BY p.lst_nm",
+      "sql_history": [
+        "SELECT p.frst_nm, p.mddl_nm, p.lst_nm, e.jb_ttl FROM emp_dept_hist h JOIN dept d ON h.ref2 = d.dprt_id JOIN emp e ON h.ref3 = e.ref1 JOIN prsn p ON e.ref1 = p.ref1 WHERE d.nm = 'Sales' AND h.end_dt IS NULL ORDER BY p.lst_nm"
+      ],
+      "agent_text": "结果返回了 18 名当前在 Sales 部门在职的员工，按姓排序。Full name 按规则拆为 `frst_nm`、`mddl_nm`、`lst_nm` 三列，job title 取自 `emp.jb_ttl`。\n\n关键 JOIN 路径：\n- `emp_dept_hist`（`end_dt IS NULL` = 当前在职部门）→ `dept`（`nm = 'Sales'`）\n- `emp_dept_hist.ref3` → `emp.ref1`（员工）\n- `emp.ref1` → `prsn.ref1`（人员姓名）",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 48714,
+        "output": 1082,
+        "cache_read": 115328,
+        "cache_write": 0,
+        "reasoning": 747,
+        "total": 165124
+      },
+      "cost_usd": 0.090464,
+      "elapsed_seconds": 32.75,
+      "agent_duration_ms": 25051,
+      "extra_columns": [
+        "mddl_nm"
+      ]
+    },
+    {
+      "question_id": 124,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "7d0184950e234a9097a3d73087b69b93",
+      "final_sql": "SELECT s.nm AS store_name, a.cty AS city, sp.nm AS state_province FROM stor s JOIN biz_ent be ON s.ref2 = be.bsns_entt_id JOIN biz_addr ba ON ba.ref1 = be.bsns_entt_id JOIN addr a ON ba.ref3 = a.addr_id JOIN st_prv sp ON a.ref1 = sp.stt_prvn_id ORDER BY s.nm",
+      "sql_history": [
+        "SELECT s.nm, COUNT(*) AS addr_cnt FROM stor s JOIN biz_ent be ON s.ref2 = be.bsns_entt_id JOIN biz_addr ba ON ba.ref1 = be.bsns_entt_id GROUP BY s.nm",
+        "SELECT s.nm AS store_name, a.cty AS city, sp.nm AS state_province FROM stor s JOIN biz_ent be ON s.ref2 = be.bsns_entt_id JOIN biz_addr ba ON ba.ref1 = be.bsns_entt_id JOIN addr a ON ba.ref3 = a.addr_id JOIN st_prv sp ON a.ref1 = sp.stt_prvn_id ORDER BY s.nm"
+      ],
+      "agent_text": "结果已返回，共 27 行（其中 \"All Cycle Shop\" 出现两次，因其有 2 个地址），按 store_name 排序。SQL 即为最终答案，不再执行其他查询。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 53471,
+        "output": 3503,
+        "cache_read": 115328,
+        "cache_write": 0,
+        "reasoning": 3117,
+        "total": 172302
+      },
+      "cost_usd": 0.105856,
+      "elapsed_seconds": 102.71,
+      "agent_duration_ms": 94919,
+      "extra_columns": []
+    },
+    {
+      "question_id": 125,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "1a085345c8754c7286468d66aaa58c5e",
+      "final_sql": "SELECT COUNT(*) AS emp_no_suffix_count FROM emp e JOIN prsn p ON e.ref1 = p.ref1 WHERE p.sffx IS NULL",
+      "sql_history": [
+        "SELECT COUNT(*) AS emp_no_suffix_count FROM emp e JOIN prsn p ON e.ref1 = p.ref1 WHERE p.sffx IS NULL"
+      ],
+      "agent_text": "**288** 名员工没有姓名后缀。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 23444,
+        "output": 383,
+        "cache_read": 92864,
+        "cache_write": 0,
+        "reasoning": 218,
+        "total": 116691
+      },
+      "cost_usd": 0.051952,
+      "elapsed_seconds": 49.9,
+      "agent_duration_ms": 42448,
+      "extra_columns": []
+    },
+    {
+      "question_id": 126,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "c3c01fa2bf6c4549acf780eb9a3a82bf",
+      "final_sql": "SELECT p.frst_nm, p.mddl_nm, p.lst_nm, e.jb_ttl FROM emp e JOIN prsn p ON e.ref1 = p.ref1 JOIN emp_pay_hist ph ON ph.ref1 = e.ref1 WHERE ph.rt_chng_dt = ( SELECT MAX(ph2.rt_chng_dt) FROM emp_pay_hist ph2 WHERE ph2.ref1 = ph.ref1 ) AND ph.rt > 50",
+      "sql_history": [
+        "SELECT p.frst_nm, p.mddl_nm, p.lst_nm, e.jb_ttl FROM emp e JOIN prsn p ON e.ref1 = p.ref1 JOIN emp_pay_hist ph ON ph.ref1 = e.ref1 WHERE ph.rt_chng_dt = ( SELECT MAX(ph2.rt_chng_dt) FROM emp_pay_hist ph2 WHERE ph2.ref1 = ph.ref1 ) AND ph.rt > 50"
+      ],
+      "agent_text": "最新时薪超过 $50 的员工共 7 人：\n\n| 名 | 中间名 | 姓 | 职位 |\n|---|---|---|---|\n| Ken | J | Sánchez | Chief Executive Officer |\n| Terri | Lee | Duffy | Vice President of Engineering |\n| Dylan | A | Miller | Research and Development Manager |\n| James | R | Hamilton | Vice President of Production |\n| Laura | F | Norman | Chief Financial Officer |\n| Jean | E | Trenary | Information Services Manager |\n| Brian | S | Welcker | Vice President of Sales |\n\nSQL 逻辑：从 `emp_pay_hist` 取每个员工 `rt_chng_dt` 最新一行的 `rt`，筛选 `> 50`，JOIN `emp` 拿职位、JOIN `prsn` 拿全名（名+中间名+姓三列）。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 26435,
+        "output": 1252,
+        "cache_read": 90752,
+        "cache_write": 0,
+        "reasoning": 893,
+        "total": 118439
+      },
+      "cost_usd": 0.05851,
+      "elapsed_seconds": 29.18,
+      "agent_duration_ms": 21633,
+      "extra_columns": [
+        "mddl_nm"
+      ]
+    },
+    {
+      "question_id": 127,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "c6bd98d62eee42d1b51ab6732220312b",
+      "final_sql": "SELECT COUNT(DISTINCT edh.ref3) AS emp_count FROM emp_dept_hist edh JOIN dept d ON edh.ref2 = d.dprt_id JOIN emp_pay_hist eph ON edh.ref3 = eph.ref1 JOIN ( SELECT ref1, MAX(rt_chng_dt) AS max_dt FROM emp_pay_hist GROUP BY ref1 ) latest ON eph.ref1 = latest.ref1 AND eph.rt_chng_dt = latest.max_dt WHERE d.nm = 'Production' AND edh.end_dt IS NULL AND eph.rt > 20",
+      "sql_history": [
+        "SELECT COUNT(DISTINCT edh.ref3) AS emp_count FROM emp_dept_hist edh JOIN dept d ON edh.ref2 = d.dprt_id JOIN emp_pay_hist eph ON edh.ref3 = eph.ref1 JOIN ( SELECT ref1, MAX(rt_chng_dt) AS max_dt FROM emp_pay_hist GROUP BY ref1 ) latest ON eph.ref1 = latest.ref1 AND eph.rt_chng_dt = latest.max_dt WHERE d.nm = 'Production' AND edh.end_dt IS NULL AND eph.rt > 20"
+      ],
+      "agent_text": "**22 名员工**当前在 Production 部门工作且最新时薪超过 $20/小时。\n\nSQL 逻辑：\n- `emp_dept_hist` 筛选 `end_dt IS NULL`（当前在职部门）+ `dept.nm = 'Production'`\n- `emp_pay_hist` 通过子查询取每人 `MAX(rt_chng_dt)` 最新调薪记录，再筛选 `rt > 20`\n- `COUNT(DISTINCT employee)` 去重计数",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 48710,
+        "output": 2246,
+        "cache_read": 116800,
+        "cache_write": 0,
+        "reasoning": 1898,
+        "total": 167756
+      },
+      "cost_usd": 0.095468,
+      "elapsed_seconds": 45.28,
+      "agent_duration_ms": 37366,
+      "extra_columns": []
+    },
+    {
+      "question_id": 128,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "887245a786aa4f19a9345c0597b06cb1",
+      "final_sql": "SELECT SUM(d.ln_ttl) AS total_revenue FROM so_dtl d JOIN so_hdr h ON d.ref3 = h.sls_ordr_id JOIN prod p ON d.ref2 = p.prdc_id JOIN prod_sub ps ON p.ref2 = ps.prdc_sbct_id JOIN prod_cat pc ON ps.ref1 = pc.prdc_ctgr_id WHERE pc.nm = 'Bikes' AND YEAR(h.ordr_dt) = 2013",
+      "sql_history": [
+        "SELECT SUM(d.ln_ttl) AS total_revenue FROM so_dtl d JOIN so_hdr h ON d.ref3 = h.sls_ordr_id JOIN prod p ON d.ref2 = p.prdc_id JOIN prod_sub ps ON p.ref2 = ps.prdc_sbct_id JOIN prod_cat pc ON ps.ref1 = pc.prdc_ctgr_id WHERE pc.nm = 'Bikes' AND YEAR(h.ordr_dt) = 2013"
+      ],
+      "agent_text": "2013年 Bikes 类别产品的销售总收入（line totals 之和）为 **36,266,202.00**。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 47549,
+        "output": 1079,
+        "cache_read": 116160,
+        "cache_write": 0,
+        "reasoning": 812,
+        "total": 164788
+      },
+      "cost_usd": 0.089253,
+      "elapsed_seconds": 34.57,
+      "agent_duration_ms": 26396,
+      "extra_columns": []
+    }
+  ]
+}

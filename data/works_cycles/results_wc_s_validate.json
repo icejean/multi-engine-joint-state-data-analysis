@@ -1,0 +1,49 @@
+{
+  "runs": [
+    {
+      "question_id": 1,
+      "s_level": "S0",
+      "final_sql": "SELECT COUNT(DISTINCT CASE WHEN at.nm = 'Home' THEN ba.ref1 END) AS home_count, COUNT(DISTINCT CASE WHEN at.nm = 'Shipping' THEN ba.ref1 END) AS shipping_count FROM biz_addr ba JOIN addr_typ at ON ba.ref2 = at.addr_typ_id",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4066,
+        "output": 6102,
+        "total": 10168
+      },
+      "elapsed_seconds": 26.47,
+      "extra_columns": []
+    },
+    {
+      "question_id": 1,
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT CASE WHEN at.nm = 'Home' THEN ba.ref1 END) AS home_address_business_count,\n       COUNT(DISTINCT CASE WHEN at.nm = 'Shipping' THEN ba.ref1 END) AS shipping_address_business_count\nFROM biz_addr ba\nJOIN addr_typ at ON ba.ref2 = at.addr_typ_id",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 11891,
+        "output": 603,
+        "total": 12494
+      },
+      "elapsed_seconds": 3.49,
+      "extra_columns": []
+    },
+    {
+      "question_id": 1,
+      "s_level": "S2",
+      "final_sql": "SELECT\n  COUNT(DISTINCT CASE WHEN at.nm = 'Home' THEN ba.ref1 END) AS home_address_business_count,\n  COUNT(DISTINCT CASE WHEN at.nm = 'Shipping' THEN ba.ref1 END) AS shipping_address_business_count\nFROM biz_addr ba\nJOIN addr_typ at ON ba.ref2 = at.addr_typ_id\nWHERE at.nm IN ('Home', 'Shipping')",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 13222,
+        "output": 791,
+        "total": 14013
+      },
+      "elapsed_seconds": 4.3,
+      "extra_columns": []
+    }
+  ]
+}

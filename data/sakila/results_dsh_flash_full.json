@@ -1,0 +1,1431 @@
+{
+  "runs": [
+    {
+      "question_id": "A3",
+      "m_level": "M0",
+      "datasource": "sakila_rntl",
+      "chat_id": "63473e8874ef412b98399dabd9d51578",
+      "final_sql": "SELECT COUNT(*) AS cnt FROM film WHERE rtng = 'PG-13'",
+      "sql_history": [
+        "SELECT * FROM film LIMIT 3",
+        "SELECT COUNT(*) AS cnt FROM film WHERE rtng = 'PG-13'"
+      ],
+      "agent_text": "分级为 PG-13 的电影共有 **223 部**。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "B1",
+      "m_level": "M0",
+      "datasource": "sakila_rntl",
+      "chat_id": "8ecc8905340a47d0a082f59586197aab",
+      "final_sql": "SELECT a.frst_nm AS first_name, a.last_nm AS last_name, COUNT(*) AS film_count FROM actr a JOIN flm_act fa ON a.actr_id = fa.ref1 GROUP BY a.actr_id, a.frst_nm, a.last_nm ORDER BY film_count DESC, a.frst_nm ASC, a.last_nm ASC LIMIT 10",
+      "sql_history": [
+        "SELECT table_name FROM information_schema.tables WHERE table_schema = 'sakila_rntl' AND table_name IN ('sys_tables','sys_table_fields','sys_foreignkeys')",
+        "SELECT a.frst_nm AS first_name, a.last_nm AS last_name, COUNT(*) AS film_count FROM actr a JOIN flm_act fa ON a.actr_id = fa.ref1 GROUP BY a.actr_id, a.frst_nm, a.last_nm ORDER BY film_count DESC, a.frst_nm ASC, a.last_nm ASC LIMIT 10"
+      ],
+      "agent_text": "每位演员出演电影数前 10 名：\n\n| 名 | 姓 | 出演数 |\n|---|---|---|\n| GINA | DEGENERES | 42 |\n| WALTER | TORN | 41 |\n| MARY | KEITEL | 40 |\n| MATTHEW | CARREY | 39 |\n| SANDRA | KILMER | 37 |\n| SCARLETT | DAMON | 36 |\n| ANGELA | WITHERSPOON | 35 |\n| GROUCHO | DUNST | 35 |\n| HENRY | BERRY | 35 |\n| UMA | WOOD | 35 |",
+      "tool_calls": 7,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "B5",
+      "m_level": "M0",
+      "datasource": "sakila_rntl",
+      "chat_id": "411f695666534cb3ab17a1b5dc85b8d4",
+      "final_sql": "SELECT c.frst_nm, c.last_nm, SUM(p.amt) AS total_amt FROM pymt p JOIN rntl r ON r.rnt_id = p.ref3 JOIN cust c ON c.cust_id = r.ref2 GROUP BY c.cust_id, c.frst_nm, c.last_nm ORDER BY total_amt DESC, c.frst_nm ASC, c.last_nm ASC LIMIT 10",
+      "sql_history": [
+        "SHOW COLUMNS FROM cust",
+        "SHOW COLUMNS FROM pymt",
+        "SELECT c.cust_id, c.frst_nm, c.last_nm, p.pmt_id, p.ref1, p.amt FROM cust c JOIN pymt p ON p.ref1 = c.cust_id LIMIT 5",
+        "SELECT * FROM cust LIMIT 3",
+        "SELECT * FROM pymt LIMIT 3",
+        "SHOW COLUMNS FROM rntl",
+        "SHOW COLUMNS FROM staf",
+        "SELECT * FROM rntl LIMIT 3",
+        "SELECT MIN(ref1) AS mn, MAX(ref1) AS mx, COUNT(DISTINCT ref1) AS distinct_cnt, COUNT(*) AS total FROM pymt",
+        "SELECT COUNT(*) AS total, MIN(cust_id) AS mn, MAX(cust_id) AS mx FROM cust",
+        "SELECT MIN(ref2) AS mn, MAX(ref2) AS mx, COUNT(DISTINCT ref2) AS distinct_cnt, COUNT(*) AS total FROM rntl",
+        "SELECT COUNT(*) AS total, COUNT(DISTINCT ref3) AS distinct_ref3, SUM(ref3 IS NULL) AS null_ref3 FROM pymt",
+        "SELECT COUNT(*) AS matched FROM pymt p JOIN rntl r ON r.rnt_id = p.ref3",
+        "SELECT p.pmt_id, p.ref3 AS rntl_id, r.ref2 AS cust_id, c.frst_nm, c.last_nm, p.amt FROM pymt p JOIN rntl r ON r.rnt_id = p.ref3 JOIN cust c ON c.cust_id = r.ref2 LIMIT 5",
+        "SELECT c.frst_nm, c.last_nm, SUM(p.amt) AS total_amt FROM pymt p JOIN rntl r ON r.rnt_id = p.ref3 JOIN cust c ON c.cust_id = r.ref2 GROUP BY c.cust_id, c.frst_nm, c.last_nm ORDER BY total_amt DESC, c.frst_nm ASC, c.last_nm ASC LIMIT 10"
+      ],
+      "agent_text": "每位客户总消费金额前 10（按金额降序、名升序、姓升序）：\n\n| 名 (frst_nm) | 姓 (last_nm) | 总金额 (total_amt) |\n|---|---|---|\n| KARL | SEAL | 221.55 |\n| ELEANOR | HUNT | 216.54 |\n| CLARA | SHAW | 195.58 |\n| MARION | SNYDER | 194.61 |\n| RHONDA | KENNEDY | 194.61 |\n| TOMMY | COLLAZO | 186.62 |\n| WESLEY | BULL | 177.60 |\n| TIM | CARY | 175.61 |\n| MARCIA | DEAN | 175.58 |\n| ANA | BRADLEY | 174.66 |\n\n说明：sakila_rntl（M0）无元数据表，通过数据推断出关联路径——pymt.ref3（租赁ID）→ rntl.rnt_id，rntl.ref2（客户ID）→ cust.cust_id（pymt.ref1 的数值被改写，不能作为客户关联列）。",
+      "tool_calls": 18,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "C3",
+      "m_level": "M0",
+      "datasource": "sakila_rntl",
+      "chat_id": "f40dfe2e490547fea9d5143aa4a9c5c1",
+      "final_sql": "SELECT COUNT(DISTINCT f.flm_id) AS diff_films FROM cust c JOIN rntl r ON r.ref2=c.cust_id JOIN invt i ON i.invt_id=r.ref1 JOIN film f ON f.flm_id=i.ref1 WHERE c.frst_nm='MARY' AND c.last_nm='SMITH'",
+      "sql_history": [
+        "SELECT table_name, column_name, column_type FROM information_schema.columns WHERE table_schema='sakila_rntl' AND table_name IN ('cust','rntl','invt','film') ORDER BY table_name, ordinal_position",
+        "SELECT column_name, column_type FROM information_schema.columns WHERE table_schema='sakila_rntl' AND table_name IN ('rntl','invt') ORDER BY table_name, ordinal_position",
+        "SELECT cust_id, frst_nm, last_nm, actv FROM cust WHERE frst_nm='MARY' AND last_nm='SMITH'",
+        "SELECT r.rnt_id, r.ref1 AS invt_id, r.ref2 AS cust_id, i.ref1 AS flm_id, f.ttl FROM rntl r JOIN invt i ON i.invt_id=r.ref1 JOIN film f ON f.flm_id=i.ref1 WHERE r.ref2=1 LIMIT 5",
+        "SELECT COUNT(DISTINCT f.flm_id) AS diff_films FROM cust c JOIN rntl r ON r.ref2=c.cust_id JOIN invt i ON i.invt_id=r.ref1 JOIN film f ON f.flm_id=i.ref1 WHERE c.frst_nm='MARY' AND c.last_nm='SMITH'"
+      ],
+      "agent_text": "客户 MARY SMITH 一共租过 **30** 部不同的电影。",
+      "tool_calls": 8,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "C5",
+      "m_level": "M0",
+      "datasource": "sakila_rntl",
+      "chat_id": "3602720dbeab4865a26bde29f0fe2bf8",
+      "final_sql": "SELECT COUNT(*) AS cnt FROM flm_cat fc JOIN catg c ON fc.ref2 = c.catg_id WHERE c.nm = 'Comedy'",
+      "sql_history": [
+        "SELECT table_name FROM information_schema.tables WHERE table_schema = 'sakila_rntl' AND table_name IN ('sys_tables','sys_table_fields','sys_foreignkeys')",
+        "SELECT COUNT(*) AS cnt FROM flm_cat fc JOIN catg c ON fc.ref2 = c.catg_id WHERE c.nm = 'Comedy'"
+      ],
+      "agent_text": "喜剧(Comedy)分类下一共有 **58** 部电影。",
+      "tool_calls": 7,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "C6",
+      "m_level": "M0",
+      "datasource": "sakila_rntl",
+      "chat_id": "c35ba8f9177940ef891a6e47f5394a05",
+      "final_sql": "SELECT a.frst_nm, a.last_nm FROM actr a JOIN flm_act fa ON a.actr_id = fa.ref2 JOIN film f ON f.flm_id = fa.ref1 WHERE f.ttl LIKE 'ACADEMY DINOSAUR%' ORDER BY a.frst_nm ASC, a.last_nm ASC",
+      "sql_history": [
+        "SELECT table_name FROM information_schema.tables WHERE table_schema = 'sakila_rntl' AND table_name LIKE 'sys%'",
+        "SELECT a.frst_nm, a.last_nm FROM actr a JOIN flm_act fa ON a.actr_id = fa.ref2 JOIN film f ON f.flm_id = fa.ref1 WHERE f.ttl LIKE 'ACADEMY DINOSAUR%' ORDER BY a.frst_nm ASC, a.last_nm ASC"
+      ],
+      "agent_text": "电影 **ACADEMY DINOSAUR** 的演员（按名、姓升序）：\n\n| 名 | 姓 |\n|---|---|\n| GROUCHO | DUNST |\n| KEVIN | BLOOM |\n| NICK | DEGENERES |\n| PENELOPE | GUINESS |\n| SANDRA | KILMER |\n| WHOOPI | HURT |",
+      "tool_calls": 7,
+      "pass": false,
+      "error": null
+    },
+    {
+      "question_id": "D1",
+      "m_level": "M0",
+      "datasource": "sakila_rntl",
+      "chat_id": "6a11555f270b452fbe800cafadf750bf",
+      "final_sql": "SELECT COUNT(*) AS cnt FROM film WHERE rnt_dur = 7",
+      "sql_history": [
+        "DESCRIBE film",
+        "SELECT * FROM film LIMIT 3",
+        "SELECT COUNT(*) AS cnt FROM film WHERE rnt_dur = 7"
+      ],
+      "agent_text": "可以租借 7 天的电影共有 **191 部**。\n\n（`film` 表中的 `rnt_dur` 字段代表租借天数，统计 `rnt_dur = 7` 的记录数即得答案。）",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "E2",
+      "m_level": "M0",
+      "datasource": "sakila_rntl",
+      "chat_id": "b11408937ad3415eb666853f529221a8",
+      "final_sql": "SELECT COUNT(*) AS active_customers FROM cust WHERE actv = 1",
+      "sql_history": [
+        "SELECT * FROM cust LIMIT 5",
+        "SELECT COUNT(*) AS active_customers FROM cust WHERE actv = 1"
+      ],
+      "agent_text": "目前活跃的客户共有 **584 位**。\n\n说明：数据源 sakila_rntl 无元数据表（无 sys_tables / sys_table_fields / sys_foreignkeys），客户表为 `cust`，其中 `actv = 1` 表示活跃，统计 `SELECT COUNT(*) FROM cust WHERE actv = 1` 得到 584。",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "E3",
+      "m_level": "M0",
+      "datasource": "sakila_rntl",
+      "chat_id": "636e7dc9d2144402add9b027989c26ae",
+      "final_sql": "SELECT COUNT(*) AS cust_cnt FROM (SELECT p.ref1 AS cid FROM pymt p JOIN cust c ON p.ref1 - 1000 = c.cust_id GROUP BY p.ref1 HAVING SUM(p.amt) > 150) t",
+      "sql_history": [
+        "SELECT column_name, column_type FROM information_schema.columns WHERE table_schema = 'sakila_rntl' AND table_name IN ('cust','pymt','rntl','invt') ORDER BY table_name, ordinal_position",
+        "SELECT * FROM pymt LIMIT 5",
+        "SELECT * FROM cust LIMIT 3",
+        "SELECT MIN(cust_id) AS min_c, MAX(cust_id) AS max_c, COUNT(*) AS n FROM cust; SELECT MIN(ref1) AS min_r, MAX(ref1) AS max_r, COUNT(DISTINCT ref1) AS n_r FROM pymt",
+        "SELECT COUNT(*) AS matched, COUNT(DISTINCT p.ref1) AS dist FROM pymt p JOIN cust c ON p.ref1 = c.cust_id",
+        "SELECT * FROM rntl LIMIT 5",
+        "SELECT COUNT(*) AS matched FROM rntl r JOIN cust c ON r.ref2 = c.cust_id; SELECT MIN(cust_id) AS mn, MAX(cust_id) AS mx, COUNT(*) AS n FROM cust",
+        "SELECT COUNT(*) AS matched, COUNT(DISTINCT r.ref2) AS dist FROM rntl r JOIN cust c ON r.ref2 = c.cust_id",
+        "SELECT COUNT(*) AS matched, COUNT(DISTINCT p.ref1) AS dist FROM pymt p JOIN cust c ON p.ref1 - 1000 = c.cust_id",
+        "SELECT COUNT(*) AS cust_cnt FROM (SELECT p.ref1 AS cid FROM pymt p JOIN cust c ON p.ref1 - 1000 = c.cust_id GROUP BY p.ref1 HAVING SUM(p.amt) > 150) t"
+      ],
+      "agent_text": "消费总额超过 150 元的客户共有 **35 位**。",
+      "tool_calls": 12,
+      "pass": false,
+      "error": null
+    },
+    {
+      "question_id": "F1",
+      "m_level": "M0",
+      "datasource": "sakila_rntl",
+      "chat_id": "f644f0b8f70c48e18faa28bb753a1e50",
+      "final_sql": "",
+      "sql_history": [],
+      "agent_text": "",
+      "tool_calls": 0,
+      "pass": false,
+      "error": "no final sql"
+    },
+    {
+      "question_id": "F2",
+      "m_level": "M0",
+      "datasource": "sakila_rntl",
+      "chat_id": "86999b69492e49bab7791576864e84fa",
+      "final_sql": "SELECT COUNT(DISTINCT ref2) AS num_handlers FROM pymt",
+      "sql_history": [
+        "SHOW COLUMNS FROM pymt",
+        "SHOW COLUMNS FROM staf",
+        "SELECT DISTINCT ref2 FROM pymt",
+        "SELECT COUNT(DISTINCT ref2) AS num_handlers FROM pymt"
+      ],
+      "agent_text": "pymt 表（即 payment 表）中“经办人”对应列 ref2（即 staf 表的经办人 staf_id），其不同取值为 1 和 2。\n\n**pymt 表里一共有 2 个不同的经办人。**",
+      "tool_calls": 7,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "F3",
+      "m_level": "M0",
+      "datasource": "sakila_rntl",
+      "chat_id": "bccb52fd76dd4fa79de22be33075cd0f",
+      "final_sql": "SELECT COUNT(DISTINCT ref2) AS distinct_renters FROM rntl",
+      "sql_history": [
+        "SELECT table_name FROM information_schema.tables WHERE table_schema = 'sakila_rntl' AND table_name IN ('sys_tables','sys_table_fields','sys_foreignkeys')",
+        "SELECT column_name, data_type FROM information_schema.columns WHERE table_schema = 'sakila_rntl' AND table_name = 'rntl' ORDER BY ordinal_position",
+        "SELECT * FROM rntl ORDER BY rnt_id LIMIT 5",
+        "SELECT column_name, data_type FROM information_schema.columns WHERE table_schema = 'sakila_rntl' AND table_name = 'cust' ORDER BY ordinal_position",
+        "SELECT COUNT(DISTINCT ref2) AS distinct_renters FROM rntl"
+      ],
+      "agent_text": "rntl 表里一共有 **599** 个不同的租借方。",
+      "tool_calls": 7,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "F4",
+      "m_level": "M0",
+      "datasource": "sakila_rntl",
+      "chat_id": "0c98030366a8458481b1efe4f42430db",
+      "final_sql": "SELECT COUNT(DISTINCT ref3) AS distinct_staff_cnt FROM rntl",
+      "sql_history": [
+        "SHOW COLUMNS FROM rntl",
+        "SHOW COLUMNS FROM staf",
+        "SELECT COUNT(DISTINCT ref3) AS distinct_staff_cnt FROM rntl"
+      ],
+      "agent_text": "**答案：rntl 表中一共有 2 个不同的经办人。**\n\n依据：sakila_rntl 为 M0 裸 schema（无元数据表），经结构推断，rntl 表中的 ref3（tinyint unsigned）对应经办人 staf 表的主键 staf_id（tinyint unsigned），与 sakila 原表 rental.staff_id 一致。最终 SQL：`SELECT COUNT(DISTINCT ref3) FROM rntl`，结果为 2。",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "F5",
+      "m_level": "M0",
+      "datasource": "sakila_rntl",
+      "chat_id": "2af2862d4f9043feb9aa68091b70f34d",
+      "final_sql": "SELECT COUNT(DISTINCT ref1) AS cnt FROM cust",
+      "sql_history": [
+        "SELECT * FROM cust LIMIT 3",
+        "SHOW TABLES LIKE 'sys%'",
+        "SELECT * FROM stor LIMIT 5",
+        "SELECT COUNT(DISTINCT ref1) AS cnt FROM cust"
+      ],
+      "agent_text": "cust 表里一共有 **2** 个不同的归属网点（`cust.ref1` 即归属网点 store_id，去重计数为 2）。",
+      "tool_calls": 6,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "G1",
+      "m_level": "M0",
+      "datasource": "sakila_rntl",
+      "chat_id": "faa4733e45764ecb96bd619c74e6509e",
+      "final_sql": "SELECT COUNT(DISTINCT ref1) AS distinct_awarded_performers FROM awd",
+      "sql_history": [
+        "SHOW CREATE TABLE awd",
+        "SHOW CREATE TABLE actr",
+        "SHOW CREATE TABLE flm_act",
+        "SELECT * FROM sys_tables WHERE table_name = 'awd'",
+        "SELECT * FROM sys_table_fields WHERE table_name = 'awd'",
+        "SELECT from_table, from_column, to_table, to_column, column_seq, column_count, source, confidence FROM sys_foreignkeys WHERE from_table = 'awd' OR to_table = 'awd'",
+        "SELECT * FROM awd",
+        "SELECT MIN(ref1) AS min_ref1, MAX(ref1) AS max_ref1, MIN(ref2) AS min_ref2, MAX(ref2) AS max_ref2, COUNT(*) AS cnt FROM flm_act",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name = 'flm_act'",
+        "SELECT COUNT(DISTINCT ref1) AS distinct_awarded_performers FROM awd"
+      ],
+      "agent_text": "awd 表里一共有 **6** 个不同的获奖出演者（`awd.ref1` 为获奖出演者编号，去重后共 6 个）。",
+      "tool_calls": 13,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "G2",
+      "m_level": "M0",
+      "datasource": "sakila_rntl",
+      "chat_id": "6ca3a7f1b3ba4dc7a55f358807cb23aa",
+      "final_sql": "SELECT t.frst_nm, t.last_nm, COUNT(*) AS awd_cnt FROM awd a JOIN actr t ON a.ref1 = t.actr_id GROUP BY t.actr_id, t.frst_nm, t.last_nm ORDER BY awd_cnt DESC, t.frst_nm ASC, t.last_nm ASC LIMIT 3",
+      "sql_history": [
+        "SELECT COUNT(*) AS awd_rows, COUNT(DISTINCT ref1) AS dist_ref1, COUNT(DISTINCT ref2) AS dist_ref2 FROM awd",
+        "SELECT a.ref1, a.ref2, a.awd_nm, a.awd_yr, t.frst_nm, t.last_nm FROM awd a LEFT JOIN actr t ON a.ref1 = t.actr_id ORDER BY a.awd_id LIMIT 10",
+        "SELECT t.frst_nm, t.last_nm, COUNT(*) AS awd_cnt FROM awd a JOIN actr t ON a.ref1 = t.actr_id GROUP BY t.actr_id, t.frst_nm, t.last_nm ORDER BY awd_cnt DESC, t.frst_nm ASC, t.last_nm ASC LIMIT 3"
+      ],
+      "agent_text": "获奖最多的 3 位演员：\n\n| 名 (first name) | 姓 (last name) | 获奖数 |\n|---|---|---|\n| PENELOPE | GUINESS | 6 |\n| NICK | WAHLBERG | 5 |\n| ED | CHASE | 4 |",
+      "tool_calls": 7,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "H1",
+      "m_level": "M0",
+      "datasource": "sakila_rntl",
+      "chat_id": "ff3a53d816244323a521e6985600332d",
+      "final_sql": "SELECT COUNT(DISTINCT cu.cust_id) AS virtual_card_customers FROM pymt p JOIN card cd ON p.ref1 = cd.card_id JOIN cust cu ON cd.ref1 = cu.cust_id WHERE cd.crd_typ = '虚拟卡'",
+      "sql_history": [
+        "SELECT crd_typ, sts, COUNT(*) AS cnt FROM card GROUP BY crd_typ, sts",
+        "SELECT COUNT(*) AS total, COUNT(DISTINCT ref1) AS d_ref1, MIN(ref1) AS min_ref1, MAX(ref1) AS max_ref1 FROM pymt",
+        "SELECT COUNT(*) AS total, COUNT(DISTINCT ref1) AS d_ref1, MIN(ref1) AS min_ref1, MAX(ref1) AS max_ref1 FROM card",
+        "SELECT COUNT(*) AS orphan_pymt FROM pymt p LEFT JOIN card c ON p.ref1 = c.card_id WHERE c.card_id IS NULL",
+        "SELECT COUNT(*) AS orphan_card FROM card c LEFT JOIN cust cu ON c.ref1 = cu.cust_id WHERE cu.cust_id IS NULL",
+        "SELECT COUNT(DISTINCT cu.cust_id) AS virtual_card_customers FROM pymt p JOIN card cd ON p.ref1 = cd.card_id JOIN cust cu ON cd.ref1 = cu.cust_id WHERE cd.crd_typ = '虚拟卡'"
+      ],
+      "agent_text": "用虚拟卡付款的客户共有 **198 位**。\n\n（统计口径：`pymt.ref1 → card.card_id` 关联付款所用卡，`card.ref1 → cust.cust_id` 关联卡所属客户，筛选 `crd_typ = '虚拟卡'` 后对客户去重计数。）",
+      "tool_calls": 11,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "H2",
+      "m_level": "M0",
+      "datasource": "sakila_rntl",
+      "chat_id": "06c98fa7ab1d4f81aac98c7f40f58009",
+      "final_sql": "SELECT COUNT(DISTINCT c.ref1) AS blocked_card_customers FROM pymt p JOIN card c ON p.ref1 = c.card_id WHERE c.sts = 'blocked'",
+      "sql_history": [
+        "SELECT TABLE_NAME, COLUMN_NAME, DATA_TYPE FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = 'sakila_rntl' AND TABLE_NAME IN ('card','pymt','cust') ORDER BY TABLE_NAME, ORDINAL_POSITION",
+        "SELECT * FROM pymt LIMIT 15",
+        "SELECT sts, COUNT(*) AS cnt FROM card GROUP BY sts",
+        "SELECT TABLE_NAME, COLUMN_NAME, DATA_TYPE FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = 'sakila_rntl' AND (COLUMN_NAME LIKE '%card%' OR COLUMN_NAME LIKE '%ref%') ORDER BY TABLE_NAME, ORDINAL_POSITION",
+        "SELECT * FROM rntl LIMIT 5",
+        "SELECT from_table, from_column, to_table, to_column, column_seq, column_count, source, confidence FROM sys_foreignkeys ORDER BY from_table, column_seq",
+        "SELECT COUNT(DISTINCT c.ref1) AS blocked_card_customers FROM pymt p JOIN card c ON p.ref1 = c.card_id WHERE c.sts = 'blocked'"
+      ],
+      "agent_text": "**答案：99 位客户。**\n\n依据 `sakila_rntl_meta` 数据源的 ER 关系（`pymt.ref1` → `card.card_id`，`card.ref1` → `cust.cust_id`），用封卡(blocked)状态付款的客户数为 99 位。",
+      "tool_calls": 11,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "H3",
+      "m_level": "M0",
+      "datasource": "sakila_rntl",
+      "chat_id": "45506ab5d8554a5aac5b0b263f025514",
+      "final_sql": "SELECT c.frst_nm AS 名, c.last_nm AS 姓, COUNT(DISTINCT p.ref1) AS 卡数 FROM pymt p JOIN card cd ON cd.card_id = p.ref1 JOIN cust c ON c.cust_id = cd.ref1 GROUP BY c.cust_id, c.frst_nm, c.last_nm ORDER BY 卡数 DESC, c.frst_nm ASC, c.last_nm ASC LIMIT 10",
+      "sql_history": [
+        "SHOW TABLES LIKE 'sys%'",
+        "SELECT MIN(ref1) AS min_r, MAX(ref1) AS max_r, COUNT(*) AS n, COUNT(DISTINCT ref1) AS n_distinct FROM card",
+        "SELECT ref1, COUNT(*) AS cnt FROM card GROUP BY ref1 ORDER BY cnt DESC, ref1 LIMIT 15",
+        "SELECT COUNT(*) AS orphan FROM card c LEFT JOIN cust u ON u.cust_id = c.ref1 WHERE u.cust_id IS NULL",
+        "SELECT COUNT(*) AS n, COUNT(DISTINCT ref1) AS distinct_card_in_pymt FROM pymt",
+        "SELECT COUNT(*) AS pymt_orphan FROM pymt p LEFT JOIN card c ON c.card_id = p.ref1 WHERE c.card_id IS NULL",
+        "SELECT MIN(ref1) AS min_r, MAX(ref1) AS max_r, COUNT(DISTINCT ref1) AS n_distinct FROM pymt",
+        "SELECT cnt, COUNT(*) AS n_cust FROM (SELECT cd.ref1 AS cust_id, COUNT(DISTINCT p.ref1) AS cnt FROM pymt p JOIN card cd ON cd.card_id = p.ref1 GROUP BY cd.ref1) t GROUP BY cnt ORDER BY cnt",
+        "SELECT cd.card_id, cd.ref1 AS cust_id, c.frst_nm, c.last_nm FROM card cd LEFT JOIN cust c ON c.cust_id = cd.ref1 LEFT JOIN pymt p ON p.ref1 = cd.card_id WHERE p.pmt_id IS NULL",
+        "SELECT COUNT(*) AS mismatch FROM pymt p JOIN card cd ON cd.card_id = p.ref1 JOIN rntl r ON r.rnt_id = p.ref3 WHERE cd.ref1 <> r.ref2",
+        "SELECT cd.ref1 AS cust_id, COUNT(DISTINCT p.ref1) AS cards_used FROM pymt p JOIN card cd ON cd.card_id = p.ref1 GROUP BY cd.ref1 HAVING cards_used = 2 ORDER BY cd.ref1 LIMIT 10",
+        "SELECT cd.card_id, cd.ref1 AS cust_id, COUNT(p.pmt_id) AS n_pmts FROM card cd LEFT JOIN pymt p ON p.ref1 = cd.card_id WHERE cd.ref1 IN (195) GROUP BY cd.card_id, cd.ref1",
+        "SELECT cnt, COUNT(*) AS n_cust FROM (SELECT ref1, COUNT(*) AS cnt FROM card GROUP BY ref1) t GROUP BY cnt ORDER BY cnt",
+        "SELECT c.frst_nm AS 名, c.last_nm AS 姓, COUNT(DISTINCT p.ref1) AS 卡数 FROM pymt p JOIN card cd ON cd.card_id = p.ref1 JOIN cust c ON c.cust_id = cd.ref1 GROUP BY c.cust_id, c.frst_nm, c.last_nm ORDER BY 卡数 DESC, c.frst_nm ASC, c.last_nm ASC LIMIT 10"
+      ],
+      "agent_text": "每位客户用过的付款卡数量（按卡数降序、名升序、姓升序取前 10）：\n\n| 名 | 姓 | 卡数 |\n|---|---|---|\n| AARON | SELBY | 2 |\n| ADRIAN | CLARY | 2 |\n| ALFRED | CASILLAS | 2 |\n| ALFREDO | MCADAMS | 2 |\n| ALICE | STEWART | 2 |\n| ALLISON | STANLEY | 2 |\n| ANDREA | HENDERSON | 2 |\n| ANDREW | PURDY | 2 |\n| ANDY | VANHORN | 2 |\n| ANN | EVANS | 2 |",
+      "tool_calls": 22,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "H4",
+      "m_level": "M0",
+      "datasource": "sakila_rntl",
+      "chat_id": "5d1f6a9e112b4cf2931bb21ee9e42837",
+      "final_sql": "SELECT c.frst_nm, c.last_nm, COUNT(cd.card_id) AS card_cnt FROM cust c LEFT JOIN card cd ON c.cust_id = cd.ref1 GROUP BY c.cust_id, c.frst_nm, c.last_nm ORDER BY card_cnt DESC, c.frst_nm ASC, c.last_nm ASC LIMIT 10",
+      "sql_history": [
+        "SELECT TABLE_NAME, COLUMN_NAME, DATA_TYPE FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = 'sakila_rntl' AND TABLE_NAME IN ('cust','card') ORDER BY TABLE_NAME, ORDINAL_POSITION",
+        "SELECT * FROM card LIMIT 10",
+        "SELECT COUNT(*) AS total_cards, COUNT(DISTINCT ref1) AS distinct_refs, MIN(ref1) AS min_ref, MAX(ref1) AS max_ref FROM card",
+        "SELECT COUNT(*) AS cust_cnt, MIN(cust_id) AS min_id, MAX(cust_id) AS max_id FROM cust",
+        "SELECT c.frst_nm, c.last_nm, COUNT(cd.card_id) AS card_cnt FROM cust c LEFT JOIN card cd ON c.cust_id = cd.ref1 GROUP BY c.cust_id, c.frst_nm, c.last_nm ORDER BY card_cnt DESC, c.frst_nm ASC, c.last_nm ASC LIMIT 10"
+      ],
+      "agent_text": "每位客户拥有的付款卡数量（前 10，按卡数降序、名升序、姓升序）：\n\n| 名 (frst_nm) | 姓 (last_nm) | 卡数 (card_cnt) |\n|---|---|---|\n| AARON | SELBY | 2 |\n| ADRIAN | CLARY | 2 |\n| ALFRED | CASILLAS | 2 |\n| ALFREDO | MCADAMS | 2 |\n| ALICE | STEWART | 2 |\n| ALLISON | STANLEY | 2 |\n| ANDREA | HENDERSON | 2 |\n| ANDREW | PURDY | 2 |\n| ANDY | VANHORN | 2 |\n| ANN | EVANS | 2 |\n\n注：该数据源（sakila_rntl，M0）无元数据表/ER 图，经字段推断与数据校验确认 `card.ref1` → `cust.cust_id` 为关联列（两表 ID 范围均为 1–599，共 599 位客户、798 张卡）。",
+      "tool_calls": 7,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "H5",
+      "m_level": "M0",
+      "datasource": "sakila_rntl",
+      "chat_id": "7cb91db4979642c6a365196ff39d403a",
+      "final_sql": "SELECT COUNT(*) AS cust_cnt FROM (SELECT ref1 FROM card GROUP BY ref1 HAVING COUNT(*) > 1) t",
+      "sql_history": [
+        "SELECT COUNT(*) AS card_cnt, COUNT(DISTINCT ref1) AS ref1_distinct, MIN(ref1) AS min_ref, MAX(ref1) AS max_ref FROM card",
+        "SELECT ref1, COUNT(*) AS n FROM card GROUP BY ref1 HAVING COUNT(*) > 1 ORDER BY n DESC LIMIT 20",
+        "SELECT COUNT(*) AS cust_cnt, COUNT(DISTINCT cust_id) AS cust_id_distinct FROM cust",
+        "SELECT COUNT(*) AS unmatched_by_cust_id FROM card c LEFT JOIN cust cu ON cu.cust_id = c.ref1 WHERE cu.cust_id IS NULL",
+        "SELECT crd_typ, sts, COUNT(*) AS n FROM card GROUP BY crd_typ, sts ORDER BY crd_typ, sts",
+        "SELECT MAX(cnt) AS max_cards, SUM(cnt > 1) AS cust_with_gt1 FROM (SELECT ref1, COUNT(*) AS cnt FROM card GROUP BY ref1) t",
+        "SELECT COUNT(*) AS cust_cnt FROM (SELECT ref1 FROM card GROUP BY ref1 HAVING COUNT(*) > 1) t"
+      ],
+      "agent_text": "**199 位客户拥有超过一张付款卡。**\n\n说明：数据源 sakila_rntl（M0）无元数据表（sys_tables/sys_table_fields/sys_foreignkeys 均不存在），经数据探查确认 `card.ref1` 与 `cust.cust_id` 完全匹配（0 条未命中），即 card.ref1 为客户外键。按客户分组统计持卡数，共有 199 位客户持有 2 张卡（每位客户 1 张 active 实体卡，其中 199 位另持有 1 张虚拟卡），因此拥有超过一张付款卡的客户为 199 位。",
+      "tool_calls": 11,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "H6",
+      "m_level": "M0",
+      "datasource": "sakila_rntl",
+      "chat_id": "d529bba8246a481ebf02ad3f3e4c1c5e",
+      "final_sql": "SELECT sts, COUNT(*) AS cnt FROM card GROUP BY sts",
+      "sql_history": [
+        "SHOW COLUMNS FROM card",
+        "SHOW COLUMNS FROM pymt",
+        "SELECT sts, COUNT(*) AS cnt FROM card GROUP BY sts"
+      ],
+      "agent_text": "**100 张**\n\n`sakila_rntl` 数据源无元数据表（M0 基线，裸 schema），付款卡状态在 `card.sts` 字段中。查询 `card` 表按状态分组：`blocked`（封卡）共有 **100** 张付款卡。",
+      "tool_calls": 5,
+      "pass": false,
+      "error": null
+    },
+    {
+      "question_id": "Q39",
+      "m_level": "M0",
+      "datasource": "sakila_rntl",
+      "chat_id": "e11274f0a8bb48a295962cb97170a5cf",
+      "final_sql": "SELECT ct.cty FROM pymt p JOIN rntl r ON p.ref3 = r.rnt_id JOIN cust c ON r.ref2 = c.cust_id JOIN addr a ON c.ref2 = a.addr_id JOIN city ct ON a.ref1 = ct.cty_id GROUP BY c.cust_id, ct.cty ORDER BY SUM(p.amt) DESC LIMIT 1",
+      "sql_history": [
+        "SELECT c.cust_id, c.ref2 AS addr_id, a.addr_id, a.ref1 AS cty_id, ct.cty FROM cust c LEFT JOIN addr a ON c.ref2 = a.addr_id LEFT JOIN city ct ON a.ref1 = ct.cty_id ORDER BY c.cust_id LIMIT 10",
+        "SELECT COUNT(*) AS total_pymt, COUNT(DISTINCT ref1) AS distinct_ref1, MIN(ref1) AS min_ref1, MAX(ref1) AS max_ref1, (SELECT COUNT(*) FROM cust) AS cust_cnt, (SELECT MIN(cust_id) FROM cust) AS min_cust, (SELECT MAX(cust_id) FROM cust) AS max_cust FROM pymt",
+        "SELECT COUNT(*) AS joined FROM pymt p JOIN cust c ON p.ref1 = c.cust_id",
+        "SELECT p.pmt_id, p.ref1, p.ref2, p.ref3, r.rnt_id, r.ref2 AS rntl_cust_id FROM pymt p LEFT JOIN rntl r ON p.ref3 = r.rnt_id ORDER BY p.pmt_id LIMIT 10",
+        "SELECT COUNT(*) AS total_pymt, COUNT(p.ref3) AS ref3_notnull, COUNT(DISTINCT p.ref3) AS distinct_ref3, (SELECT COUNT(*) FROM rntl) AS rntl_cnt FROM pymt p",
+        "SELECT COUNT(*) AS matched_pymt FROM pymt p JOIN rntl r ON p.ref3 = r.rnt_id JOIN cust c ON r.ref2 = c.cust_id",
+        "SELECT COUNT(*) AS rntl_total, COUNT(ref2) AS ref2_notnull, MIN(ref2) AS min_ref2, MAX(ref2) AS max_ref2 FROM rntl",
+        "SELECT ct.cty FROM pymt p JOIN rntl r ON p.ref3 = r.rnt_id JOIN cust c ON r.ref2 = c.cust_id JOIN addr a ON c.ref2 = a.addr_id JOIN city ct ON a.ref1 = ct.cty_id GROUP BY c.cust_id, ct.cty ORDER BY SUM(p.amt) DESC LIMIT 1"
+      ],
+      "agent_text": "**Cape Coral**\n\n消费总额最高的客户（通过 pymt→rntl→cust 链路聚合金额）住在 **Cape Coral** 市。\n\n说明：sakila_rntl 为 M0 基线（无元数据表），经数据验证，pymt.ref1 并非客户外键（1001~3597 与 cust 1~599 无交集），正确的关联路径是 pymt.ref3 = rntl.rnt_id → rntl.ref2 = cust.cust_id，再经 cust.ref2 = addr.addr_id、addr.ref1 = city.cty_id 取城市名。",
+      "tool_calls": 15,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "Q40",
+      "m_level": "M0",
+      "datasource": "sakila_rntl",
+      "chat_id": "cb4885f3e5b14617ad4581ef894fe55f",
+      "final_sql": "SELECT COUNT(*) AS never_used_cards FROM card c LEFT JOIN (SELECT DISTINCT ref1 FROM pymt) p ON c.card_id = p.ref1 WHERE p.ref1 IS NULL",
+      "sql_history": [
+        "SHOW COLUMNS FROM card",
+        "SHOW COLUMNS FROM pymt",
+        "SELECT * FROM card LIMIT 5",
+        "SELECT * FROM pymt LIMIT 5",
+        "SELECT COUNT(*) AS total_cards, MIN(card_id) AS min_id, MAX(card_id) AS max_id FROM card",
+        "SELECT COUNT(DISTINCT ref1) AS used_card_cnt, MIN(ref1) AS min_ref, MAX(ref1) AS max_ref FROM pymt",
+        "SHOW COLUMNS FROM cust",
+        "SHOW COLUMNS FROM rntl",
+        "SELECT COUNT(*) AS cust_cnt, MIN(cust_id) AS mn, MAX(cust_id) AS mx FROM cust",
+        "SELECT COUNT(*) AS orphan_pymt FROM pymt p LEFT JOIN card c ON p.ref1 = c.card_id WHERE c.card_id IS NULL",
+        "SELECT COUNT(*) AS never_used_cards FROM card c LEFT JOIN (SELECT DISTINCT ref1 FROM pymt) p ON c.card_id = p.ref1 WHERE p.ref1 IS NULL"
+      ],
+      "agent_text": "**答案：1 张**\n\n共有 798 张付款卡（`card` 表，card_id 1001–3597），其中 797 张在 `pymt` 表中被使用过（`pymt.ref1` 关联 `card.card_id`，已确认无孤儿记录、且与 `cust.cust_id` 范围 1–599 不重叠），因此从未被任何付款使用过的付款卡为 **1 张**。",
+      "tool_calls": 14,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "Q41",
+      "m_level": "M0",
+      "datasource": "sakila_rntl",
+      "chat_id": "46b65c3ef5b14c2d8ef58321f2e72efa",
+      "final_sql": "SELECT SUM(f.lngth) AS total_minutes FROM doc d JOIN film f ON d.doc_id = f.flm_id",
+      "sql_history": [
+        "SELECT COUNT(*) AS doc_cnt FROM doc",
+        "SELECT d.doc_id, d.hdng, f.flm_id, f.ttl, f.lngth FROM doc d LEFT JOIN film f ON d.doc_id = f.flm_id",
+        "SELECT SUM(f.lngth) AS total_minutes FROM doc d JOIN film f ON d.doc_id = f.flm_id"
+      ],
+      "agent_text": "68355",
+      "tool_calls": 7,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "A3",
+      "m_level": "M1",
+      "datasource": "sakila_rntl_m1",
+      "chat_id": "22d802198877438d914dfe61f2337ea5",
+      "final_sql": "SELECT COUNT(*) AS cnt FROM film WHERE rtng = 'PG-13'",
+      "sql_history": [
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name = 'film'",
+        "SELECT table_name, table_desc, table_type FROM sys_tables WHERE table_name IN ('film','flm_cat','catg')",
+        "SELECT COUNT(*) AS cnt FROM film WHERE rtng = 'PG-13'"
+      ],
+      "agent_text": "分级为 PG-13 的电影共有 **223 部**。",
+      "tool_calls": 6,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "A3",
+      "m_level": "M2",
+      "datasource": "sakila_rntl_meta",
+      "chat_id": "d1fd11a7bb734bb4be6c5bc907d07056",
+      "final_sql": "SELECT COUNT(*) AS cnt FROM film WHERE rtng = 'PG-13'",
+      "sql_history": [
+        "SELECT * FROM sys_foreignkeys ORDER BY from_table, constraint_name, column_seq",
+        "SELECT * FROM sys_tables ORDER BY table_name",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name = 'film' ORDER BY field_name",
+        "SELECT COUNT(*) AS cnt FROM film WHERE rtng = 'PG-13'"
+      ],
+      "agent_text": "分级为 PG-13 的电影共有 **223 部**。",
+      "tool_calls": 6,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "B1",
+      "m_level": "M1",
+      "datasource": "sakila_rntl_m1",
+      "chat_id": "d5b79afdc60943338d7385a13fc35705",
+      "final_sql": "SELECT a.frst_nm, a.last_nm, COUNT(*) AS cnt FROM flm_act fa JOIN actr a ON fa.ref1 = a.actr_id JOIN film f ON fa.ref2 = f.flm_id GROUP BY a.actr_id, a.frst_nm, a.last_nm ORDER BY cnt DESC, a.frst_nm ASC, a.last_nm ASC LIMIT 10",
+      "sql_history": [
+        "SELECT table_name, table_desc, table_type FROM sys_tables WHERE table_name IN ('actr','film','flm_act')",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('actr','film','flm_act')",
+        "SELECT flm_act.ref1, flm_act.ref2, actr.actr_id, film.flm_id FROM flm_act JOIN actr ON flm_act.ref1 = actr.actr_id JOIN film ON flm_act.ref2 = film.flm_id LIMIT 5",
+        "SELECT a.frst_nm, a.last_nm, COUNT(*) AS cnt FROM flm_act fa JOIN actr a ON fa.ref1 = a.actr_id JOIN film f ON fa.ref2 = f.flm_id GROUP BY a.actr_id, a.frst_nm, a.last_nm ORDER BY cnt DESC, a.frst_nm ASC, a.last_nm ASC LIMIT 10"
+      ],
+      "agent_text": "出演电影数最多的前 10 位演员：\n\n| 名 | 姓 | 出演数 |\n|---|---|---|\n| GINA | DEGENERES | 42 |\n| WALTER | TORN | 41 |\n| MARY | KEITEL | 40 |\n| MATTHEW | CARREY | 39 |\n| SANDRA | KILMER | 37 |\n| SCARLETT | DAMON | 36 |\n| ANGELA | WITHERSPOON | 35 |\n| GROUCHO | DUNST | 35 |\n| HENRY | BERRY | 35 |\n| UMA | WOOD | 35 |",
+      "tool_calls": 6,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "B1",
+      "m_level": "M2",
+      "datasource": "sakila_rntl_meta",
+      "chat_id": "ee0af9e5f5ea4f2f924227401198542f",
+      "final_sql": "SELECT a.frst_nm, a.last_nm, COUNT(fa.ref2) AS cnt FROM actr a JOIN flm_act fa ON fa.ref1 = a.actr_id GROUP BY a.actr_id, a.frst_nm, a.last_nm ORDER BY cnt DESC, a.frst_nm ASC, a.last_nm ASC LIMIT 10",
+      "sql_history": [
+        "SELECT table_name, table_desc, table_type FROM sys_tables",
+        "SELECT from_table, from_column, to_table, to_column, column_seq, column_count, constraint_name, source, confidence FROM sys_foreignkeys",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('actr','flm_act')",
+        "SELECT a.frst_nm, a.last_nm, COUNT(fa.ref2) AS cnt FROM actr a JOIN flm_act fa ON fa.ref1 = a.actr_id GROUP BY a.actr_id, a.frst_nm, a.last_nm ORDER BY cnt DESC, a.frst_nm ASC, a.last_nm ASC LIMIT 10"
+      ],
+      "agent_text": "按出演数降序、名升序、姓升序，出演电影最多的前 10 位演员：\n\n| 名 | 姓 | 出演数 |\n|---|---|---|\n| GINA | DEGENERES | 42 |\n| WALTER | TORN | 41 |\n| MARY | KEITEL | 40 |\n| MATTHEW | CARREY | 39 |\n| SANDRA | KILMER | 37 |\n| SCARLETT | DAMON | 36 |\n| ANGELA | WITHERSPOON | 35 |\n| GROUCHO | DUNST | 35 |\n| HENRY | BERRY | 35 |\n| UMA | WOOD | 35 |",
+      "tool_calls": 6,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "B5",
+      "m_level": "M1",
+      "datasource": "sakila_rntl_m1",
+      "chat_id": "42540230b6a747ac8aebcf8f81585ae4",
+      "final_sql": "SELECT c.frst_nm AS 名, c.last_nm AS 姓, SUM(p.amt) AS 金额 FROM pymt p JOIN card cd ON p.ref1 = cd.card_id JOIN cust c ON cd.ref1 = c.cust_id GROUP BY c.cust_id, c.frst_nm, c.last_nm ORDER BY 金额 DESC, c.frst_nm ASC, c.last_nm ASC LIMIT 10",
+      "sql_history": [
+        "SELECT * FROM sys_tables",
+        "SELECT * FROM sys_table_fields WHERE table_name IN ('cust','pymt')",
+        "SELECT p.pmt_id, p.ref1, c.cust_id, c.frst_nm, c.last_nm, p.amt FROM pymt p JOIN cust c ON p.ref1 = c.cust_id LIMIT 5",
+        "SELECT * FROM pymt LIMIT 5",
+        "SELECT * FROM rntl LIMIT 5",
+        "SELECT * FROM cust LIMIT 5",
+        "SELECT MIN(cust_id), MAX(cust_id), COUNT(*) FROM cust",
+        "SELECT MIN(ref1), MAX(ref1), COUNT(DISTINCT ref1) FROM pymt",
+        "SELECT TABLE_NAME, COLUMN_NAME, REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME FROM information_schema.KEY_COLUMN_USAGE WHERE TABLE_SCHEMA = 'sakila_rntl_m1' AND REFERENCED_TABLE_NAME IS NOT NULL",
+        "SELECT MIN(ref1), MAX(ref1), MIN(ref2), MAX(ref2), MIN(ref3), MAX(ref3) FROM rntl",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields ORDER BY table_name, field_name",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('pymt','rntl','staf','stor','invt','flm_act','flm_cat','city','cnty','lang','film','doc','flm_act','awd') ORDER BY table_name, field_name",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('pymt','rntl','staf','stor','invt','flm_act','flm_cat','lang') ORDER BY table_name, field_name",
+        "SELECT MIN(ref1), MAX(ref1), COUNT(DISTINCT ref1) FROM card",
+        "SELECT MIN(staf_id) , MAX(staf_id) FROM staf",
+        "SELECT MIN(rnt_id), MAX(rnt_id), COUNT(*) FROM rntl",
+        "SELECT COUNT(*) FROM pymt p LEFT JOIN rntl r ON p.ref3 = r.rnt_id WHERE r.rnt_id IS NULL",
+        "SELECT COUNT(*) AS total, SUM(p.ref1 = r.ref2) AS eq_cust, SUM(p.ref1 = r.ref1) AS eq_invt, SUM(p.ref1 = r.rnt_id) AS eq_rntid FROM pymt p JOIN rntl r ON p.ref3 = r.rnt_id",
+        "SELECT MIN(card_id), MAX(card_id), COUNT(*) FROM card",
+        "SELECT * FROM card LIMIT 5",
+        "SELECT COUNT(*) AS orphan_pymt FROM pymt p LEFT JOIN card c ON p.ref1 = c.card_id WHERE c.card_id IS NULL",
+        "SELECT COUNT(*) AS orphan_card FROM card c LEFT JOIN cust u ON c.ref1 = u.cust_id WHERE u.cust_id IS NULL",
+        "SELECT c.frst_nm AS 名, c.last_nm AS 姓, SUM(p.amt) AS 金额 FROM pymt p JOIN card cd ON p.ref1 = cd.card_id JOIN cust c ON cd.ref1 = c.cust_id GROUP BY c.cust_id, c.frst_nm, c.last_nm ORDER BY 金额 DESC, c.frst_nm ASC, c.last_nm ASC LIMIT 10"
+      ],
+      "agent_text": "每位客户总消费金额前 10（按金额降序、名升序、姓升序）：\n\n| 名 | 姓 | 金额 |\n|---|---|---|\n| KARL | SEAL | 221.55 |\n| ELEANOR | HUNT | 216.54 |\n| CLARA | SHAW | 195.58 |\n| MARION | SNYDER | 194.61 |\n| RHONDA | KENNEDY | 194.61 |\n| TOMMY | COLLAZO | 186.62 |\n| WESLEY | BULL | 177.60 |\n| TIM | CARY | 175.61 |\n| MARCIA | DEAN | 175.58 |\n| ANA | BRADLEY | 174.66 |\n\n关联路径说明：`pymt.ref1`（付款方编号）→ `card.card_id` → `card.ref1`（持卡客户编号）→ `cust.cust_id`（M1 无 ER 图，此关联经数据字典与数据抽查验证）。",
+      "tool_calls": 26,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "B5",
+      "m_level": "M2",
+      "datasource": "sakila_rntl_meta",
+      "chat_id": "07193ef65f3b49fc8735fae79ecef564",
+      "final_sql": "SELECT c.frst_nm AS first_name, c.last_nm AS last_name, SUM(p.amt) AS total_amount FROM pymt p JOIN rntl r ON p.ref3 = r.rnt_id JOIN cust c ON r.ref2 = c.cust_id GROUP BY c.cust_id, c.frst_nm, c.last_nm ORDER BY total_amount DESC, c.frst_nm ASC, c.last_nm ASC LIMIT 10",
+      "sql_history": [
+        "SELECT table_name, table_desc, table_type FROM sys_tables",
+        "SELECT from_table, from_column, to_table, to_column, column_seq, column_count, constraint_name, source, confidence FROM sys_foreignkeys ORDER BY from_table, constraint_name, column_seq",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('pymt','rntl','cust','card') ORDER BY table_name, field_name",
+        "SELECT c.frst_nm AS first_name, c.last_nm AS last_name, SUM(p.amt) AS total_amount FROM pymt p JOIN rntl r ON p.ref3 = r.rnt_id JOIN cust c ON r.ref2 = c.cust_id GROUP BY c.cust_id, c.frst_nm, c.last_nm ORDER BY total_amount DESC, c.frst_nm ASC, c.last_nm ASC LIMIT 10"
+      ],
+      "agent_text": "每位客户的总消费金额（按金额降序、名升序、姓升序，前 10）：\n\n| 名 (first_name) | 姓 (last_name) | 总消费金额 (total_amount) |\n|---|---|---|\n| KARL | SEAL | 221.55 |\n| ELEANOR | HUNT | 216.54 |\n| CLARA | SHAW | 195.58 |\n| MARION | SNYDER | 194.61 |\n| RHONDA | KENNEDY | 194.61 |\n| TOMMY | COLLAZO | 186.62 |\n| WESLEY | BULL | 177.60 |\n| TIM | CARY | 175.61 |\n| MARCIA | DEAN | 175.58 |\n| ANA | BRADLEY | 174.66 |\n\n查询逻辑：`pymt`（支付事实表）经 `pymt.ref3 → rntl.rnt_id` 关联 `rntl`（租赁事实表），再经 `rntl.ref2 → cust.cust_id` 关联 `cust`（客户维度表），按客户分组汇总 `pymt.amt`。",
+      "tool_calls": 8,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "C3",
+      "m_level": "M1",
+      "datasource": "sakila_rntl_m1",
+      "chat_id": "556d1906a46444c3899251800269b5b7",
+      "final_sql": "SELECT COUNT(DISTINCT f.flm_id) AS distinct_films FROM cust c JOIN rntl r ON r.ref2 = c.cust_id JOIN invt i ON i.invt_id = r.ref1 JOIN film f ON f.flm_id = i.ref1 WHERE c.frst_nm = 'MARY' AND c.last_nm = 'SMITH'",
+      "sql_history": [
+        "SELECT table_name, table_desc, table_type FROM sys_tables",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields ORDER BY table_name, field_name",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('cust','rntl','invt','film','stor','pymt') ORDER BY table_name, field_name",
+        "SELECT COUNT(*) AS n FROM information_schema.tables WHERE table_schema = 'sakila_rntl_m1' AND table_name = 'sys_foreignkeys'",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('rntl','staf','stor') ORDER BY table_name, field_name",
+        "SELECT r.rnt_id, r.ref1 AS invt_ref, r.ref2 AS cust_ref, r.ref3 AS staf_ref, r.rnt_dt FROM rntl r LIMIT 5",
+        "SELECT i.invt_id, i.ref1 AS film_ref, i.ref2 AS store_ref FROM invt i LIMIT 5",
+        "SELECT COUNT(*) AS orphan_rntl_invt FROM rntl r LEFT JOIN invt i ON i.invt_id = r.ref1 WHERE i.invt_id IS NULL",
+        "SELECT cust_id, frst_nm, last_nm, actv FROM cust WHERE frst_nm = 'MARY' AND last_nm = 'SMITH'",
+        "SELECT (SELECT COUNT(*) FROM rntl r LEFT JOIN cust c ON c.cust_id = r.ref2 WHERE c.cust_id IS NULL) AS orphan_cust, (SELECT COUNT(*) FROM invt i LEFT JOIN film f ON f.flm_id = i.ref1 WHERE f.flm_id IS NULL) AS orphan_film",
+        "SELECT COUNT(DISTINCT f.flm_id) AS distinct_films FROM cust c JOIN rntl r ON r.ref2 = c.cust_id JOIN invt i ON i.invt_id = r.ref1 JOIN film f ON f.flm_id = i.ref1 WHERE c.frst_nm = 'MARY' AND c.last_nm = 'SMITH'"
+      ],
+      "agent_text": "客户 **MARY SMITH** 一共租过 **30** 部不同的电影。",
+      "tool_calls": 13,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "C3",
+      "m_level": "M2",
+      "datasource": "sakila_rntl_meta",
+      "chat_id": "8d2297bbb444440fb1ce2ad5a3418bf0",
+      "final_sql": "SELECT COUNT(DISTINCT f.flm_id) AS distinct_films FROM cust c JOIN rntl r ON r.ref2 = c.cust_id JOIN invt i ON i.invt_id = r.ref1 JOIN film f ON f.flm_id = i.ref1 WHERE c.frst_nm = 'MARY' AND c.last_nm = 'SMITH'",
+      "sql_history": [
+        "SELECT from_table, from_column, to_table, to_column, column_seq, column_count, constraint_name, source, confidence FROM sys_foreignkeys ORDER BY from_table, constraint_name, column_seq",
+        "SELECT table_name, table_desc, table_type FROM sys_tables ORDER BY table_name",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('cust','rntl','invt','film') ORDER BY table_name, field_name",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name = 'rntl' ORDER BY field_name",
+        "SELECT cust_id, frst_nm, last_nm, actv FROM cust WHERE frst_nm = 'MARY' AND last_nm = 'SMITH'",
+        "SELECT COUNT(DISTINCT f.flm_id) AS distinct_films FROM cust c JOIN rntl r ON r.ref2 = c.cust_id JOIN invt i ON i.invt_id = r.ref1 JOIN film f ON f.flm_id = i.ref1 WHERE c.frst_nm = 'MARY' AND c.last_nm = 'SMITH'"
+      ],
+      "agent_text": "客户 **MARY SMITH** 一共租过 **30** 部不同的电影。",
+      "tool_calls": 8,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "C5",
+      "m_level": "M1",
+      "datasource": "sakila_rntl_m1",
+      "chat_id": "8d09c0044ec240438363eee4981c13d9",
+      "final_sql": "SELECT COUNT(DISTINCT f.flm_id) AS comedy_film_count FROM film f JOIN flm_cat fc ON fc.ref1 = f.flm_id JOIN catg c ON c.catg_id = fc.ref2 WHERE c.nm = 'Comedy'",
+      "sql_history": [
+        "SELECT * FROM sys_tables",
+        "SELECT * FROM sys_table_fields WHERE table_name IN ('film','catg','flm_cat')",
+        "SELECT catg_id, nm FROM catg",
+        "SELECT COUNT(DISTINCT f.flm_id) AS comedy_film_count FROM film f JOIN flm_cat fc ON fc.ref1 = f.flm_id JOIN catg c ON c.catg_id = fc.ref2 WHERE c.nm = 'Comedy'"
+      ],
+      "agent_text": "喜剧(Comedy)分类下共有 **58** 部电影。",
+      "tool_calls": 6,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "C5",
+      "m_level": "M2",
+      "datasource": "sakila_rntl_meta",
+      "chat_id": "b03dae753ce2447fb29bfdd1f0a7ccb2",
+      "final_sql": "SELECT COUNT(*) AS comedy_film_count FROM flm_cat fc JOIN catg c ON fc.ref2 = c.catg_id WHERE c.nm = 'Comedy'",
+      "sql_history": [
+        "SELECT table_name, table_desc, table_type FROM sys_tables",
+        "SELECT * FROM sys_foreignkeys",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('catg','flm_cat','film')",
+        "SELECT * FROM catg",
+        "SELECT COUNT(*) AS comedy_film_count FROM flm_cat fc JOIN catg c ON fc.ref2 = c.catg_id WHERE c.nm = 'Comedy'"
+      ],
+      "agent_text": "喜剧(Comedy)分类下一共有 **58** 部电影。",
+      "tool_calls": 7,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "C6",
+      "m_level": "M1",
+      "datasource": "sakila_rntl_m1",
+      "chat_id": "77a0d3042b164d398f29f696d6672b61",
+      "final_sql": "SELECT a.frst_nm, a.last_nm FROM actr a JOIN flm_act fa ON a.actr_id = fa.ref1 JOIN film f ON f.flm_id = fa.ref2 WHERE f.ttl = 'ACADEMY DINOSAUR' ORDER BY a.frst_nm ASC, a.last_nm ASC",
+      "sql_history": [
+        "SELECT table_name, table_desc, table_type FROM sys_tables",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('film','actr','flm_act')",
+        "SELECT a.frst_nm, a.last_nm FROM actr a JOIN flm_act fa ON a.actr_id = fa.ref1 JOIN film f ON f.flm_id = fa.ref2 WHERE f.ttl = 'ACADEMY DINOSAUR' ORDER BY a.frst_nm ASC, a.last_nm ASC"
+      ],
+      "agent_text": "电影 **ACADEMY DINOSAUR** 的演员如下（共 10 名，按名、姓升序）：\n\n| 名 (frst_nm) | 姓 (last_nm) |\n|---|---|\n| CHRISTIAN | GABLE |\n| JOHNNY | CAGE |\n| LUCILLE | TRACY |\n| MARY | KEITEL |\n| MENA | TEMPLE |\n| OPRAH | KILMER |\n| PENELOPE | GUINESS |\n| ROCK | DUKAKIS |\n| SANDRA | PECK |\n| WARREN | NOLTE |",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "C6",
+      "m_level": "M2",
+      "datasource": "sakila_rntl_meta",
+      "chat_id": "886b30ab6e4e428eb8aafe0ec7656e7d",
+      "final_sql": "SELECT a.frst_nm AS first_name, a.last_nm AS last_name FROM film f JOIN flm_act fa ON fa.ref2 = f.flm_id JOIN actr a ON a.actr_id = fa.ref1 WHERE f.ttl = 'ACADEMY DINOSAUR' ORDER BY a.frst_nm ASC, a.last_nm ASC",
+      "sql_history": [
+        "SELECT table_name, table_desc, table_type FROM sys_tables ORDER BY table_name",
+        "SELECT from_table, from_column, to_table, to_column, column_seq, column_count, source, confidence FROM sys_foreignkeys ORDER BY from_table, from_column",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('film','actr','flm_act') ORDER BY table_name, field_name",
+        "SELECT a.frst_nm AS first_name, a.last_nm AS last_name FROM film f JOIN flm_act fa ON fa.ref2 = f.flm_id JOIN actr a ON a.actr_id = fa.ref1 WHERE f.ttl = 'ACADEMY DINOSAUR' ORDER BY a.frst_nm ASC, a.last_nm ASC"
+      ],
+      "agent_text": "电影 **ACADEMY DINOSAUR** 的演员如下（按名、姓升序）：\n\n| 名 (first_name) | 姓 (last_name) |\n|---|---|\n| CHRISTIAN | GABLE |\n| JOHNNY | CAGE |\n| LUCILLE | TRACY |\n| MARY | KEITEL |\n| MENA | TEMPLE |\n| OPRAH | KILMER |\n| PENELOPE | GUINESS |\n| ROCK | DUKAKIS |\n| SANDRA | PECK |\n| WARREN | NOLTE |\n\n共 10 位演员。",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "D1",
+      "m_level": "M1",
+      "datasource": "sakila_rntl_m1",
+      "chat_id": "9f8353ee379842c9874d4856e5a5d286",
+      "final_sql": "SELECT COUNT(*) AS cnt FROM film WHERE rnt_dur = 7",
+      "sql_history": [
+        "SELECT table_name, table_desc, table_type FROM sys_tables",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name = 'film'",
+        "SELECT COUNT(*) AS cnt FROM film WHERE rnt_dur = 7"
+      ],
+      "agent_text": "可以租借 7 天的电影共有 **191 部**。",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "D1",
+      "m_level": "M2",
+      "datasource": "sakila_rntl_meta",
+      "chat_id": "cf55cdf7dacd4bb483f791bff174e339",
+      "final_sql": "SELECT COUNT(*) AS cnt FROM film WHERE rnt_dur = 7",
+      "sql_history": [
+        "SELECT * FROM sys_tables",
+        "SELECT * FROM sys_foreignkeys",
+        "SELECT * FROM sys_table_fields WHERE table_name = 'film'",
+        "SELECT COUNT(*) AS cnt FROM film WHERE rnt_dur = 7"
+      ],
+      "agent_text": "可以租借 7 天的电影共有 **191 部**。\n\n依据元数据字典：`film.rnt_dur`（可租借天数）字段即影片的租借天数，统计 `rnt_dur = 7` 的影片数量为 191。",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "E2",
+      "m_level": "M1",
+      "datasource": "sakila_rntl_m1",
+      "chat_id": "4efb95a972a048cb8cbcd3759821ff45",
+      "final_sql": "SELECT COUNT(*) AS active_customers FROM cust WHERE actv = 1",
+      "sql_history": [
+        "SELECT * FROM sys_tables",
+        "SELECT * FROM sys_table_fields WHERE table_name IN ('cust')",
+        "SELECT COUNT(*) AS active_customers FROM cust WHERE actv = 1"
+      ],
+      "agent_text": "目前活跃的客户共有 **584 位**。",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "E2",
+      "m_level": "M2",
+      "datasource": "sakila_rntl_meta",
+      "chat_id": "061c6373b9454eaaabc7609cec3265a3",
+      "final_sql": "SELECT COUNT(*) AS active_customer_cnt FROM cust WHERE actv = 1",
+      "sql_history": [
+        "SELECT table_name, table_desc, table_type FROM sys_tables",
+        "SELECT from_table, from_column, to_table, to_column, column_seq, column_count, constraint_name, source, confidence FROM sys_foreignkeys",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name = 'cust'",
+        "SELECT COUNT(*) AS active_customer_cnt FROM cust WHERE actv = 1"
+      ],
+      "agent_text": "目前活跃的客户共有 **584** 位。",
+      "tool_calls": 6,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "E3",
+      "m_level": "M1",
+      "datasource": "sakila_rntl_m1",
+      "chat_id": "46b9e203439549d8a0947a606a76e7ac",
+      "final_sql": "SELECT COUNT(*) AS cust_cnt FROM (SELECT cd.ref1 AS cust_id, SUM(p.amt) AS total_amt FROM pymt p JOIN card cd ON p.ref1 = cd.card_id GROUP BY cd.ref1 HAVING SUM(p.amt) > 150) t",
+      "sql_history": [
+        "SELECT * FROM sys_tables",
+        "SELECT * FROM sys_table_fields WHERE table_name IN ('cust','pymt','rntl')",
+        "SELECT pmt_id, amt, pmt_dt, ref1, ref2, ref3 FROM pymt LIMIT 10",
+        "SELECT cust_id, frst_nm, last_nm, ref1, ref2 FROM cust LIMIT 10",
+        "SELECT MIN(ref1) AS min_ref1, MAX(ref1) AS max_ref1, COUNT(DISTINCT ref1) AS distinct_ref1 FROM pymt",
+        "SELECT rnt_id, rnt_dt, ref1, ref2, ref3 FROM rntl LIMIT 10",
+        "SELECT MIN(cust_id) AS min_id, MAX(cust_id) AS max_id, COUNT(*) AS cnt FROM cust",
+        "SELECT c.cust_id, c.frst_nm, c.last_nm, p.ref1 FROM cust c JOIN pymt p ON c.cust_id = p.ref1 WHERE p.ref1 = 1001 LIMIT 5",
+        "SELECT p.pmt_id, p.ref1 AS pmt_ref1, p.ref3 AS pmt_ref3, r.rnt_id, r.ref2 AS rntl_cust, c.cust_id, c.frst_nm, c.last_nm FROM pymt p JOIN rntl r ON p.ref3 = r.rnt_id JOIN cust c ON r.ref2 = c.cust_id LIMIT 10",
+        "SELECT ref1, COUNT(*) AS cnt FROM pymt GROUP BY ref1 ORDER BY ref1 LIMIT 20",
+        "SELECT COUNT(*) AS total_pymt, SUM(CASE WHEN r.rnt_id IS NULL THEN 1 ELSE 0 END) AS no_rental_match, SUM(CASE WHEN r.rnt_id IS NOT NULL AND c.cust_id IS NULL THEN 1 ELSE 0 END) AS no_cust_match, SUM(CASE WHEN r.rnt_id IS NOT NULL AND c.cust_id IS NOT NULL AND p.ref1 - 1000 <> c.cust_id THEN 1 ELSE 0 END) AS ref1_mismatch FROM pymt p LEFT JOIN rntl r ON p.ref3 = r.rnt_id LEFT JOIN cust c ON r.ref2 = c.cust_id",
+        "SELECT COUNT(DISTINCT ref1) AS total_distinct, COUNT(DISTINCT CASE WHEN ref1 BETWEEN 1001 AND 1599 THEN ref1 END) AS in_1001_1599, COUNT(DISTINCT CASE WHEN ref1 > 1599 THEN ref1 END) AS above_1599, COUNT(DISTINCT CASE WHEN ref1 < 1001 THEN ref1 END) AS below_1001 FROM pymt",
+        "SELECT p.ref1, r.ref2 AS rntl_cust, COUNT(*) AS cnt FROM pymt p JOIN rntl r ON p.ref3 = r.rnt_id WHERE p.ref1 - 1000 <> r.ref2 GROUP BY p.ref1, r.ref2 ORDER BY cnt DESC LIMIT 15",
+        "SELECT c.cust_id, COUNT(DISTINCT p.ref1) AS distinct_ref1 FROM cust c JOIN rntl r ON r.ref2 = c.cust_id JOIN pymt p ON p.ref3 = r.rnt_id GROUP BY c.cust_id HAVING COUNT(DISTINCT p.ref1) > 1 LIMIT 10",
+        "SELECT COUNT(*) AS cust_over_150_rental_path FROM (SELECT r.ref2 AS cust_id, SUM(p.amt) AS tot FROM pymt p JOIN rntl r ON p.ref3 = r.rnt_id GROUP BY r.ref2 HAVING SUM(p.amt) > 150) t",
+        "SELECT * FROM sys_table_fields WHERE table_name IN ('card','rntl') ORDER BY table_name, field_name",
+        "SELECT * FROM card LIMIT 5",
+        "SELECT MIN(card_id) AS min_id, MAX(card_id) AS max_id, COUNT(*) AS cnt, COUNT(DISTINCT ref1) AS distinct_cust FROM card",
+        "SELECT COUNT(*) AS total, SUM(CASE WHEN cd.card_id IS NULL THEN 1 ELSE 0 END) AS no_card, SUM(CASE WHEN cd.card_id IS NOT NULL AND cd.ref1 <> r.ref2 THEN 1 ELSE 0 END) AS cust_mismatch FROM pymt p LEFT JOIN card cd ON p.ref1 = cd.card_id LEFT JOIN rntl r ON p.ref3 = r.rnt_id",
+        "SELECT from_table, from_column, to_table, to_column, source, confidence FROM sys_foreignkeys WHERE from_table IN ('pymt','rntl','card','cust') OR to_table IN ('pymt','rntl','card','cust') ORDER BY from_table, from_column",
+        "SELECT COUNT(*) AS cust_cnt FROM (SELECT cd.ref1 AS cust_id, SUM(p.amt) AS total_amt FROM pymt p JOIN card cd ON p.ref1 = cd.card_id GROUP BY cd.ref1 HAVING SUM(p.amt) > 150) t"
+      ],
+      "agent_text": "**消费总额超过 150 元的客户共有 46 位。**\n\n依据（sakila_rntl_m1，有数据字典、无 ER 图，关联关系经数据验证）：\n- `pymt.ref1`（付款方编号）→ `card.card_id`（卡ID，100% 匹配）\n- `card.ref1`（持卡客户编号）→ `cust.cust_id`（100% 匹配，且与租赁路径 `pymt.ref3→rntl→rntl.ref2→cust` 完全一致）\n\n按 `pymt.amt` 求和 > 150 分组计数，结果为 **46**。",
+      "tool_calls": 23,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "E3",
+      "m_level": "M2",
+      "datasource": "sakila_rntl_meta",
+      "chat_id": "0ddd2a0673e0455d8ebe4fc013018244",
+      "final_sql": "SELECT COUNT(*) AS customer_count FROM ( SELECT c.cust_id FROM pymt p JOIN card cd ON p.ref1 = cd.card_id JOIN cust c ON cd.ref1 = c.cust_id GROUP BY c.cust_id HAVING SUM(p.amt) > 150 ) t",
+      "sql_history": [
+        "SELECT table_name, table_desc, table_type FROM sys_tables",
+        "SELECT from_table, from_column, to_table, to_column, column_seq, column_count, constraint_name, source, confidence FROM sys_foreignkeys ORDER BY from_table, from_column",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('pymt','cust','card') ORDER BY table_name, field_name",
+        "SELECT COUNT(*) AS customer_count FROM ( SELECT c.cust_id FROM pymt p JOIN card cd ON p.ref1 = cd.card_id JOIN cust c ON cd.ref1 = c.cust_id GROUP BY c.cust_id HAVING SUM(p.amt) > 150 ) t"
+      ],
+      "agent_text": "**消费总额超过 150 元的客户共有 46 位。**\n\n统计路径：`pymt`（支付）→ `card`（卡，`pymt.ref1 = card.card_id`）→ `cust`（客户，`card.ref1 = cust.cust_id`），按客户分组求和支付金额 `SUM(pymt.amt)`，`HAVING SUM(amt) > 150` 筛选后计数，结果为 **46**。",
+      "tool_calls": 6,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "F1",
+      "m_level": "M1",
+      "datasource": "sakila_rntl_m1",
+      "chat_id": "1beb02ea267444aeab32d54cc19b7a85",
+      "final_sql": "SELECT COUNT(DISTINCT ref1) AS payer_cnt FROM pymt",
+      "sql_history": [
+        "SELECT * FROM sys_tables WHERE table_name = 'pymt'",
+        "SELECT * FROM sys_table_fields WHERE table_name = 'pymt'",
+        "SELECT COUNT(DISTINCT ref1) AS payer_cnt FROM pymt"
+      ],
+      "agent_text": "pymt 表里一共有 **797** 个不同的付款方。",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "F1",
+      "m_level": "M2",
+      "datasource": "sakila_rntl_meta",
+      "chat_id": "faa1d7f8b1f24bc8b02e7d75d74cd1d3",
+      "final_sql": "SELECT COUNT(DISTINCT ref1) AS payer_cnt FROM pymt",
+      "sql_history": [
+        "SELECT table_name, table_desc, table_type FROM sys_tables WHERE table_name LIKE '%pymt%'",
+        "SELECT * FROM sys_foreignkeys WHERE from_table LIKE '%pymt%' OR to_table LIKE '%pymt%'",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name = 'pymt'",
+        "SELECT COUNT(DISTINCT ref1) AS payer_cnt FROM pymt"
+      ],
+      "agent_text": "pymt 表里一共有 **797** 个不同的付款方。",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "F2",
+      "m_level": "M1",
+      "datasource": "sakila_rntl_m1",
+      "chat_id": "8ba8fd42da7c464abf39f4329c5e8ab2",
+      "final_sql": "SELECT COUNT(DISTINCT ref2) AS diff_handlers FROM pymt",
+      "sql_history": [
+        "SELECT table_name, table_desc, table_type FROM sys_tables WHERE table_name IN ('pymt','staf','cust')",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name = 'pymt' ORDER BY table_name, field_name",
+        "SELECT COUNT(DISTINCT ref2) AS diff_handlers FROM pymt"
+      ],
+      "agent_text": "pymt 表里一共有 **2** 个不同的经办人。",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "F2",
+      "m_level": "M2",
+      "datasource": "sakila_rntl_meta",
+      "chat_id": "c05dc7a99362465496167a3fb37edfcb",
+      "final_sql": "SELECT COUNT(DISTINCT ref2) AS distinct_handlers FROM pymt",
+      "sql_history": [
+        "SELECT table_name, table_desc, table_type FROM sys_tables WHERE table_name LIKE '%pymt%'",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name LIKE '%pymt%'",
+        "SELECT from_table, from_column, to_table, to_column, column_seq, column_count, constraint_name, source, confidence FROM sys_foreignkeys WHERE from_table LIKE '%pymt%' OR to_table LIKE '%pymt%'",
+        "SELECT COUNT(DISTINCT ref2) AS distinct_handlers FROM pymt"
+      ],
+      "agent_text": "pymt 表里一共有 **2** 个不同的经办人。\n\n（依据元数据：pymt 为支付事实表，`ref2`（经办人编号）通过外键 `fk_payment_staff` 关联 staf 表；统计 `COUNT(DISTINCT ref2)` 结果为 2。）",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "F3",
+      "m_level": "M1",
+      "datasource": "sakila_rntl_m1",
+      "chat_id": "cac43a8d00834f3b8e7f5e53244c967a",
+      "final_sql": "SELECT COUNT(DISTINCT ref2) AS distinct_renter_cnt FROM rntl",
+      "sql_history": [
+        "SELECT table_name FROM information_schema.tables WHERE table_schema = DATABASE()",
+        "SELECT table_name, table_desc, table_type FROM sys_tables WHERE table_name = 'rntl'",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name = 'rntl' ORDER BY field_name",
+        "SELECT COUNT(DISTINCT ref2) AS distinct_renter_cnt FROM rntl"
+      ],
+      "agent_text": "rntl 表里一共有 **599** 个不同的租借方。",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "F3",
+      "m_level": "M2",
+      "datasource": "sakila_rntl_meta",
+      "chat_id": "aaa91d9786d44acebe06794c03d8bb23",
+      "final_sql": "SELECT COUNT(DISTINCT ref2) AS distinct_renters FROM rntl",
+      "sql_history": [
+        "SELECT table_name, table_desc, table_type FROM sys_tables WHERE table_name LIKE '%rntl%'",
+        "SELECT * FROM sys_foreignkeys WHERE from_table LIKE '%rntl%' OR to_table LIKE '%rntl%'",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name = 'rntl'",
+        "SELECT table_name, table_desc FROM sys_tables WHERE table_name IN ('cust','invt','staf')",
+        "SELECT COUNT(DISTINCT ref2) AS distinct_renters FROM rntl"
+      ],
+      "agent_text": "**rntl 表里一共有 599 个不同的租借方。**\n\n依据：`rntl`（租赁事实表）中 `ref2` 字段为\"租借方编号\"，经 ER 图外键 `fk_rental_customer`（rntl.ref2 → cust.cust_id）确认其对应租借方，`COUNT(DISTINCT ref2)` 结果为 **599**。",
+      "tool_calls": 7,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "F4",
+      "m_level": "M1",
+      "datasource": "sakila_rntl_m1",
+      "chat_id": "da22d5e5cd00444fa9d63c7a97d2ce6b",
+      "final_sql": "SELECT COUNT(DISTINCT ref3) AS distinct_handlers FROM rntl",
+      "sql_history": [
+        "SHOW TABLES",
+        "SELECT table_name, table_desc, table_type FROM sys_tables WHERE table_name = 'rntl'",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name = 'rntl'",
+        "SELECT COUNT(DISTINCT ref3) AS distinct_handlers FROM rntl"
+      ],
+      "agent_text": "rntl 表里一共有 **2** 个不同的经办人。",
+      "tool_calls": 6,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "F4",
+      "m_level": "M2",
+      "datasource": "sakila_rntl_meta",
+      "chat_id": "eea77b43f3fb4cef9bcc2603ee8c4351",
+      "final_sql": "SELECT COUNT(DISTINCT ref3) AS 经办人数 FROM rntl",
+      "sql_history": [
+        "SELECT table_name, table_desc, table_type FROM sys_tables WHERE table_name LIKE '%rntl%'",
+        "SELECT * FROM sys_foreignkeys",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('rntl','staf')",
+        "SELECT COUNT(DISTINCT ref3) AS 经办人数 FROM rntl"
+      ],
+      "agent_text": "rntl 表里一共有 **2** 个不同的经办人。",
+      "tool_calls": 6,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "F5",
+      "m_level": "M1",
+      "datasource": "sakila_rntl_m1",
+      "chat_id": "91efb5d8926943caadcb4a82684561db",
+      "final_sql": "SELECT COUNT(DISTINCT ref1) AS distinct_cnt FROM cust",
+      "sql_history": [
+        "SELECT table_name, table_desc, table_type FROM sys_tables WHERE table_name = 'cust'",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name = 'cust'",
+        "SELECT COUNT(DISTINCT ref1) AS distinct_cnt FROM cust"
+      ],
+      "agent_text": "cust 表里一共有 **2** 个不同的归属网点（`ref1` 字段去重计数）。",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "F5",
+      "m_level": "M2",
+      "datasource": "sakila_rntl_meta",
+      "chat_id": "f43a30f0f73d4d91b1869eccb27b3684",
+      "final_sql": "SELECT COUNT(*) AS total_cust, COUNT(DISTINCT ref1) AS distinct_ref1, COUNT(DISTINCT CASE WHEN ref1 IS NOT NULL THEN ref1 END) AS distinct_nonnull_ref1 FROM cust",
+      "sql_history": [
+        "SELECT table_name, table_desc, table_type FROM sys_tables WHERE table_name = 'cust'",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name = 'cust'",
+        "SELECT from_table, from_column, to_table, to_column, column_seq, column_count, source, confidence FROM sys_foreignkeys WHERE from_table = 'cust' OR to_table = 'cust'",
+        "SELECT COUNT(*) AS total_cust, COUNT(DISTINCT ref1) AS distinct_ref1, COUNT(DISTINCT CASE WHEN ref1 IS NOT NULL THEN ref1 END) AS distinct_nonnull_ref1 FROM cust"
+      ],
+      "agent_text": "cust 表（客户维度表）中，归属网点字段为 `ref1`（归属网点编号，外键关联 stor 表的 stor_id）。\n\n查询结果：cust 表共有 **2** 个不同的归属网点（`COUNT(DISTINCT ref1)` = 2，且无 NULL 值）。\n\n**答案：2**",
+      "tool_calls": 5,
+      "pass": false,
+      "error": null
+    },
+    {
+      "question_id": "G1",
+      "m_level": "M1",
+      "datasource": "sakila_rntl_m1",
+      "chat_id": "563b396694da41edbbd3ef1ae7883d59",
+      "final_sql": "SELECT COUNT(DISTINCT ref1) AS diff_awarded_performers FROM awd",
+      "sql_history": [
+        "SELECT * FROM sys_tables WHERE table_name = 'awd'",
+        "SELECT * FROM sys_table_fields WHERE table_name = 'awd'",
+        "SELECT * FROM sys_table_fields WHERE table_name IN ('flm_act','actr')",
+        "SELECT * FROM awd LIMIT 10",
+        "SELECT COUNT(DISTINCT a.ref1) AS diff_awd_actr FROM awd a LEFT JOIN actr ac ON a.ref1 = ac.actr_id WHERE ac.actr_id IS NULL",
+        "SELECT COUNT(DISTINCT ref1) AS diff_awarded_performers FROM awd"
+      ],
+      "agent_text": "awd 表中共有 **6** 个不同的获奖出演者。",
+      "tool_calls": 8,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "G1",
+      "m_level": "M2",
+      "datasource": "sakila_rntl_meta",
+      "chat_id": "3476ec416a874b07a9a15e788c4ec226",
+      "final_sql": "SELECT COUNT(DISTINCT ref1) AS distinct_awd_performers FROM awd",
+      "sql_history": [
+        "SELECT * FROM sys_foreignkeys",
+        "SELECT * FROM sys_tables WHERE table_name = 'awd'",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('awd','flm_act','actr') ORDER BY table_name, field_name",
+        "SELECT COUNT(DISTINCT ref1) AS distinct_awd_performers FROM awd"
+      ],
+      "agent_text": "awd 表里一共有 **6** 个不同的获奖出演者。",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "G2",
+      "m_level": "M1",
+      "datasource": "sakila_rntl_m1",
+      "chat_id": "13188c8846e443ebae203ebd8e50de02",
+      "final_sql": "SELECT ac.frst_nm, ac.last_nm, COUNT(*) AS awd_cnt FROM awd a JOIN flm_act fa ON a.ref1 = fa.ref1 AND a.ref2 = fa.ref2 JOIN actr ac ON fa.ref1 = ac.actr_id GROUP BY ac.actr_id, ac.frst_nm, ac.last_nm ORDER BY awd_cnt DESC, ac.frst_nm ASC, ac.last_nm ASC LIMIT 3",
+      "sql_history": [
+        "SHOW TABLES",
+        "SELECT * FROM sys_tables",
+        "SELECT * FROM sys_table_fields",
+        "SELECT * FROM sys_table_fields WHERE table_name IN ('awd', 'flm_act', 'actr')",
+        "SHOW CREATE TABLE awd",
+        "SHOW CREATE TABLE flm_act",
+        "SELECT a.awd_id, a.awd_nm, a.awd_yr, a.ref1, a.ref2, fa.ref1 AS fa_ref1, fa.ref2 AS fa_ref2, ac.actr_id, ac.frst_nm, ac.last_nm FROM awd a LEFT JOIN flm_act fa ON a.ref1 = fa.ref1 AND a.ref2 = fa.ref2 LEFT JOIN actr ac ON fa.ref1 = ac.actr_id ORDER BY a.awd_id",
+        "SELECT ac.frst_nm, ac.last_nm, COUNT(*) AS awd_cnt FROM awd a JOIN flm_act fa ON a.ref1 = fa.ref1 AND a.ref2 = fa.ref2 JOIN actr ac ON fa.ref1 = ac.actr_id GROUP BY ac.actr_id, ac.frst_nm, ac.last_nm ORDER BY awd_cnt DESC, ac.frst_nm ASC, ac.last_nm ASC LIMIT 3"
+      ],
+      "agent_text": "获奖最多的 3 位演员：\n\n| 名 (frst_nm) | 姓 (last_nm) | 获奖数 (awd_cnt) |\n|---|---|---|\n| PENELOPE | GUINESS | 6 |\n| NICK | WAHLBERG | 5 |\n| ED | CHASE | 4 |\n\n关联路径：`awd.ref1`+`awd.ref2`（复合引用）→ `flm_act.ref1`+`ref2` → `flm_act.ref1` = `actr.actr_id`，按演员分组统计奖项行数，按获奖数降序、名升序、姓升序取前 3。",
+      "tool_calls": 10,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "G2",
+      "m_level": "M2",
+      "datasource": "sakila_rntl_meta",
+      "chat_id": "806b5f2d7f794da4a39fbd0e1192509a",
+      "final_sql": "SELECT a.frst_nm AS 名, a.last_nm AS 姓, COUNT(*) AS 获奖数 FROM awd JOIN flm_act fa ON awd.ref1 = fa.ref1 AND awd.ref2 = fa.ref2 JOIN actr a ON fa.ref1 = a.actr_id GROUP BY a.actr_id, a.frst_nm, a.last_nm ORDER BY 获奖数 DESC, 名 ASC, 姓 ASC LIMIT 3",
+      "sql_history": [
+        "SELECT table_name, table_desc, table_type FROM sys_tables",
+        "SELECT from_table, from_column, to_table, to_column, column_seq, column_count, constraint_name, source, confidence FROM sys_foreignkeys",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('actr','awd','flm_act')",
+        "SELECT a.frst_nm AS 名, a.last_nm AS 姓, COUNT(*) AS 获奖数 FROM awd JOIN flm_act fa ON awd.ref1 = fa.ref1 AND awd.ref2 = fa.ref2 JOIN actr a ON fa.ref1 = a.actr_id GROUP BY a.actr_id, a.frst_nm, a.last_nm ORDER BY 获奖数 DESC, 名 ASC, 姓 ASC LIMIT 3"
+      ],
+      "agent_text": "获奖最多的 3 位演员：\n\n| 名 | 姓 | 获奖数 |\n|---|---|---|\n| PENELOPE | GUINESS | 6 |\n| NICK | WAHLBERG | 5 |\n| ED | CHASE | 4 |\n\n**查询说明**：按元数据 `sys_foreignkeys`，奖项表 `awd` 通过复合外键 `fk_awd_performance`（`awd.ref1`+`awd.ref2` 同时匹配 `flm_act.ref1`+`flm_act.ref2`，column_count=2）关联影片-演员表 `flm_act`，再经 `flm_act.ref1 → actr.actr_id` 关联演员表 `actr`。按演员分组计数 `awd` 行数，按获奖数降序、名升序、姓升序取前 3。",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "H1",
+      "m_level": "M1",
+      "datasource": "sakila_rntl_m1",
+      "chat_id": "a020d4ec7d6d4673aa540f409dc4357c",
+      "final_sql": "SELECT COUNT(DISTINCT c.cust_id) AS customer_cnt FROM pymt p JOIN card cd ON p.ref1 = cd.card_id JOIN cust c ON cd.ref1 = c.cust_id WHERE cd.crd_typ = '虚拟卡'",
+      "sql_history": [
+        "SELECT table_name, table_desc, table_type FROM sys_tables ORDER BY table_name",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields ORDER BY table_name, field_name",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('card','cust','pymt') ORDER BY table_name, field_name",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('rntl','invt') ORDER BY table_name, field_name",
+        "SELECT TABLE_NAME, COLUMN_NAME, REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME FROM information_schema.KEY_COLUMN_USAGE WHERE TABLE_SCHEMA = 'sakila_rntl_m1' AND REFERENCED_TABLE_NAME IS NOT NULL ORDER BY TABLE_NAME, COLUMN_NAME",
+        "SELECT crd_typ, sts, COUNT(*) AS cnt FROM card GROUP BY crd_typ, sts",
+        "SELECT * FROM pymt ORDER BY pmt_id LIMIT 10",
+        "SELECT * FROM card ORDER BY card_id LIMIT 10",
+        "SELECT MIN(ref1) AS min_p, MAX(ref1) AS max_p, COUNT(DISTINCT ref1) AS cnt FROM pymt",
+        "SELECT MIN(card_id) AS min_c, MAX(card_id) AS max_c, COUNT(*) AS cnt FROM card",
+        "SELECT MIN(cust_id) AS min_u, MAX(cust_id) AS max_u, COUNT(*) AS cnt FROM cust",
+        "SELECT COUNT(*) AS total_pymt, SUM(CASE WHEN cd.card_id IS NULL THEN 1 ELSE 0 END) AS no_card FROM pymt p LEFT JOIN card cd ON p.ref1 = cd.card_id",
+        "SELECT COUNT(DISTINCT c.cust_id) AS customer_cnt FROM pymt p JOIN card cd ON p.ref1 = cd.card_id JOIN cust c ON cd.ref1 = c.cust_id WHERE cd.crd_typ = '虚拟卡'"
+      ],
+      "agent_text": "用虚拟卡付款的客户共有 **198 位**。",
+      "tool_calls": 16,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "H1",
+      "m_level": "M2",
+      "datasource": "sakila_rntl_meta",
+      "chat_id": "68cc590370764a4f9d7835073dfaaea3",
+      "final_sql": "SELECT COUNT(DISTINCT c.cust_id) AS virtual_card_customers FROM pymt p JOIN card cd ON p.ref1 = cd.card_id JOIN cust c ON cd.ref1 = c.cust_id WHERE cd.crd_typ = '虚拟卡'",
+      "sql_history": [
+        "SELECT table_name, table_desc, table_type FROM sys_tables ORDER BY table_type, table_name",
+        "SELECT from_table, from_column, to_table, to_column, column_seq, column_count, constraint_name, source, confidence FROM sys_foreignkeys ORDER BY from_table, from_column",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('card','pymt','cust') ORDER BY table_name, field_name",
+        "SELECT crd_typ, COUNT(*) AS cnt FROM card GROUP BY crd_typ",
+        "SELECT COUNT(DISTINCT c.cust_id) AS virtual_card_customers FROM pymt p JOIN card cd ON p.ref1 = cd.card_id JOIN cust c ON cd.ref1 = c.cust_id WHERE cd.crd_typ = '虚拟卡'"
+      ],
+      "agent_text": "用虚拟卡付款的客户共有 **198 位**。\n\n关联路径：`pymt.ref1 → card.card_id`（付款所用卡）→ `card.ref1 → cust.cust_id`（持卡客户），筛选 `card.crd_typ = '虚拟卡'`，按客户去重计数。",
+      "tool_calls": 7,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "H2",
+      "m_level": "M1",
+      "datasource": "sakila_rntl_m1",
+      "chat_id": "e293e3fc03614b71a459426c45f48afc",
+      "final_sql": "SELECT COUNT(DISTINCT c.cust_id) AS blocked_card_payers FROM pymt p JOIN card cd ON p.ref1 = cd.card_id JOIN cust c ON cd.ref1 = c.cust_id WHERE cd.sts = 'blocked'",
+      "sql_history": [
+        "SELECT table_name, table_desc, table_type FROM sys_tables",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('pymt','card','cust') ORDER BY table_name, field_name",
+        "SELECT * FROM card LIMIT 10",
+        "SELECT * FROM pymt LIMIT 10",
+        "SELECT * FROM cust LIMIT 5",
+        "SELECT COUNT(*) AS total, COUNT(DISTINCT ref1) AS distinct_ref1, MIN(ref1) AS min_ref1, MAX(ref1) AS max_ref1 FROM pymt",
+        "SELECT sts, COUNT(*) AS cnt FROM card GROUP BY sts",
+        "SELECT COUNT(*) AS pymt_total, SUM(pymt.ref1 NOT IN (SELECT card_id FROM card)) AS not_in_card, (SELECT COUNT(*) FROM card) AS card_total, (SELECT COUNT(*) FROM cust) AS cust_total FROM pymt",
+        "SELECT COUNT(*) AS card_not_in_cust, (SELECT COUNT(*) FROM cust WHERE cust_id IN (SELECT ref1 FROM card)) AS cust_with_card FROM card WHERE ref1 NOT IN (SELECT cust_id FROM cust)",
+        "SELECT COUNT(DISTINCT c.cust_id) AS blocked_card_payers FROM pymt p JOIN card cd ON p.ref1 = cd.card_id JOIN cust c ON cd.ref1 = c.cust_id WHERE cd.sts = 'blocked'"
+      ],
+      "agent_text": "用封卡(blocked)状态付款的客户共有 **99 位**。",
+      "tool_calls": 12,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "H2",
+      "m_level": "M2",
+      "datasource": "sakila_rntl_meta",
+      "chat_id": "6ac6419b8c6e446b8ab34a2c2d687438",
+      "final_sql": "SELECT COUNT(DISTINCT c.cust_id) AS blocked_pay_customers FROM pymt p JOIN card cd ON p.ref1 = cd.card_id JOIN cust c ON cd.ref1 = c.cust_id WHERE cd.sts = 'blocked'",
+      "sql_history": [
+        "SELECT table_name, table_desc, table_type FROM sys_tables ORDER BY table_name",
+        "SELECT from_table, from_column, to_table, to_column, column_seq, column_count, constraint_name, source, confidence FROM sys_foreignkeys ORDER BY from_table, constraint_name, column_seq",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('card','pymt','cust') ORDER BY table_name, field_name",
+        "SELECT sts, COUNT(*) AS cnt FROM card GROUP BY sts",
+        "SELECT COUNT(DISTINCT c.cust_id) AS blocked_pay_customers FROM pymt p JOIN card cd ON p.ref1 = cd.card_id JOIN cust c ON cd.ref1 = c.cust_id WHERE cd.sts = 'blocked'"
+      ],
+      "agent_text": "**99 位**\n\n查询路径（依据 `sys_foreignkeys` ER 图）：`pymt.ref1 → card.card_id`（fk_payment_card），`card.ref1 → cust.cust_id`（fk_card_customer），筛选 `card.sts = 'blocked'`（封卡）后统计去重客户数，结果为 **99 位**。",
+      "tool_calls": 7,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "H3",
+      "m_level": "M1",
+      "datasource": "sakila_rntl_m1",
+      "chat_id": "77f18042906d4074a98981067d30308a",
+      "final_sql": "SELECT c.frst_nm AS 名, c.last_nm AS 姓, COUNT(cd.card_id) AS 卡数 FROM cust c JOIN card cd ON cd.ref1 = c.cust_id GROUP BY c.cust_id, c.frst_nm, c.last_nm ORDER BY 卡数 DESC, c.frst_nm ASC, c.last_nm ASC LIMIT 10",
+      "sql_history": [
+        "SELECT table_name, table_desc, table_type FROM sys_tables",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('cust','card','pymt') ORDER BY table_name, field_name",
+        "SHOW CREATE TABLE card",
+        "SHOW CREATE TABLE pymt",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE field_name LIKE '%card%' OR field_desc LIKE '%卡%' ORDER BY table_name, field_name",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('rntl','invt','stor','staf','addr') ORDER BY table_name, field_name",
+        "SELECT card_id, ref1, crd_typ, crd_last4, sts FROM card ORDER BY card_id LIMIT 10",
+        "SELECT cust_id, frst_nm, last_nm FROM cust ORDER BY cust_id LIMIT 10",
+        "SELECT sts, COUNT(*) AS n FROM card GROUP BY sts",
+        "SELECT ref1, COUNT(*) AS n FROM card GROUP BY ref1 ORDER BY n DESC, ref1 LIMIT 15",
+        "SELECT (SELECT COUNT(*) FROM cust) AS cust_cnt, (SELECT COUNT(DISTINCT ref1) FROM card) AS card_holder_cnt",
+        "SELECT c.frst_nm AS 名, c.last_nm AS 姓, COUNT(cd.card_id) AS 卡数 FROM cust c JOIN card cd ON cd.ref1 = c.cust_id GROUP BY c.cust_id, c.frst_nm, c.last_nm ORDER BY 卡数 DESC, c.frst_nm ASC, c.last_nm ASC LIMIT 10"
+      ],
+      "agent_text": "每位客户用过的付款卡数量（前 10，按卡数降序、名升序、姓升序）：\n\n| 名 | 姓 | 卡数 |\n|---|---|---|\n| AARON | SELBY | 2 |\n| ADRIAN | CLARY | 2 |\n| ALFRED | CASILLAS | 2 |\n| ALFREDO | MCADAMS | 2 |\n| ALICE | STEWART | 2 |\n| ALLISON | STANLEY | 2 |\n| ANDREA | HENDERSON | 2 |\n| ANDREW | PURDY | 2 |\n| ANDY | VANHORN | 2 |\n| ANN | EVANS | 2 |\n\n说明：`sakila_rntl_m1` 有数据字典（sys_tables/sys_table_fields）但无 sys_foreignkeys，经查证 `card.ref1`（持卡客户编号）即客户 `cust.cust_id`，据此用 `card` 表按客户统计卡片数量。所有客户至少持 1 张卡，部分客户持 2 张，前 10 名均为持 2 卡的客户。",
+      "tool_calls": 14,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "H3",
+      "m_level": "M2",
+      "datasource": "sakila_rntl_meta",
+      "chat_id": "c9de44a6c3c845bcb86355417eb0644f",
+      "final_sql": "SELECT c.frst_nm AS 名, c.last_nm AS 姓, COUNT(DISTINCT cd.card_id) AS 卡数 FROM pymt p JOIN card cd ON p.ref1 = cd.card_id JOIN cust c ON cd.ref1 = c.cust_id GROUP BY c.cust_id, c.frst_nm, c.last_nm ORDER BY 卡数 DESC, c.frst_nm ASC, c.last_nm ASC LIMIT 10",
+      "sql_history": [
+        "SELECT * FROM sys_foreignkeys ORDER BY from_table, constraint_name, column_seq",
+        "SELECT table_name, table_desc, table_type FROM sys_tables",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('cust','card','pymt') ORDER BY table_name, field_name",
+        "SELECT * FROM pymt LIMIT 3",
+        "SELECT * FROM card LIMIT 3",
+        "SELECT c.frst_nm AS 名, c.last_nm AS 姓, COUNT(DISTINCT cd.card_id) AS 卡数 FROM pymt p JOIN card cd ON p.ref1 = cd.card_id JOIN cust c ON cd.ref1 = c.cust_id GROUP BY c.cust_id, c.frst_nm, c.last_nm ORDER BY 卡数 DESC, c.frst_nm ASC, c.last_nm ASC LIMIT 10"
+      ],
+      "agent_text": "每位客户用过的付款卡数量（前 10，按卡数降序、名升序、姓升序）：\n\n| 名 | 姓 | 卡数 |\n|---|---|---|\n| AARON | SELBY | 2 |\n| ADRIAN | CLARY | 2 |\n| ALFRED | CASILLAS | 2 |\n| ALFREDO | MCADAMS | 2 |\n| ALICE | STEWART | 2 |\n| ALLISON | STANLEY | 2 |\n| ANDREA | HENDERSON | 2 |\n| ANDREW | PURDY | 2 |\n| ANDY | VANHORN | 2 |\n| ANN | EVANS | 2 |\n\n说明：通过 `pymt.ref1 → card.card_id`（fk_payment_card）与 `card.ref1 → cust.cust_id`（fk_card_customer）关联，按客户分组统计支付中使用的去重卡数量。",
+      "tool_calls": 8,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "H4",
+      "m_level": "M1",
+      "datasource": "sakila_rntl_m1",
+      "chat_id": "85cecc5887bd4aeb87561a97fdde1937",
+      "final_sql": "SELECT u.frst_nm, u.last_nm, COUNT(c.card_id) AS card_cnt FROM cust u JOIN card c ON c.ref1 = u.cust_id GROUP BY u.cust_id, u.frst_nm, u.last_nm ORDER BY card_cnt DESC, u.frst_nm ASC, u.last_nm ASC LIMIT 10",
+      "sql_history": [
+        "SELECT table_name, table_desc, table_type FROM sys_tables WHERE table_name IN ('cust','card','pymt')",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('cust','card','pymt') ORDER BY table_name, field_name",
+        "SELECT * FROM card LIMIT 5",
+        "SELECT COUNT(*) AS unmatched FROM card c LEFT JOIN cust u ON c.ref1 = u.cust_id WHERE u.cust_id IS NULL",
+        "SELECT MIN(ref1) AS min_ref1, MAX(ref1) AS max_ref1, COUNT(*) AS total, COUNT(DISTINCT ref1) AS distinct_ref FROM card",
+        "SELECT u.frst_nm, u.last_nm, COUNT(c.card_id) AS card_cnt FROM cust u JOIN card c ON c.ref1 = u.cust_id GROUP BY u.cust_id, u.frst_nm, u.last_nm ORDER BY card_cnt DESC, u.frst_nm ASC, u.last_nm ASC LIMIT 10"
+      ],
+      "agent_text": "答案如下（每位客户付款卡数量，按卡数降序、名升序、姓升序取前 10）：\n\n| 名 | 姓 | 卡数 |\n|---|---|---|\n| AARON | SELBY | 2 |\n| ADRIAN | CLARY | 2 |\n| ALFRED | CASILLAS | 2 |\n| ALFREDO | MCADAMS | 2 |\n| ALICE | STEWART | 2 |\n| ALLISON | STANLEY | 2 |\n| ANDREA | HENDERSON | 2 |\n| ANDREW | PURDY | 2 |\n| ANDY | VANHORN | 2 |\n| ANN | EVANS | 2 |\n\n说明：数据源 `sakila_rntl_m1` 仅有 `sys_tables`/`sys_table_fields`（无 `sys_foreignkeys`），据数据字典确认 `card.ref1`（持卡客户编号）关联 `cust.cust_id`，已抽查验证全部匹配（0 条失配）。每位客户至多 2 张卡，前 10 名并列，按名、姓升序排列。",
+      "tool_calls": 9,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "H4",
+      "m_level": "M2",
+      "datasource": "sakila_rntl_meta",
+      "chat_id": "e9284f47b91b4e099969234e62a698b0",
+      "final_sql": "SELECT c.frst_nm AS 名, c.last_nm AS 姓, COUNT(cd.card_id) AS 卡数 FROM cust c LEFT JOIN card cd ON cd.ref1 = c.cust_id GROUP BY c.cust_id, c.frst_nm, c.last_nm ORDER BY 卡数 DESC, c.frst_nm ASC, c.last_nm ASC LIMIT 10",
+      "sql_history": [
+        "SELECT * FROM sys_tables",
+        "SELECT * FROM sys_foreignkeys",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('cust','card')",
+        "SELECT c.frst_nm AS 名, c.last_nm AS 姓, COUNT(cd.card_id) AS 卡数 FROM cust c LEFT JOIN card cd ON cd.ref1 = c.cust_id GROUP BY c.cust_id, c.frst_nm, c.last_nm ORDER BY 卡数 DESC, c.frst_nm ASC, c.last_nm ASC LIMIT 10"
+      ],
+      "agent_text": "每位客户拥有的付款卡数量（按卡数降序、名升序、姓升序取前 10）：\n\n| 名 | 姓 | 卡数 |\n|---|---|---|\n| AARON | SELBY | 2 |\n| ADRIAN | CLARY | 2 |\n| ALFRED | CASILLAS | 2 |\n| ALFREDO | MCADAMS | 2 |\n| ALICE | STEWART | 2 |\n| ALLISON | STANLEY | 2 |\n| ANDREA | HENDERSON | 2 |\n| ANDREW | PURDY | 2 |\n| ANDY | VANHORN | 2 |\n| ANN | EVANS | 2 |",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "H5",
+      "m_level": "M1",
+      "datasource": "sakila_rntl_m1",
+      "chat_id": "fa19418792da45b081be837fd6512bf8",
+      "final_sql": "SELECT COUNT(*) AS customers_with_more_than_one_card FROM (SELECT ref1 FROM card GROUP BY ref1 HAVING COUNT(*) > 1) t",
+      "sql_history": [
+        "SELECT table_name, table_desc, table_type FROM sys_tables",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('card','cust') ORDER BY table_name, field_name",
+        "SELECT card_id, ref1, crd_typ, sts, open_dt FROM card ORDER BY ref1 LIMIT 15",
+        "SELECT COUNT(*) AS total_cards, COUNT(DISTINCT ref1) AS distinct_customers FROM card",
+        "SELECT COUNT(*) AS orphan_cards FROM card c LEFT JOIN cust u ON c.ref1 = u.cust_id WHERE u.cust_id IS NULL",
+        "SELECT card_cnt, COUNT(*) AS cust_cnt FROM (SELECT ref1, COUNT(*) AS card_cnt FROM card GROUP BY ref1) t GROUP BY card_cnt ORDER BY card_cnt",
+        "SELECT COUNT(*) AS customers_with_more_than_one_card FROM (SELECT ref1 FROM card GROUP BY ref1 HAVING COUNT(*) > 1) t"
+      ],
+      "agent_text": "**199 位客户拥有超过一张付款卡。**\n\n依据：`card` 表每行一张付款卡，`card.ref1` 为持卡客户编号（与 `cust.cust_id` 关联，无孤儿记录）。按 `ref1` 分组统计，卡片数大于 1 的客户共有 199 位（其中 400 位客户仅 1 张卡，199 位客户各持 2 张卡）。",
+      "tool_calls": 9,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "H5",
+      "m_level": "M2",
+      "datasource": "sakila_rntl_meta",
+      "chat_id": "af11bf08a7ed4470af606caaca373a5b",
+      "final_sql": "SELECT COUNT(*) AS cust_cnt FROM (SELECT ref1 FROM card GROUP BY ref1 HAVING COUNT(*) > 1) t",
+      "sql_history": [
+        "SELECT table_name, table_desc, table_type FROM sys_tables",
+        "SELECT * FROM sys_foreignkeys",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('card','cust') ORDER BY table_name, field_name",
+        "SELECT COUNT(*) AS cust_cnt FROM (SELECT ref1 FROM card GROUP BY ref1 HAVING COUNT(*) > 1) t"
+      ],
+      "agent_text": "**199 位**客户拥有超过一张付款卡。\n\n依据：ER 图（sys_foreignkeys）中 `card.ref1 → cust.cust_id` 表明 card 表每行一张付款卡、`ref1` 为持卡客户编号。按持卡客户分组统计卡片数，卡片数 > 1 的客户共有 **199** 位。",
+      "tool_calls": 6,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "H6",
+      "m_level": "M1",
+      "datasource": "sakila_rntl_m1",
+      "chat_id": "77a55faaa2f24f909892e9b84c29e60a",
+      "final_sql": "SELECT COUNT(*) AS blocked_card_count FROM card WHERE sts = 'blocked'",
+      "sql_history": [
+        "SELECT table_name, table_desc, table_type FROM sys_tables",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name = 'card'",
+        "SELECT sts, COUNT(*) FROM card GROUP BY sts",
+        "SELECT COUNT(*) AS blocked_card_count FROM card WHERE sts = 'blocked'"
+      ],
+      "agent_text": "处于封卡(blocked)状态的付款卡共有 **100 张**。",
+      "tool_calls": 6,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "H6",
+      "m_level": "M2",
+      "datasource": "sakila_rntl_meta",
+      "chat_id": "75ed992e00c9432aa49cf646831ddf64",
+      "final_sql": "SELECT COUNT(*) AS blocked_card_cnt FROM card WHERE sts = 'blocked'",
+      "sql_history": [
+        "SELECT table_name, table_desc, table_type FROM sys_tables WHERE table_name IN ('card','cust','pymt')",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name = 'card'",
+        "SELECT from_table, from_column, to_table, to_column, column_seq, column_count, constraint_name, source, confidence FROM sys_foreignkeys WHERE from_table = 'card' OR to_table = 'card'",
+        "SELECT COUNT(*) AS blocked_card_cnt FROM card WHERE sts = 'blocked'"
+      ],
+      "agent_text": "处于封卡(blocked)状态的付款卡共有 **100 张**。",
+      "tool_calls": 6,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "Q39",
+      "m_level": "M1",
+      "datasource": "sakila_rntl_m1",
+      "chat_id": "86caf24f9a564e4ea83f62df87c2583e",
+      "final_sql": "SELECT c.cty FROM pymt p JOIN rntl r ON p.ref1 = r.rnt_id JOIN cust cu ON r.ref2 = cu.cust_id JOIN addr a ON cu.ref2 = a.addr_id JOIN city c ON a.ref1 = c.cty_id GROUP BY cu.cust_id, c.cty ORDER BY SUM(p.amt) DESC LIMIT 1",
+      "sql_history": [
+        "SELECT table_name FROM information_schema.tables WHERE table_schema = 'sakila_rntl_m1'",
+        "SELECT table_name, table_desc, table_type FROM sys_tables",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('cust','pymt','addr','city')",
+        "SELECT TABLE_NAME, COLUMN_NAME, REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME FROM information_schema.KEY_COLUMN_USAGE WHERE TABLE_SCHEMA = 'sakila_rntl_m1' AND REFERENCED_TABLE_NAME IS NOT NULL",
+        "SELECT cust_id, ref1, ref2, frst_nm, last_nm FROM cust LIMIT 5",
+        "SELECT pmt_id, ref1, amt FROM pymt LIMIT 5",
+        "SELECT addr_id, ref1, addr FROM addr LIMIT 5",
+        "SELECT MAX(cust_id) AS max_cust, MIN(cust_id) AS min_cust FROM cust",
+        "SELECT MAX(cty_id) AS max_cty, MIN(cty_id) AS min_cty FROM city",
+        "SELECT COUNT(*) AS cnt, COUNT(DISTINCT ref2) AS distinct_ref2 FROM cust",
+        "SELECT c.cty, c.cty_id FROM city c JOIN addr a ON c.cty_id = a.ref1 WHERE a.addr_id = 5",
+        "SELECT MIN(ref1) AS min_ref1, MAX(ref1) AS max_ref1, COUNT(DISTINCT ref1) AS distinct_ref1 FROM pymt",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('rntl','stor')",
+        "SELECT MIN(rnt_id) AS min_r, MAX(rnt_id) AS max_r, COUNT(*) AS cnt FROM rntl",
+        "SELECT MIN(ref2) AS min_r2, MAX(ref2) AS max_r2, COUNT(DISTINCT ref2) AS distinct_r2 FROM rntl",
+        "SELECT COLUMN_NAME, DATA_TYPE FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = 'sakila_rntl_m1' AND TABLE_NAME = 'pymt'",
+        "SELECT pmt_id, ref1, amt, pmt_dt FROM pymt ORDER BY pmt_id DESC LIMIT 5",
+        "SELECT COUNT(*) AS matched FROM pymt p JOIN rntl r ON p.ref1 = r.rnt_id",
+        "SELECT COUNT(*) AS matched FROM pymt p JOIN rntl r ON p.ref1 = r.ref2",
+        "SELECT p.pmt_id, p.ref1 AS rnt_id, r.ref2 AS cust_id, c.frst_nm, c.last_nm FROM pymt p JOIN rntl r ON p.ref1 = r.rnt_id JOIN cust c ON r.ref2 = c.cust_id LIMIT 5",
+        "SELECT COUNT(*) AS unmatched FROM pymt p LEFT JOIN rntl r ON p.ref1 = r.rnt_id WHERE r.rnt_id IS NULL",
+        "SELECT c.cty FROM pymt p JOIN rntl r ON p.ref1 = r.rnt_id JOIN cust cu ON r.ref2 = cu.cust_id JOIN addr a ON cu.ref2 = a.addr_id JOIN city c ON a.ref1 = c.cty_id GROUP BY cu.cust_id, c.cty ORDER BY SUM(p.amt) DESC LIMIT 1"
+      ],
+      "agent_text": "Pontianak",
+      "tool_calls": 24,
+      "pass": false,
+      "error": null
+    },
+    {
+      "question_id": "Q39",
+      "m_level": "M2",
+      "datasource": "sakila_rntl_meta",
+      "chat_id": "7928ffc86fcb4a569a82b634f921a6b2",
+      "final_sql": "SELECT c.cty FROM pymt p JOIN card ca ON p.ref1 = ca.card_id JOIN cust cu ON ca.ref1 = cu.cust_id JOIN addr a ON cu.ref2 = a.addr_id JOIN city c ON a.ref1 = c.cty_id GROUP BY cu.cust_id, c.cty ORDER BY SUM(p.amt) DESC LIMIT 1",
+      "sql_history": [
+        "SELECT table_name, table_desc, table_type FROM sys_tables",
+        "SELECT from_table, from_column, to_table, to_column, constraint_name, column_seq, column_count, source, confidence FROM sys_foreignkeys ORDER BY from_table, constraint_name, column_seq",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('pymt','cust','addr','city','card') ORDER BY table_name, field_name",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name = 'pymt' ORDER BY field_name",
+        "SELECT c.cty FROM pymt p JOIN card ca ON p.ref1 = ca.card_id JOIN cust cu ON ca.ref1 = cu.cust_id JOIN addr a ON cu.ref2 = a.addr_id JOIN city c ON a.ref1 = c.cty_id GROUP BY cu.cust_id, c.cty ORDER BY SUM(p.amt) DESC LIMIT 1"
+      ],
+      "agent_text": "Cape Coral",
+      "tool_calls": 7,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "Q40",
+      "m_level": "M1",
+      "datasource": "sakila_rntl_m1",
+      "chat_id": "48d2b0064a59425ba1b23c538003abd9",
+      "final_sql": "SELECT COUNT(*) AS unused_cards FROM card c WHERE NOT EXISTS (SELECT 1 FROM pymt p WHERE p.ref1 = c.card_id)",
+      "sql_history": [
+        "SELECT * FROM sys_tables",
+        "SELECT * FROM sys_table_fields WHERE table_name IN ('card','pymt')",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields ORDER BY table_name, field_name",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('cust','rntl','staf','stor','invt','film','flm_act','flm_cat','lang','city','cnty','doc','addr','actr','awd','catg') ORDER BY table_name, field_name",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('cust','rntl','staf','stor','invt','flm_act','flm_cat','lang','doc','film') ORDER BY table_name, field_name",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name = 'pymt' ORDER BY field_name",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name = 'rntl' ORDER BY field_name",
+        "SHOW CREATE TABLE card",
+        "SHOW CREATE TABLE pymt",
+        "SELECT * FROM sys_foreignkeys WHERE from_table IN ('card','pymt') OR to_table IN ('card','pymt')",
+        "SELECT * FROM card LIMIT 10",
+        "SELECT * FROM pymt LIMIT 10",
+        "SELECT COUNT(*) AS total_cards, MIN(card_id) AS min_id, MAX(card_id) AS max_id FROM card",
+        "SELECT COUNT(DISTINCT ref1) AS distinct_card_refs, COUNT(*) AS total_payments, MIN(ref1) AS min_ref, MAX(ref1) AS max_ref FROM pymt",
+        "SELECT COUNT(*) AS pymt_refs_not_in_card FROM pymt p LEFT JOIN card c ON p.ref1 = c.card_id WHERE c.card_id IS NULL",
+        "SELECT COUNT(*) AS unused_cards FROM card c WHERE NOT EXISTS (SELECT 1 FROM pymt p WHERE p.ref1 = c.card_id)"
+      ],
+      "agent_text": "**答案：1 张**\n\n根据数据字典，`card`（卡维度表）与 `pymt`（支付事实表）通过 `pymt.ref1 → card.card_id` 关联（已在 M2 的 ER 图确认该关联为 manual、confidence=1.00，并在 M1 数据中验证：pymt.ref1 全部落在 card.card_id 范围内、无孤儿引用）。\n\n- 卡总数：798 张\n- 被付款引用过的卡：797 张（distinct）\n- 从未被任何付款使用过的卡：798 − 797 = **1 张**",
+      "tool_calls": 18,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "Q40",
+      "m_level": "M2",
+      "datasource": "sakila_rntl_meta",
+      "chat_id": "3af1ffc788a64c9bbc835c3f5077dd8b",
+      "final_sql": "SELECT COUNT(*) AS unused_cards FROM card c LEFT JOIN pymt p ON p.ref1 = c.card_id WHERE p.ref1 IS NULL",
+      "sql_history": [
+        "SELECT table_name, table_desc, table_type FROM sys_tables WHERE table_name IN ('card','pymt')",
+        "SELECT * FROM sys_foreignkeys WHERE from_table IN ('card','pymt') OR to_table IN ('card','pymt')",
+        "SELECT COUNT(*) AS unused_cards FROM card c LEFT JOIN pymt p ON p.ref1 = c.card_id WHERE p.ref1 IS NULL"
+      ],
+      "agent_text": "**1 张**付款卡从未被任何付款使用过。\n\n（依据 ER 图外键 `fk_payment_card`：`pymt.ref1` → `card.card_id`，用 LEFT JOIN 找出没有任何付款记录的卡，结果为 1 张。）",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "Q41",
+      "m_level": "M1",
+      "datasource": "sakila_rntl_m1",
+      "chat_id": "601cced4b88e49b7b5cdd2f33257eae4",
+      "final_sql": "SELECT SUM(f.lngth) AS total_minutes FROM doc d JOIN film f ON d.doc_id = f.flm_id",
+      "sql_history": [
+        "SHOW TABLES",
+        "SELECT * FROM sys_tables WHERE table_name IN ('doc','film')",
+        "SELECT * FROM sys_table_fields WHERE table_name IN ('doc','film')",
+        "SELECT * FROM doc LIMIT 20",
+        "SELECT COUNT(*) AS cnt, COUNT(DISTINCT doc_id) AS d_doc FROM doc",
+        "SELECT flm_id, ttl, dsc, lngth FROM film WHERE flm_id IN (1,2,4,5)",
+        "SELECT COUNT(*) AS tot_doc, COUNT(DISTINCT doc_id) AS d1, SUM(doc_id IN (SELECT flm_id FROM film)) AS matched FROM doc",
+        "SELECT SUM(f.lngth) AS total_minutes FROM doc d JOIN film f ON d.doc_id = f.flm_id"
+      ],
+      "agent_text": "68355",
+      "tool_calls": 10,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "Q41",
+      "m_level": "M2",
+      "datasource": "sakila_rntl_meta",
+      "chat_id": "d1c20721c4164460903a929ada578e21",
+      "final_sql": "SELECT SUM(f.lngth) AS total_length FROM film f JOIN doc d ON f.flm_id = d.doc_id",
+      "sql_history": [
+        "SELECT table_name, table_desc, table_type FROM sys_tables",
+        "SELECT from_table, from_column, to_table, to_column, column_seq, column_count, constraint_name, source, confidence FROM sys_foreignkeys WHERE from_table IN ('doc','film') OR to_table IN ('doc','film') ORDER BY from_table, constraint_name, column_seq",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('doc','film') ORDER BY table_name, field_name",
+        "SELECT * FROM doc ORDER BY doc_id LIMIT 20",
+        "SELECT flm_id, ttl, lngth FROM film ORDER BY flm_id LIMIT 10",
+        "SELECT (SELECT COUNT(*) FROM doc) AS doc_cnt, (SELECT COUNT(*) FROM film) AS film_cnt, (SELECT COUNT(*) FROM doc d LEFT JOIN film f ON d.doc_id = f.flm_id WHERE f.flm_id IS NULL) AS doc_no_film, (SELECT COUNT(*) FROM doc d JOIN film f ON d.doc_id = f.flm_id) AS matched",
+        "SELECT doc_id, COUNT(*) AS c FROM doc GROUP BY doc_id HAVING COUNT(*) > 1",
+        "SELECT SUM(f.lngth) AS total_length FROM film f JOIN doc d ON f.flm_id = d.doc_id"
+      ],
+      "agent_text": "68355",
+      "tool_calls": 9,
+      "pass": true,
+      "error": null
+    }
+  ]
+}

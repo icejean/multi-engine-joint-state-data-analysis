@@ -1,0 +1,148 @@
+{
+  "runs": [
+    {
+      "question_id": 1,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "113c3048667f4e71abd42d3d39883d45",
+      "final_sql": "SELECT * FROM sys_foreignkeys",
+      "sql_history": [
+        "SELECT * FROM sys_foreignkeys",
+        "SELECT * FROM sys_foreignkeys",
+        "SELECT 1",
+        "SELECT * FROM sys_foreignkeys"
+      ],
+      "agent_text": "LLM request failed.",
+      "tool_calls": 55,
+      "pass": false,
+      "error": "ProgrammingError: (1146, \"Table 'works_cycles.sys_foreignkeys' doesn't exist\")"
+    },
+    {
+      "question_id": 99,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "32688dcb55ca4825961f15f3af70618e",
+      "final_sql": "SELECT COUNT(*) AS n FROM prod",
+      "sql_history": [
+        "SELECT * FROM sys_foreignkeys",
+        "SELECT * FROM sys_foreignkeys;",
+        "SELECT * FROM bom LIMIT 10",
+        "SELECT 1",
+        "SELECT COUNT(*) FROM bom",
+        "%%sql SELECT COUNT(*) AS n FROM bom",
+        "SELECT COUNT(*) AS n FROM prod"
+      ],
+      "agent_text": "LLM request failed.",
+      "tool_calls": 57,
+      "pass": false,
+      "error": null
+    },
+    {
+      "question_id": 1,
+      "m_level": "M1",
+      "datasource": "works_cycles_dict",
+      "chat_id": "9e2ba2cd5f91412585f1d4c382a28117",
+      "final_sql": "SELECT COUNT(DISTINCT CASE WHEN ba.ref2 = 2 THEN ba.ref1 END) AS home_address_businesses, COUNT(DISTINCT CASE WHEN ba.ref2 = 5 THEN ba.ref1 END) AS shipping_address_businesses FROM biz_addr ba",
+      "sql_history": [
+        "SELECT * FROM sys_foreignkeys",
+        "SELECT * FROM sys_foreignkeys",
+        "SELECT table_name, table_desc, table_type FROM sys_tables",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('biz_addr','addr_typ','biz_ent','addr') ORDER BY table_name, field_name",
+        "SELECT * FROM addr_typ",
+        "SELECT COUNT(DISTINCT CASE WHEN ba.ref2 = 2 THEN ba.ref1 END) AS home_address_businesses, COUNT(DISTINCT CASE WHEN ba.ref2 = 5 THEN ba.ref1 END) AS shipping_address_businesses FROM biz_addr ba"
+      ],
+      "agent_text": "两个计数如下（数据源 `works_cycles_dict`，通过 `biz_addr` 关联 `addr_typ` 地址类型统计不同业务实体）：\n\n- **Home 地址（addr_typ = 'Home'）的业务数：18774**\n- **Shipping 地址（addr_typ = 'Shipping'）的业务数：35**\n\n（依据：`biz_addr.ref1` = 业务实体编号，`biz_addr.ref2` = 地址类型编号，`addr_typ` 中 Home=2、Shipping=5。）",
+      "tool_calls": 32,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": 99,
+      "m_level": "M1",
+      "datasource": "works_cycles_dict",
+      "chat_id": "68db2b666f924580b22b42976796fa0c",
+      "final_sql": "WITH RECURSIVE bt(ref2, level) AS (SELECT ref2, 1 FROM bom WHERE ref3=(SELECT prdc_id FROM prod WHERE nm='HL Road Frame - Black, 58') AND end_dt IS NULL UNION ALL SELECT b.ref2, bt.level+1 FROM bom b JOIN bt ON b.ref3=bt.ref2 WHERE b.end_dt IS NULL) SELECT p.nm, bt.level FROM bt JOIN prod p ON p.prdc_id=bt.ref2 ORDER BY bt.level, p.nm",
+      "sql_history": [
+        "SELECT * FROM sys_tables LIMIT 100",
+        "SELECT table_name FROM sys_tables ORDER BY table_name",
+        "SELECT * FROM sys_table_fields LIMIT 5",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('bom','prod')",
+        "SELECT prdc_id, nm, prdc_nmbr FROM prod WHERE nm LIKE '%HL Road Frame%'",
+        "SELECT * FROM bom LIMIT 15",
+        "SELECT b.bll_of_mtrl_id, b.ref3, b.ref2, b.bm_lvl, b.pr_assm_qty, p.nm AS component_name FROM bom b JOIN prod p ON b.ref2 = p.prdc_id WHERE b.ref3 = 680",
+        "SELECT bll_of_mtrl_id, ref3, ref2, strt_dt, end_dt, bm_lvl, pr_assm_qty FROM bom WHERE ref2 = 680",
+        "SELECT bm_lvl, COUNT(*) AS cnt FROM bom GROUP BY bm_lvl ORDER BY bm_lvl",
+        "SELECT * FROM bom WHERE ref3 = 680 ORDER BY bll_of_mtrl_id",
+        "SELECT bll_of_mtrl_id, ref3, ref2, strt_dt, end_dt, bm_lvl, pr_assm_qty FROM bom WHERE ref2 = 492 ORDER BY ref3, bll_of_mtrl_id LIMIT 50",
+        "SELECT DISTINCT ref3 FROM bom WHERE ref3 IN (804,534,532,533,324,492,325,327,399,326)",
+        "SELECT ref2, COUNT(*) c FROM bom WHERE ref3 = 804 GROUP BY ref2",
+        "WITH RECURSIVE tree AS ( SELECT b.ref2 AS component_id, b.ref3 AS parent_id, 1 AS depth, b.bm_lvl, b.pr_assm_qty, b.end_dt FROM bom b WHERE b.ref3 = 680 UNION ALL SELECT b.ref2, b.ref3, t.depth+1, b.bm_lvl, b.pr_assm_qty, b.end_dt FROM bom b JOIN tree t ON b.ref3 = t.component_id WHERE t.depth < 10 ) SELECT t.depth, t.bm_lvl, t.component_id, p.nm, t.pr_assm_qty, t.end_dt FROM tree t JOIN prod p ON t.component_id = p.prdc_id ORDER BY t.depth, t.component_id",
+        "SELECT ref2 AS top_product FROM bom WHERE ref3 IS NULL ORDER BY ref2 LIMIT 120",
+        "SELECT ref2, bm_lvl, pr_assm_qty, end_dt FROM bom WHERE ref3 = 749 ORDER BY ref2",
+        "SELECT bll_of_mtrl_id, ref3, ref2, bm_lvl, end_dt FROM bom WHERE ref2 = 948 ORDER BY bll_of_mtrl_id",
+        "WITH RECURSIVE bt(ref2, level) AS (SELECT ref2, 1 FROM bom WHERE ref3=(SELECT prdc_id FROM prod WHERE nm='HL Road Frame - Black, 58') AND end_dt IS NULL UNION ALL SELECT b.ref2, bt.level+1 FROM bom b JOIN bt ON b.ref3=bt.ref2 WHERE b.end_dt IS NULL) SELECT p.nm, bt.level FROM bt JOIN prod p ON p.prdc_id=bt.ref2 ORDER BY bt.level, p.nm"
+      ],
+      "agent_text": "'HL Road Frame - Black, 58' 的全部组件（含直接与嵌套，仅当前有效 BOM，即 `end_dt IS NULL`），按装配层级：\n\n**Level 1（直接组件，10 个）**\n- Chain Stays、Decal 1、Decal 2、Down Tube、HL Fork、Head Tube、Paint - Black、Seat Stays、Seat Tube、Top Tube\n\n**Level 2（10 个）**\n- Blade、Fork Crown、Fork End、Metal Bar 2、Metal Sheet 2、Metal Sheet 3、Metal Sheet 4、Metal Sheet 5、Metal Sheet 7、Steerer\n\n**Level 3（4 个）**\n- Metal Sheet 2、Metal Sheet 5、Metal Sheet 5、Metal Sheet 6\n\n共 24 条（组件名, 层级）记录。",
+      "tool_calls": 31,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": 1,
+      "m_level": "M2",
+      "datasource": "works_cycles_er",
+      "chat_id": "f091735af5924cbdad601a3c658247b8",
+      "final_sql": "SELECT SUM(CASE WHEN at.nm='Home' THEN 1 ELSE 0 END) AS home_address_businesses, SUM(CASE WHEN at.nm='Shipping' THEN 1 ELSE 0 END) AS shipping_address_businesses FROM biz_addr ba JOIN addr_typ at ON ba.ref2 = at.addr_typ_id",
+      "sql_history": [
+        "SELECT * FROM sys_foreignkeys",
+        "SELECT * FROM addr_typ",
+        "SELECT table_name FROM information_schema.tables WHERE table_schema='works_cycles_er'",
+        "SELECT table_name FROM information_schema.tables WHERE table_schema='works_cycles_er' AND table_name LIKE 'sys%'",
+        "SELECT column_name, data_type FROM information_schema.columns WHERE table_schema='works_cycles_er' AND table_name='biz_addr'",
+        "SELECT * FROM sys_tables",
+        "SELECT * FROM sys_table_fields WHERE table_name IN ('biz_addr','addr_typ','addr','biz_ent')",
+        "SELECT at.nm, COUNT(*) AS rows_cnt, COUNT(DISTINCT ba.ref1) AS biz_cnt FROM biz_addr ba JOIN addr_typ at ON ba.ref2 = at.addr_typ_id GROUP BY at.nm",
+        "SELECT SUM(CASE WHEN at.nm='Home' THEN 1 ELSE 0 END) AS home_address_businesses, SUM(CASE WHEN at.nm='Shipping' THEN 1 ELSE 0 END) AS shipping_address_businesses FROM biz_addr ba JOIN addr_typ at ON ba.ref2 = at.addr_typ_id"
+      ],
+      "agent_text": "数据源 `works_cycles_er` 结果（基于 `biz_addr` 关联 `addr_typ`，通过外键 `biz_addr.ref2 = addr_typ.addr_typ_id`）：\n\n- **以家庭地址（Home）作为地址的企业数量：18774**\n- **有送货地址（Shipping）的企业数量：35**\n\n（顺带：地址类型中还有 Main Office 805 家；Home 与 Shipping 的企业均无重复关联。）",
+      "tool_calls": 13,
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": 99,
+      "m_level": "M2",
+      "datasource": "works_cycles_er",
+      "chat_id": "a34c37445b374df793deb09bfb55b46e",
+      "final_sql": "WITH RECURSIVE bom_tree AS ( SELECT b.ref2 AS component_id, 1 AS level FROM bom b WHERE b.ref3 = (SELECT prdc_id FROM prod WHERE nm = 'HL Road Frame - Black, 58') UNION ALL SELECT b.ref2, bt.level + 1 FROM bom b JOIN bom_tree bt ON b.ref3 = bt.component_id ) SELECT DISTINCT bt.level AS level, p.nm AS component_name FROM bom_tree bt JOIN prod p ON p.prdc_id = bt.component_id ORDER BY level, component_name",
+      "sql_history": [
+        "SELECT * FROM sys_foreignkeys",
+        "SELECT * FROM sys_tables",
+        "SELECT * FROM sys_tables LIMIT 1",
+        "SELECT * FROM sys_table_fields LIMIT 5",
+        "SELECT * FROM sys_table_fields WHERE table_name IN ('bom','prod') ORDER BY table_name, field_name",
+        "SELECT prdc_id, nm FROM prod WHERE nm = 'HL Road Frame - Black, 58'",
+        "SELECT b.bll_of_mtrl_id, b.ref2 AS component_id, b.ref3 AS assembly_id, b.bm_lvl, b.pr_assm_qty FROM bom b ORDER BY b.bll_of_mtrl_id LIMIT 15",
+        "WITH RECURSIVE bom_tree AS ( SELECT b.ref2 AS component_id, 1 AS lvl FROM bom b WHERE b.ref3 = 680 UNION ALL SELECT b.ref2 AS component_id, bt.lvl + 1 FROM bom b JOIN bom_tree bt ON b.ref3 = bt.component_id ) SELECT bt.lvl AS level, p.nm AS component_name FROM bom_tree bt JOIN prod p ON p.prdc_id = bt.component_id ORDER BY bt.lvl, p.nm",
+        "SELECT ref2, ref3, COUNT(*) c, GROUP_CONCAT(bll_of_mtrl_id) ids FROM bom WHERE ref3 = 680 GROUP BY ref2, ref3",
+        "SELECT bll_of_mtrl_id, ref2, ref3, pr_assm_qty, strt_dt, end_dt FROM bom WHERE bll_of_mtrl_id IN (1446,1617)",
+        "SELECT b.bll_of_mtrl_id, b.ref3 AS assembly_id, p.nm AS assembly_name, b.ref2 AS comp_id, pc.nm AS comp_name FROM bom b JOIN prod p ON p.prdc_id=b.ref3 JOIN prod pc ON pc.prdc_id=b.ref2 WHERE pc.nm IN ('Fork Crown','Metal Sheet 7','Metal Sheet 5') AND p.nm LIKE '%Fork%' ORDER BY pc.nm",
+        "WITH RECURSIVE bom_tree AS ( SELECT b.ref2 AS component_id, 1 AS lvl FROM bom b WHERE b.ref3 = 680 AND b.end_dt IS NULL UNION ALL SELECT b.ref2, bt.lvl + 1 FROM bom b JOIN bom_tree bt ON b.ref3 = bt.component_id WHERE b.end_dt IS NULL ) SELECT DISTINCT bt.lvl AS level, p.nm AS component_name FROM bom_tree bt JOIN prod p ON p.prdc_id = bt.component_id ORDER BY level, component_name",
+        "SELECT bll_of_mtrl_id, ref2, ref3, strt_dt, end_dt FROM bom WHERE bll_of_mtrl_id IN (1204,1491) OR (ref3=680)",
+        "WITH RECURSIVE bom_tree AS ( SELECT b.ref2 AS component_id, 1 AS lvl, b.bm_lvl AS bom_lvl FROM bom b WHERE b.ref3 = 680 AND b.end_dt IS NULL UNION ALL SELECT b.ref2, bt.lvl+1, b.bm_lvl FROM bom b JOIN bom_tree bt ON b.ref3 = bt.component_id WHERE b.end_dt IS NULL ) SELECT DISTINCT bt.lvl AS level, p.nm AS component_name, bt.bom_lvl FROM bom_tree bt JOIN prod p ON p.prdc_id = bt.component_id ORDER BY level, component_name",
+        "WITH RECURSIVE bom_tree AS ( SELECT b.ref2 AS component_id, 1 AS lvl FROM bom b WHERE b.ref3 = 680 UNION ALL SELECT b.ref2, bt.lvl+1 FROM bom b JOIN bom_tree bt ON b.ref3 = bt.component_id ) SELECT DISTINCT bt.lvl AS level, p.nm AS component_name FROM bom_tree bt JOIN prod p ON p.prdc_id = bt.component_id ORDER BY level, component_name",
+        "SELECT COUNT(*) AS n FROM prod WHERE nm IN ('Paint - Black','Fork Crown','Metal Sheet 5','Metal Sheet 6','Metal Sheet 7')",
+        "SELECT bll_of_mtrl_id, ref2, ref3, bm_lvl, end_dt FROM bom WHERE ref2 = 680 OR ref3 = 680 ORDER BY bm_lvl, bll_of_mtrl_id",
+        "SELECT bm_lvl, COUNT(*) c FROM bom GROUP BY bm_lvl ORDER BY bm_lvl",
+        "SELECT prdc_id, nm FROM prod WHERE prdc_id IN (796,680,804,350,486,534,532,533,324,325,327,326,399,492)",
+        "SELECT bll_of_mtrl_id, ref2, ref3, bm_lvl, end_dt FROM bom WHERE ref2 = 796 OR ref2 = 804 OR ref3 = 796",
+        "WITH RECURSIVE bom_tree AS ( SELECT b.ref2 AS component_id, 1 AS level FROM bom b WHERE b.ref3 = (SELECT prdc_id FROM prod WHERE nm = 'HL Road Frame - Black, 58') UNION ALL SELECT b.ref2, bt.level + 1 FROM bom b JOIN bom_tree bt ON b.ref3 = bt.component_id ) SELECT DISTINCT bt.level AS level, p.nm AS component_name FROM bom_tree bt JOIN prod p ON p.prdc_id = bt.component_id ORDER BY level, component_name"
+      ],
+      "agent_text": "已通过 `works_cycles_dict`（该 ER 数据源）查询完成。目标产品 `HL Road Frame - Black, 58`（prdc_id=680），沿 BOM 表 `bom` 的装配关系（ref3=装配产品 → ref2=组件）递归展开，得到其直接与嵌套的全部组件及层级：\n\n| level | component_name |\n|---|---|\n| 1 | Chain Stays |\n| 1 | Decal 1 |\n| 1 | Decal 2 |\n| 1 | Down Tube |\n| 1 | HL Fork |\n| 1 | Head Tube |\n| 1 | Paint - Black |\n| 1 | Seat Stays |\n| 1 | Seat Tube |\n| 1 | Top Tube |\n| 2 | Blade |\n| 2 | Fork Crown |\n| 2 | Fork End |\n| 2 | Metal Bar 2 |\n| 2 | Metal Sheet 2 |\n| 2 | Metal Sheet 3 |\n| 2 | Metal Sheet 4 |\n| 2 | Metal Sheet 5 |\n| 2 | Metal Sheet 7 |\n| 2 | Steerer |\n| 3 | Metal Sheet 2 |\n| 3 | Metal Sheet 5 |\n| 3 | Metal Sheet 6 |\n\n即：10 个直接组件（level 1）、10 个二级组件（level 2）、3 个三级组件（level 3），共 23 个组件。",
+      "tool_calls": 26,
+      "pass": false,
+      "error": null
+    }
+  ]
+}

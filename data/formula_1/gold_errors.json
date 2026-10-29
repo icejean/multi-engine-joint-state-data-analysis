@@ -1,0 +1,10 @@
+[
+  {
+    "id": 2,
+    "reason": "非确定 gold(ORDER BY 平局/NULL + LIMIT): sqlite/MySQL 各 1 行但值不同"
+  },
+  {
+    "id": 63,
+    "reason": "非确定 gold(ORDER BY 平局/NULL + LIMIT): sqlite/MySQL 各 1 行但值不同"
+  }
+]

@@ -1,0 +1,93 @@
+{
+  "runs": [
+    {
+      "question_id": 13,
+      "datasource": "financial",
+      "chat_id": "049a648712194dddb60a976c324e4e70",
+      "final_sql": "SELECT ref1 FROM trns WHERE dt = (SELECT MIN(dt) FROM trns WHERE dt >= '1995-01-01' AND dt < '1996-01-01')",
+      "sql_history": [
+        "SELECT COUNT(*) AS total_rows, COUNT(DISTINCT ref1) AS distinct_accts, MIN(dt) AS min_dt FROM trns WHERE dt >= '1995-01-01' AND dt <= '1995-12-31'",
+        "SELECT COUNT(*) AS total_rows, COUNT(DISTINCT ref1) AS distinct_accts FROM trns WHERE dt >= '1995-01-01' AND dt < '1995-01-02'",
+        "SELECT ref1 FROM trns WHERE dt = (SELECT MIN(dt) FROM trns WHERE dt >= '1995-01-01' AND dt < '1996-01-01')"
+      ],
+      "agent_text": "账号列表（1995 年最早交易日 = 1995-01-01 当天的所有交易账号）：\n\n最终 SQL：\n```sql\nSELECT ref1 FROM trns\nWHERE dt = (SELECT MIN(dt) FROM trns WHERE dt >= '1995-01-01' AND dt < '1996-01-01')\n```\n\n返回该日（1995-01-01）有交易的账户号，共 359 行（含同账户当日多笔交易的重复行，按题面保留原始行）。",
+      "tool_calls": 6,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 6,
+      "tool_rounds": 5,
+      "tokens": {
+        "input": 15482,
+        "output": 3654,
+        "cache_read": 155904,
+        "cache_write": 0,
+        "reasoning": 3023,
+        "total": 175040
+      },
+      "cost_usd": 0.007556,
+      "elapsed_seconds": 36.35,
+      "agent_duration_ms": 28330,
+      "extra_columns": []
+    },
+    {
+      "question_id": 61,
+      "datasource": "financial",
+      "chat_id": "a9b74f77986e49b888ed547137deb602",
+      "final_sql": "SELECT dsp.typ FROM dsp JOIN acct ON dsp.ref2 = acct.accn_id JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE dsp.typ <> 'OWNER' AND dstr.a11 > 8000 AND dstr.a11 <= 9000",
+      "sql_history": [
+        "SELECT typ, COUNT(*) AS cnt FROM dsp GROUP BY typ",
+        "SELECT COUNT(*) AS rows_cnt, COUNT(DISTINCT dsp.typ) AS n_types FROM dsp JOIN acct ON dsp.ref2 = acct.accn_id JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE dsp.typ <> 'OWNER' AND dstr.a11 > 8000 AND dstr.a11 <= 9000",
+        "SELECT dsp.typ FROM dsp JOIN acct ON dsp.ref2 = acct.accn_id JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE dsp.typ <> 'OWNER' AND dstr.a11 > 8000 AND dstr.a11 <= 9000"
+      ],
+      "agent_text": "Done. Final answer: the account type not eligible for loans (i.e., not `OWNER`) whose account's district has average salary/income > $8000 and ≤ $9000 is **DISPONENT**.\n\nResult set (461 rows, all `DISPONENT`), from the final query:\n\n```sql\nSELECT dsp.typ\nFROM dsp\nJOIN acct ON dsp.ref2 = acct.accn_id\nJOIN dstr ON acct.ref1 = dstr.dstr_id\nWHERE dsp.typ <> 'OWNER'\n  AND dstr.a11 > 8000\n  AND dstr.a11 <= 9000\n```\n\n- `dsp.typ` = owning/disposition type (`OWNER` eligible for loans; everything else, i.e. `DISPONENT`, is not).\n- `acct.ref1` = the account's branch district → `dstr.a11` = average salary (income) in that district.\n- Filter: strictly > 8000 and ≤ 9000.\n\nStopping here — no further verification queries.",
+      "tool_calls": 8,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 7,
+      "tool_rounds": 6,
+      "tokens": {
+        "input": 20243,
+        "output": 21631,
+        "cache_read": 253696,
+        "cache_write": 0,
+        "reasoning": 20643,
+        "total": 295570
+      },
+      "cost_usd": 0.015994,
+      "elapsed_seconds": 145.01,
+      "agent_duration_ms": 137501,
+      "extra_columns": []
+    },
+    {
+      "question_id": 92,
+      "datasource": "financial",
+      "chat_id": "10bfde579f414beca3f61e98da8c6c36",
+      "final_sql": "SELECT c.clnt_id FROM clnt c JOIN dsp d ON c.clnt_id = d.ref1 JOIN acct a ON d.ref2 = a.accn_id JOIN dstr ds ON a.ref1 = ds.dstr_id WHERE YEAR(c.brth_dt) BETWEEN 1983 AND 1987 AND ds.a3 = 'east Bohemia'",
+      "sql_history": [
+        "SELECT DISTINCT a3 FROM dstr",
+        "SELECT c.clnt_id FROM clnt c JOIN dsp d ON c.clnt_id = d.ref1 JOIN acct a ON d.ref2 = a.accn_id JOIN dstr ds ON a.ref1 = ds.dstr_id WHERE YEAR(c.brth_dt) BETWEEN 1983 AND 1987 AND ds.a3 = 'east Bohemia'"
+      ],
+      "agent_text": "符合条件的客户（出生于 1983–1987 年，且开户分支位于 East Bohemia）及其 ID：\n\n| clnt_id |\n|---|\n| 379 |\n| 734 |\n| 3428 |\n\n共 3 位客户。",
+      "tool_calls": 5,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 20438,
+        "output": 2987,
+        "cache_read": 131200,
+        "cache_write": 0,
+        "reasoning": 2530,
+        "total": 154625
+      },
+      "cost_usd": 0.007371,
+      "elapsed_seconds": 31.54,
+      "agent_duration_ms": 23874,
+      "extra_columns": []
+    }
+  ]
+}

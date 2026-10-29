@@ -1,0 +1,343 @@
+{
+  "source_db": "sakila",
+  "db_m0": "sakila_rntl",
+  "db_m1": "sakila_rntl_m1",
+  "db_m2": "sakila_rntl_meta",
+  "tables": {
+    "actor": "actr",
+    "address": "addr",
+    "category": "catg",
+    "city": "city",
+    "country": "cnty",
+    "customer": "cust",
+    "film": "film",
+    "film_actor": "flm_act",
+    "film_category": "flm_cat",
+    "film_text": "doc",
+    "inventory": "invt",
+    "language": "lang",
+    "payment": "pymt",
+    "rental": "rntl",
+    "staff": "staf",
+    "store": "stor",
+    "awd": "awd",
+    "card": "card"
+  },
+  "columns": {
+    "actor": {
+      "actor_id": "actr_id",
+      "first_name": "frst_nm",
+      "last_name": "last_nm",
+      "last_update": "lst_upd"
+    },
+    "address": {
+      "address_id": "addr_id",
+      "address": "addr",
+      "address2": "addr2",
+      "district": "dist",
+      "city_id": "ref1",
+      "postal_code": "pst_cd",
+      "phone": "phn",
+      "location": "loc",
+      "last_update": "lst_upd"
+    },
+    "category": {
+      "category_id": "catg_id",
+      "name": "nm",
+      "last_update": "lst_upd"
+    },
+    "city": {
+      "city_id": "cty_id",
+      "city": "cty",
+      "country_id": "ref1",
+      "last_update": "lst_upd"
+    },
+    "country": {
+      "country_id": "cnty_id",
+      "country": "cntry",
+      "last_update": "lst_upd"
+    },
+    "customer": {
+      "customer_id": "cust_id",
+      "store_id": "ref1",
+      "first_name": "frst_nm",
+      "last_name": "last_nm",
+      "email": "eml",
+      "address_id": "ref2",
+      "active": "actv",
+      "create_date": "crt_dt",
+      "last_update": "lst_upd"
+    },
+    "film": {
+      "film_id": "flm_id",
+      "title": "ttl",
+      "description": "dsc",
+      "release_year": "rls_yr",
+      "language_id": "ref1",
+      "original_language_id": "ref2",
+      "rental_duration": "rnt_dur",
+      "rental_rate": "rnt_rate",
+      "length": "lngth",
+      "replacement_cost": "rplc_cst",
+      "rating": "rtng",
+      "special_features": "spcl_ftr",
+      "last_update": "lst_upd"
+    },
+    "film_actor": {
+      "actor_id": "ref1",
+      "film_id": "ref2",
+      "last_update": "lst_upd"
+    },
+    "film_category": {
+      "film_id": "ref1",
+      "category_id": "ref2",
+      "last_update": "lst_upd"
+    },
+    "film_text": {
+      "film_id": "doc_id",
+      "title": "hdng",
+      "description": "body"
+    },
+    "inventory": {
+      "inventory_id": "invt_id",
+      "film_id": "ref1",
+      "store_id": "ref2",
+      "last_update": "lst_upd"
+    },
+    "language": {
+      "language_id": "lang_id",
+      "name": "nm",
+      "last_update": "lst_upd"
+    },
+    "payment": {
+      "payment_id": "pmt_id",
+      "customer_id": "ref1",
+      "staff_id": "ref2",
+      "rental_id": "ref3",
+      "amount": "amt",
+      "payment_date": "pmt_dt",
+      "last_update": "lst_upd"
+    },
+    "rental": {
+      "rental_id": "rnt_id",
+      "rental_date": "rnt_dt",
+      "inventory_id": "ref1",
+      "customer_id": "ref2",
+      "return_date": "rtrn_dt",
+      "staff_id": "ref3",
+      "last_update": "lst_upd"
+    },
+    "staff": {
+      "staff_id": "staf_id",
+      "first_name": "frst_nm",
+      "last_name": "last_nm",
+      "address_id": "ref1",
+      "picture": "pict",
+      "email": "eml",
+      "store_id": "ref2",
+      "active": "actv",
+      "username": "usrnm",
+      "password": "pwd",
+      "last_update": "lst_upd"
+    },
+    "store": {
+      "store_id": "stor_id",
+      "manager_staff_id": "ref1",
+      "address_id": "ref2",
+      "last_update": "lst_upd"
+    },
+    "awd": {
+      "award_id": "awd_id",
+      "actor_id": "ref1",
+      "film_id": "ref2",
+      "award_name": "awd_nm",
+      "award_year": "awd_yr"
+    },
+    "card": {
+      "card_id": "card_id",
+      "cust_id": "ref1",
+      "card_type": "crd_typ",
+      "card_last4": "crd_last4",
+      "valid_to": "vld_to",
+      "status": "sts",
+      "open_dt": "open_dt"
+    }
+  },
+  "foreign_keys": [
+    {
+      "constraint": "fk_address_city",
+      "from_table": "addr",
+      "from_column": "ref1",
+      "to_table": "city",
+      "to_column": "cty_id"
+    },
+    {
+      "constraint": "fk_city_country",
+      "from_table": "city",
+      "from_column": "ref1",
+      "to_table": "cnty",
+      "to_column": "cnty_id"
+    },
+    {
+      "constraint": "fk_customer_address",
+      "from_table": "cust",
+      "from_column": "ref2",
+      "to_table": "addr",
+      "to_column": "addr_id"
+    },
+    {
+      "constraint": "fk_customer_store",
+      "from_table": "cust",
+      "from_column": "ref1",
+      "to_table": "stor",
+      "to_column": "stor_id"
+    },
+    {
+      "constraint": "fk_film_language",
+      "from_table": "film",
+      "from_column": "ref1",
+      "to_table": "lang",
+      "to_column": "lang_id"
+    },
+    {
+      "constraint": "fk_film_language_original",
+      "from_table": "film",
+      "from_column": "ref2",
+      "to_table": "lang",
+      "to_column": "lang_id"
+    },
+    {
+      "constraint": "fk_film_actor_actor",
+      "from_table": "flm_act",
+      "from_column": "ref1",
+      "to_table": "actr",
+      "to_column": "actr_id"
+    },
+    {
+      "constraint": "fk_film_actor_film",
+      "from_table": "flm_act",
+      "from_column": "ref2",
+      "to_table": "film",
+      "to_column": "flm_id"
+    },
+    {
+      "constraint": "fk_film_category_category",
+      "from_table": "flm_cat",
+      "from_column": "ref2",
+      "to_table": "catg",
+      "to_column": "catg_id"
+    },
+    {
+      "constraint": "fk_film_category_film",
+      "from_table": "flm_cat",
+      "from_column": "ref1",
+      "to_table": "film",
+      "to_column": "flm_id"
+    },
+    {
+      "constraint": "fk_inventory_film",
+      "from_table": "invt",
+      "from_column": "ref1",
+      "to_table": "film",
+      "to_column": "flm_id"
+    },
+    {
+      "constraint": "fk_inventory_store",
+      "from_table": "invt",
+      "from_column": "ref2",
+      "to_table": "stor",
+      "to_column": "stor_id"
+    },
+    {
+      "constraint": "fk_payment_card",
+      "from_table": "pymt",
+      "from_column": "ref1",
+      "to_table": "card",
+      "to_column": "card_id"
+    },
+    {
+      "constraint": "fk_card_customer",
+      "from_table": "card",
+      "from_column": "ref1",
+      "to_table": "cust",
+      "to_column": "cust_id"
+    },
+    {
+      "constraint": "fk_payment_rental",
+      "from_table": "pymt",
+      "from_column": "ref3",
+      "to_table": "rntl",
+      "to_column": "rnt_id"
+    },
+    {
+      "constraint": "fk_payment_staff",
+      "from_table": "pymt",
+      "from_column": "ref2",
+      "to_table": "staf",
+      "to_column": "staf_id"
+    },
+    {
+      "constraint": "fk_rental_customer",
+      "from_table": "rntl",
+      "from_column": "ref2",
+      "to_table": "cust",
+      "to_column": "cust_id"
+    },
+    {
+      "constraint": "fk_rental_inventory",
+      "from_table": "rntl",
+      "from_column": "ref1",
+      "to_table": "invt",
+      "to_column": "invt_id"
+    },
+    {
+      "constraint": "fk_rental_staff",
+      "from_table": "rntl",
+      "from_column": "ref3",
+      "to_table": "staf",
+      "to_column": "staf_id"
+    },
+    {
+      "constraint": "fk_staff_address",
+      "from_table": "staf",
+      "from_column": "ref1",
+      "to_table": "addr",
+      "to_column": "addr_id"
+    },
+    {
+      "constraint": "fk_staff_store",
+      "from_table": "staf",
+      "from_column": "ref2",
+      "to_table": "stor",
+      "to_column": "stor_id"
+    },
+    {
+      "constraint": "fk_store_address",
+      "from_table": "stor",
+      "from_column": "ref2",
+      "to_table": "addr",
+      "to_column": "addr_id"
+    },
+    {
+      "constraint": "fk_store_staff",
+      "from_table": "stor",
+      "from_column": "ref1",
+      "to_table": "staf",
+      "to_column": "staf_id"
+    },
+    {
+      "constraint": "fk_awd_performance",
+      "from_table": "awd",
+      "from_column": "ref1",
+      "to_table": "flm_act",
+      "to_column": "ref1"
+    },
+    {
+      "constraint": "fk_awd_performance",
+      "from_table": "awd",
+      "from_column": "ref2",
+      "to_table": "flm_act",
+      "to_column": "ref2"
+    }
+  ]
+}

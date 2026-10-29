@@ -1,0 +1,1634 @@
+{
+  "Address": {
+    "abbrev": "addr",
+    "columns": {
+      "AddressID": "addr_id",
+      "AddressLine1": "addr_ln1",
+      "AddressLine2": "addr_ln2",
+      "City": "cty",
+      "StateProvinceID": "ref1",
+      "PostalCode": "pstl_cd",
+      "SpatialLocation": "sptl_lctn",
+      "rowguid": "rwgd",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "addr_id"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_addr_st_prv",
+        "from_col": "ref1",
+        "to_table": "st_prv",
+        "to_col": "stt_prvn_id"
+      }
+    ]
+  },
+  "AddressType": {
+    "abbrev": "addr_typ",
+    "columns": {
+      "AddressTypeID": "addr_typ_id",
+      "Name": "nm",
+      "rowguid": "rwgd",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "addr_typ_id"
+    ],
+    "fks": []
+  },
+  "BillOfMaterials": {
+    "abbrev": "bom",
+    "columns": {
+      "BillOfMaterialsID": "bll_of_mtrl_id",
+      "ProductAssemblyID": "ref3",
+      "ComponentID": "ref2",
+      "StartDate": "strt_dt",
+      "EndDate": "end_dt",
+      "UnitMeasureCode": "ref1",
+      "BOMLevel": "bm_lvl",
+      "PerAssemblyQty": "pr_assm_qty",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "bll_of_mtrl_id"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_bom_unit_msr",
+        "from_col": "ref1",
+        "to_table": "unit_msr",
+        "to_col": "unt_msr_cd"
+      },
+      {
+        "constraint": "fk_bom_prod",
+        "from_col": "ref2",
+        "to_table": "prod",
+        "to_col": "prdc_id"
+      },
+      {
+        "constraint": "fk_bom_prod",
+        "from_col": "ref3",
+        "to_table": "prod",
+        "to_col": "prdc_id"
+      }
+    ]
+  },
+  "BusinessEntity": {
+    "abbrev": "biz_ent",
+    "columns": {
+      "BusinessEntityID": "bsns_entt_id",
+      "rowguid": "rwgd",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "bsns_entt_id"
+    ],
+    "fks": []
+  },
+  "BusinessEntityAddress": {
+    "abbrev": "biz_addr",
+    "columns": {
+      "BusinessEntityID": "ref1",
+      "AddressID": "ref3",
+      "AddressTypeID": "ref2",
+      "rowguid": "rwgd",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "ref1",
+      "ref3",
+      "ref2"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_biz_addr_biz_ent",
+        "from_col": "ref1",
+        "to_table": "biz_ent",
+        "to_col": "bsns_entt_id"
+      },
+      {
+        "constraint": "fk_biz_addr_addr_typ",
+        "from_col": "ref2",
+        "to_table": "addr_typ",
+        "to_col": "addr_typ_id"
+      },
+      {
+        "constraint": "fk_biz_addr_addr",
+        "from_col": "ref3",
+        "to_table": "addr",
+        "to_col": "addr_id"
+      }
+    ]
+  },
+  "BusinessEntityContact": {
+    "abbrev": "biz_cnt",
+    "columns": {
+      "BusinessEntityID": "ref3",
+      "PersonID": "ref1",
+      "ContactTypeID": "ref2",
+      "rowguid": "rwgd",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "ref3",
+      "ref1",
+      "ref2"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_biz_cnt_prsn",
+        "from_col": "ref1",
+        "to_table": "prsn",
+        "to_col": "ref1"
+      },
+      {
+        "constraint": "fk_biz_cnt_cnt_typ",
+        "from_col": "ref2",
+        "to_table": "cnt_typ",
+        "to_col": "cntc_typ_id"
+      },
+      {
+        "constraint": "fk_biz_cnt_biz_ent",
+        "from_col": "ref3",
+        "to_table": "biz_ent",
+        "to_col": "bsns_entt_id"
+      }
+    ]
+  },
+  "ContactType": {
+    "abbrev": "cnt_typ",
+    "columns": {
+      "ContactTypeID": "cntc_typ_id",
+      "Name": "nm",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "cntc_typ_id"
+    ],
+    "fks": []
+  },
+  "CountryRegion": {
+    "abbrev": "cnty",
+    "columns": {
+      "CountryRegionCode": "cntr_rgn_cd",
+      "Name": "nm",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "cntr_rgn_cd"
+    ],
+    "fks": []
+  },
+  "CountryRegionCurrency": {
+    "abbrev": "cnty_cur",
+    "columns": {
+      "CountryRegionCode": "ref2",
+      "CurrencyCode": "ref1",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "ref2",
+      "ref1"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_cnty_cur_cur",
+        "from_col": "ref1",
+        "to_table": "cur",
+        "to_col": "crrn_cd"
+      },
+      {
+        "constraint": "fk_cnty_cur_cnty",
+        "from_col": "ref2",
+        "to_table": "cnty",
+        "to_col": "cntr_rgn_cd"
+      }
+    ]
+  },
+  "CreditCard": {
+    "abbrev": "crd",
+    "columns": {
+      "CreditCardID": "crdt_crd_id",
+      "CardType": "crd_typ",
+      "CardNumber": "crd_nmbr",
+      "ExpMonth": "exp_mnth",
+      "ExpYear": "exp_yr",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "crdt_crd_id"
+    ],
+    "fks": []
+  },
+  "Culture": {
+    "abbrev": "cult",
+    "columns": {
+      "CultureID": "cltr_id",
+      "Name": "nm",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "cltr_id"
+    ],
+    "fks": []
+  },
+  "Currency": {
+    "abbrev": "cur",
+    "columns": {
+      "CurrencyCode": "crrn_cd",
+      "Name": "nm",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "crrn_cd"
+    ],
+    "fks": []
+  },
+  "CurrencyRate": {
+    "abbrev": "cur_rate",
+    "columns": {
+      "CurrencyRateID": "crrn_rt_id",
+      "CurrencyRateDate": "crrn_rt_dt",
+      "FromCurrencyCode": "ref2",
+      "ToCurrencyCode": "ref1",
+      "AverageRate": "avrg_rt",
+      "EndOfDayRate": "end_of_dy_rt",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "crrn_rt_id"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_cur_rate_cur",
+        "from_col": "ref1",
+        "to_table": "cur",
+        "to_col": "crrn_cd"
+      },
+      {
+        "constraint": "fk_cur_rate_cur",
+        "from_col": "ref2",
+        "to_table": "cur",
+        "to_col": "crrn_cd"
+      }
+    ]
+  },
+  "Customer": {
+    "abbrev": "cust",
+    "columns": {
+      "CustomerID": "cstm_id",
+      "PersonID": "ref3",
+      "StoreID": "ref1",
+      "TerritoryID": "ref2",
+      "AccountNumber": "accn_nmbr",
+      "rowguid": "rwgd",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "cstm_id"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_cust_stor",
+        "from_col": "ref1",
+        "to_table": "stor",
+        "to_col": "ref2"
+      },
+      {
+        "constraint": "fk_cust_sls_terr",
+        "from_col": "ref2",
+        "to_table": "sls_terr",
+        "to_col": "trrt_id"
+      },
+      {
+        "constraint": "fk_cust_prsn",
+        "from_col": "ref3",
+        "to_table": "prsn",
+        "to_col": "ref1"
+      }
+    ]
+  },
+  "Department": {
+    "abbrev": "dept",
+    "columns": {
+      "DepartmentID": "dprt_id",
+      "Name": "nm",
+      "GroupName": "grp_nm",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "dprt_id"
+    ],
+    "fks": []
+  },
+  "Document": {
+    "abbrev": "doc",
+    "columns": {
+      "DocumentNode": "dcmn_nd",
+      "DocumentLevel": "dcmn_lvl",
+      "Title": "ttl",
+      "Owner": "ref1",
+      "FolderFlag": "fldr_flg",
+      "FileName": "fl_nm",
+      "FileExtension": "fl_extn",
+      "Revision": "rvsn",
+      "ChangeNumber": "chng_nmbr",
+      "Status": "stts",
+      "DocumentSummary": "dcmn_smmr",
+      "Document": "dcmn",
+      "rowguid": "rwgd",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "dcmn_nd"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_doc_emp",
+        "from_col": "ref1",
+        "to_table": "emp",
+        "to_col": "ref1"
+      }
+    ]
+  },
+  "EmailAddress": {
+    "abbrev": "eml",
+    "columns": {
+      "BusinessEntityID": "ref1",
+      "EmailAddressID": "eml_addr_id",
+      "EmailAddress": "eml_addr",
+      "rowguid": "rwgd",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "eml_addr_id",
+      "ref1"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_eml_prsn",
+        "from_col": "ref1",
+        "to_table": "prsn",
+        "to_col": "ref1"
+      }
+    ]
+  },
+  "Employee": {
+    "abbrev": "emp",
+    "columns": {
+      "BusinessEntityID": "ref1",
+      "NationalIDNumber": "ntnl_id_nmbr",
+      "LoginID": "lgn_id",
+      "OrganizationNode": "orgn_nd",
+      "OrganizationLevel": "orgn_lvl",
+      "JobTitle": "jb_ttl",
+      "BirthDate": "brth_dt",
+      "MaritalStatus": "mrtl_stts",
+      "Gender": "gndr",
+      "HireDate": "hr_dt",
+      "SalariedFlag": "slrd_flg",
+      "VacationHours": "vctn_hrs",
+      "SickLeaveHours": "sck_lv_hrs",
+      "CurrentFlag": "crrn_flg",
+      "rowguid": "rwgd",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "ref1"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_emp_prsn",
+        "from_col": "ref1",
+        "to_table": "prsn",
+        "to_col": "ref1"
+      }
+    ]
+  },
+  "EmployeeDepartmentHistory": {
+    "abbrev": "emp_dept_hist",
+    "columns": {
+      "BusinessEntityID": "ref3",
+      "DepartmentID": "ref2",
+      "ShiftID": "ref1",
+      "StartDate": "strt_dt",
+      "EndDate": "end_dt",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "ref3",
+      "strt_dt",
+      "ref2",
+      "ref1"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_emp_dept_hist_shft",
+        "from_col": "ref1",
+        "to_table": "shft",
+        "to_col": "shft_id"
+      },
+      {
+        "constraint": "fk_emp_dept_hist_dept",
+        "from_col": "ref2",
+        "to_table": "dept",
+        "to_col": "dprt_id"
+      },
+      {
+        "constraint": "fk_emp_dept_hist_emp",
+        "from_col": "ref3",
+        "to_table": "emp",
+        "to_col": "ref1"
+      }
+    ]
+  },
+  "EmployeePayHistory": {
+    "abbrev": "emp_pay_hist",
+    "columns": {
+      "BusinessEntityID": "ref1",
+      "RateChangeDate": "rt_chng_dt",
+      "Rate": "rt",
+      "PayFrequency": "py_frqn",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "ref1",
+      "rt_chng_dt"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_emp_pay_hist_emp",
+        "from_col": "ref1",
+        "to_table": "emp",
+        "to_col": "ref1"
+      }
+    ]
+  },
+  "JobCandidate": {
+    "abbrev": "job_cand",
+    "columns": {
+      "JobCandidateID": "jb_cndd_id",
+      "BusinessEntityID": "ref1",
+      "Resume": "rsm",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "jb_cndd_id"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_job_cand_emp",
+        "from_col": "ref1",
+        "to_table": "emp",
+        "to_col": "ref1"
+      }
+    ]
+  },
+  "Location": {
+    "abbrev": "loc",
+    "columns": {
+      "LocationID": "lctn_id",
+      "Name": "nm",
+      "CostRate": "cst_rt",
+      "Availability": "avlb",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "lctn_id"
+    ],
+    "fks": []
+  },
+  "Password": {
+    "abbrev": "pwd",
+    "columns": {
+      "BusinessEntityID": "ref1",
+      "PasswordHash": "pssw_hsh",
+      "PasswordSalt": "pssw_slt",
+      "rowguid": "rwgd",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "ref1"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_pwd_prsn",
+        "from_col": "ref1",
+        "to_table": "prsn",
+        "to_col": "ref1"
+      }
+    ]
+  },
+  "Person": {
+    "abbrev": "prsn",
+    "columns": {
+      "BusinessEntityID": "ref1",
+      "PersonType": "prsn_typ",
+      "NameStyle": "nm_styl",
+      "Title": "ttl",
+      "FirstName": "frst_nm",
+      "MiddleName": "mddl_nm",
+      "LastName": "lst_nm",
+      "Suffix": "sffx",
+      "EmailPromotion": "eml_prmt",
+      "AdditionalContactInfo": "addt_cntc_inf",
+      "Demographics": "dmgr",
+      "rowguid": "rwgd",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "ref1"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_prsn_biz_ent",
+        "from_col": "ref1",
+        "to_table": "biz_ent",
+        "to_col": "bsns_entt_id"
+      }
+    ]
+  },
+  "PersonCreditCard": {
+    "abbrev": "prsn_crd",
+    "columns": {
+      "BusinessEntityID": "ref1",
+      "CreditCardID": "ref2",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "ref1",
+      "ref2"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_prsn_crd_prsn",
+        "from_col": "ref1",
+        "to_table": "prsn",
+        "to_col": "ref1"
+      },
+      {
+        "constraint": "fk_prsn_crd_crd",
+        "from_col": "ref2",
+        "to_table": "crd",
+        "to_col": "crdt_crd_id"
+      }
+    ]
+  },
+  "PhoneNumberType": {
+    "abbrev": "phn_typ",
+    "columns": {
+      "PhoneNumberTypeID": "phn_nmbr_typ_id",
+      "Name": "nm",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "phn_nmbr_typ_id"
+    ],
+    "fks": []
+  },
+  "Product": {
+    "abbrev": "prod",
+    "columns": {
+      "ProductID": "prdc_id",
+      "Name": "nm",
+      "ProductNumber": "prdc_nmbr",
+      "MakeFlag": "mk_flg",
+      "FinishedGoodsFlag": "fnsh_gds_flg",
+      "Color": "clr",
+      "SafetyStockLevel": "sfty_stck_lvl",
+      "ReorderPoint": "rrdr_pnt",
+      "StandardCost": "stnd_cst",
+      "ListPrice": "lst_prc",
+      "Size": "sz",
+      "SizeUnitMeasureCode": "ref4",
+      "WeightUnitMeasureCode": "ref3",
+      "Weight": "wght",
+      "DaysToManufacture": "dys_to_mnfc",
+      "ProductLine": "prdc_ln",
+      "Class": "clss",
+      "Style": "styl",
+      "ProductSubcategoryID": "ref2",
+      "ProductModelID": "ref1",
+      "SellStartDate": "sll_strt_dt",
+      "SellEndDate": "sll_end_dt",
+      "DiscontinuedDate": "dscn_dt",
+      "rowguid": "rwgd",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "prdc_id"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_prod_prod_mdl",
+        "from_col": "ref1",
+        "to_table": "prod_mdl",
+        "to_col": "prdc_mdl_id"
+      },
+      {
+        "constraint": "fk_prod_prod_sub",
+        "from_col": "ref2",
+        "to_table": "prod_sub",
+        "to_col": "prdc_sbct_id"
+      },
+      {
+        "constraint": "fk_prod_unit_msr",
+        "from_col": "ref3",
+        "to_table": "unit_msr",
+        "to_col": "unt_msr_cd"
+      },
+      {
+        "constraint": "fk_prod_unit_msr",
+        "from_col": "ref4",
+        "to_table": "unit_msr",
+        "to_col": "unt_msr_cd"
+      }
+    ]
+  },
+  "ProductCategory": {
+    "abbrev": "prod_cat",
+    "columns": {
+      "ProductCategoryID": "prdc_ctgr_id",
+      "Name": "nm",
+      "rowguid": "rwgd",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "prdc_ctgr_id"
+    ],
+    "fks": []
+  },
+  "ProductCostHistory": {
+    "abbrev": "prod_cst_hist",
+    "columns": {
+      "ProductID": "ref1",
+      "StartDate": "strt_dt",
+      "EndDate": "end_dt",
+      "StandardCost": "stnd_cst",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "ref1",
+      "strt_dt"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_prod_cst_hist_prod",
+        "from_col": "ref1",
+        "to_table": "prod",
+        "to_col": "prdc_id"
+      }
+    ]
+  },
+  "ProductDescription": {
+    "abbrev": "prod_dsc",
+    "columns": {
+      "ProductDescriptionID": "prdc_dscr_id",
+      "Description": "dscr",
+      "rowguid": "rwgd",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "prdc_dscr_id"
+    ],
+    "fks": []
+  },
+  "ProductDocument": {
+    "abbrev": "prod_doc",
+    "columns": {
+      "ProductID": "ref2",
+      "DocumentNode": "ref1",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "ref2",
+      "ref1"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_prod_doc_doc",
+        "from_col": "ref1",
+        "to_table": "doc",
+        "to_col": "dcmn_nd"
+      },
+      {
+        "constraint": "fk_prod_doc_prod",
+        "from_col": "ref2",
+        "to_table": "prod",
+        "to_col": "prdc_id"
+      }
+    ]
+  },
+  "ProductInventory": {
+    "abbrev": "prod_inv",
+    "columns": {
+      "ProductID": "ref2",
+      "LocationID": "ref1",
+      "Shelf": "shlf",
+      "Bin": "bn",
+      "Quantity": "qntt",
+      "rowguid": "rwgd",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "ref2",
+      "ref1"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_prod_inv_loc",
+        "from_col": "ref1",
+        "to_table": "loc",
+        "to_col": "lctn_id"
+      },
+      {
+        "constraint": "fk_prod_inv_prod",
+        "from_col": "ref2",
+        "to_table": "prod",
+        "to_col": "prdc_id"
+      }
+    ]
+  },
+  "ProductListPriceHistory": {
+    "abbrev": "prod_lst_hist",
+    "columns": {
+      "ProductID": "ref1",
+      "StartDate": "strt_dt",
+      "EndDate": "end_dt",
+      "ListPrice": "lst_prc",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "ref1",
+      "strt_dt"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_prod_lst_hist_prod",
+        "from_col": "ref1",
+        "to_table": "prod",
+        "to_col": "prdc_id"
+      }
+    ]
+  },
+  "ProductModel": {
+    "abbrev": "prod_mdl",
+    "columns": {
+      "ProductModelID": "prdc_mdl_id",
+      "Name": "nm",
+      "CatalogDescription": "ctlg_dscr",
+      "Instructions": "inst",
+      "rowguid": "rwgd",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "prdc_mdl_id"
+    ],
+    "fks": []
+  },
+  "ProductModelProductDescriptionCulture": {
+    "abbrev": "pmdc",
+    "columns": {
+      "ProductModelID": "ref3",
+      "ProductDescriptionID": "ref2",
+      "CultureID": "ref1",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "ref3",
+      "ref2",
+      "ref1"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_pmdc_cult",
+        "from_col": "ref1",
+        "to_table": "cult",
+        "to_col": "cltr_id"
+      },
+      {
+        "constraint": "fk_pmdc_prod_dsc",
+        "from_col": "ref2",
+        "to_table": "prod_dsc",
+        "to_col": "prdc_dscr_id"
+      },
+      {
+        "constraint": "fk_pmdc_prod_mdl",
+        "from_col": "ref3",
+        "to_table": "prod_mdl",
+        "to_col": "prdc_mdl_id"
+      }
+    ]
+  },
+  "ProductPhoto": {
+    "abbrev": "prod_ph",
+    "columns": {
+      "ProductPhotoID": "prdc_pht_id",
+      "ThumbNailPhoto": "thmb_nl_pht",
+      "ThumbnailPhotoFileName": "thmb_pht_fl_nm",
+      "LargePhoto": "lrg_pht",
+      "LargePhotoFileName": "lrg_pht_fl_nm",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "prdc_pht_id"
+    ],
+    "fks": []
+  },
+  "ProductProductPhoto": {
+    "abbrev": "ppp",
+    "columns": {
+      "ProductID": "ref2",
+      "ProductPhotoID": "ref1",
+      "Primary": "prmr",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "ref2",
+      "ref1"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_ppp_prod_ph",
+        "from_col": "ref1",
+        "to_table": "prod_ph",
+        "to_col": "prdc_pht_id"
+      },
+      {
+        "constraint": "fk_ppp_prod",
+        "from_col": "ref2",
+        "to_table": "prod",
+        "to_col": "prdc_id"
+      }
+    ]
+  },
+  "ProductReview": {
+    "abbrev": "prod_rvw",
+    "columns": {
+      "ProductReviewID": "prdc_rvw_id",
+      "ProductID": "ref1",
+      "ReviewerName": "rvwr_nm",
+      "ReviewDate": "rvw_dt",
+      "EmailAddress": "eml_addr",
+      "Rating": "rtng",
+      "Comments": "cmmn",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "prdc_rvw_id"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_prod_rvw_prod",
+        "from_col": "ref1",
+        "to_table": "prod",
+        "to_col": "prdc_id"
+      }
+    ]
+  },
+  "ProductSubcategory": {
+    "abbrev": "prod_sub",
+    "columns": {
+      "ProductSubcategoryID": "prdc_sbct_id",
+      "ProductCategoryID": "ref1",
+      "Name": "nm",
+      "rowguid": "rwgd",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "prdc_sbct_id"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_prod_sub_prod_cat",
+        "from_col": "ref1",
+        "to_table": "prod_cat",
+        "to_col": "prdc_ctgr_id"
+      }
+    ]
+  },
+  "ProductVendor": {
+    "abbrev": "prod_vnd",
+    "columns": {
+      "ProductID": "ref3",
+      "BusinessEntityID": "ref2",
+      "AverageLeadTime": "avrg_ld_tm",
+      "StandardPrice": "stnd_prc",
+      "LastReceiptCost": "lst_rcpt_cst",
+      "LastReceiptDate": "lst_rcpt_dt",
+      "MinOrderQty": "mn_ordr_qty",
+      "MaxOrderQty": "mx_ordr_qty",
+      "OnOrderQty": "on_ordr_qty",
+      "UnitMeasureCode": "ref1",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "ref3",
+      "ref2"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_prod_vnd_unit_msr",
+        "from_col": "ref1",
+        "to_table": "unit_msr",
+        "to_col": "unt_msr_cd"
+      },
+      {
+        "constraint": "fk_prod_vnd_vnd",
+        "from_col": "ref2",
+        "to_table": "vnd",
+        "to_col": "ref1"
+      },
+      {
+        "constraint": "fk_prod_vnd_prod",
+        "from_col": "ref3",
+        "to_table": "prod",
+        "to_col": "prdc_id"
+      }
+    ]
+  },
+  "PurchaseOrderDetail": {
+    "abbrev": "po_dtl",
+    "columns": {
+      "PurchaseOrderID": "ref2",
+      "PurchaseOrderDetailID": "prch_ordr_dtl_id",
+      "DueDate": "due_dt",
+      "OrderQty": "ordr_qty",
+      "ProductID": "ref1",
+      "UnitPrice": "unt_prc",
+      "LineTotal": "ln_ttl",
+      "ReceivedQty": "rcvd_qty",
+      "RejectedQty": "rjct_qty",
+      "StockedQty": "stck_qty",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "prch_ordr_dtl_id"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_po_dtl_prod",
+        "from_col": "ref1",
+        "to_table": "prod",
+        "to_col": "prdc_id"
+      },
+      {
+        "constraint": "fk_po_dtl_po_hdr",
+        "from_col": "ref2",
+        "to_table": "po_hdr",
+        "to_col": "prch_ordr_id"
+      }
+    ]
+  },
+  "PurchaseOrderHeader": {
+    "abbrev": "po_hdr",
+    "columns": {
+      "PurchaseOrderID": "prch_ordr_id",
+      "RevisionNumber": "rvsn_nmbr",
+      "Status": "stts",
+      "EmployeeID": "ref3",
+      "VendorID": "ref2",
+      "ShipMethodID": "ref1",
+      "OrderDate": "ordr_dt",
+      "ShipDate": "shp_dt",
+      "SubTotal": "sb_ttl",
+      "TaxAmt": "tx_amt",
+      "Freight": "frgh",
+      "TotalDue": "ttl_due",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "prch_ordr_id"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_po_hdr_shp_mth",
+        "from_col": "ref1",
+        "to_table": "shp_mth",
+        "to_col": "shp_mthd_id"
+      },
+      {
+        "constraint": "fk_po_hdr_vnd",
+        "from_col": "ref2",
+        "to_table": "vnd",
+        "to_col": "ref1"
+      },
+      {
+        "constraint": "fk_po_hdr_emp",
+        "from_col": "ref3",
+        "to_table": "emp",
+        "to_col": "ref1"
+      }
+    ]
+  },
+  "SalesOrderDetail": {
+    "abbrev": "so_dtl",
+    "columns": {
+      "SalesOrderID": "ref3",
+      "SalesOrderDetailID": "sls_ordr_dtl_id",
+      "CarrierTrackingNumber": "crrr_trck_nmbr",
+      "OrderQty": "ordr_qty",
+      "ProductID": "ref2",
+      "SpecialOfferID": "ref1",
+      "UnitPrice": "unt_prc",
+      "UnitPriceDiscount": "unt_prc_dscn",
+      "LineTotal": "ln_ttl",
+      "rowguid": "rwgd",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "sls_ordr_dtl_id"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_so_dtl_spcl_prod",
+        "from_col": "ref1",
+        "to_table": "spcl_prod",
+        "to_col": "ref2"
+      },
+      {
+        "constraint": "fk_so_dtl_spcl_prod",
+        "from_col": "ref2",
+        "to_table": "spcl_prod",
+        "to_col": "ref1"
+      },
+      {
+        "constraint": "fk_so_dtl_so_hdr",
+        "from_col": "ref3",
+        "to_table": "so_hdr",
+        "to_col": "sls_ordr_id"
+      }
+    ]
+  },
+  "SalesOrderHeader": {
+    "abbrev": "so_hdr",
+    "columns": {
+      "SalesOrderID": "sls_ordr_id",
+      "RevisionNumber": "rvsn_nmbr",
+      "OrderDate": "ordr_dt",
+      "DueDate": "due_dt",
+      "ShipDate": "shp_dt",
+      "Status": "stts",
+      "OnlineOrderFlag": "onln_ordr_flg",
+      "SalesOrderNumber": "sls_ordr_nmbr",
+      "PurchaseOrderNumber": "prch_ordr_nmbr",
+      "AccountNumber": "accn_nmbr",
+      "CustomerID": "ref8",
+      "SalesPersonID": "ref7",
+      "TerritoryID": "ref6",
+      "BillToAddressID": "ref5",
+      "ShipToAddressID": "ref4",
+      "ShipMethodID": "ref3",
+      "CreditCardID": "ref2",
+      "CreditCardApprovalCode": "crdt_crd_appr_cd",
+      "CurrencyRateID": "ref1",
+      "SubTotal": "sb_ttl",
+      "TaxAmt": "tx_amt",
+      "Freight": "frgh",
+      "TotalDue": "ttl_due",
+      "Comment": "cmmn",
+      "rowguid": "rwgd",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "sls_ordr_id"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_so_hdr_cur_rate",
+        "from_col": "ref1",
+        "to_table": "cur_rate",
+        "to_col": "crrn_rt_id"
+      },
+      {
+        "constraint": "fk_so_hdr_crd",
+        "from_col": "ref2",
+        "to_table": "crd",
+        "to_col": "crdt_crd_id"
+      },
+      {
+        "constraint": "fk_so_hdr_shp_mth",
+        "from_col": "ref3",
+        "to_table": "shp_mth",
+        "to_col": "shp_mthd_id"
+      },
+      {
+        "constraint": "fk_so_hdr_addr",
+        "from_col": "ref4",
+        "to_table": "addr",
+        "to_col": "addr_id"
+      },
+      {
+        "constraint": "fk_so_hdr_addr",
+        "from_col": "ref5",
+        "to_table": "addr",
+        "to_col": "addr_id"
+      },
+      {
+        "constraint": "fk_so_hdr_sls_terr",
+        "from_col": "ref6",
+        "to_table": "sls_terr",
+        "to_col": "trrt_id"
+      },
+      {
+        "constraint": "fk_so_hdr_sls_prsn",
+        "from_col": "ref7",
+        "to_table": "sls_prsn",
+        "to_col": "ref2"
+      },
+      {
+        "constraint": "fk_so_hdr_cust",
+        "from_col": "ref8",
+        "to_table": "cust",
+        "to_col": "cstm_id"
+      }
+    ]
+  },
+  "SalesOrderHeaderSalesReason": {
+    "abbrev": "so_rsn",
+    "columns": {
+      "SalesOrderID": "ref2",
+      "SalesReasonID": "ref1",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "ref2",
+      "ref1"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_so_rsn_sls_rsn",
+        "from_col": "ref1",
+        "to_table": "sls_rsn",
+        "to_col": "sls_rsn_id"
+      },
+      {
+        "constraint": "fk_so_rsn_so_hdr",
+        "from_col": "ref2",
+        "to_table": "so_hdr",
+        "to_col": "sls_ordr_id"
+      }
+    ]
+  },
+  "SalesPerson": {
+    "abbrev": "sls_prsn",
+    "columns": {
+      "BusinessEntityID": "ref2",
+      "TerritoryID": "ref1",
+      "SalesQuota": "sls_qt",
+      "Bonus": "bns",
+      "CommissionPct": "cmms_pct",
+      "SalesYTD": "sls_ytd",
+      "SalesLastYear": "sls_lst_yr",
+      "rowguid": "rwgd",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "ref2"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_sls_prsn_sls_terr",
+        "from_col": "ref1",
+        "to_table": "sls_terr",
+        "to_col": "trrt_id"
+      },
+      {
+        "constraint": "fk_sls_prsn_emp",
+        "from_col": "ref2",
+        "to_table": "emp",
+        "to_col": "ref1"
+      }
+    ]
+  },
+  "SalesPersonQuotaHistory": {
+    "abbrev": "sp_q_hist",
+    "columns": {
+      "BusinessEntityID": "ref1",
+      "QuotaDate": "qt_dt",
+      "SalesQuota": "sls_qt",
+      "rowguid": "rwgd",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "ref1",
+      "qt_dt"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_sp_q_hist_sls_prsn",
+        "from_col": "ref1",
+        "to_table": "sls_prsn",
+        "to_col": "ref2"
+      }
+    ]
+  },
+  "SalesReason": {
+    "abbrev": "sls_rsn",
+    "columns": {
+      "SalesReasonID": "sls_rsn_id",
+      "Name": "nm",
+      "ReasonType": "rsn_typ",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "sls_rsn_id"
+    ],
+    "fks": []
+  },
+  "SalesTaxRate": {
+    "abbrev": "sls_tax",
+    "columns": {
+      "SalesTaxRateID": "sls_tx_rt_id",
+      "StateProvinceID": "ref1",
+      "TaxType": "tx_typ",
+      "TaxRate": "tx_rt",
+      "Name": "nm",
+      "rowguid": "rwgd",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "sls_tx_rt_id"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_sls_tax_st_prv",
+        "from_col": "ref1",
+        "to_table": "st_prv",
+        "to_col": "stt_prvn_id"
+      }
+    ]
+  },
+  "SalesTerritory": {
+    "abbrev": "sls_terr",
+    "columns": {
+      "TerritoryID": "trrt_id",
+      "Name": "nm",
+      "CountryRegionCode": "ref1",
+      "Group": "grp",
+      "SalesYTD": "sls_ytd",
+      "SalesLastYear": "sls_lst_yr",
+      "CostYTD": "cst_ytd",
+      "CostLastYear": "cst_lst_yr",
+      "rowguid": "rwgd",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "trrt_id"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_sls_terr_cnty",
+        "from_col": "ref1",
+        "to_table": "cnty",
+        "to_col": "cntr_rgn_cd"
+      }
+    ]
+  },
+  "SalesTerritoryHistory": {
+    "abbrev": "sls_terr_hist",
+    "columns": {
+      "BusinessEntityID": "ref2",
+      "TerritoryID": "ref1",
+      "StartDate": "strt_dt",
+      "EndDate": "end_dt",
+      "rowguid": "rwgd",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "ref2",
+      "strt_dt",
+      "ref1"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_sls_terr_hist_sls_terr",
+        "from_col": "ref1",
+        "to_table": "sls_terr",
+        "to_col": "trrt_id"
+      },
+      {
+        "constraint": "fk_sls_terr_hist_sls_prsn",
+        "from_col": "ref2",
+        "to_table": "sls_prsn",
+        "to_col": "ref2"
+      }
+    ]
+  },
+  "ScrapReason": {
+    "abbrev": "scrp",
+    "columns": {
+      "ScrapReasonID": "scrp_rsn_id",
+      "Name": "nm",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "scrp_rsn_id"
+    ],
+    "fks": []
+  },
+  "Shift": {
+    "abbrev": "shft",
+    "columns": {
+      "ShiftID": "shft_id",
+      "Name": "nm",
+      "StartTime": "strt_tm",
+      "EndTime": "end_tm",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "shft_id"
+    ],
+    "fks": []
+  },
+  "ShipMethod": {
+    "abbrev": "shp_mth",
+    "columns": {
+      "ShipMethodID": "shp_mthd_id",
+      "Name": "nm",
+      "ShipBase": "shp_bs",
+      "ShipRate": "shp_rt",
+      "rowguid": "rwgd",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "shp_mthd_id"
+    ],
+    "fks": []
+  },
+  "ShoppingCartItem": {
+    "abbrev": "cart_itm",
+    "columns": {
+      "ShoppingCartItemID": "shpp_crt_itm_id",
+      "ShoppingCartID": "shpp_crt_id",
+      "Quantity": "qntt",
+      "ProductID": "ref1",
+      "DateCreated": "dt_crtd",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "shpp_crt_itm_id"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_cart_itm_prod",
+        "from_col": "ref1",
+        "to_table": "prod",
+        "to_col": "prdc_id"
+      }
+    ]
+  },
+  "SpecialOffer": {
+    "abbrev": "spcl_offr",
+    "columns": {
+      "SpecialOfferID": "spcl_offr_id",
+      "Description": "dscr",
+      "DiscountPct": "dscn_pct",
+      "Type": "typ",
+      "Category": "ctgr",
+      "StartDate": "strt_dt",
+      "EndDate": "end_dt",
+      "MinQty": "mn_qty",
+      "MaxQty": "mx_qty",
+      "rowguid": "rwgd",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "spcl_offr_id"
+    ],
+    "fks": []
+  },
+  "SpecialOfferProduct": {
+    "abbrev": "spcl_prod",
+    "columns": {
+      "SpecialOfferID": "ref2",
+      "ProductID": "ref1",
+      "rowguid": "rwgd",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "ref2",
+      "ref1"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_spcl_prod_prod",
+        "from_col": "ref1",
+        "to_table": "prod",
+        "to_col": "prdc_id"
+      },
+      {
+        "constraint": "fk_spcl_prod_spcl_offr",
+        "from_col": "ref2",
+        "to_table": "spcl_offr",
+        "to_col": "spcl_offr_id"
+      }
+    ]
+  },
+  "StateProvince": {
+    "abbrev": "st_prv",
+    "columns": {
+      "StateProvinceID": "stt_prvn_id",
+      "StateProvinceCode": "stt_prvn_cd",
+      "CountryRegionCode": "ref2",
+      "IsOnlyStateProvinceFlag": "is_only_stt_prvn_flg",
+      "Name": "nm",
+      "TerritoryID": "ref1",
+      "rowguid": "rwgd",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "stt_prvn_id"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_st_prv_sls_terr",
+        "from_col": "ref1",
+        "to_table": "sls_terr",
+        "to_col": "trrt_id"
+      },
+      {
+        "constraint": "fk_st_prv_cnty",
+        "from_col": "ref2",
+        "to_table": "cnty",
+        "to_col": "cntr_rgn_cd"
+      }
+    ]
+  },
+  "Store": {
+    "abbrev": "stor",
+    "columns": {
+      "BusinessEntityID": "ref2",
+      "Name": "nm",
+      "SalesPersonID": "ref1",
+      "Demographics": "dmgr",
+      "rowguid": "rwgd",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "ref2"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_stor_sls_prsn",
+        "from_col": "ref1",
+        "to_table": "sls_prsn",
+        "to_col": "ref2"
+      },
+      {
+        "constraint": "fk_stor_biz_ent",
+        "from_col": "ref2",
+        "to_table": "biz_ent",
+        "to_col": "bsns_entt_id"
+      }
+    ]
+  },
+  "TransactionHistory": {
+    "abbrev": "txn_hist",
+    "columns": {
+      "TransactionID": "trns_id",
+      "ProductID": "ref1",
+      "ReferenceOrderID": "rfrn_ordr_id",
+      "ReferenceOrderLineID": "rfrn_ordr_ln_id",
+      "TransactionDate": "trns_dt",
+      "TransactionType": "trns_typ",
+      "Quantity": "qntt",
+      "ActualCost": "actl_cst",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "trns_id"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_txn_hist_prod",
+        "from_col": "ref1",
+        "to_table": "prod",
+        "to_col": "prdc_id"
+      }
+    ]
+  },
+  "TransactionHistoryArchive": {
+    "abbrev": "txn_hist_a",
+    "columns": {
+      "TransactionID": "trns_id",
+      "ProductID": "prdc_id",
+      "ReferenceOrderID": "rfrn_ordr_id",
+      "ReferenceOrderLineID": "rfrn_ordr_ln_id",
+      "TransactionDate": "trns_dt",
+      "TransactionType": "trns_typ",
+      "Quantity": "qntt",
+      "ActualCost": "actl_cst",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "trns_id"
+    ],
+    "fks": []
+  },
+  "UnitMeasure": {
+    "abbrev": "unit_msr",
+    "columns": {
+      "UnitMeasureCode": "unt_msr_cd",
+      "Name": "nm",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "unt_msr_cd"
+    ],
+    "fks": []
+  },
+  "Vendor": {
+    "abbrev": "vnd",
+    "columns": {
+      "BusinessEntityID": "ref1",
+      "AccountNumber": "accn_nmbr",
+      "Name": "nm",
+      "CreditRating": "crdt_rtng",
+      "PreferredVendorStatus": "prfr_vndr_stts",
+      "ActiveFlag": "actv_flg",
+      "PurchasingWebServiceURL": "prch_wb_srvc_url",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "ref1"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_vnd_biz_ent",
+        "from_col": "ref1",
+        "to_table": "biz_ent",
+        "to_col": "bsns_entt_id"
+      }
+    ]
+  },
+  "WorkOrder": {
+    "abbrev": "wo",
+    "columns": {
+      "WorkOrderID": "wrk_ordr_id",
+      "ProductID": "ref2",
+      "OrderQty": "ordr_qty",
+      "StockedQty": "stck_qty",
+      "ScrappedQty": "scrp_qty",
+      "StartDate": "strt_dt",
+      "EndDate": "end_dt",
+      "DueDate": "due_dt",
+      "ScrapReasonID": "ref1",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "wrk_ordr_id"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_wo_scrp",
+        "from_col": "ref1",
+        "to_table": "scrp",
+        "to_col": "scrp_rsn_id"
+      },
+      {
+        "constraint": "fk_wo_prod",
+        "from_col": "ref2",
+        "to_table": "prod",
+        "to_col": "prdc_id"
+      }
+    ]
+  },
+  "WorkOrderRouting": {
+    "abbrev": "wo_rtg",
+    "columns": {
+      "WorkOrderID": "ref2",
+      "ProductID": "prdc_id",
+      "OperationSequence": "oprt_sqnc",
+      "LocationID": "ref1",
+      "ScheduledStartDate": "schd_strt_dt",
+      "ScheduledEndDate": "schd_end_dt",
+      "ActualStartDate": "actl_strt_dt",
+      "ActualEndDate": "actl_end_dt",
+      "ActualResourceHrs": "actl_rsrc_hrs",
+      "PlannedCost": "plnn_cst",
+      "ActualCost": "actl_cst",
+      "ModifiedDate": "mdfd_dt"
+    },
+    "pk": [
+      "ref2",
+      "prdc_id",
+      "oprt_sqnc"
+    ],
+    "fks": [
+      {
+        "constraint": "fk_wo_rtg_loc",
+        "from_col": "ref1",
+        "to_table": "loc",
+        "to_col": "lctn_id"
+      },
+      {
+        "constraint": "fk_wo_rtg_wo",
+        "from_col": "ref2",
+        "to_table": "wo",
+        "to_col": "wrk_ordr_id"
+      }
+    ]
+  }
+}

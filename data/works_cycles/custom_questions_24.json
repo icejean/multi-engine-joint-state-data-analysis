@@ -1,0 +1,371 @@
+{
+  "name": "works_cycles_custom_questions_24",
+  "description": "自拟题 24 道(补官方缺失的 BOM 递归 + Sales 长链 + HR/采购, 全部经 SQLite 实测通过)",
+  "count": 28,
+  "questions": [
+    {
+      "db_id": "works_cycles",
+      "question": "List all components (direct and nested) needed to assemble 'HL Road Frame - Black, 58', along with their level in the assembly hierarchy.",
+      "SQL": "WITH RECURSIVE bom(ComponentID, level) AS (SELECT ComponentID, 1 FROM BillOfMaterials WHERE ProductAssemblyID=(SELECT ProductID FROM Product WHERE Name='HL Road Frame - Black, 58') UNION ALL SELECT b.ComponentID, bom.level+1 FROM BillOfMaterials b JOIN bom ON b.ProductAssemblyID=bom.ComponentID) SELECT p.Name, bom.level FROM bom JOIN Product p ON p.ProductID=bom.ComponentID ORDER BY bom.level, p.Name",
+      "evidence": "",
+      "join_count": 2,
+      "features": [
+        "CTE",
+        "JOIN×2",
+        "SUBQUERY"
+      ],
+      "domain": "BOM",
+      "source": "custom"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "How many components in total (counting all nesting levels) go into assembling 'HL Road Frame - Black, 58'?",
+      "SQL": "WITH RECURSIVE bom(ComponentID, level) AS (SELECT ComponentID, 1 FROM BillOfMaterials WHERE ProductAssemblyID=(SELECT ProductID FROM Product WHERE Name='HL Road Frame - Black, 58') UNION ALL SELECT b.ComponentID, bom.level+1 FROM BillOfMaterials b JOIN bom ON b.ProductAssemblyID=bom.ComponentID) SELECT COUNT(*) FROM bom",
+      "evidence": "",
+      "join_count": 1,
+      "features": [
+        "CTE",
+        "JOIN×1",
+        "SUBQUERY"
+      ],
+      "domain": "BOM",
+      "source": "custom"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "What is the deepest assembly level in the bill of materials of 'HL Road Frame - Black, 58'?",
+      "SQL": "WITH RECURSIVE bom(ComponentID, level) AS (SELECT ComponentID, 1 FROM BillOfMaterials WHERE ProductAssemblyID=(SELECT ProductID FROM Product WHERE Name='HL Road Frame - Black, 58') UNION ALL SELECT b.ComponentID, bom.level+1 FROM BillOfMaterials b JOIN bom ON b.ProductAssemblyID=bom.ComponentID) SELECT MAX(level) FROM bom",
+      "evidence": "",
+      "join_count": 1,
+      "features": [
+        "CTE",
+        "JOIN×1",
+        "SUBQUERY"
+      ],
+      "domain": "BOM",
+      "source": "custom"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "What is the total standard cost of all components (at every level) in the bill of materials of 'HL Road Frame - Black, 58'?",
+      "SQL": "WITH RECURSIVE bom(ComponentID, level) AS (SELECT ComponentID, 1 FROM BillOfMaterials WHERE ProductAssemblyID=(SELECT ProductID FROM Product WHERE Name='HL Road Frame - Black, 58') UNION ALL SELECT b.ComponentID, bom.level+1 FROM BillOfMaterials b JOIN bom ON b.ProductAssemblyID=bom.ComponentID) SELECT ROUND(SUM(p.StandardCost),2) FROM bom JOIN Product p ON p.ProductID=bom.ComponentID",
+      "evidence": "",
+      "join_count": 2,
+      "features": [
+        "CTE",
+        "JOIN×2",
+        "SUBQUERY"
+      ],
+      "domain": "BOM",
+      "source": "custom"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Which products use 'Adjustable Race' as a component, directly or indirectly? List the product names.",
+      "SQL": "WITH RECURSIVE up(ProductAssemblyID, level) AS (SELECT ProductAssemblyID, 1 FROM BillOfMaterials WHERE ComponentID=(SELECT ProductID FROM Product WHERE Name='Adjustable Race') UNION ALL SELECT b.ProductAssemblyID, up.level+1 FROM BillOfMaterials b JOIN up ON b.ComponentID=up.ProductAssemblyID) SELECT DISTINCT p.Name FROM up JOIN Product p ON p.ProductID=up.ProductAssemblyID ORDER BY p.Name",
+      "evidence": "",
+      "join_count": 2,
+      "features": [
+        "CTE",
+        "JOIN×2",
+        "SUBQUERY"
+      ],
+      "domain": "BOM",
+      "source": "custom"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "How many products serve as intermediate components, i.e. they are both a component of some assembly and an assembly themselves?",
+      "SQL": "SELECT COUNT(DISTINCT ComponentID) FROM BillOfMaterials WHERE ComponentID IN (SELECT ProductAssemblyID FROM BillOfMaterials)",
+      "evidence": "",
+      "join_count": 0,
+      "features": [
+        "SUBQUERY"
+      ],
+      "domain": "BOM",
+      "source": "custom"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "For each customer who placed an order in 2013, list their full name, city, and how many orders they placed.",
+      "SQL": "SELECT p.FirstName||' '||p.LastName, a.City, COUNT(DISTINCT soh.SalesOrderID) FROM SalesOrderHeader soh JOIN Customer c ON soh.CustomerID=c.CustomerID JOIN Person p ON c.PersonID=p.BusinessEntityID JOIN Address a ON soh.BillToAddressID=a.AddressID WHERE substr(soh.OrderDate,1,4)='2013' AND c.PersonID IS NOT NULL GROUP BY p.FirstName,p.LastName,a.City ORDER BY 3 DESC",
+      "evidence": "",
+      "join_count": 3,
+      "features": [
+        "JOIN×3",
+        "GROUP_BY"
+      ],
+      "domain": "Sales",
+      "source": "custom"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "What is the total order value (sum of TotalDue) for each sales territory, ordered from highest to lowest?",
+      "SQL": "SELECT st.Name, ROUND(SUM(soh.TotalDue),2) FROM SalesOrderHeader soh JOIN SalesTerritory st ON soh.TerritoryID=st.TerritoryID GROUP BY st.Name ORDER BY 2 DESC",
+      "evidence": "",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY"
+      ],
+      "domain": "Sales",
+      "source": "custom"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "List the orders whose billing address and shipping address are in different cities, showing both cities.",
+      "SQL": "SELECT soh.SalesOrderID, ba.City AS bill_city, sa.City AS ship_city FROM SalesOrderHeader soh JOIN Address ba ON soh.BillToAddressID=ba.AddressID JOIN Address sa ON soh.ShipToAddressID=sa.AddressID WHERE ba.City<>sa.City LIMIT 20",
+      "evidence": "",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Sales",
+      "source": "custom"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "For each product category, what is the total quantity sold and total revenue?",
+      "SQL": "SELECT pc.Name, SUM(sod.OrderQty), ROUND(SUM(sod.LineTotal),2) FROM SalesOrderDetail sod JOIN Product p ON sod.ProductID=p.ProductID JOIN ProductSubcategory ps ON p.ProductSubcategoryID=ps.ProductSubcategoryID JOIN ProductCategory pc ON ps.ProductCategoryID=pc.ProductCategoryID GROUP BY pc.Name ORDER BY 3 DESC",
+      "evidence": "",
+      "join_count": 3,
+      "features": [
+        "JOIN×3",
+        "GROUP_BY"
+      ],
+      "domain": "Sales",
+      "source": "custom"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Which customers have a credit card on file AND placed at least one order in 2013? List their names.",
+      "SQL": "SELECT DISTINCT p.FirstName||' '||p.LastName FROM SalesOrderHeader soh JOIN Customer c ON soh.CustomerID=c.CustomerID JOIN Person p ON c.PersonID=p.BusinessEntityID JOIN PersonCreditCard pcc ON p.BusinessEntityID=pcc.BusinessEntityID WHERE substr(soh.OrderDate,1,4)='2013' ORDER BY 1 LIMIT 20",
+      "evidence": "",
+      "join_count": 3,
+      "features": [
+        "JOIN×3"
+      ],
+      "domain": "Sales",
+      "source": "custom"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Who are the top 5 customers by total order value (TotalDue) across all time?",
+      "SQL": "SELECT p.FirstName||' '||p.LastName, ROUND(SUM(soh.TotalDue),2) FROM SalesOrderHeader soh JOIN Customer c ON soh.CustomerID=c.CustomerID JOIN Person p ON c.PersonID=p.BusinessEntityID WHERE c.PersonID IS NOT NULL GROUP BY p.FirstName,p.LastName ORDER BY 2 DESC LIMIT 5",
+      "evidence": "",
+      "join_count": 2,
+      "features": [
+        "JOIN×2",
+        "GROUP_BY"
+      ],
+      "domain": "Sales",
+      "source": "custom"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "How many orders in 2013 were placed by customers located in Canada?",
+      "SQL": "SELECT COUNT(DISTINCT soh.SalesOrderID) FROM SalesOrderHeader soh JOIN Customer c ON soh.CustomerID=c.CustomerID JOIN Address a ON soh.BillToAddressID=a.AddressID JOIN StateProvince sp ON a.StateProvinceID=sp.StateProvinceID JOIN CountryRegion cr ON sp.CountryRegionCode=cr.CountryRegionCode WHERE cr.Name='Canada' AND substr(soh.OrderDate,1,4)='2013'",
+      "evidence": "",
+      "join_count": 4,
+      "features": [
+        "JOIN×4"
+      ],
+      "domain": "Sales",
+      "source": "custom"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "For each salesperson, how many orders did they handle in 2013? List their name and count, ordered by count.",
+      "SQL": "SELECT p.FirstName||' '||p.LastName, COUNT(soh.SalesOrderID) FROM SalesOrderHeader soh JOIN SalesPerson sp ON soh.SalesPersonID=sp.BusinessEntityID JOIN Person p ON sp.BusinessEntityID=p.BusinessEntityID WHERE substr(soh.OrderDate,1,4)='2013' GROUP BY p.FirstName,p.LastName ORDER BY 2 DESC",
+      "evidence": "",
+      "join_count": 2,
+      "features": [
+        "JOIN×2",
+        "GROUP_BY"
+      ],
+      "domain": "Sales",
+      "source": "custom"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Which finished products have never been ordered? List their names.",
+      "SQL": "SELECT p.Name FROM Product p WHERE p.FinishedGoodsFlag=1 AND p.ProductID NOT IN (SELECT DISTINCT ProductID FROM SalesOrderDetail) ORDER BY p.Name LIMIT 20",
+      "evidence": "",
+      "join_count": 0,
+      "features": [
+        "SUBQUERY"
+      ],
+      "domain": "Sales",
+      "source": "custom"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "What is the average order value (TotalDue) per month in 2013?",
+      "SQL": "SELECT substr(OrderDate,1,7) AS month, ROUND(AVG(TotalDue),2) FROM SalesOrderHeader WHERE substr(OrderDate,1,4)='2013' GROUP BY month ORDER BY month",
+      "evidence": "",
+      "join_count": 0,
+      "features": [
+        "GROUP_BY"
+      ],
+      "domain": "Sales",
+      "source": "custom"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "What is the average number of line items per order in 2013?",
+      "SQL": "SELECT ROUND(AVG(cnt),2) FROM (SELECT soh.SalesOrderID, COUNT(sod.SalesOrderDetailID) cnt FROM SalesOrderHeader soh JOIN SalesOrderDetail sod ON soh.SalesOrderID=sod.SalesOrderID WHERE substr(soh.OrderDate,1,4)='2013' GROUP BY soh.SalesOrderID)",
+      "evidence": "",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY",
+        "SUBQUERY"
+      ],
+      "domain": "Sales",
+      "source": "custom"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "How many employees are currently in each department? List department and headcount, ordered by headcount.",
+      "SQL": "SELECT d.Name, COUNT(DISTINCT edh.BusinessEntityID) FROM EmployeeDepartmentHistory edh JOIN Department d ON edh.DepartmentID=d.DepartmentID WHERE edh.EndDate IS NULL GROUP BY d.Name ORDER BY 2 DESC",
+      "evidence": "",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY"
+      ],
+      "domain": "HR",
+      "source": "custom"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Which employees have worked in more than one department? List their name and number of departments.",
+      "SQL": "SELECT p.FirstName||' '||p.LastName, COUNT(DISTINCT edh.DepartmentID) FROM EmployeeDepartmentHistory edh JOIN Person p ON edh.BusinessEntityID=p.BusinessEntityID GROUP BY p.FirstName,p.LastName HAVING COUNT(DISTINCT edh.DepartmentID)>1 ORDER BY 2 DESC",
+      "evidence": "",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY",
+        "HAVING"
+      ],
+      "domain": "HR",
+      "source": "custom"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "How many times has each employee's pay rate changed? List name and change count, ordered by count.",
+      "SQL": "SELECT p.FirstName||' '||p.LastName, COUNT(*) FROM EmployeePayHistory eph JOIN Person p ON eph.BusinessEntityID=p.BusinessEntityID GROUP BY p.FirstName,p.LastName ORDER BY 2 DESC, 1 LIMIT 20",
+      "evidence": "",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY"
+      ],
+      "domain": "HR",
+      "source": "custom"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "Which vendors supply the most distinct products? List vendor name and product count, top 10.",
+      "SQL": "SELECT v.Name, COUNT(DISTINCT pv.ProductID) FROM ProductVendor pv JOIN Vendor v ON pv.BusinessEntityID=v.BusinessEntityID GROUP BY v.Name ORDER BY 2 DESC, 1 LIMIT 10",
+      "evidence": "",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY"
+      ],
+      "domain": "Purchasing",
+      "source": "custom"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "How many purchase orders were placed with each vendor? Order by count descending.",
+      "SQL": "SELECT v.Name, COUNT(poh.PurchaseOrderID) FROM PurchaseOrderHeader poh JOIN Vendor v ON poh.VendorID=v.BusinessEntityID GROUP BY v.Name ORDER BY 2 DESC",
+      "evidence": "",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY"
+      ],
+      "domain": "Purchasing",
+      "source": "custom"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "How many products are supplied by more than one vendor?",
+      "SQL": "SELECT COUNT(*) FROM (SELECT ProductID FROM ProductVendor GROUP BY ProductID HAVING COUNT(DISTINCT BusinessEntityID)>1)",
+      "evidence": "",
+      "join_count": 0,
+      "features": [
+        "GROUP_BY",
+        "HAVING",
+        "SUBQUERY"
+      ],
+      "domain": "Product",
+      "source": "custom"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "What are the top 5 most common job titles among employees?",
+      "SQL": "SELECT JobTitle, COUNT(*) FROM Employee GROUP BY JobTitle ORDER BY 2 DESC LIMIT 5",
+      "evidence": "",
+      "join_count": 0,
+      "features": [
+        "GROUP_BY"
+      ],
+      "domain": "HR",
+      "source": "custom"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "List the full name and job title of employees currently in the 'Sales' department, ordered by last name.",
+      "SQL": "SELECT p.FirstName, p.LastName, e.JobTitle FROM Employee e JOIN Person p ON e.BusinessEntityID = p.BusinessEntityID JOIN EmployeeDepartmentHistory edh ON e.BusinessEntityID = edh.BusinessEntityID JOIN Department d ON edh.DepartmentID = d.DepartmentID WHERE d.Name = 'Sales' AND edh.EndDate IS NULL ORDER BY p.LastName",
+      "evidence": "",
+      "join_count": 3,
+      "features": [
+        "JOIN×3"
+      ],
+      "domain": "HR",
+      "source": "custom"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "List the store name, city, and state/province of every store, ordered by store name.",
+      "SQL": "SELECT s.Name, a.City, sp.Name FROM Store s JOIN BusinessEntityAddress bea ON s.BusinessEntityID = bea.BusinessEntityID JOIN Address a ON bea.AddressID = a.AddressID JOIN StateProvince sp ON a.StateProvinceID = sp.StateProvinceID ORDER BY s.Name",
+      "evidence": "",
+      "join_count": 3,
+      "features": [
+        "JOIN×3"
+      ],
+      "domain": "Sales",
+      "source": "custom"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "How many employees have no name suffix (such as Jr. or Sr.)?",
+      "SQL": "SELECT COUNT(*) FROM (SELECT e.BusinessEntityID FROM Employee e JOIN Person p ON e.BusinessEntityID = p.BusinessEntityID WHERE p.Suffix IS NULL GROUP BY e.BusinessEntityID) AS X",
+      "evidence": "",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "SUBQUERY",
+        "GROUP_BY"
+      ],
+      "domain": "HR",
+      "source": "custom"
+    },
+    {
+      "db_id": "works_cycles",
+      "question": "List the full name and job title of employees whose latest pay rate is above $50.",
+      "SQL": "SELECT p.FirstName, p.LastName, e.JobTitle FROM Employee e JOIN Person p ON e.BusinessEntityID = p.BusinessEntityID JOIN EmployeePayHistory eph ON e.BusinessEntityID = eph.BusinessEntityID WHERE eph.Rate > 50 AND eph.RateChangeDate = (SELECT MAX(eph2.RateChangeDate) FROM EmployeePayHistory eph2 WHERE eph2.BusinessEntityID = e.BusinessEntityID)",
+      "evidence": "",
+      "join_count": 3,
+      "features": [
+        "JOIN×3",
+        "SUBQUERY"
+      ],
+      "domain": "HR",
+      "source": "custom"
+    }
+  ]
+}

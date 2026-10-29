@@ -1,0 +1,234 @@
+{
+  "benchmark": "CypherBench movie subgraph (Neo4j)",
+  "mechanism": "DataAI Portal M+S (agent 反馈迭代 + 1M context + 一次性注入 schema.json + notes.md)",
+  "metric": "EX (execution accuracy, 值多重集比对, 放宽多列)",
+  "total_questions": 401,
+  "rounds": [
+    {
+      "round": 1,
+      "notes_version": "v1 (起头)",
+      "passed": 344,
+      "total": 401,
+      "accuracy": 85.8,
+      "note": "初始 schema + 基础 notes"
+    },
+    {
+      "round": 3,
+      "notes_version": "v3 (两轮根因规则)",
+      "passed": 381,
+      "total": 401,
+      "accuracy": 95.0,
+      "note": "重名节点/分组/NULL排序等规则"
+    },
+    {
+      "round": 4,
+      "notes_version": "v4 (final, +gold修复+notes纠正)",
+      "passed": 387,
+      "total": 401,
+      "accuracy": 96.5,
+      "note": "修4条比较题gold笛卡尔积 + 纠正genre值规则"
+    }
+  ],
+  "final_failures": [
+    56,
+    59,
+    78,
+    106,
+    138,
+    143,
+    148,
+    185,
+    227,
+    241,
+    294,
+    303,
+    338,
+    369
+  ],
+  "final_failure_categories": {
+    "重名节点硬边界": [
+      56,
+      59,
+      148,
+      241,
+      294,
+      303,
+      338,
+      369
+    ],
+    "run-to-run 波动": [
+      78,
+      106,
+      138,
+      143,
+      185,
+      227
+    ]
+  },
+  "gold_defects_fixed": [
+    106,
+    119,
+    267,
+    268
+  ],
+  "result_files": {
+    "round1": "results_movie_mplus.json",
+    "round3": "results_movie_final.json",
+    "round4_final": "results_movie_final2.json",
+    "verification": "results_movie_r4.json / results_movie_r4b.json"
+  },
+  "notes_file": "movie_notes.md",
+  "schema_file": "movie_schema.json",
+  "gold_file": "gold.json",
+  "pass3": {
+    "pass1_accuracy": 96.5,
+    "pass2_accuracy": 96.0,
+    "pass3_accuracy": 97.0,
+    "pass3_all_correct": 377,
+    "pass3_accuracy_pct": 94.0,
+    "pass_at_least_one": 395,
+    "pass_at_least_one_pct": 98.5,
+    "per_question_pass_counts": {
+      "3_3": 377,
+      "2_3": 12,
+      "1_3": 6,
+      "0_3": 6
+    },
+    "stable_hard_failures": [
+      59,
+      148,
+      241,
+      294,
+      303,
+      369
+    ],
+    "flaky_fail_1": [
+      17,
+      32,
+      52,
+      78,
+      138,
+      165,
+      185,
+      207,
+      220,
+      236,
+      329,
+      363
+    ],
+    "flaky_fail_2": [
+      56,
+      106,
+      143,
+      227,
+      251,
+      338
+    ],
+    "per_round_failures": {
+      "pass1": [
+        56,
+        59,
+        78,
+        106,
+        138,
+        143,
+        148,
+        185,
+        227,
+        241,
+        294,
+        303,
+        338,
+        369
+      ],
+      "pass2": [
+        32,
+        52,
+        59,
+        106,
+        148,
+        165,
+        207,
+        236,
+        241,
+        251,
+        294,
+        303,
+        329,
+        338,
+        363,
+        369
+      ],
+      "pass3": [
+        17,
+        56,
+        59,
+        143,
+        148,
+        220,
+        227,
+        241,
+        251,
+        294,
+        303,
+        369
+      ]
+    },
+    "drift_matrix": {
+      "pass1_to_pass2": {
+        "翻正": [
+          56,
+          78,
+          138,
+          143,
+          185,
+          227
+        ],
+        "翻负": [
+          32,
+          52,
+          165,
+          207,
+          236,
+          251,
+          329,
+          363
+        ]
+      },
+      "pass2_to_pass3": {
+        "翻正": [
+          32,
+          52,
+          106,
+          165,
+          207,
+          236,
+          329,
+          338,
+          363
+        ],
+        "翻负": [
+          17,
+          56,
+          143,
+          220,
+          227
+        ]
+      },
+      "pass1_to_pass3": {
+        "翻正": [
+          78,
+          106,
+          138,
+          185,
+          338
+        ],
+        "翻负": [
+          17,
+          220,
+          251
+        ]
+      }
+    }
+  }
+}

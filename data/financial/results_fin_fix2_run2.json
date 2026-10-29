@@ -1,0 +1,184 @@
+{
+  "runs": [
+    {
+      "question_id": 27,
+      "datasource": "financial",
+      "chat_id": "4d46bde9e5754b6e8d343cc79d41695a",
+      "final_sql": "SELECT CAST(SUM(gndr = 'M') AS DOUBLE) * 100 / COUNT(clnt_id) AS percentage FROM clnt WHERE ref1 = (SELECT dstr_id FROM dstr WHERE a3 = 'south Bohemia' ORDER BY CAST(a4 AS UNSIGNED) DESC LIMIT 1)",
+      "sql_history": [
+        "SELECT dstr_id, a2, a3, a4 FROM dstr WHERE a3 = 'south Bohemia'",
+        "SELECT SUM(gndr='M') AS males, COUNT(*) AS total, SUM(gndr='M')*100.0/COUNT(*) AS pct FROM clnt WHERE ref1 = 14",
+        "SELECT COUNT(DISTINCT c.clnt_id) AS total, COUNT(DISTINCT CASE WHEN c.gndr='M' THEN c.clnt_id END) AS males, COUNT(DISTINCT CASE WHEN c.gndr='M' THEN c.clnt_id END)*100.0/COUNT(DISTINCT c.clnt_id) AS pct FROM acct a JOIN dsp d ON d.ref2=a.accn_id JOIN clnt c ON c.clnt_id=d.ref1 WHERE a.ref1=14",
+        "SELECT CAST(SUM(gndr = 'M') AS DOUBLE) * 100 / COUNT(clnt_id) AS percentage FROM clnt WHERE ref1 = (SELECT dstr_id FROM dstr WHERE a3 = 'south Bohemia' ORDER BY CAST(a4 AS UNSIGNED) DESC LIMIT 1)"
+      ],
+      "agent_text": "**答案：40.0**\n\n说明：\n- south Bohemia 里 inhabitants 最多的 branch（district）是 **Ceske Budejovice**（a4 = 177686）。\n- 该 branch 的客户数 45 人，其中男性（gndr='M'）18 人 → 18 / 45 × 100 = **40.0%**。",
+      "tool_calls": 7,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 7,
+      "tool_rounds": 6,
+      "tokens": {
+        "input": 22383,
+        "output": 7105,
+        "cache_read": 225280,
+        "cache_write": 0,
+        "reasoning": 6291,
+        "total": 254768
+      },
+      "cost_usd": 0.011431,
+      "elapsed_seconds": 59.88,
+      "agent_duration_ms": 52074,
+      "extra_columns": []
+    },
+    {
+      "question_id": 36,
+      "datasource": "financial",
+      "chat_id": "41a37ea45010467f8f708e63bab42912",
+      "final_sql": "SELECT ln.ln_id, dstr.a3 AS district_region, dstr.a11 AS average_salary FROM ln JOIN acct ON ln.ref1 = acct.accn_id JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE ln.drtn = 60",
+      "sql_history": [
+        "SELECT ln.ln_id, dstr.a3 AS district_region, dstr.a11 AS average_salary FROM ln JOIN acct ON ln.ref1 = acct.accn_id JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE ln.drtn = 60"
+      ],
+      "agent_text": "查询结果（数据源 `financial`，贷款期限 60 个月）：\n\n| ln_id | district (region) | average_salary |\n|---|---|---|\n| 4967 | south Bohemia | 8547 |\n| 5041 | east Bohemia | 9538 |\n| 5043 | east Bohemia | 8369 |\n| 5044 | south Moravia | 9897 |\n| 5051 | north Moravia | 9893 |\n| 5060 | Prague | 12541 |\n| 5082 | central Bohemia | 8598 |\n| 5110 | south Moravia | 8757 |\n| 5132 | central Bohemia | 9307 |\n| 5140 | north Moravia | 8746 |\n| 5147 | north Moravia | 10177 |\n| 5148 | north Bohemia | 9065 |\n| 5151 | central Bohemia | 9753 |\n| 5154 | central Bohemia | 8546 |\n| 5160 | east Bohemia | 8390 |\n| 5169 | east Bohemia | 8363 |\n| 5170 | north Moravia | 9893 |\n| 5265 | south Moravia | 8544 |\n| 5311 | west Bohemia | 8594 |\n| 5319 | north Bohemia | 9317 |\n| 5329 | south Bohemia | 8402 |\n| 5354 | central Bohemia | 9307 |\n| 5363 | south Moravia | 9624 |\n| 5365 | north Bohemia | 9065 |\n| 5409 | south Bohemia | 8402 |\n| 5419 | Prague | 12541 |\n| 5447 | north Moravia | 10177 |\n\n共 27 条 60 个月期限的贷款。依据 BIRD evidence（A3=region、A11=average salary），district 列取 `dstr.a3`，关联链为 `ln → acct → dstr`。",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 16630,
+        "output": 2033,
+        "cache_read": 68096,
+        "cache_write": 0,
+        "reasoning": 1363,
+        "total": 86759
+      },
+      "cost_usd": 0.004804,
+      "elapsed_seconds": 22.29,
+      "agent_duration_ms": 14709,
+      "extra_columns": []
+    },
+    {
+      "question_id": 37,
+      "datasource": "financial",
+      "chat_id": "3beeceba80744cf8b3a6475e0ca80f96",
+      "final_sql": "SELECT DISTINCT d.a2 AS district, (d.a13 - d.a12) * 100.0 / d.a12 AS unemployment_rate_increment FROM ln l JOIN acct a ON l.ref1 = a.accn_id JOIN dstr d ON a.ref1 = d.dstr_id WHERE l.stts = 'D';",
+      "sql_history": [
+        "SELECT DISTINCT d.a2 AS district, (d.a13 - d.a12) * 100.0 / d.a12 AS unemployment_rate_increment FROM ln l JOIN acct a ON l.ref1 = a.accn_id JOIN dstr d ON a.ref1 = d.dstr_id WHERE l.stts = 'D';"
+      ],
+      "agent_text": "SQL 已执行（最终答案），不再追加查询。\n\n**口径**：贷款合同 `ln.stts='D'`（still running + client in debt）；district 经 `ln→acct→dstr` 用 `acct.ref1`（账户分支）；失业率增量 = `(a13-a12)/a12*100`（a12=1995、a13=1996）。\n\n```sql\nSELECT DISTINCT d.a2 AS district,\n       (d.a13 - d.a12) * 100.0 / d.a12 AS unemployment_rate_increment\nFROM ln l\nJOIN acct a ON l.ref1 = a.accn_id\nJOIN dstr d ON a.ref1 = d.dstr_id\nWHERE l.stts = 'D';\n```\n\n结果（27 个区县）：\n\n| district | increment(%) |\n|---|---|\n| Strakonice | 40.0 |\n| Chrudim | 39.25925925925924 |\n| Hl.m. Praha | 115.0 |\n| Brno - mesto | 22.49999999999999 |\n| Mlada Boleslav | 20.0 |\n| Jesenik | NULL |\n| Klatovy | 11.666666666666677 |\n| Zlin | 44.375 |\n| Opava | 13.333333333333346 |\n| Karvina | 17.42424242424243 |\n| Kromeriz | 8.4375 |\n| Novy Jicin | -5.593220338983052 |\n| Rokycany | 28.571428571428584 |\n| Beroun | 16.315789473684216 |\n| Blansko | 42.4 |\n| Svitavy | 13.541666666666673 |\n| Olomouc | 26.052631578947377 |\n| Bruntal | 14.91228070175438 |\n| Kladno | 9.782608695652177 |\n| Havlickuv Brod | 22.5 |\n| Usti nad Orlici | 39.60000000000001 |\n| Prachatice | 28.387096774193544 |\n| Kutna Hora | 38.620689655172406 |\n| Rychnov nad Kneznou | 43.529411764705884 |\n| Brno - venkov | 35.00000000000001 |\n| Ceske Budejovice | 22.14285714285715 |\n| Hradec Kralove | 47.05882352941177 |\n\n（Jesenik 的 1995 失业率为 0，除零得 NULL。）",
+      "tool_calls": 4,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 16939,
+        "output": 7744,
+        "cache_read": 104960,
+        "cache_write": 0,
+        "reasoning": 6860,
+        "total": 129643
+      },
+      "cost_usd": 0.007479,
+      "elapsed_seconds": 56.62,
+      "agent_duration_ms": 48731,
+      "extra_columns": []
+    },
+    {
+      "question_id": 42,
+      "datasource": "financial",
+      "chat_id": "71ba79bd12404be5abf4fddfeccbad80",
+      "final_sql": "SELECT COUNT(*) AS account_holders_without_credit_card FROM acct a JOIN dstr ds ON ds.dstr_id = a.ref1 WHERE ds.a3 = 'south Bohemia' AND NOT EXISTS ( SELECT 1 FROM crd JOIN dsp d ON d.dsp_id = crd.ref1 WHERE d.ref2 = a.accn_id )",
+      "sql_history": [
+        "SELECT DISTINCT a3 FROM dstr ORDER BY a3",
+        "SELECT DISTINCT typ FROM dsp",
+        "SELECT DISTINCT typ FROM crd",
+        "SELECT COUNT(DISTINCT c.clnt_id) AS a1_any_disp_branch FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON a.accn_id = d.ref2 JOIN dstr ds ON ds.dstr_id = a.ref1 WHERE ds.a3 = 'south Bohemia' AND NOT EXISTS (SELECT 1 FROM crd JOIN dsp d2 ON d2.dsp_id = crd.ref1 WHERE d2.ref1 = c.clnt_id)",
+        "SELECT COUNT(DISTINCT c.clnt_id) AS a2_owner_branch FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON a.accn_id = d.ref2 JOIN dstr ds ON ds.dstr_id = a.ref1 WHERE ds.a3 = 'south Bohemia' AND d.typ = 'OWNER' AND NOT EXISTS (SELECT 1 FROM crd JOIN dsp d2 ON d2.dsp_id = crd.ref1 WHERE d2.ref1 = c.clnt_id)",
+        "SELECT COUNT(DISTINCT c.clnt_id) AS b1_home FROM clnt c JOIN dstr ds ON ds.dstr_id = c.ref1 WHERE ds.a3 = 'south Bohemia' AND NOT EXISTS (SELECT 1 FROM crd JOIN dsp d2 ON d2.dsp_id = crd.ref1 WHERE d2.ref1 = c.clnt_id)",
+        "SELECT COUNT(*) AS c_acct_branch FROM acct a JOIN dstr ds ON ds.dstr_id = a.ref1 WHERE ds.a3 = 'south Bohemia' AND NOT EXISTS (SELECT 1 FROM crd JOIN dsp d2 ON d2.dsp_id = crd.ref1 WHERE d2.ref2 = a.accn_id)",
+        "SELECT COUNT(*) AS sb_accounts FROM acct a JOIN dstr ds ON ds.dstr_id = a.ref1 WHERE ds.a3 = 'south Bohemia'",
+        "SELECT COUNT(DISTINCT c.clnt_id) AS sb_clients FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON a.accn_id = d.ref2 JOIN dstr ds ON ds.dstr_id = a.ref1 WHERE ds.a3 = 'south Bohemia'",
+        "SELECT COUNT(*) AS account_holders_without_credit_card FROM acct a JOIN dstr ds ON ds.dstr_id = a.ref1 WHERE ds.a3 = 'south Bohemia' AND NOT EXISTS ( SELECT 1 FROM crd JOIN dsp d ON d.dsp_id = crd.ref1 WHERE d.ref2 = a.accn_id )"
+      ],
+      "agent_text": "**296**\n\n在 South Bohemia（`dstr.a3 = 'south Bohemia'`）的账户持有者中，仍有 296 个没有信用卡。\n\n判定口径：\n- 「account holders in South Bohemia」→ 经账户分支定位（`acct.ref1 → dstr.a3`），符合 notes 第 7 条（account holder 用 branch）。\n- 「do not own credit cards」→ 该账户没有任何关联卡（卡经 `crd.ref1 = dsp.dsp_id`、`dsp.ref2 = acct.accn_id` 挂到账户上）。\n- 结构为 2 个 JOIN，与题面 join_count 一致。\n\n最终 SQL：\n```sql\nSELECT COUNT(*) AS account_holders_without_credit_card\nFROM acct a\nJOIN dstr ds ON ds.dstr_id = a.ref1\nWHERE ds.a3 = 'south Bohemia'\nAND NOT EXISTS (\n  SELECT 1 FROM crd JOIN dsp d ON d.dsp_id = crd.ref1\n  WHERE d.ref2 = a.accn_id\n);\n```\n\n结果：**296**",
+      "tool_calls": 18,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 10,
+      "tool_rounds": 9,
+      "tokens": {
+        "input": 18364,
+        "output": 35785,
+        "cache_read": 403200,
+        "cache_write": 0,
+        "reasoning": 33607,
+        "total": 457349
+      },
+      "cost_usd": 0.02388,
+      "elapsed_seconds": 265.99,
+      "agent_duration_ms": 257796,
+      "extra_columns": []
+    },
+    {
+      "question_id": 45,
+      "datasource": "financial",
+      "chat_id": "7bae527a5e0a4ed9a18b830979edaa82",
+      "final_sql": "SELECT dstr_id AS branch_location, a2 AS district_name FROM dstr WHERE a13 = (SELECT MAX(a13) FROM dstr)",
+      "sql_history": [
+        "SELECT dstr_id AS branch_location, a2 AS district_name FROM dstr WHERE a13 = (SELECT MAX(a13) FROM dstr)"
+      ],
+      "agent_text": "1996 年失业率最高的区县：\n\n| branch_location | district_name |\n|---|---|\n| 39 | Most |\n\n即 **Most** 区（branch location 39），1996 年失业率全区最高。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 16278,
+        "output": 663,
+        "cache_read": 67072,
+        "cache_write": 0,
+        "reasoning": 417,
+        "total": 84013
+      },
+      "cost_usd": 0.004343,
+      "elapsed_seconds": 16.74,
+      "agent_duration_ms": 8910,
+      "extra_columns": []
+    },
+    {
+      "question_id": 105,
+      "datasource": "financial",
+      "chat_id": "e97e9e3d2acf4b27a405bfd5b7503b77",
+      "final_sql": "SELECT dsp.ref1, dstr.dstr_id, dstr.a2 FROM acct INNER JOIN dstr ON acct.ref1 = dstr.dstr_id INNER JOIN dsp ON acct.accn_id = dsp.ref2 WHERE dsp.typ = 'OWNER'",
+      "sql_history": [
+        "SELECT dsp.ref1, dstr.dstr_id, dstr.a2 FROM acct INNER JOIN dstr ON acct.ref1 = dstr.dstr_id INNER JOIN dsp ON acct.accn_id = dsp.ref2 WHERE dsp.typ = 'OWNER'"
+      ],
+      "agent_text": "已完成，这就是最终答案（不再执行任何后续 SQL）。\n\n**SQL：**\n```sql\nSELECT dsp.ref1, dstr.dstr_id, dstr.a2\nFROM acct\nINNER JOIN dstr ON acct.ref1 = dstr.dstr_id\nINNER JOIN dsp  ON acct.accn_id = dsp.ref2\nWHERE dsp.typ = 'OWNER'\n```\n\n**口径：** evidence「Only the owner accounts have the right to issue permanent orders or apply for loans」→ 取 `dsp.typ='OWNER'` 的客户；`acct.ref1 = dstr.dstr_id`（账户开户分支）取区县，`acct.accn_id = dsp.ref2` 取 disposition；输出 3 列 = 客户 ID（`dsp.ref1`）、区县 ID（`dstr.dstr_id`）、区县名（`dstr.a2`），按明细行、不加 DISTINCT。\n\n结果（部分，客户 ID | 区县 ID | 区县名）：1 | 18 | Pisek；2 | 1 | Hl.m. Praha；4 | 5 | Kolin；6 | 12 | Pribram；7 | 15 | Cesky Krumlov；8 | 51 | Trutnov；9 | 60 | Prostejov；10 | 57 | Hodonin ……",
+      "tool_calls": 6,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 6,
+      "tool_rounds": 5,
+      "tokens": {
+        "input": 19671,
+        "output": 6297,
+        "cache_read": 177664,
+        "cache_write": 0,
+        "reasoning": 5477,
+        "total": 203632
+      },
+      "cost_usd": 0.009492,
+      "elapsed_seconds": 56.98,
+      "agent_duration_ms": 48622,
+      "extra_columns": []
+    }
+  ]
+}

@@ -1,0 +1,3007 @@
+{
+  "runs": [
+    {
+      "question_id": 1,
+      "datasource": "financial",
+      "chat_id": "d0ece14d586d456bbab0dcbe9767193b",
+      "final_sql": "SELECT COUNT(*) FROM acct a JOIN dstr d ON a.ref1 = d.dstr_id WHERE a.frqn = 'POPLATEK PO OBRATU' AND d.a3 = 'east Bohemia'",
+      "sql_history": [
+        "SELECT COUNT(*) FROM acct a JOIN dstr d ON a.ref1 = d.dstr_id WHERE a.frqn = 'POPLATEK PO OBRATU' AND d.a3 = 'east Bohemia'"
+      ],
+      "agent_text": "**13**\n\nEast Bohemia region（`dstr.a3 = 'east Bohemia'`）中，账户频率为 `POPLATEK PO OBRATU`（issuance after transaction）的账户共 **13** 个。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78810,
+        "output": 959,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 778,
+        "total": 79769
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 36.14,
+      "agent_duration_ms": 27913,
+      "extra_columns": []
+    },
+    {
+      "question_id": 2,
+      "datasource": "financial",
+      "chat_id": "a9fe72e22ff54c85b2a581a9a2809a1d",
+      "final_sql": "SELECT COUNT(*) FROM acct a JOIN dstr d ON a.ref1 = d.dstr_id WHERE d.a3 = 'Prague'",
+      "sql_history": [
+        "SELECT DISTINCT a3 FROM dstr ORDER BY a3",
+        "SELECT COUNT(*) FROM acct a JOIN dstr d ON a.ref1 = d.dstr_id WHERE d.a3 = 'Prague'"
+      ],
+      "agent_text": "LLM request timed out.",
+      "tool_calls": 4,
+      "pass": false,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 78765,
+        "output": 2815,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 2678,
+        "total": 81580
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 190.89,
+      "agent_duration_ms": 183158,
+      "extra_columns": []
+    },
+    {
+      "question_id": 3,
+      "datasource": "financial",
+      "chat_id": "b3c35a283a82462696b5a782445168ee",
+      "final_sql": "SELECT CASE WHEN AVG(a12) > AVG(a13) THEN '1995' WHEN AVG(a13) > AVG(a12) THEN '1996' ELSE 'Equal' END AS higher_unemployment_year FROM dstr",
+      "sql_history": [
+        "SELECT CASE WHEN AVG(a12) > AVG(a13) THEN '1995' WHEN AVG(a13) > AVG(a12) THEN '1996' ELSE 'Equal' END AS higher_unemployment_year FROM dstr"
+      ],
+      "agent_text": "1996 年的平均失业率更高。\n\n- **a12** = 1995年失业率，**a13** = 1996年失业率\n- 对 `dstr` 表所有地区取平均后，AVG(a13) > AVG(a12)，即 1996 年平均失业率更高",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78819,
+        "output": 904,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 725,
+        "total": 79723
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 33.91,
+      "agent_duration_ms": 25887,
+      "extra_columns": []
+    },
+    {
+      "question_id": 4,
+      "datasource": "financial",
+      "chat_id": "c141a8524e5249b8aa25f3e0f46c0306",
+      "final_sql": "SELECT COUNT(*) FROM dstr WHERE a11 > 6000 AND a11 < 10000",
+      "sql_history": [
+        "SELECT COUNT(*) FROM dstr WHERE a11 > 6000 AND a11 < 10000"
+      ],
+      "agent_text": "**69** 个地区的平均工资（a11）在 6000 到 10000 之间。\n\n最终 SQL：\n\n```sql\nSELECT COUNT(*) FROM dstr WHERE a11 > 6000 AND a11 < 10000\n```",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78784,
+        "output": 1936,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 1791,
+        "total": 80720
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 55.56,
+      "agent_duration_ms": 47596,
+      "extra_columns": []
+    },
+    {
+      "question_id": 5,
+      "datasource": "financial",
+      "chat_id": "7ddd432cd1184d05974cb596c8b14cd1",
+      "final_sql": "SELECT COUNT(clnt.clnt_id) FROM clnt JOIN dstr ON clnt.ref1 = dstr.dstr_id WHERE clnt.gndr = 'M' AND dstr.a3 = 'north Bohemia' AND dstr.a11 > 8000",
+      "sql_history": [
+        "SELECT COUNT(clnt.clnt_id) FROM clnt JOIN dstr ON clnt.ref1 = dstr.dstr_id WHERE clnt.gndr = 'M' AND dstr.a3 = 'north Bohemia' AND dstr.a11 > 8000"
+      ],
+      "agent_text": "**280**\n\n居住在 North Bohemia、所在地区平均工资超过 8000 的男性客户共 280 人。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78927,
+        "output": 845,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 597,
+        "total": 79772
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 30.75,
+      "agent_duration_ms": 22877,
+      "extra_columns": []
+    },
+    {
+      "question_id": 6,
+      "datasource": "financial",
+      "chat_id": "a2a7e29640a0450a8529bf1ec0916c78",
+      "final_sql": "SELECT a.accn_id, (SELECT MAX(a11) FROM dstr) - d.a11 AS gap FROM clnt c JOIN dstr d ON c.ref1 = d.dstr_id JOIN dsp ON dsp.ref1 = c.clnt_id JOIN acct a ON a.accn_id = dsp.ref2 WHERE c.gndr = 'F' AND c.brth_dt = (SELECT MIN(brth_dt) FROM clnt WHERE gndr = 'F') AND d.a11 = ( SELECT MIN(d2.a11) FROM clnt c2 JOIN dstr d2 ON c2.ref1 = d2.dstr_id WHERE c2.gndr = 'F' AND c2.brth_dt = (SELECT MIN(brth_dt) FROM clnt WHERE gndr = 'F') )",
+      "sql_history": [
+        "SELECT a.accn_id, (SELECT MAX(a11) FROM dstr) - d.a11 AS gap FROM clnt c JOIN dstr d ON c.ref1 = d.dstr_id JOIN dsp ON dsp.ref1 = c.clnt_id JOIN acct a ON a.accn_id = dsp.ref2 WHERE c.gndr = 'F' AND c.brth_dt = (SELECT MIN(brth_dt) FROM clnt WHERE gndr = 'F') AND d.a11 = ( SELECT MIN(d2.a11) FROM clnt c2 JOIN dstr d2 ON c2.ref1 = d2.dstr_id WHERE c2.gndr = 'F' AND c2.brth_dt = (SELECT MIN(brth_dt) FROM clnt WHERE gndr = 'F') )"
+      ],
+      "agent_text": "最终\n答案：\n\n| accn_id | gap |\n|---------|-----|\n| 1743 | 4000 |\n\n- **Account number**: 1743\n- **Gap**（最高平均工资 − 最低平均工资）: 4000\n\nSQL 逻辑：\n1. 子查询找最年长女性客户（`MIN(brth_dt)` WHERE `gndr='F'`）\n2. 子查询在该最年长女性客户中找最低 `a11`（平均工资）对应的 district\n3. 主查询通过 `clnt → dsp → acct` 链列出该客户的账户号，同时计算 `MAX(a11) - 该客户a11` 作为 gap",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79221,
+        "output": 2716,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 2173,
+        "total": 81937
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 65.01,
+      "agent_duration_ms": 57092,
+      "extra_columns": []
+    },
+    {
+      "question_id": 7,
+      "datasource": "financial",
+      "chat_id": "f46cf723881944b28dd3fe0cd72552d4",
+      "final_sql": "SELECT DISTINCT a.accn_id FROM clnt c JOIN dstr d ON c.ref1 = d.dstr_id JOIN dsp ds ON ds.ref1 = c.clnt_id JOIN acct a ON a.accn_id = ds.ref2 WHERE d.a11 = (SELECT MAX(a11) FROM dstr) AND c.brth_dt = ( SELECT MAX(c2.brth_dt) FROM clnt c2 JOIN dstr d2 ON c2.ref1 = d2.dstr_id WHERE d2.a11 = (SELECT MAX(a11) FROM dstr) )",
+      "sql_history": [
+        "SELECT DISTINCT a.accn_id FROM clnt c JOIN dstr d ON c.ref1 = d.dstr_id JOIN dsp ds ON ds.ref1 = c.clnt_id JOIN acct a ON a.accn_id = ds.ref2 WHERE c.brth_dt = (SELECT MAX(brth_dt) FROM clnt) AND d.a11 = (SELECT MAX(a11) FROM dstr)",
+        "SELECT c.brth_dt, d.a11, d.a2 FROM clnt c JOIN dstr d ON c.ref1 = d.dstr_id WHERE c.brth_dt = (SELECT MAX(brth_dt) FROM clnt) OR d.a11 = (SELECT MAX(a11) FROM dstr)",
+        "SELECT DISTINCT a.accn_id FROM clnt c JOIN dstr d ON c.ref1 = d.dstr_id JOIN dsp ds ON ds.ref1 = c.clnt_id JOIN acct a ON a.accn_id = ds.ref2 WHERE c.brth_dt = (SELECT MAX(brth_dt) FROM clnt) AND d.a11 = (SELECT MAX(a11) FROM dstr)",
+        "SELECT c.clnt_id, c.brth_dt, d.a11, d.a2, ds.dsp_id, ds.ref2, a.accn_id FROM clnt c JOIN dstr d ON c.ref1 = d.dstr_id LEFT JOIN dsp ds ON ds.ref1 = c.clnt_id LEFT JOIN acct a ON a.accn_id = ds.ref2 WHERE c.brth_dt = (SELECT MAX(brth_dt) FROM clnt) AND d.a11 = (SELECT MAX(a11) FROM dstr)",
+        "SELECT c.clnt_id, c.brth_dt, d.a11, d.a2 FROM clnt c JOIN dstr d ON c.ref1 = d.dstr_id WHERE c.brth_dt = (SELECT MAX(brth_dt) FROM clnt)",
+        "SELECT MAX(brth_dt) AS max_brth_dt, MAX(a11) AS max_a11 FROM clnt c JOIN dstr d ON c.ref1 = d.dstr_id",
+        "SELECT c.clnt_id, c.brth_dt, d.a11, d.a2 FROM clnt c JOIN dstr d ON c.ref1 = d.dstr_id WHERE d.a11 = 12541 ORDER BY c.brth_dt DESC LIMIT 5",
+        "SELECT DISTINCT a.accn_id FROM clnt c JOIN dsp ds ON ds.ref1 = c.clnt_id JOIN acct a ON a.accn_id = ds.ref2 WHERE c.brth_dt = (SELECT MAX(brth_dt) FROM clnt) UNION SELECT DISTINCT a.accn_id FROM clnt c JOIN dstr d ON c.ref1 = d.dstr_id JOIN dsp ds ON ds.ref1 = c.clnt_id JOIN acct a ON a.accn_id = ds.ref2 WHERE d.a11 = (SELECT MAX(a11) FROM dstr)",
+        "SELECT DISTINCT a.accn_id FROM clnt c JOIN dstr d ON c.ref1 = d.dstr_id JOIN dsp ds ON ds.ref1 = c.clnt_id JOIN acct a ON a.accn_id = ds.ref2 WHERE d.a11 = (SELECT MAX(a11) FROM dstr) AND c.brth_dt = ( SELECT MAX(c2.brth_dt) FROM clnt c2 JOIN dstr d2 ON c2.ref1 = d2.dstr_id WHERE d2.a11 = (SELECT MAX(a11) FROM dstr) )",
+        "SELECT DISTINCT a.accn_id FROM clnt c JOIN dstr d ON c.ref1 = d.dstr_id JOIN dsp ds ON ds.ref1 = c.clnt_id JOIN acct a ON a.accn_id = ds.ref2 WHERE d.a11 = (SELECT MAX(a11) FROM dstr) AND c.brth_dt = ( SELECT MAX(c2.brth_dt) FROM clnt c2 JOIN dstr d2 ON c2.ref1 = d2.dstr_id WHERE d2.a11 = (SELECT MAX(a11) FROM dstr) )"
+      ],
+      "agent_text": "最终答案：account\nnumber **1372**。\n\n这是在平均工资最高的 district（Hl.m. Praha，a11=12541）中，最年轻 client（brth_dt=1982-12-11）的账户编号。",
+      "tool_calls": 12,
+      "pass": false,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 12,
+      "tool_rounds": 11,
+      "tokens": {
+        "input": 351486,
+        "output": 3894,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 1305,
+        "total": 355380
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 113.96,
+      "agent_duration_ms": 105946,
+      "extra_columns": []
+    },
+    {
+      "question_id": 8,
+      "datasource": "financial",
+      "chat_id": "576b785ac48b483a9a1e4beb98559aa0",
+      "final_sql": "SELECT COUNT(dsp.ref1) FROM dsp JOIN acct ON dsp.ref2 = acct.accn_id WHERE acct.frqn = 'POPLATEK TYDNE' AND dsp.typ = 'OWNER'",
+      "sql_history": [
+        "SELECT COUNT(dsp.ref1) FROM dsp JOIN acct ON dsp.ref2 = acct.accn_id WHERE acct.frqn = 'POPLATEK TYDNE' AND dsp.typ = 'OWNER'"
+      ],
+      "agent_text": "**240**\n\n对应 SQL 逻辑：通过 `dsp`（disposition）关联 `acct`（account），筛选账户频率为周对账单（`frqn = 'POPLATEK TYDNE'`）且客户类型为所有者（`dsp.typ = 'OWNER'`），计数得到 240 位客户。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78767,
+        "output": 1929,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 1745,
+        "total": 80696
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 55.64,
+      "agent_duration_ms": 47835,
+      "extra_columns": []
+    },
+    {
+      "question_id": 9,
+      "datasource": "financial",
+      "chat_id": "0252221c378c4e8e965e7c5f295ada49",
+      "final_sql": "SELECT DISTINCT dsp.ref1 FROM dsp JOIN acct ON acct.accn_id = dsp.ref2 WHERE dsp.typ = 'DISPONENT' AND acct.frqn = 'POPLATEK PO OBRATU'",
+      "sql_history": [
+        "SELECT DISTINCT dsp.ref1 FROM dsp JOIN ord ON ord.ref1 = dsp.ref2 WHERE dsp.typ = 'DISPONENT' AND ord.k_symb = 'POPLATEK PO OBRATU'",
+        "SELECT DISTINCT k_symb FROM ord WHERE k_symb IS NOT NULL LIMIT 20",
+        "SELECT DISTINCT frqn FROM acct",
+        "SELECT DISTINCT dsp.ref1 FROM dsp JOIN acct ON acct.accn_id = dsp.ref2 WHERE dsp.typ = 'DISPONENT' AND acct.frqn = 'POPLATEK PO OBRATU'"
+      ],
+      "agent_text": "结果返回了14个 client ID。这些是账户对账单频率为\"POPLATEK PO OBRATU\"（issuance after transaction）且 disposition 类型为 DISPONENT 的客户 ID。\n\n最终答案——最后执行的 SQL：\n\n```sql\nSELECT DISTINCT dsp.ref1 \nFROM dsp \nJOIN acct ON acct.accn_id = dsp.ref2 \nWHERE dsp.typ = 'DISPONENT' \n  AND acct.frqn = 'POPLATEK PO OBRATU'\n```\n\n返回 14 个 client ID：159, 384, 1261, 1706, 2304, 3526, 3609, 4035, 4133, 4334, 4625, 5580, 6318, 11979。",
+      "tool_calls": 7,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 7,
+      "tool_rounds": 6,
+      "tokens": {
+        "input": 193722,
+        "output": 1706,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 805,
+        "total": 195428
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 56.0,
+      "agent_duration_ms": 48292,
+      "extra_columns": []
+    },
+    {
+      "question_id": 10,
+      "datasource": "financial",
+      "chat_id": "0a97606308c345f1965af6681613c7a7",
+      "final_sql": "SELECT acct.accn_id FROM ln JOIN acct ON ln.ref1 = acct.accn_id WHERE YEAR(ln.dt) = 1997 AND acct.frqn = 'POPLATEK TYDNE' AND ln.amnt = ( SELECT MIN(l.amnt) FROM ln l JOIN acct a ON l.ref1 = a.accn_id WHERE YEAR(l.dt) = 1997 AND a.frqn = 'POPLATEK TYDNE' )",
+      "sql_history": [
+        "SELECT acct.accn_id FROM ln JOIN acct ON ln.ref1 = acct.accn_id WHERE YEAR(ln.dt) = 1997 AND acct.frqn = 'POPLATEK TYDNE' AND ln.amnt = ( SELECT MIN(l.amnt) FROM ln l JOIN acct a ON l.ref1 = a.accn_id WHERE YEAR(l.dt) = 1997 AND a.frqn = 'POPLATEK TYDNE' )"
+      ],
+      "agent_text": "账户 **176** 是在1997年批准贷款的账户中，批准金额最低且选择每周发放声明的账户。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78869,
+        "output": 1638,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 1431,
+        "total": 80507
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 45.01,
+      "agent_duration_ms": 37236,
+      "extra_columns": []
+    },
+    {
+      "question_id": 11,
+      "datasource": "financial",
+      "chat_id": "c0cf2f67682d42ddb6eae2386e416c8f",
+      "final_sql": "SELECT acct.accn_id FROM acct JOIN ln ON ln.ref1 = acct.accn_id WHERE ln.drtn > 12 AND YEAR(acct.dt) = 1993 ORDER BY ln.amnt DESC LIMIT 1",
+      "sql_history": [
+        "SELECT acct.accn_id FROM acct JOIN ln ON ln.ref1 = acct.accn_id WHERE ln.drtn > 12 AND YEAR(acct.dt) = 1993 ORDER BY ln.amnt DESC LIMIT 1"
+      ],
+      "agent_text": "最终答案：账户\nID 为 **10451**。\n\n该账户在 1993 年开户，关联贷款期限超过 12 个月（`drtn > 12`），且批准金额（`amnt`）最高。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78831,
+        "output": 1619,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 1456,
+        "total": 80450
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 45.96,
+      "agent_duration_ms": 37923,
+      "extra_columns": []
+    },
+    {
+      "question_id": 12,
+      "datasource": "financial",
+      "chat_id": "e6c70d5aaafe4b969747041bdf2b694d",
+      "final_sql": "SELECT COUNT(clnt.clnt_id) FROM clnt JOIN dsp ON dsp.ref1 = clnt.clnt_id JOIN acct ON acct.accn_id = dsp.ref2 JOIN dstr ON dstr.dstr_id = clnt.ref1 WHERE clnt.gndr = 'F' AND clnt.brth_dt < '1950-01-01' AND dstr.a2 = 'Sokolov'",
+      "sql_history": [
+        "SELECT COUNT(clnt.clnt_id) FROM clnt JOIN dsp ON dsp.ref1 = clnt.clnt_id JOIN acct ON acct.accn_id = dsp.ref2 JOIN dstr ON dstr.dstr_id = clnt.ref1 WHERE clnt.gndr = 'F' AND clnt.brth_dt < '1950-01-01' AND dstr.a2 = 'Sokolov'"
+      ],
+      "agent_text": "**\n8**\n\n在已开户客户中，1950 年前出生、居住在 Sokolov 的女性客户共 **8** 位。\n\n链路：`clnt` → `dsp`（关联账户）→ `acct`（确认有开户），`clnt.ref1` → `dstr.dstr_id`（居住地 = Sokolov），过滤 `gndr='F'` + `brth_dt < '1950-01-01'`。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78932,
+        "output": 3480,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 3157,
+        "total": 82412
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 150.42,
+      "agent_duration_ms": 142755,
+      "extra_columns": []
+    },
+    {
+      "question_id": 13,
+      "datasource": "financial",
+      "chat_id": "6d07ad36876b4ad68471d79cc34a5b4a",
+      "final_sql": "SELECT DISTINCT ref1 AS accn_id FROM trns WHERE dt = (SELECT MIN(dt) FROM trns WHERE dt >= '1995-01-01' AND dt < '1996-01-01')",
+      "sql_history": [
+        "SELECT DISTINCT ref1 AS accn_id FROM trns WHERE dt = (SELECT MIN(dt) FROM trns WHERE dt >= '1995-01-01' AND dt < '1996-01-01')",
+        "SELECT DISTINCT ref1 AS accn_id FROM trns WHERE dt = (SELECT MIN(dt) FROM trns WHERE dt >= '1995-01-01' AND dt < '1996-01-01')"
+      ],
+      "agent_text": "最终\n结果已返回。在 1995 年最早交易日有交易记录的账户共 27 个，account IDs 如上表所示。\n\nSQL 逻辑：在 `trns` 表中找到 1995 年的最早交易日期（子查询 `MIN(dt)`），然后筛选出在该日期有交易的账户 ID（`DISTINCT ref1`）。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 106850,
+        "output": 1273,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 1010,
+        "total": 108123
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 44.09,
+      "agent_duration_ms": 36414,
+      "extra_columns": []
+    },
+    {
+      "question_id": 14,
+      "datasource": "financial",
+      "chat_id": "1e5767904ad246159bce44f829b42316",
+      "final_sql": "SELECT DISTINCT a.accn_id FROM acct a JOIN trns t ON a.accn_id = t.ref1 WHERE a.dt < '1997-01-01' AND t.blnc > 3000",
+      "sql_history": [
+        "SELECT DISTINCT a.accn_id FROM acct a JOIN trns t ON a.accn_id = t.ref1 WHERE a.dt < '1997-01-01' AND t.blnc > 3000"
+      ],
+      "agent_text": "LLM request failed.",
+      "tool_calls": 5,
+      "pass": false,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 106752,
+        "output": 11645,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 11257,
+        "total": 118397
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 372.61,
+      "agent_duration_ms": 363024,
+      "extra_columns": []
+    },
+    {
+      "question_id": 15,
+      "datasource": "financial",
+      "chat_id": "4c4ecc79124443b7b321bf3eb2332143",
+      "final_sql": "SELECT clnt.clnt_id FROM crd JOIN dsp ON crd.ref1 = dsp.dsp_id JOIN clnt ON dsp.ref1 = clnt.clnt_id WHERE crd.issd = '1994-03-03'",
+      "sql_history": [
+        "SELECT clnt.clnt_id FROM crd JOIN dsp ON crd.ref1 = dsp.dsp_id JOIN clnt ON dsp.ref1 = clnt.clnt_id WHERE crd.issd = '1994-03-03'"
+      ],
+      "agent_text": "client id 为 **2429**。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78858,
+        "output": 278,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 140,
+        "total": 79136
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 22.27,
+      "agent_duration_ms": 14802,
+      "extra_columns": []
+    },
+    {
+      "question_id": 16,
+      "datasource": "financial",
+      "chat_id": "5d94cb28bf6147fba86f6c5ce2e50a9f",
+      "final_sql": "SELECT a.dt FROM acct a JOIN trns t ON t.ref1 = a.accn_id WHERE t.amnt = 840 AND t.dt = '1998-10-14'",
+      "sql_history": [
+        "SELECT a.dt FROM acct a JOIN trns t ON t.ref1 = a.accn_id WHERE t.amnt = 840 AND t.dt = '1998-10-14'"
+      ],
+      "agent_text": "该账户的开户日期为 **1993-02-26**。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78867,
+        "output": 378,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 244,
+        "total": 79245
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 23.31,
+      "agent_duration_ms": 15455,
+      "extra_columns": []
+    },
+    {
+      "question_id": 17,
+      "datasource": "financial",
+      "chat_id": "edfab7cb0ffc4cffb9e4bcaa6234111d",
+      "final_sql": "SELECT dstr.dstr_id FROM ln JOIN acct ON ln.ref1 = acct.accn_id JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE ln.dt = '1994-08-25'",
+      "sql_history": [
+        "SELECT dstr.dstr_id FROM ln JOIN acct ON ln.ref1 = acct.accn_id JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE ln.dt = '1994-08-25'"
+      ],
+      "agent_text": "该\n笔贷款对应的账户开户分支所在地区的 district ID 为 **31**。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78859,
+        "output": 507,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 370,
+        "total": 79366
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 24.92,
+      "agent_duration_ms": 17396,
+      "extra_columns": []
+    },
+    {
+      "question_id": 18,
+      "datasource": "financial",
+      "chat_id": "a7cb6bfb21ee407b83c2e56922716442",
+      "final_sql": "SELECT MAX(t.amnt) AS biggest_transaction_amount FROM crd c JOIN dsp d ON c.ref1 = d.dsp_id JOIN trns t ON d.ref2 = t.ref1 WHERE c.issd = '1996-10-21'",
+      "sql_history": [
+        "SELECT MAX(t.amnt) AS biggest_transaction_amount FROM crd c JOIN dsp d ON c.ref1 = d.dsp_id JOIN trns t ON d.ref2 = t.ref1 WHERE c.issd = '1996-10-21'"
+      ],
+      "agent_text": "最大\n交易金额为 **87,400**。\n\n**SQL 逻辑**：通过 `crd`（卡）的 `issd = '1996-10-21'` 找到该客户的卡 → 经 `dsp`（disposition）关联到账户 → 在 `trns`（交易）表中取该账户最大的 `amnt`。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78862,
+        "output": 4117,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 3912,
+        "total": 82979
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 95.04,
+      "agent_duration_ms": 87250,
+      "extra_columns": []
+    },
+    {
+      "question_id": 19,
+      "datasource": "financial",
+      "chat_id": "282e69d828074d2f9bd680a19cb0771a",
+      "final_sql": "SELECT c.gndr FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON a.accn_id = d.ref2 JOIN dstr ds ON ds.dstr_id = a.ref1 WHERE ds.a11 = (SELECT MAX(a11) FROM dstr) AND d.typ = 'OWNER' ORDER BY c.brth_dt ASC LIMIT 1",
+      "sql_history": [
+        "SELECT c.gndr FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON a.accn_id = d.ref2 JOIN dstr ds ON ds.dstr_id = a.ref1 WHERE ds.a11 = (SELECT MAX(a11) FROM dstr) AND d.typ = 'OWNER' ORDER BY c.brth_dt ASC LIMIT 1"
+      ],
+      "agent_text": "最终答案：**M**（男性）。\n\n在平均工资最高的分行（`dstr.a11` 最大值）开立账户的客户中，出生日期最早（即年龄最大）的是一位男性。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 106889,
+        "output": 1223,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 831,
+        "total": 108112
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 41.33,
+      "agent_duration_ms": 33635,
+      "extra_columns": []
+    },
+    {
+      "question_id": 20,
+      "datasource": "financial",
+      "chat_id": "70a6415cb0544be79525613c6bfb8c2b",
+      "final_sql": "SELECT t.amnt FROM ln l JOIN acct a ON l.ref1 = a.accn_id JOIN trns t ON t.ref1 = a.accn_id AND t.dt >= a.dt WHERE l.amnt = (SELECT MAX(amnt) FROM ln) ORDER BY t.dt ASC, t.trns_id ASC LIMIT 1",
+      "sql_history": [
+        "SELECT t.amnt FROM ln l JOIN acct a ON l.ref1 = a.accn_id JOIN trns t ON t.ref1 = a.accn_id AND t.dt >= a.dt WHERE l.amnt = (SELECT MAX(amnt) FROM ln) ORDER BY t.dt ASC, t.trns_id ASC LIMIT 1"
+      ],
+      "agent_text": "LLM request failed.",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 51312,
+        "output": 2525,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 2382,
+        "total": 53837
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 64.93,
+      "agent_duration_ms": 57269,
+      "extra_columns": []
+    },
+    {
+      "question_id": 21,
+      "datasource": "financial",
+      "chat_id": "b44ca7e6d6944b67aac2201458dc9055",
+      "final_sql": "SELECT COUNT(clnt.clnt_id) FROM clnt JOIN dsp ON clnt.clnt_id = dsp.ref1 JOIN acct ON dsp.ref2 = acct.accn_id JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE dstr.a2 = 'Jesenik' AND clnt.gndr = 'F'",
+      "sql_history": [
+        "SELECT COUNT(clnt.clnt_id) FROM clnt JOIN dsp ON clnt.clnt_id = dsp.ref1 JOIN acct ON dsp.ref2 = acct.accn_id JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE dstr.a2 = 'Jesenik' AND clnt.gndr = 'F'"
+      ],
+      "agent_text": "**25** 位女性客户在 Jesenik 分行开立了账户。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79083,
+        "output": 2867,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 2577,
+        "total": 81950
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 67.35,
+      "agent_duration_ms": 59587,
+      "extra_columns": []
+    },
+    {
+      "question_id": 22,
+      "datasource": "financial",
+      "chat_id": "820b701b4ca441f5bf3011c60480779b",
+      "final_sql": "SELECT dsp.dsp_id FROM trns JOIN dsp ON dsp.ref2 = trns.ref1 WHERE trns.amnt = 5100 AND trns.dt = '1998-09-02'",
+      "sql_history": [
+        "SELECT dsp.dsp_id FROM trns JOIN dsp ON dsp.ref2 = trns.ref1 WHERE trns.amnt = 5100 AND trns.dt = '1998-09-02' AND dsp.typ = 'OWNER'",
+        "SELECT trns.trns_id, trns.ref1, trns.dt, trns.typ, trns.oprt, trns.amnt, trns.k_symb FROM trns WHERE trns.amnt = 5100 AND trns.dt = '1998-09-02'",
+        "SELECT dsp.dsp_id FROM trns JOIN dsp ON dsp.ref2 = trns.ref1 WHERE trns.amnt = 5100 AND trns.dt = '1998-09-02'",
+        "SELECT dsp.dsp_id, dsp.ref1 AS clnt_id, dsp.ref2 AS accn_id, dsp.typ FROM trns JOIN dsp ON dsp.ref2 = trns.ref1 WHERE trns.amnt = 5100 AND trns.dt = '1998-09-02'",
+        "SELECT dsp.dsp_id, dsp.ref1 AS clnt_id, dsp.ref2 AS accn_id, dsp.typ FROM trns JOIN dsp ON dsp.ref2 = trns.ref1 WHERE trns.amnt = 5100 AND trns.dt = '1998-09-02' AND trns.k_symb = 'SIPO'",
+        "SELECT dsp.dsp_id FROM trns JOIN dsp ON dsp.ref2 = trns.ref1 WHERE trns.amnt = 5100 AND trns.dt = '1998-09-02'"
+      ],
+      "agent_text": "查询\n结果返回了 4 个 disposition ID：\n\n| dsp_id |\n|--------|\n| 1719 |\n| 4474 |\n| 4942 |\n| 5393 |\n\n1998/9/2 有 4 笔金额为 5100 的交易，分别关联 4 个不同账户，对应 4 个 disposition（均为 OWNER）。最后执行的 SQL 即为最终答案：\n\n```sql\nSELECT dsp.dsp_id\nFROM trns\nJOIN dsp ON dsp.ref2 = trns.ref1\nWHERE trns.amnt = 5100\n  AND trns.dt = '1998-09-02'\n```",
+      "tool_calls": 9,
+      "pass": false,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 9,
+      "tool_rounds": 8,
+      "tokens": {
+        "input": 251394,
+        "output": 5934,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 5233,
+        "total": 257328
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 148.94,
+      "agent_duration_ms": 141286,
+      "extra_columns": []
+    },
+    {
+      "question_id": 23,
+      "datasource": "financial",
+      "chat_id": "891b13cb33004334a172b4bc0979382b",
+      "final_sql": "SELECT COUNT(*) FROM acct JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE dstr.a2 = 'Litomerice' AND YEAR(acct.dt) = 1996",
+      "sql_history": [
+        "SELECT COUNT(*) FROM acct JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE dstr.a2 = 'Litomerice' AND YEAR(acct.dt) = 1996"
+      ],
+      "agent_text": "**9** 个账户于 1996 年在 Litomerice 开立。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78911,
+        "output": 615,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 485,
+        "total": 79526
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 27.19,
+      "agent_duration_ms": 19610,
+      "extra_columns": []
+    },
+    {
+      "question_id": 24,
+      "datasource": "financial",
+      "chat_id": "782fcbb5cb19432b833791f34fb63b3f",
+      "final_sql": "SELECT ds.a2 FROM clnt c JOIN dsp dp ON dp.ref1 = c.clnt_id JOIN acct a ON a.accn_id = dp.ref2 JOIN dstr ds ON ds.dstr_id = a.ref1 WHERE c.gndr = 'F' AND c.brth_dt = '1976-01-29'",
+      "sql_history": [
+        "SELECT ds.a2 FROM clnt c JOIN dsp dp ON dp.ref1 = c.clnt_id JOIN acct a ON a.accn_id = dp.ref2 JOIN dstr ds ON ds.dstr_id = a.ref1 WHERE c.gndr = 'F' AND c.brth_dt = '1976-01-29'"
+      ],
+      "agent_text": "LLM request failed.",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 51380,
+        "output": 855,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 710,
+        "total": 52235
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 33.21,
+      "agent_duration_ms": 25599,
+      "extra_columns": []
+    },
+    {
+      "question_id": 25,
+      "datasource": "financial",
+      "chat_id": "4c9ced753eb44dada7bb2558d8018bfd",
+      "final_sql": "SELECT clnt.brth_dt FROM ln JOIN dsp ON dsp.ref2 = ln.ref1 AND dsp.typ = 'OWNER' JOIN clnt ON clnt.clnt_id = dsp.ref1 WHERE ln.amnt = 98832 AND ln.dt = '1996-01-03'",
+      "sql_history": [
+        "SELECT clnt.brth_dt FROM ln JOIN dsp ON dsp.ref2 = ln.ref1 AND dsp.typ = 'OWNER' JOIN clnt ON clnt.clnt_id = dsp.ref1 WHERE ln.amnt = 98832 AND ln.dt = '1996-01-03'"
+      ],
+      "agent_text": "该\n客户的生日是 **1970-09-10**。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78890,
+        "output": 517,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 363,
+        "total": 79407
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 25.25,
+      "agent_duration_ms": 17736,
+      "extra_columns": []
+    },
+    {
+      "question_id": 26,
+      "datasource": "financial",
+      "chat_id": "3c3cd76d863241f8b7213404c08b1c01",
+      "final_sql": "SELECT a.accn_id FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON a.accn_id = d.ref2 JOIN dstr ds ON a.ref1 = ds.dstr_id WHERE ds.a3 = 'Prague' AND d.typ = 'OWNER' ORDER BY a.dt ASC LIMIT 1",
+      "sql_history": [
+        "SELECT a.accn_id FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON a.accn_id = d.ref2 JOIN dstr ds ON a.ref1 = ds.dstr_id WHERE ds.a3 = 'Prague' AND d.typ = 'OWNER' ORDER BY a.dt ASC LIMIT 1"
+      ],
+      "agent_text": "LLM request failed.",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 79696,
+        "output": 2393,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 2228,
+        "total": 82089
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 65.81,
+      "agent_duration_ms": 57704,
+      "extra_columns": []
+    },
+    {
+      "question_id": 27,
+      "datasource": "financial",
+      "chat_id": "4e20fd85e66a44adac94b74069dc9183",
+      "final_sql": "SELECT SUM(CASE WHEN c.gndr = 'M' THEN 1 ELSE 0 END) * 100.0 / COUNT(c.clnt_id) FROM clnt c JOIN dstr ds ON c.ref1 = ds.dstr_id WHERE ds.dstr_id = ( SELECT dstr_id FROM dstr WHERE a3 = 'south Bohemia' ORDER BY a4 + 0 DESC LIMIT 1 )",
+      "sql_history": [
+        "SELECT SUM(CASE WHEN c.gndr = 'M' THEN 1 ELSE 0 END) * 100.0 / COUNT(c.clnt_id) FROM clnt c JOIN dstr ds ON c.ref1 = ds.dstr_id WHERE ds.dstr_id = ( SELECT dstr_id FROM dstr WHERE a3 = 'south Bohemia' ORDER BY a4 + 0 DESC LIMIT 1 )"
+      ],
+      "agent_text": "最终结果为 **40.0%**。\n\n该查询先找出 `south Bohemia` 地区中居民数（`a4`）最多的 district，再统计该 district 下客户的男性占比：`SUM(gndr='M') * 100 / COUNT(clnt_id) = 40.0`。",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79118,
+        "output": 10231,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 9993,
+        "total": 89349
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 205.25,
+      "agent_duration_ms": 197579,
+      "extra_columns": []
+    },
+    {
+      "question_id": 28,
+      "datasource": "financial",
+      "chat_id": "629613beee64466ea9dbacbbecf56a60",
+      "final_sql": "SELECT (t2.blnc - t1.blnc) * 100.0 / t1.blnc AS increase_rate FROM ( SELECT ref1 AS acct_id FROM ln WHERE dt = '1993-07-05' ORDER BY ln_id LIMIT 1 ) l JOIN trns t1 ON t1.ref1 = l.acct_id AND t1.dt = '1993-03-22' JOIN trns t2 ON t2.ref1 = l.acct_id AND t2.dt = '1998-12-27' ORDER BY t2.trns_id DESC, t1.trns_id DESC LIMIT 1",
+      "sql_history": [
+        "SELECT (t2.blnc - t1.blnc) * 100.0 / t1.blnc AS increase_rate FROM ( SELECT ref1 AS acct_id FROM ln WHERE dt = '1993-07-05' ORDER BY ln_id LIMIT 1 ) l JOIN trns t1 ON t1.ref1 = l.acct_id AND t1.dt = '1993-03-22' JOIN trns t2 ON t2.ref1 = l.acct_id AND t2.dt = '1998-12-27' ORDER BY t2.trns_id DESC, t1.trns_id DESC LIMIT 1"
+      ],
+      "agent_text": "最终\n结果：该账户余额从 1993/3/22 到 1998/12/27 的增长率为 **430.45455%**。\n\n计算逻辑：\n- 在 `ln` 表中找到 1993-07-05 审批的第一笔贷款 → 其关联账户\n- 在 `trns` 表中取该账户在 1993-03-22 的最后一笔交易余额和 1998-12-27 的最后一笔交易余额\n- 增长率 = [(balance_1998 - balance_1993) / balance_1993] × 100 = 430.45455",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79296,
+        "output": 3576,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 3064,
+        "total": 82872
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 83.89,
+      "agent_duration_ms": 76153,
+      "extra_columns": []
+    },
+    {
+      "question_id": 29,
+      "datasource": "financial",
+      "chat_id": "854b247466fb42798d1389dedac02cde",
+      "final_sql": "SELECT SUM(CASE WHEN stts = 'A' THEN amnt ELSE 0 END) * 100.0 / SUM(amnt) AS percentage FROM ln",
+      "sql_history": [
+        "SELECT SUM(CASE WHEN stts = 'A' THEN amnt ELSE 0 END) * 100.0 / SUM(amnt) AS percentage FROM ln"
+      ],
+      "agent_text": "已停已停已停\n最后一条 SQL 是最终答案：\n\n```sql\nSELECT SUM(CASE WHEN stts = 'A' THEN amnt ELSE 0 END) * 100.0 / SUM(amnt) AS percentage FROM ln\n```\n\n结果：**18.01559%**\n\n口径说明：\n- `stts = 'A'` = 合同正常结束、无问题（fully paid with no issue）\n- 分子 = status A 的 loan amount 之和\n- 分母 = 全部 loan amount 之和\n- 按外部知识 `[(total(amount) & condition) / (total amount)] * 100%`，用 amount 加权",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78998,
+        "output": 879,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 627,
+        "total": 79877
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 32.02,
+      "agent_duration_ms": 24455,
+      "extra_columns": []
+    },
+    {
+      "question_id": 30,
+      "datasource": "financial",
+      "chat_id": "34191d4213844297a81866667975fa25",
+      "final_sql": "SELECT CAST(SUM(CASE WHEN stts = 'C' THEN 1 ELSE 0 END) AS DOUBLE) * 100 / COUNT(*) AS percentage FROM ln WHERE amnt < 100000",
+      "sql_history": [
+        "SELECT CAST(SUM(CASE WHEN stts = 'C' THEN 1 ELSE 0 END) AS DOUBLE) * 100 / COUNT(*) AS percentage FROM ln WHERE amnt < 100000"
+      ],
+      "agent_text": "最终答案：\n\n```sql\nSELECT CAST(SUM(CASE WHEN stts = 'C' THEN 1 ELSE 0 END) AS DOUBLE) * 100 / COUNT(*) AS percentage\nFROM ln\nWHERE amnt < 100000\n```\n\n结果：**46.885245901639344%**\n\n口径说明：在 `ln` 表中筛选 `amnt < 100000` 的贷款记录，统计其中 `stts = 'C'`（running contract, no issue）的占比，按行数 COUNT 计算，不四舍五入。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79127,
+        "output": 1687,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 1346,
+        "total": 80814
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 48.0,
+      "agent_duration_ms": 40637,
+      "extra_columns": []
+    },
+    {
+      "question_id": 31,
+      "datasource": "financial",
+      "chat_id": "67d2f6884ac24c1080e4e07bec512dc5",
+      "final_sql": "SELECT a.accn_id, d.a2, d.a3 FROM acct a JOIN dstr d ON a.ref1 = d.dstr_id WHERE YEAR(a.dt) = 1993 AND a.frqn = 'POPLATEK PO OBRATU'",
+      "sql_history": [
+        "SELECT a.accn_id, d.a2, d.a3 FROM acct a JOIN dstr d ON a.ref1 = d.dstr_id WHERE YEAR(a.dt) = 1993 AND a.frqn = 'POPLATEK PO OBRATU'"
+      ],
+      "agent_text": "已执行最终\n答案 SQL，返回 21 行结果。\n\n- **1993 年创建的账户**：`YEAR(acct.dt) = 1993`\n- **statement issued after transaction**：`frqn = 'POPLATEK PO OBRATU'`（外部知识确认）\n- **district name / region**：`acct.ref1 → dstr.dstr_id`（账户开户分支所在地区），取 `a2`（区名）和 `a3`（区域）",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79477,
+        "output": 863,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 631,
+        "total": 80340
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 31.57,
+      "agent_duration_ms": 24060,
+      "extra_columns": []
+    },
+    {
+      "question_id": 32,
+      "datasource": "financial",
+      "chat_id": "a32fb9c32f7c41dd9a472f32fdd902fd",
+      "final_sql": "SELECT acct.accn_id, acct.frqn FROM acct JOIN dsp ON dsp.ref2 = acct.accn_id AND dsp.typ = 'OWNER' JOIN clnt ON clnt.clnt_id = dsp.ref1 JOIN dstr ON clnt.ref1 = dstr.dstr_id WHERE dstr.a3 = 'east Bohemia' AND acct.dt BETWEEN '1995-01-01' AND '2000-12-31'",
+      "sql_history": [
+        "SELECT acct.accn_id, acct.frqn FROM acct JOIN dsp ON dsp.ref2 = acct.accn_id AND dsp.typ = 'OWNER' JOIN clnt ON clnt.clnt_id = dsp.ref1 JOIN dstr ON clnt.ref1 = dstr.dstr_id WHERE dstr.a3 = 'east Bohemia' AND acct.dt BETWEEN '1995-01-01' AND '2000-12-31'"
+      ],
+      "agent_text": "结果\n已出。最后执行的 SQL 即为最终答案：\n\n```sql\nSELECT acct.accn_id, acct.frqn\nFROM acct\nJOIN dsp ON dsp.ref2 = acct.accn_id AND dsp.typ = 'OWNER'\nJOIN clnt ON clnt.clnt_id = dsp.ref1\nJOIN dstr ON clnt.ref1 = dstr.dstr_id\nWHERE dstr.a3 = 'east Bohemia'\n  AND acct.dt BETWEEN '1995-01-01' AND '2000-12-31'\n```\n\n返回 27 行，每行一个 `accn_id`（账户 ID）和对应的 `frqn`（对账单签发频率），覆盖 1995–2000 年间、账户所有者居住地在 east Bohemia 的账户。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79467,
+        "output": 3707,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 3378,
+        "total": 83174
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 89.64,
+      "agent_duration_ms": 82073,
+      "extra_columns": []
+    },
+    {
+      "question_id": 33,
+      "datasource": "financial",
+      "chat_id": "6b52dd33892f49d795080e45fd496f1a",
+      "final_sql": "SELECT a.accn_id, a.dt FROM acct a JOIN dstr d ON a.ref1 = d.dstr_id WHERE d.a2 = 'Prachatice'",
+      "sql_history": [
+        "SELECT a.accn_id, a.dt FROM acct a JOIN dstr d ON a.ref1 = d.dstr_id WHERE d.a2 = 'Prachatice'"
+      ],
+      "agent_text": "已返回 Prachatice 地区所有账户的 ID 和开户日期，共 27 行。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 107116,
+        "output": 404,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 228,
+        "total": 107520
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 26.82,
+      "agent_duration_ms": 19190,
+      "extra_columns": []
+    },
+    {
+      "question_id": 34,
+      "datasource": "financial",
+      "chat_id": "104e9044c97a4e6c85aa0bda876d7db4",
+      "final_sql": "SELECT dstr.a2, dstr.a3 FROM ln JOIN acct ON ln.ref1 = acct.accn_id JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE ln.ln_id = 4990",
+      "sql_history": [
+        "SELECT dstr.a2, dstr.a3 FROM ln JOIN acct ON ln.ref1 = acct.accn_id JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE ln.ln_id = 4990"
+      ],
+      "agent_text": "Loan ID 4990 对应的 district 和 region：\n\n- **District:** Liberec\n- **Region:** north Bohemia",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78946,
+        "output": 321,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 171,
+        "total": 79267
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 22.37,
+      "agent_duration_ms": 14909,
+      "extra_columns": []
+    },
+    {
+      "question_id": 35,
+      "datasource": "financial",
+      "chat_id": "612e6c41dfb14e9f809ba1a91f155a12",
+      "final_sql": "SELECT acct.accn_id, dstr.a2, dstr.a3 FROM ln JOIN acct ON ln.ref1 = acct.accn_id JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE ln.amnt > 300000",
+      "sql_history": [
+        "SELECT acct.accn_id, dstr.a2, dstr.a3 FROM ln JOIN acct ON ln.ref1 = acct.accn_id JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE ln.amnt > 300000"
+      ],
+      "agent_text": "LLM request failed.",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 51366,
+        "output": 1059,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 879,
+        "total": 52425
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 37.91,
+      "agent_duration_ms": 30252,
+      "extra_columns": []
+    },
+    {
+      "question_id": 36,
+      "datasource": "financial",
+      "chat_id": "3fa4f400eee648f09824d63129d1f67e",
+      "final_sql": "SELECT ln.ln_id, dstr.a2, dstr.a11 FROM ln JOIN acct ON ln.ref1 = acct.accn_id JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE ln.drtn = 60",
+      "sql_history": [
+        "SELECT ln.ln_id, dstr.a2, dstr.a11 FROM ln JOIN acct ON ln.ref1 = acct.accn_id JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE ln.drtn = 60"
+      ],
+      "agent_text": "结果已返回。查询列出了所有期限为 60 个月的贷款的 loan ID、地区名（a2）和平均工资（a11）。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79594,
+        "output": 498,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 233,
+        "total": 80092
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 26.0,
+      "agent_duration_ms": 18367,
+      "extra_columns": []
+    },
+    {
+      "question_id": 37,
+      "datasource": "financial",
+      "chat_id": "5d71161242e24363a600402dc4c86faf",
+      "final_sql": "SELECT DISTINCT dstr.a2, dstr.a3, (dstr.a13 - dstr.a12) / dstr.a12 * 100 AS unemployment_increment_rate FROM ln JOIN acct ON ln.ref1 = acct.accn_id JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE ln.stts = 'D'",
+      "sql_history": [
+        "SELECT DISTINCT dstr.a2, dstr.a3, (dstr.a13 - dstr.a12) / dstr.a12 * 100 AS unemployment_increment_rate FROM ln JOIN acct ON ln.ref1 = acct.accn_id JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE ln.stts = 'D'"
+      ],
+      "agent_text": "最终\n答案已执行完毕。\n\n**SQL 逻辑说明：**\n\n- `ln.stts = 'D'`：仍在运行且客户负债的贷款合同\n- `ln.ref1 → acct.accn_id → acct.ref1 → dstr.dstr_id`：贷款 → 账户 → 开卡地区\n- `(a13 - a12) / a12 * 100`：失业率增量百分比（1995→1996）\n- 输出三列：地区名 `a2`、州/区域 `a3`、失业率增量百分比\n\n共返回 27 行，覆盖 south Bohemia、east Bohemia、Prague、south Moravia、central Bohemia、north Moravia、west Bohemia 等区域。",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79933,
+        "output": 713,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 412,
+        "total": 80646
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 30.69,
+      "agent_duration_ms": 23179,
+      "extra_columns": []
+    },
+    {
+      "question_id": 38,
+      "datasource": "financial",
+      "chat_id": "5bc3c058c8654b0abacc9af5200c0b66",
+      "final_sql": "SELECT CAST(SUM(CASE WHEN d.a2 = 'Decin' THEN 1 ELSE 0 END) AS DOUBLE) * 100 / COUNT(a.accn_id) FROM acct a JOIN dstr d ON a.ref1 = d.dstr_id WHERE YEAR(a.dt) = 1993",
+      "sql_history": [
+        "SELECT CAST(SUM(CASE WHEN d.a2 = 'Decin' THEN 1 ELSE 0 END) AS DOUBLE) * 100 / COUNT(a.accn_id) FROM acct a JOIN dstr d ON a.ref1 = d.dstr_id WHERE YEAR(a.dt) = 1993"
+      ],
+      "agent_text": "199\n3年开立的账户中，来自 Decin 地区的账户占比为 **1.3169446883230904%**。\n\n最终 SQL：\n```sql\nSELECT CAST(SUM(CASE WHEN d.a2 = 'Decin' THEN 1 ELSE 0 END) AS DOUBLE) * 100 / COUNT(a.accn_id) \nFROM acct a \nJOIN dstr d ON a.ref1 = d.dstr_id \nWHERE YEAR(a.dt) = 1993\n```",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79053,
+        "output": 894,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 583,
+        "total": 79947
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 30.6,
+      "agent_duration_ms": 22870,
+      "extra_columns": []
+    },
+    {
+      "question_id": 39,
+      "datasource": "financial",
+      "chat_id": "a24066a541b9436c82457bfcf82e01cb",
+      "final_sql": "SELECT accn_id FROM acct WHERE frqn = 'POPLATEK MESICNE'",
+      "sql_history": [
+        "SELECT accn_id FROM acct WHERE frqn = 'POPLATEK MESICNE'"
+      ],
+      "agent_text": "已执行最终\n答案 SQL，结果返回了 27 个账户 ID，这些账户的语句发放频率为月度（`frqn = 'POPLATEK MESICNE'`）。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79049,
+        "output": 412,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 284,
+        "total": 79461
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 25.01,
+      "agent_duration_ms": 17364,
+      "extra_columns": []
+    },
+    {
+      "question_id": 40,
+      "datasource": "financial",
+      "chat_id": "2996b6a46c5f44bfbdc78be2e71a237c",
+      "final_sql": "SELECT d.a2, COUNT(DISTINCT c.clnt_id) AS num_female_holders FROM clnt c JOIN dsp s ON s.ref1 = c.clnt_id JOIN dstr d ON d.dstr_id = c.ref1 WHERE c.gndr = 'F' GROUP BY d.a2 ORDER BY num_female_holders DESC LIMIT 9",
+      "sql_history": [
+        "SELECT d.a2, COUNT(DISTINCT c.clnt_id) AS num_female_holders FROM clnt c JOIN dsp s ON s.ref1 = c.clnt_id JOIN dstr d ON d.dstr_id = c.ref1 WHERE c.gndr = 'F' GROUP BY d.a2 ORDER BY num_female_holders DESC LIMIT 9"
+      ],
+      "agent_text": "Top 9 districts by number of female account holders (descending):\n\n| District | Female Holders |\n|---|---|\n| Hl.m. Praha | 324 |\n| Karvina | 88 |\n| Ostrava - mesto | 84 |\n| Brno - mesto | 75 |\n| Zlin | 57 |\n| Olomouc | 50 |\n| Frydek - Mistek | 42 |\n| Kolin | 39 |\n| Nachod | 37 |",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79108,
+        "output": 1698,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 1439,
+        "total": 80806
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 48.92,
+      "agent_duration_ms": 41561,
+      "extra_columns": []
+    },
+    {
+      "question_id": 41,
+      "datasource": "financial",
+      "chat_id": "7c59b822172945258b616954f555daed",
+      "final_sql": "SELECT dstr.a2 FROM trns JOIN acct ON trns.ref1 = acct.accn_id JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE trns.typ = 'VYDAJ' AND trns.dt LIKE '1996-01%' ORDER BY trns.amnt DESC LIMIT 10",
+      "sql_history": [
+        "SELECT dstr.a2 FROM trns JOIN acct ON trns.ref1 = acct.accn_id JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE trns.typ = 'VYDAJ' AND trns.dt LIKE '1996-01%' ORDER BY trns.amnt DESC LIMIT 10"
+      ],
+      "agent_text": "top ten withdrawals (non-credit card) by district names for January 1996:\n\n| # | District Name |\n|---|---|\n| 1 | Trutnov |\n| 2 | Pelhrimov |\n| 3 | Zlin |\n| 4 | Olomouc |\n| 5 | Frydek - Mistek |\n| 6 | Breclav |\n| 7 | Karvina |\n| 8 | Zlin |\n| 9 | Zlin |\n| 10 | Jihlava |",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79114,
+        "output": 1734,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 1483,
+        "total": 80848
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 50.8,
+      "agent_duration_ms": 43336,
+      "extra_columns": []
+    },
+    {
+      "question_id": 42,
+      "datasource": "financial",
+      "chat_id": "89f45816b9f34a279566e6e1d0a54bdd",
+      "final_sql": "SELECT COUNT(c.clnt_id) FROM clnt c JOIN dstr d ON c.ref1 = d.dstr_id WHERE d.a3 = 'south Bohemia' AND c.clnt_id IN (SELECT ref1 FROM dsp WHERE typ = 'OWNER') AND c.clnt_id NOT IN ( SELECT dsp.ref1 FROM dsp JOIN crd ON crd.ref1 = dsp.dsp_id )",
+      "sql_history": [
+        "SELECT COUNT(c.clnt_id) FROM clnt c JOIN dstr d ON c.ref1 = d.dstr_id WHERE d.a3 = 'south Bohemia' AND c.clnt_id IN (SELECT ref1 FROM dsp WHERE typ = 'OWNER') AND c.clnt_id NOT IN ( SELECT dsp.ref1 FROM dsp JOIN crd ON crd.ref1 = dsp.dsp_id )"
+      ],
+      "agent_text": "**297**\n\nSouth Bohemia 地区的账户持有人（`dsp.typ = 'OWNER'`）中，没有信用卡（`crd` 表中无关联记录）的有 297 人。",
+      "tool_calls": 4,
+      "pass": false,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 106732,
+        "output": 6683,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 6366,
+        "total": 113415
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 149.59,
+      "agent_duration_ms": 141675,
+      "extra_columns": []
+    },
+    {
+      "question_id": 43,
+      "datasource": "financial",
+      "chat_id": "ee31921822c944029aa4e53d8fbcefba",
+      "final_sql": "SELECT d.a2 FROM ln l JOIN acct a ON l.ref1 = a.accn_id JOIN dstr d ON a.ref1 = d.dstr_id WHERE l.stts IN ('C', 'D') GROUP BY d.a2 ORDER BY COUNT(*) DESC LIMIT 1",
+      "sql_history": [
+        "SELECT d.a2 FROM ln l JOIN acct a ON l.ref1 = a.accn_id JOIN dstr d ON a.ref1 = d.dstr_id WHERE l.stts IN ('C', 'D') GROUP BY d.a2 ORDER BY COUNT(*) DESC LIMIT 1"
+      ],
+      "agent_text": "**\nHl.m. Praha**（布拉格）是 active loan 数量最多的地区。\n\n最终答案 SQL：\n\n```sql\nSELECT d.a2\nFROM ln l\nJOIN acct a ON l.ref1 = a.accn_id\nJOIN dstr d ON a.ref1 = d.dstr_id\nWHERE l.stts IN ('C', 'D')\nGROUP BY d.a2\nORDER BY COUNT(*) DESC\nLIMIT 1\n```\n\n逻辑：active loan = `stts IN ('C','D')`（running contract），通过 `ln → acct → dstr` 关联到地区，按地区分组计数取最多。",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79055,
+        "output": 1756,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 1426,
+        "total": 80811
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 49.93,
+      "agent_duration_ms": 42436,
+      "extra_columns": []
+    },
+    {
+      "question_id": 44,
+      "datasource": "financial",
+      "chat_id": "cbc361f9b16145d59c7f05f102887dd8",
+      "final_sql": "SELECT AVG(ln.amnt) FROM ln JOIN dsp ON ln.ref1 = dsp.ref2 JOIN clnt ON dsp.ref1 = clnt.clnt_id WHERE clnt.gndr = 'M' AND dsp.typ = 'OWNER'",
+      "sql_history": [
+        "SELECT AVG(ln.amnt) FROM ln JOIN dsp ON ln.ref1 = dsp.ref2 JOIN clnt ON dsp.ref1 = clnt.clnt_id WHERE clnt.gndr = 'M' AND dsp.typ = 'OWNER'"
+      ],
+      "agent_text": "平均贷款金额为 **147,501.74**（male 借款人，即 `gndr = 'M'`，按账户所有者口径）。",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79008,
+        "output": 2029,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 1738,
+        "total": 81037
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 57.31,
+      "agent_duration_ms": 49541,
+      "extra_columns": []
+    },
+    {
+      "question_id": 45,
+      "datasource": "financial",
+      "chat_id": "df028cfe38f34398adb4c0be3e9eca9e",
+      "final_sql": "SELECT dstr_id, a2 FROM dstr ORDER BY a13 DESC LIMIT 1",
+      "sql_history": [
+        "SELECT dstr_id, a2 FROM dstr ORDER BY a13 DESC LIMIT 1"
+      ],
+      "agent_text": "1996 年失业率最高的区是 **Most**（branch location id = 39），失业率最高。\n\n最终结果：\n\n| branch location (dstr_id) | district name (a2) |\n|---|---|\n| 39 | Most |",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78994,
+        "output": 1328,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 1122,
+        "total": 80322
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 42.35,
+      "agent_duration_ms": 34742,
+      "extra_columns": []
+    },
+    {
+      "question_id": 46,
+      "datasource": "financial",
+      "chat_id": "919f597e4d5847f6aa90b7e856ca1909",
+      "final_sql": "SELECT COUNT(*) AS account_count FROM acct WHERE ref1 = (SELECT dstr_id FROM dstr ORDER BY a16 DESC LIMIT 1)",
+      "sql_history": [
+        "SELECT COUNT(*) AS account_count FROM acct WHERE ref1 = (SELECT dstr_id FROM dstr ORDER BY a16 DESC LIMIT 1)"
+      ],
+      "agent_text": "在1996年犯罪数量最多的地区（branch），共有 **554** 个账户被开立。\n\n最终SQL：\n\n```sql\nSELECT COUNT(*) AS account_count\nFROM acct\nWHERE ref1 = (\n    SELECT dstr_id \n    FROM dstr \n    ORDER BY a16 DESC \n    LIMIT 1\n)\n```\n\n逻辑说明：\n- `dstr.a16` = 1996年犯罪数量（据BIRD官方evidence）\n- 子查询找出 `a16` 最大的 district（即犯罪最多的 branch）\n- `acct.ref1` 指向 `dstr.dstr_id`（账户开户分支所在地）\n- `COUNT(*)` 统计该 branch 下开立的账户数",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 106537,
+        "output": 616,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 318,
+        "total": 107153
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 29.94,
+      "agent_duration_ms": 22096,
+      "extra_columns": []
+    },
+    {
+      "question_id": 47,
+      "datasource": "financial",
+      "chat_id": "1b02bea7f63449bf99a3cc163c723fc4",
+      "final_sql": "SELECT COUNT(*) FROM acct a WHERE a.frqn = 'POPLATEK MESICNE' AND EXISTS (SELECT 1 FROM trns t WHERE t.ref1 = a.accn_id AND t.oprt = 'VYBER KARTOU' AND t.blnc < 0)",
+      "sql_history": [
+        "SELECT COUNT(*) FROM acct a WHERE a.frqn = 'POPLATEK MESICNE' AND EXISTS (SELECT 1 FROM trns t WHERE t.ref1 = a.accn_id AND t.oprt = 'VYBER KARTOU' AND t.blnc < 0)"
+      ],
+      "agent_text": "**1**\n\n最终答案 SQL 已执行完毕，结果为 **1**。即：在 `financial` 数据源中，频率为月度发行（`POPLATEK MESICNE`）且在发生信用卡取款（`VYBER KARTOU`）后余额为负（`blnc < 0`）的账户有 **1** 个。",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79010,
+        "output": 1689,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 1477,
+        "total": 80699
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 47.54,
+      "agent_duration_ms": 39669,
+      "extra_columns": []
+    },
+    {
+      "question_id": 48,
+      "datasource": "financial",
+      "chat_id": "c6b80e9e04024a8380e23ef374525bc7",
+      "final_sql": "SELECT COUNT(*) FROM ln JOIN acct ON ln.ref1 = acct.accn_id WHERE ln.dt BETWEEN '1995-01-01' AND '1997-12-31' AND ln.amnt >= 250000 AND acct.frqn = 'POPLATEK MESICNE'",
+      "sql_history": [
+        "SELECT COUNT(*) FROM ln JOIN acct ON ln.ref1 = acct.accn_id WHERE ln.dt BETWEEN '1995-01-01' AND '1997-12-31' AND ln.amnt >= 250000 AND acct.frqn = 'POPLATEK MESICNE'"
+      ],
+      "agent_text": "**\n65**\n\n最终 SQL：\n\n```sql\nSELECT COUNT(*) \nFROM ln \nJOIN acct ON ln.ref1 = acct.accn_id \nWHERE ln.dt BETWEEN '1995-01-01' AND '1997-12-31' \n  AND ln.amnt >= 250000 \n  AND acct.frqn = 'POPLATEK MESICNE'\n```\n\n逻辑：`ln` 表的 `ref1` 关联 `acct.accn_id`，按日期范围、金额 ≥ 250,000、账户 frequency 为月度对账单（`POPLATEK MESICNE`）筛选，统计贷款数。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79007,
+        "output": 864,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 606,
+        "total": 79871
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 31.18,
+      "agent_duration_ms": 23412,
+      "extra_columns": []
+    },
+    {
+      "question_id": 49,
+      "datasource": "financial",
+      "chat_id": "adbaf09439ef4e81a4b0d0efc38e6fd7",
+      "final_sql": "SELECT COUNT(DISTINCT a.accn_id) FROM ln l JOIN acct a ON l.ref1 = a.accn_id WHERE a.ref1 = 1 AND l.stts IN ('C', 'D')",
+      "sql_history": [
+        "SELECT COUNT(DISTINCT a.accn_id) FROM ln l JOIN acct a ON l.ref1 = a.accn_id WHERE a.ref1 = 1 AND l.stts IN ('C', 'D')"
+      ],
+      "agent_text": "**47** 个账户在 Branch location 1 有运行中的合同（Status = 'C' 或 'D'）。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79038,
+        "output": 1157,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 931,
+        "total": 80195
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 38.43,
+      "agent_duration_ms": 30759,
+      "extra_columns": []
+    },
+    {
+      "question_id": 50,
+      "datasource": "financial",
+      "chat_id": "d0ee091336154ed1af2d03c6fd59ce31",
+      "final_sql": "SELECT COUNT(c.clnt_id) FROM clnt c JOIN dstr d ON c.ref1 = d.dstr_id WHERE d.dstr_id = ( SELECT dstr_id FROM dstr ORDER BY a15 DESC LIMIT 1 OFFSET 1 ) AND c.gndr = 'M'",
+      "sql_history": [
+        "SELECT COUNT(c.clnt_id) FROM clnt c JOIN dstr d ON c.ref1 = d.dstr_id WHERE d.dstr_id = ( SELECT dstr_id FROM dstr ORDER BY a15 DESC LIMIT 1 OFFSET 1 ) AND c.gndr = 'M'"
+      ],
+      "agent_text": "LLM request failed.",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 51392,
+        "output": 1090,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 955,
+        "total": 52482
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 38.86,
+      "agent_duration_ms": 31399,
+      "extra_columns": []
+    },
+    {
+      "question_id": 51,
+      "datasource": "financial",
+      "chat_id": "ac55b6f71600407f8e5bb35ac92491a6",
+      "final_sql": "SELECT COUNT(*) FROM crd JOIN dsp ON crd.ref1 = dsp.dsp_id WHERE crd.typ = 'gold' AND dsp.typ = 'OWNER'",
+      "sql_history": [
+        "SELECT COUNT(*) FROM crd JOIN dsp ON crd.ref1 = dsp.dsp_id WHERE crd.typ = 'gold' AND dsp.typ = 'OWNER'"
+      ],
+      "agent_text": "**88** 张高级信用卡的 disposition 类型为 \"OWNER\"。\n\n最终 SQL：\n```sql\nSELECT COUNT(*) FROM crd JOIN dsp ON crd.ref1 = dsp.dsp_id WHERE crd.typ = 'gold' AND dsp.typ = 'OWNER'\n```",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78911,
+        "output": 371,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 207,
+        "total": 79282
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 23.16,
+      "agent_duration_ms": 15417,
+      "extra_columns": []
+    },
+    {
+      "question_id": 52,
+      "datasource": "financial",
+      "chat_id": "a28680c5c4f64b17b9895fc7dec995eb",
+      "final_sql": "SELECT COUNT(*) FROM acct JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE dstr.a2 = 'Pisek'",
+      "sql_history": [
+        "SELECT COUNT(*) FROM acct JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE dstr.a2 = 'Pisek'"
+      ],
+      "agent_text": "**46**\n\n最终 SQL：\n\n```sql\nSELECT COUNT(*) FROM acct JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE dstr.a2 = 'Pisek'\n```\n\n`acct.ref1` 指向账户开户分支所在地区（`dstr.dstr_id`），`dstr.a2` 为地区名，筛选 `a2 = 'Pisek'` 后统计账户数为 **46**。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 106490,
+        "output": 541,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 303,
+        "total": 107031
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 27.81,
+      "agent_duration_ms": 20354,
+      "extra_columns": []
+    },
+    {
+      "question_id": 53,
+      "datasource": "financial",
+      "chat_id": "6151360134ec41a8ac17d3b61ef6430c",
+      "final_sql": "SELECT DISTINCT d.a2 FROM trns t JOIN acct a ON t.ref1 = a.accn_id JOIN dstr d ON a.ref1 = d.dstr_id WHERE t.amnt > 10000 AND YEAR(t.dt) = 1997",
+      "sql_history": [
+        "SELECT DISTINCT d.a2 FROM trns t JOIN acct a ON t.ref1 = a.accn_id JOIN dstr d ON a.ref1 = d.dstr_id WHERE t.amnt > 10000 AND YEAR(t.dt) = 1997"
+      ],
+      "agent_text": "199\n7 年有单笔交易金额超过 10,000 的 districts 共 27 个，如下：\n\nHl.m. Praha, Kolin, Prostejov, Hodonin, Karvina, Brno - mesto, Pardubice, Pribram, Hradec Kralove, Tabor, Sokolov, Ostrava - mesto, Frydek - Mistek, Usti nad Orlici, Opava, Melnik, Liberec, Domazlice, Bruntal, Strakonice, Prachatice, Zlin, Olomouc, Most, Ceska Lipa, Jicin, Jindrichuv Hradec",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79064,
+        "output": 645,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 369,
+        "total": 79709
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 28.38,
+      "agent_duration_ms": 20629,
+      "extra_columns": []
+    },
+    {
+      "question_id": 54,
+      "datasource": "financial",
+      "chat_id": "1d7e5d1bd8f04590805dfe81240ae27d",
+      "final_sql": "SELECT DISTINCT a.accn_id FROM ord o JOIN acct a ON o.ref1 = a.accn_id JOIN dstr d ON a.ref1 = d.dstr_id WHERE o.k_symb = 'SIPO' AND d.a2 = 'Pisek'",
+      "sql_history": [
+        "SELECT DISTINCT a.accn_id FROM ord o JOIN acct a ON o.ref1 = a.accn_id JOIN dstr d ON a.ref1 = d.dstr_id WHERE o.k_symb = 'SIPO' AND d.a2 = 'Pisek'"
+      ],
+      "agent_text": "结果已返回。在 Pisek 地区开户的账户中，有 27 个账户下过 household payment（k_symbol = 'SIPO'）的支付订单，账户 ID 如上所示。",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79235,
+        "output": 1527,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 1248,
+        "total": 80762
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 45.24,
+      "agent_duration_ms": 37439,
+      "extra_columns": []
+    },
+    {
+      "question_id": 55,
+      "datasource": "financial",
+      "chat_id": "bf7fefdb052b4fea9ab78f3b364cfca5",
+      "final_sql": "SELECT DISTINCT a.accn_id FROM acct a JOIN dsp d ON d.ref2 = a.accn_id JOIN crd c ON c.ref1 = d.dsp_id WHERE c.typ = 'gold'",
+      "sql_history": [
+        "SELECT DISTINCT typ FROM crd",
+        "SELECT DISTINCT a.accn_id FROM acct a JOIN dsp d ON d.ref2 = a.accn_id JOIN crd c ON c.ref1 = d.dsp_id WHERE c.typ = 'gold'"
+      ],
+      "agent_text": "持有\n金卡（gold credit card）的账户共 27 个，account IDs 如下：\n\n| accn_id |\n|---------|\n| 7, 33, 68, 270, 456, 468, 577, 738, 776, 886, 904, 940, 978, 1016, 1039, 1074, 1154, 1203, 1204, 1273, 1305, 1345, 1378, 1408, 1417, 1466, 1485 |\n\n**SQL 逻辑：** `crd` 表通过 `ref1` 关联 `dsp`（disposition），`dsp` 通过 `ref2` 关联 `acct`（账户），筛选 `crd.typ = 'gold'`，返回对应的 `accn_id`。",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 136456,
+        "output": 941,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 593,
+        "total": 137397
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 40.69,
+      "agent_duration_ms": 33111,
+      "extra_columns": []
+    },
+    {
+      "question_id": 56,
+      "datasource": "financial",
+      "chat_id": "228a991d61e6416a8fb718d0de15be64",
+      "final_sql": "SELECT AVG(monthly_total) AS avg_monthly_amount FROM ( SELECT SUM(amnt) AS monthly_total FROM trns WHERE oprt = 'VYBER KARTOU' AND YEAR(dt) = 2021 GROUP BY MONTH(dt) ) AS monthly",
+      "sql_history": [
+        "SELECT AVG(monthly_total) AS avg_monthly_amount FROM ( SELECT SUM(amnt) AS monthly_total FROM trns WHERE oprt = 'VYBER KARTOU' AND YEAR(dt) = 2021 GROUP BY MONTH(dt) ) AS monthly",
+        "SELECT DISTINCT oprt FROM trns LIMIT 20",
+        "SELECT MIN(dt) AS min_dt, MAX(dt) AS max_dt FROM trns WHERE oprt = 'VYBER KARTOU'",
+        "SELECT MIN(dt) AS min_dt, MAX(dt) AS max_dt FROM trns",
+        "SELECT YEAR(dt) AS yr, COUNT(*) AS cnt FROM trns GROUP BY YEAR(dt) ORDER BY yr DESC LIMIT 10",
+        "SELECT AVG(monthly_total) AS avg_monthly_amount FROM ( SELECT SUM(amnt) AS monthly_total FROM trns WHERE oprt = 'VYBER KARTOU' AND YEAR(dt) = 2021 GROUP BY MONTH(dt) ) AS monthly"
+      ],
+      "agent_text": "最终答案：`None`（NULL）\n\n该 financial 数据集的交易记录范围为 1993–1998 年，2021 年没有任何信用卡取款（`VYBER KARTOU`）交易数据，因此 2021 年每月平均金额为 NULL。",
+      "tool_calls": 9,
+      "pass": false,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 9,
+      "tool_rounds": 8,
+      "tokens": {
+        "input": 252168,
+        "output": 2299,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 1311,
+        "total": 254467
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 81.76,
+      "agent_duration_ms": 73803,
+      "extra_columns": []
+    },
+    {
+      "question_id": 57,
+      "datasource": "financial",
+      "chat_id": "b4ddd0cd23014ec7a7d8e6b95a6703bf",
+      "final_sql": "SELECT DISTINCT d.ref1 FROM trns t JOIN dsp d ON d.ref2 = t.ref1 AND d.typ = 'OWNER' WHERE t.oprt = 'VYBER KARTOU' AND EXTRACT(YEAR FROM t.dt) = 1998 AND t.amnt < (SELECT AVG(t2.amnt) FROM trns t2 WHERE t2.oprt = 'VYBER KARTOU' AND EXTRACT(YEAR FROM t2.dt) = 1998)",
+      "sql_history": [
+        "SELECT DISTINCT d.ref1 FROM trns t JOIN dsp d ON d.ref2 = t.ref1 AND d.typ = 'OWNER' WHERE t.oprt = 'VYBER KARTOU' AND EXTRACT(YEAR FROM t.dt) = 1998 AND t.amnt < (SELECT AVG(t2.amnt) FROM trns t2 WHERE t2.oprt = 'VYBER KARTOU' AND EXTRACT(YEAR FROM t2.dt) = 1998)"
+      ],
+      "agent_text": "已\n读取 schema 和 notes，分析如下：\n\n**题意拆解：**\n- \"account holder identification numbers\" → 账户持有人的 client ID（经 `dsp` 表，`typ='OWNER'`）\n- \"transactions on the credit card\" → `trns.oprt = 'VYBER KARTOU'`（evidence 给出的 credit card withdrawal）\n- \"amount is less than the average\" → `amnt < AVG(所有1998年VYBER KARTOU交易金额)`\n- \"in 1998\" → `EXTRACT(YEAR FROM dt) = 1998`\n\n**JOIN 路径：** `trns.ref1` → `dsp.ref2`（账户），`dsp.ref1` → 客户 ID，`dsp.typ='OWNER'` 取账户持有人\n\n最终 SQL 已执行完毕，返回 27 个 account holder 的 client ID：\n\n| ref1 |\n|------|\n| 19, 41, 51, 56, 76, 79, 83, 87, 112, 114, 116, 128, 130, 131, 132, 138, 146, 153, 161, 174, 192, 219, 221, 225, 236, 238, 242 |",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79181,
+        "output": 5231,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 4774,
+        "total": 84412
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 119.76,
+      "agent_duration_ms": 112198,
+      "extra_columns": []
+    },
+    {
+      "question_id": 58,
+      "datasource": "financial",
+      "chat_id": "77679ea4efe841e2939d38f3fc11d0f7",
+      "final_sql": "SELECT DISTINCT c.clnt_id FROM clnt c JOIN dsp d ON c.clnt_id = d.ref1 AND d.typ = 'OWNER' JOIN acct a ON d.ref2 = a.accn_id JOIN crd cr ON d.dsp_id = cr.ref1 JOIN ln l ON a.accn_id = l.ref1 WHERE c.gndr = 'F'",
+      "sql_history": [
+        "SELECT DISTINCT c.clnt_id FROM clnt c JOIN dsp d ON c.clnt_id = d.ref1 AND d.typ = 'OWNER' JOIN acct a ON d.ref2 = a.accn_id JOIN crd cr ON d.dsp_id = cr.ref1 JOIN ln l ON a.accn_id = l.ref1 WHERE c.gndr = 'F'"
+      ],
+      "agent_text": "结果返回了 27 位女性客户（`clnt_id`），她们都是账户所有者（`dsp.typ = 'OWNER'`），且名下账户同时关联了信用卡（`crd`）和贷款（`ln`）。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79261,
+        "output": 2931,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 2609,
+        "total": 82192
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 73.65,
+      "agent_duration_ms": 66206,
+      "extra_columns": []
+    },
+    {
+      "question_id": 59,
+      "datasource": "financial",
+      "chat_id": "43bfc1ec0e2e42eebd6594a5972bdd61",
+      "final_sql": "SELECT COUNT(t3.accn_id) FROM clnt t1 JOIN dsp t2 ON t1.clnt_id = t2.ref1 JOIN acct t3 ON t2.ref2 = t3.accn_id JOIN dstr t4 ON t3.ref1 = t4.dstr_id WHERE t1.gndr = 'F' AND t4.a3 = 'south Bohemia'",
+      "sql_history": [
+        "SELECT COUNT(t3.accn_id) FROM clnt t1 JOIN dsp t2 ON t1.clnt_id = t2.ref1 JOIN acct t3 ON t2.ref2 = t3.accn_id JOIN dstr t4 ON t3.ref1 = t4.dstr_id WHERE t1.gndr = 'F' AND t4.a3 = 'south Bohemia'"
+      ],
+      "agent_text": "**231**\n\n最终 SQL：\n\n```sql\nSELECT COUNT(t3.accn_id) \nFROM clnt t1 \nJOIN dsp t2 ON t1.clnt_id = t2.ref1 \nJOIN acct t3 ON t2.ref2 = t3.accn_id \nJOIN dstr t4 ON t3.ref1 = t4.dstr_id \nWHERE t1.gndr = 'F' AND t4.a3 = 'south Bohemia'\n```\n\n逻辑：女性客户（`clnt.gndr='F'`）经 `dsp` 关联其账户（`acct`），再经 `acct.ref1 → dstr.dstr_id` 找到账户所在分支区域，筛选 `a3 = 'south Bohemia'`，计数得到 **231**。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78984,
+        "output": 2728,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 2404,
+        "total": 81712
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 67.91,
+      "agent_duration_ms": 59976,
+      "extra_columns": []
+    },
+    {
+      "question_id": 60,
+      "datasource": "financial",
+      "chat_id": "4c7d07bd09af4911a823bed2e1adbe4e",
+      "final_sql": "SELECT DISTINCT a.accn_id FROM acct a JOIN dstr d ON a.ref1 = d.dstr_id JOIN dsp s ON s.ref2 = a.accn_id WHERE d.a2 = 'Tabor' AND s.typ = 'OWNER'",
+      "sql_history": [
+        "SELECT DISTINCT a.accn_id FROM acct a JOIN dstr d ON a.ref1 = d.dstr_id JOIN dsp s ON s.ref2 = a.accn_id WHERE d.a2 = 'Tabor' AND s.typ = 'OWNER'"
+      ],
+      "agent_text": "已执行最终答案 SQL，返回 27 个账户 ID。\n\nSQL 逻辑：\n- `acct` JOIN `dstr`：通过 `acct.ref1 = dstr.dstr_id` 找到开户分支所在地区\n- `dsp` JOIN：通过 `dsp.ref2 = acct.accn_id` 关联账户的 disposition 记录\n- `WHERE d.a2 = 'Tabor'`：地区为 Tabor\n- `WHERE s.typ = 'OWNER'`：只取类型为 OWNER 的 disposition（符合外部知识：account type = OWNER 时 eligible for loans）\n- `DISTINCT a.accn_id`：列出符合条件的账户 ID",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 106825,
+        "output": 825,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 495,
+        "total": 107650
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 33.31,
+      "agent_duration_ms": 25752,
+      "extra_columns": []
+    },
+    {
+      "question_id": 61,
+      "datasource": "financial",
+      "chat_id": "29ff087f095b4d8db355ff4d4ef4fd9d",
+      "final_sql": "SELECT DISTINCT dsp.typ FROM dsp JOIN acct ON dsp.ref2 = acct.accn_id JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE dsp.typ != 'OWNER' AND dstr.a11 > 8000 AND dstr.a11 <= 9000",
+      "sql_history": [
+        "SELECT DISTINCT dsp.typ FROM dsp JOIN acct ON dsp.ref2 = acct.accn_id JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE dsp.typ != 'OWNER' AND dstr.a11 > 8000 AND dstr.a11 <= 9000"
+      ],
+      "agent_text": "最终\n答案：\n\n| account_type |\n|---|\n| DISPONENT |\n\n**DISPONENT** 是不满足贷款资格的账户类型（根据 evidence，`OWNER` 才有贷款资格），且这些账户所在区（`acct.ref1 → dstr.dstr_id`）的居民平均收入（`dstr.a11`）在 \\$8000 到 \\$9000 之间。",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79149,
+        "output": 950,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 635,
+        "total": 80099
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 33.35,
+      "agent_duration_ms": 25657,
+      "extra_columns": []
+    },
+    {
+      "question_id": 62,
+      "datasource": "financial",
+      "chat_id": "787b6b94818d440f9cea356e41f23e9a",
+      "final_sql": "SELECT COUNT(*) FROM acct a JOIN dstr d ON a.ref1 = d.dstr_id WHERE d.a3 = 'north Bohemia' AND EXISTS (SELECT 1 FROM trns t WHERE t.ref1 = a.accn_id AND t.bnk = 'AB')",
+      "sql_history": [
+        "SELECT COUNT(*) FROM acct a JOIN dstr d ON a.ref1 = d.dstr_id WHERE d.a3 = 'north Bohemia' AND EXISTS (SELECT 1 FROM trns t WHERE t.ref1 = a.accn_id AND t.bnk = 'AB')"
+      ],
+      "agent_text": "最终\n答案：**55** 个账户。\n\n最后执行的 SQL：\n\n```sql\nSELECT COUNT(*)\nFROM acct a\nJOIN dstr d ON a.ref1 = d.dstr_id\nWHERE d.a3 = 'north Bohemia'\nAND EXISTS (SELECT 1 FROM trns t WHERE t.ref1 = a.accn_id AND t.bnk = 'AB')\n```\n\n逻辑：`acct` 通过 `ref1` JOIN `dstr` 筛选 North Bohemia 地区的账户，再用 `EXISTS` 确认该账户在 `trns` 表中存在 `bnk = 'AB'` 的交易记录。",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79053,
+        "output": 1532,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 1161,
+        "total": 80585
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 46.54,
+      "agent_duration_ms": 38915,
+      "extra_columns": []
+    },
+    {
+      "question_id": 63,
+      "datasource": "financial",
+      "chat_id": "7f60a4b88ba242ea8066aca3d0d35fd4",
+      "final_sql": "SELECT DISTINCT d.a2 FROM trns t JOIN acct a ON t.ref1 = a.accn_id JOIN dstr d ON a.ref1 = d.dstr_id WHERE t.typ = 'VYDAJ'",
+      "sql_history": [
+        "SELECT DISTINCT d.a2 FROM trns t JOIN acct a ON t.ref1 = a.accn_id JOIN dstr d ON a.ref1 = d.dstr_id WHERE t.typ = 'VYDAJ'"
+      ],
+      "agent_text": "结果\n已出。这些是有账户进行过取款交易（`typ = 'VYDAJ'`）的区（district）名称，共 27 个区。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79150,
+        "output": 554,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 400,
+        "total": 79704
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 27.62,
+      "agent_duration_ms": 19657,
+      "extra_columns": []
+    },
+    {
+      "question_id": 64,
+      "datasource": "financial",
+      "chat_id": "07181a491b334fc1a7b71e608c6cb4eb",
+      "final_sql": "SELECT AVG(total_crimes) FROM (SELECT d.a3, SUM(d.a15) AS total_crimes FROM dstr d GROUP BY d.a3 HAVING SUM(d.a15) > 4000 AND EXISTS (SELECT 1 FROM dstr d2 JOIN acct a ON d2.dstr_id = a.ref1 WHERE d2.a3 = d.a3 AND YEAR(a.dt) >= 1997)) sub",
+      "sql_history": [
+        "SELECT AVG(total_crimes) FROM (SELECT d.a3, SUM(d.a15) AS total_crimes FROM dstr d GROUP BY d.a3 HAVING SUM(d.a15) > 4000 AND EXISTS (SELECT 1 FROM dstr d2 JOIN acct a ON d2.dstr_id = a.ref1 WHERE d2.a3 = d.a3 AND YEAR(a.dt) >= 1997)) sub"
+      ],
+      "agent_text": "最终\n结果：**46078.00**\n\n该值是符合以下两个条件的 region 的 1995 年犯罪总数（`SUM(a15)`）的平均值：\n1. 该 region 1995 年犯罪总数 > 4000\n2. 该 region 有账户在 1997 年及之后开户（通过 `acct.ref1 = dstr.dstr_id` 关联，`YEAR(acct.dt) >= 1997`）",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79201,
+        "output": 3078,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 2695,
+        "total": 82279
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 73.79,
+      "agent_duration_ms": 65843,
+      "extra_columns": []
+    },
+    {
+      "question_id": 65,
+      "datasource": "financial",
+      "chat_id": "ac51e664ea3a4d55ba387409b0d3f131",
+      "final_sql": "SELECT COUNT(*) FROM crd JOIN dsp ON crd.ref1 = dsp.dsp_id WHERE crd.typ = 'classic' AND dsp.typ = 'OWNER'",
+      "sql_history": [
+        "SELECT COUNT(*) FROM crd JOIN dsp ON crd.ref1 = dsp.dsp_id WHERE crd.typ = 'classic' AND dsp.typ = 'OWNER'"
+      ],
+      "agent_text": "**659** 张 classic 卡符合贷款资格。\n\n最终 SQL：\n\n```sql\nSELECT COUNT(*) \nFROM crd \nJOIN dsp ON crd.ref1 = dsp.dsp_id \nWHERE crd.typ = 'classic' \n  AND dsp.typ = 'OWNER'\n```\n\n逻辑：`crd` 表的 `typ='classic'` 筛选 classic 卡，通过 `crd.ref1 = dsp.dsp_id` 关联 disposition 表，`dsp.typ='OWNER'` 筛选账户所有者（即符合贷款资格的卡）。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78894,
+        "output": 550,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 325,
+        "total": 79444
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 26.82,
+      "agent_duration_ms": 19316,
+      "extra_columns": []
+    },
+    {
+      "question_id": 66,
+      "datasource": "financial",
+      "chat_id": "060b9e28f18a4082a405ee6eaf8fb5d2",
+      "final_sql": "SELECT COUNT(*) FROM clnt c JOIN dstr d ON c.ref1 = d.dstr_id WHERE c.gndr = 'M' AND d.a2 = 'Hl.m. Praha'",
+      "sql_history": [
+        "SELECT COUNT(*) FROM clnt c JOIN dstr d ON c.ref1 = d.dstr_id WHERE c.gndr = 'M' AND d.a2 = 'Hl.m. Praha'"
+      ],
+      "agent_text": "339",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78933,
+        "output": 493,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 374,
+        "total": 79426
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 24.66,
+      "agent_duration_ms": 16862,
+      "extra_columns": []
+    },
+    {
+      "question_id": 67,
+      "datasource": "financial",
+      "chat_id": "a271b0eee9864f5eb0b1906a10f95c35",
+      "final_sql": "SELECT CAST(SUM(CASE WHEN typ = 'gold' AND issd < '1998-01-01' THEN 1 ELSE 0 END) AS DOUBLE) * 100 / COUNT(*) FROM crd",
+      "sql_history": [
+        "SELECT CAST(SUM(CASE WHEN typ = 'gold' AND issd < '1998-01-01' THEN 1 ELSE 0 END) AS DOUBLE) * 100 / COUNT(*) FROM crd"
+      ],
+      "agent_text": "最终\n答案 SQL 已执行完毕，结果为 **3.9237668161434978%**。\n\nSQL 逻辑：\n- 分子：`typ = 'gold'` 且 `issd < '1998-01-01'` 的卡片数\n- 分母：`COUNT(*)` 即所有卡片总数\n- 按官方 evidence 公式：`[count(type='gold' and issued < 1998) / count(all cards)] * 100%`",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79013,
+        "output": 827,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 607,
+        "total": 79840
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 31.56,
+      "agent_duration_ms": 23965,
+      "extra_columns": []
+    },
+    {
+      "question_id": 68,
+      "datasource": "financial",
+      "chat_id": "2e341eb69ca2473a8ad04b5ea50ea637",
+      "final_sql": "SELECT c.clnt_id FROM ln l JOIN dsp d ON d.ref2 = l.ref1 AND d.typ = 'OWNER' JOIN clnt c ON c.clnt_id = d.ref1 ORDER BY l.amnt DESC LIMIT 1",
+      "sql_history": [
+        "SELECT c.clnt_id FROM ln l JOIN dsp d ON d.ref2 = l.ref1 AND d.typ = 'OWNER' JOIN clnt c ON c.clnt_id = d.ref1 ORDER BY l.amnt DESC LIMIT 1"
+      ],
+      "agent_text": "账户\n最大贷款额的所有者是 **client ID 9340**（`clnt` 表无姓名列，只能以 `clnt_id` 标识）。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78897,
+        "output": 908,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 679,
+        "total": 79805
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 33.33,
+      "agent_duration_ms": 25730,
+      "extra_columns": []
+    },
+    {
+      "question_id": 69,
+      "datasource": "financial",
+      "chat_id": "0fb8fa3409bb49dd9f9952f185bec80a",
+      "final_sql": "SELECT d.a15 FROM acct a JOIN dstr d ON a.ref1 = d.dstr_id WHERE a.accn_id = 532",
+      "sql_history": [
+        "SELECT d.a15 FROM acct a JOIN dstr d ON a.ref1 = d.dstr_id WHERE a.accn_id = 532"
+      ],
+      "agent_text": "**\n6041**\n\n账号 532 的开户分支所在区域，1995 年犯罪数为 **6041**（`dstr.a15`）。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78917,
+        "output": 440,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 308,
+        "total": 79357
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 25.43,
+      "agent_duration_ms": 17911,
+      "extra_columns": []
+    },
+    {
+      "question_id": 70,
+      "datasource": "financial",
+      "chat_id": "4e840fc1cff14053819410c68e219d5a",
+      "final_sql": "SELECT d.dstr_id FROM ord o JOIN acct a ON o.ref1 = a.accn_id JOIN dstr d ON a.ref1 = d.dstr_id WHERE o.ordr_id = 33333",
+      "sql_history": [
+        "SELECT d.dstr_id FROM ord o JOIN acct a ON o.ref1 = a.accn_id JOIN dstr d ON a.ref1 = d.dstr_id WHERE o.ordr_id = 33333"
+      ],
+      "agent_text": "district ID 为 **64**。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78830,
+        "output": 359,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 229,
+        "total": 79189
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 23.36,
+      "agent_duration_ms": 15617,
+      "extra_columns": []
+    },
+    {
+      "question_id": 71,
+      "datasource": "financial",
+      "chat_id": "5383fe2972ef4193b684bc0d64194db0",
+      "final_sql": "SELECT t.trns_id FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON a.accn_id = d.ref2 JOIN trns t ON t.ref1 = a.accn_id WHERE c.clnt_id = 3356 AND d.typ = 'OWNER' AND t.oprt = 'VYBER'",
+      "sql_history": [
+        "SELECT t.trns_id FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON a.accn_id = d.ref2 JOIN trns t ON t.ref1 = a.accn_id WHERE c.clnt_id = 3356 AND d.typ = 'OWNER' AND t.oprt = 'VYBER'"
+      ],
+      "agent_text": "查询完成。返回了 client_id = 3356 作为账户所有者（OWNER）的所有现金取款（`oprt = 'VYBER'`）交易，共 27 笔，每笔对应一个 `trns_id`。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79241,
+        "output": 1821,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 1544,
+        "total": 81062
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 52.32,
+      "agent_duration_ms": 44564,
+      "extra_columns": []
+    },
+    {
+      "question_id": 72,
+      "datasource": "financial",
+      "chat_id": "52bdb071fd59495ea69d4c3dbacd14ab",
+      "final_sql": "SELECT COUNT(*) FROM acct a JOIN ln l ON a.accn_id = l.ref1 WHERE a.frqn = 'POPLATEK TYDNE' AND l.amnt < 200000",
+      "sql_history": [
+        "SELECT COUNT(*) FROM acct a JOIN ln l ON a.accn_id = l.ref1 WHERE a.frqn = 'POPLATEK TYDNE' AND l.amnt < 200000"
+      ],
+      "agent_text": "58",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78918,
+        "output": 1069,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 956,
+        "total": 79987
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 35.91,
+      "agent_duration_ms": 28435,
+      "extra_columns": []
+    },
+    {
+      "question_id": 73,
+      "datasource": "financial",
+      "chat_id": "55ade3e5acc4443d8ceabf1ddd7143c2",
+      "final_sql": "SELECT crd.typ FROM dsp JOIN crd ON crd.ref1 = dsp.dsp_id WHERE dsp.ref1 = 13539 AND dsp.typ = 'OWNER'",
+      "sql_history": [
+        "SELECT crd.typ FROM dsp JOIN crd ON crd.ref1 = dsp.dsp_id WHERE dsp.ref1 = 13539 AND dsp.typ = 'OWNER'"
+      ],
+      "agent_text": "客户 ID\n13539 拥有的信用卡类型是 **junior**。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78823,
+        "output": 830,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 705,
+        "total": 79653
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 32.0,
+      "agent_duration_ms": 24506,
+      "extra_columns": []
+    },
+    {
+      "question_id": 74,
+      "datasource": "financial",
+      "chat_id": "24165f7001b147618bc7c2534dd669e8",
+      "final_sql": "SELECT dstr.a3 FROM clnt JOIN dstr ON clnt.ref1 = dstr.dstr_id WHERE clnt.clnt_id = 3541",
+      "sql_history": [
+        "SELECT dstr.a3 FROM clnt JOIN dstr ON clnt.ref1 = dstr.dstr_id WHERE clnt.clnt_id = 3541"
+      ],
+      "agent_text": "Client 3541 来自 **east Bohemia** 地区。\n\n（`clnt.ref1` → `dstr.dstr_id`，取 `a3` 即 region。）",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78876,
+        "output": 393,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 247,
+        "total": 79269
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 23.13,
+      "agent_duration_ms": 15477,
+      "extra_columns": []
+    },
+    {
+      "question_id": 75,
+      "datasource": "financial",
+      "chat_id": "35e017d5e3d74ef4a14b83d90d0749e1",
+      "final_sql": "SELECT d.a2 FROM ln l JOIN acct a ON l.ref1 = a.accn_id JOIN dstr d ON a.ref1 = d.dstr_id WHERE l.stts = 'A' GROUP BY d.a2 ORDER BY COUNT(DISTINCT a.accn_id) DESC LIMIT 1",
+      "sql_history": [
+        "SELECT d.a2 FROM ln l JOIN acct a ON l.ref1 = a.accn_id JOIN dstr d ON a.ref1 = d.dstr_id WHERE l.stts = 'A' GROUP BY d.a2 ORDER BY COUNT(DISTINCT a.accn_id) DESC LIMIT 1"
+      ],
+      "agent_text": "**Hl.m. Praha**\n\n该地区拥有最多贷款状态为 'A'（已完成且无问题）的账户。查询逻辑：将贷款表 `ln` 关联账户表 `acct`（通过 `ln.ref1 = acct.accn_id`），再关联地区表 `dstr`（通过 `acct.ref1 = dstr.dstr_id`），筛选 `stts = 'A'`，按地区分组并对账户去重计数，取最多者。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78945,
+        "output": 1574,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 1334,
+        "total": 80519
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 47.99,
+      "agent_duration_ms": 40192,
+      "extra_columns": []
+    },
+    {
+      "question_id": 76,
+      "datasource": "financial",
+      "chat_id": "182866b4f89a4e2c86dac774725fdf00",
+      "final_sql": "SELECT clnt.clnt_id FROM ord JOIN dsp ON dsp.ref2 = ord.ref1 JOIN clnt ON clnt.clnt_id = dsp.ref1 WHERE ord.ordr_id = 32423",
+      "sql_history": [
+        "SELECT clnt.clnt_id FROM ord JOIN dsp ON dsp.ref2 = ord.ref1 JOIN clnt ON clnt.clnt_id = dsp.ref1 WHERE ord.ordr_id = 32423"
+      ],
+      "agent_text": "订单\nID 32423 的下单客户是 **clnt_id = 2497**。\n\n（通过 `ord.ref1` → `dsp.ref2` 关联账户，再经 `dsp.ref1` → `clnt.clnt_id` 找到下单客户。）",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 106432,
+        "output": 1552,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 1307,
+        "total": 107984
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 49.27,
+      "agent_duration_ms": 41712,
+      "extra_columns": []
+    },
+    {
+      "question_id": 77,
+      "datasource": "financial",
+      "chat_id": "99632a3b6d2044f6b7e6b63f713919d2",
+      "final_sql": "SELECT t.trns_id, t.ref1, t.dt, t.typ, t.oprt, t.amnt, t.blnc, t.k_symb, t.bnk, t.accn FROM trns t JOIN acct a ON t.ref1 = a.accn_id WHERE a.ref1 = 5",
+      "sql_history": [
+        "SELECT t.trns_id, t.ref1, t.dt, t.typ, t.oprt, t.amnt, t.blnc, t.k_symb, t.bnk, t.accn FROM trns t JOIN acct a ON t.ref1 = a.accn_id WHERE a.ref1 = 5"
+      ],
+      "agent_text": "已返回\ndistrict 5 账户的所有交易记录。SQL 逻辑：`trns` JOIN `acct`（外键 `trns.ref1 → acct.accn_id`），筛选 `acct.ref1 = 5`（开户分支在 district 5 的账户），输出交易表的全部字段。\n\n最终答案 SQL：\n\n```sql\nSELECT t.trns_id, t.ref1, t.dt, t.typ, t.oprt, t.amnt, t.blnc, t.k_symb, t.bnk, t.accn\nFROM trns t\nJOIN acct a ON t.ref1 = a.accn_id\nWHERE a.ref1 = 5\n```",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 80599,
+        "output": 1457,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 1097,
+        "total": 82056
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 47.48,
+      "agent_duration_ms": 39976,
+      "extra_columns": []
+    },
+    {
+      "question_id": 78,
+      "datasource": "financial",
+      "chat_id": "ce6ef7b5679e40c3a7fac0ea19fff6b9",
+      "final_sql": "SELECT COUNT(*) FROM acct a JOIN dstr d ON a.ref1 = d.dstr_id WHERE d.a2 = 'Jesenik'",
+      "sql_history": [
+        "SELECT COUNT(*) FROM acct a JOIN dstr d ON a.ref1 = d.dstr_id WHERE d.a2 = 'Jesenik'"
+      ],
+      "agent_text": "LLM request failed.",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 51290,
+        "output": 380,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 275,
+        "total": 51670
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 23.26,
+      "agent_duration_ms": 15820,
+      "extra_columns": []
+    },
+    {
+      "question_id": 79,
+      "datasource": "financial",
+      "chat_id": "dd3ed89590484ee59b8c069ddfcbc0b5",
+      "final_sql": "SELECT DISTINCT dsp.ref1 AS client_id FROM crd JOIN dsp ON crd.ref1 = dsp.dsp_id WHERE crd.typ = 'junior' AND crd.issd >= '1997-01-01'",
+      "sql_history": [
+        "SELECT DISTINCT clnt.clnt_id FROM crd JOIN dsp ON crd.ref1 = dsp.dsp_id JOIN clnt ON dsp.ref1 = clnt.clnt_id WHERE crd.typ = 'junior' AND crd.issd >= '1997-01-01'",
+        "SELECT DISTINCT dsp.ref1 AS client_id FROM crd JOIN dsp ON crd.ref1 = dsp.dsp_id WHERE crd.typ = 'junior' AND crd.issd >= '1997-01-01'"
+      ],
+      "agent_text": "最终\n答案已执行完毕。通过 `crd`（信用卡表）JOIN `dsp`（关联表）获取客户 ID，筛选 `typ = 'junior'` 且 `issd >= '1997-01-01'`（即1996年之后发行），共返回 **27** 位客户的 ID：\n\n| client_id |\n|-----------|\n| 60, 167, 174, 221, 264, 378, 429, 451, 504, 519, 626, 667, 731, 786, 826, 900, 906, 996, 1168, 1211, 1382, 1390, 1440, 1500, 1736, 1819, 1947 |",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 107241,
+        "output": 1433,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 1051,
+        "total": 108674
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 45.44,
+      "agent_duration_ms": 37876,
+      "extra_columns": []
+    },
+    {
+      "question_id": 80,
+      "datasource": "financial",
+      "chat_id": "e946919f666346bf9a11f036414f6407",
+      "final_sql": "SELECT CAST(SUM(CASE WHEN c.gndr = 'F' THEN 1 ELSE 0 END) AS DOUBLE) * 100 / COUNT(*) FROM ( SELECT DISTINCT c.clnt_id, c.gndr FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON a.accn_id = d.ref2 JOIN dstr ds ON ds.dstr_id = a.ref1 WHERE ds.a11 > 10000 ) c",
+      "sql_history": [
+        "SELECT CAST(SUM(CASE WHEN c.gndr = 'F' THEN 1 ELSE 0 END) AS DOUBLE) * 100 / COUNT(*) FROM ( SELECT DISTINCT c.clnt_id, c.gndr FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON a.accn_id = d.ref2 JOIN dstr ds ON ds.dstr_id = a.ref1 WHERE ds.a11 > 10000 ) c"
+      ],
+      "agent_text": "最终\n答案是 **50.39%**（精确值 `50.38819875776397`）。\n\nSQL 逻辑：\n- 客户通过 `dsp` 关联到账户，账户的 `ref1` 指向开户分支所在区域（`dstr`）\n- 筛选 `dstr.a11 > 10000`（平均薪资超过 10000 的区域）\n- 对去重后的客户计算女性占比：`SUM(gndr='F') * 100 / COUNT(*)`",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79082,
+        "output": 1679,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 1385,
+        "total": 80761
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 48.0,
+      "agent_duration_ms": 40259,
+      "extra_columns": []
+    },
+    {
+      "question_id": 81,
+      "datasource": "financial",
+      "chat_id": "7b3b05daa5234cdf915ee3020c80a617",
+      "final_sql": "SELECT (SUM(CASE WHEN YEAR(ln.dt) = 1997 THEN ln.amnt ELSE 0 END) - SUM(CASE WHEN YEAR(ln.dt) = 1996 THEN ln.amnt ELSE 0 END)) * 100 / SUM(CASE WHEN YEAR(ln.dt) = 1996 THEN ln.amnt ELSE 0 END) AS growth_rate FROM clnt JOIN dsp ON dsp.ref1 = clnt.clnt_id AND dsp.typ = 'OWNER' JOIN ln ON ln.ref1 = dsp.ref2 WHERE clnt.gndr = 'M' AND YEAR(ln.dt) IN (1996, 1997)",
+      "sql_history": [
+        "SELECT (SUM(CASE WHEN YEAR(ln.dt) = 1997 THEN ln.amnt ELSE 0 END) - SUM(CASE WHEN YEAR(ln.dt) = 1996 THEN ln.amnt ELSE 0 END)) * 100 / SUM(CASE WHEN YEAR(ln.dt) = 1996 THEN ln.amnt ELSE 0 END) AS growth_rate FROM clnt JOIN dsp ON dsp.ref1 = clnt.clnt_id AND dsp.typ = 'OWNER' JOIN ln ON ln.ref1 = dsp.ref2 WHERE clnt.gndr = 'M' AND YEAR(ln.dt) IN (1996, 1997)"
+      ],
+      "agent_text": "增长率\n为 **25.3002%**。\n\n公式：(1997年贷款总额 − 1996年贷款总额) / 1996年贷款总额 × 100%\n\n链路：`clnt` → `dsp`(OWNER) → `ln`，筛选 `gndr = 'M'`，按 `YEAR(ln.dt)` 分 1996/1997 聚合 `amnt`。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79128,
+        "output": 1339,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 1043,
+        "total": 80467
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 39.72,
+      "agent_duration_ms": 32234,
+      "extra_columns": []
+    },
+    {
+      "question_id": 82,
+      "datasource": "financial",
+      "chat_id": "7600cd9d3dbf43878bd37f05f38c0c14",
+      "final_sql": "SELECT COUNT(*) FROM trns WHERE oprt = 'VYBER KARTOU' AND dt > '1995-12-31'",
+      "sql_history": [
+        "SELECT COUNT(*) FROM trns WHERE oprt = 'VYBER KARTOU' AND dt > '1995-12-31'"
+      ],
+      "agent_text": "**\n7652**\n\n credit card withdrawals（`oprt = 'VYBER KARTOU'`）在 1995 年之后（`dt > '1995-12-31'`）的记录数。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78891,
+        "output": 602,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 455,
+        "total": 79493
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 30.81,
+      "agent_duration_ms": 23268,
+      "extra_columns": []
+    },
+    {
+      "question_id": 83,
+      "datasource": "financial",
+      "chat_id": "46562fb10bac41d4a6f1508834818c88",
+      "final_sql": "SELECT SUM(CASE WHEN a3 = 'east Bohemia' THEN a16 ELSE 0 END) - SUM(CASE WHEN a3 = 'north Bohemia' THEN a16 ELSE 0 END) AS difference FROM dstr",
+      "sql_history": [
+        "SELECT SUM(CASE WHEN a3 = 'east Bohemia' THEN a16 ELSE 0 END) - SUM(CASE WHEN a3 = 'north Bohemia' THEN a16 ELSE 0 END) AS difference FROM dstr"
+      ],
+      "agent_text": "1996 年 East Bohemia 与 North Bohemia 的犯罪数量差值为 **-17734**（East 比 North 少 17734 起）。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79122,
+        "output": 600,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 397,
+        "total": 79722
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 29.09,
+      "agent_duration_ms": 21379,
+      "extra_columns": []
+    },
+    {
+      "question_id": 84,
+      "datasource": "financial",
+      "chat_id": "8b9ca514ff4b47cbadb0a3999fa74017",
+      "final_sql": "SELECT SUM(typ = 'OWNER') AS owner_count, SUM(typ = 'DISPONENT') AS disponent_count FROM dsp WHERE ref2 BETWEEN 1 AND 10",
+      "sql_history": [
+        "SELECT SUM(typ = 'OWNER') AS owner_count, SUM(typ = 'DISPONENT') AS disponent_count FROM dsp WHERE ref2 BETWEEN 1 AND 10"
+      ],
+      "agent_text": "账号\n1 到账号 10 的 disposition 中，**OWNER 有 10 个，DISPONENT 有 3 个**。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78854,
+        "output": 518,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 378,
+        "total": 79372
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 24.52,
+      "agent_duration_ms": 17015,
+      "extra_columns": []
+    },
+    {
+      "question_id": 85,
+      "datasource": "financial",
+      "chat_id": "331fabb81b4d493386c4a248273a8c79",
+      "final_sql": "SELECT a.frqn, o.k_symb FROM acct a JOIN ord o ON o.ref1 = a.accn_id WHERE a.accn_id = 3 AND o.amnt = 3539",
+      "sql_history": [
+        "SELECT DISTINCT oprt FROM trns",
+        "SELECT k_symb, amnt FROM ord WHERE amnt = 3539",
+        "SELECT DISTINCT k_symb FROM trns WHERE ref1 = 3",
+        "SELECT k_symb, COUNT(*) as cnt FROM trns WHERE ref1 = 3 AND k_symb = 'SLUZBY' GROUP BY k_symb",
+        "SELECT frqn FROM acct WHERE accn_id = 3",
+        "SELECT DISTINCT frqn FROM acct",
+        "SELECT k_symb, typ, amnt FROM trns WHERE amnt = 3539",
+        "SELECT a.frqn, o.k_symb FROM acct a JOIN ord o ON o.ref1 = a.accn_id WHERE a.accn_id = 3 AND o.amnt = 3539"
+      ],
+      "agent_text": "最终答案：\n\n- **账户 3 的对账单发行频率**：`POPLATEK MESICNE`（每月一次）\n- **借记 3539 的用途**：`POJISTNE`（保险付款）\n\n最终 SQL：\n```sql\nSELECT a.frqn, o.k_symb \nFROM acct a \nJOIN ord o ON o.ref1 = a.accn_id \nWHERE a.accn_id = 3 AND o.amnt = 3539\n```",
+      "tool_calls": 12,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 10,
+      "tool_rounds": 9,
+      "tokens": {
+        "input": 278452,
+        "output": 7980,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 7038,
+        "total": 286432
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 193.23,
+      "agent_duration_ms": 184797,
+      "extra_columns": []
+    },
+    {
+      "question_id": 86,
+      "datasource": "financial",
+      "chat_id": "dbb16d8d28924f51aaaf896dcd2f9afa",
+      "final_sql": "SELECT YEAR(c.brth_dt) FROM dsp d JOIN clnt c ON d.ref1 = c.clnt_id WHERE d.ref2 = 130 AND d.typ = 'OWNER'",
+      "sql_history": [
+        "SELECT YEAR(c.brth_dt) FROM dsp d JOIN clnt c ON d.ref1 = c.clnt_id WHERE d.ref2 = 130 AND d.typ = 'OWNER'"
+      ],
+      "agent_text": "LLM request failed.",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 51284,
+        "output": 394,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 225,
+        "total": 51678
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 25.0,
+      "agent_duration_ms": 17539,
+      "extra_columns": []
+    },
+    {
+      "question_id": 87,
+      "datasource": "financial",
+      "chat_id": "b046fab7503742179d90a94a65766e10",
+      "final_sql": "SELECT COUNT(*) FROM acct a JOIN dsp d ON d.ref2 = a.accn_id WHERE d.typ = 'OWNER' AND a.frqn = 'POPLATEK PO OBRATU'",
+      "sql_history": [
+        "SELECT COUNT(*) FROM acct a JOIN dsp d ON d.ref2 = a.accn_id WHERE d.typ = 'OWNER' AND a.frqn = 'POPLATEK PO OBRATU'"
+      ],
+      "agent_text": "答案是 **93**。\n\n对应 SQL：\n```sql\nSELECT COUNT(*) \nFROM acct a \nJOIN dsp d ON d.ref2 = a.accn_id \nWHERE d.typ = 'OWNER' \n  AND a.frqn = 'POPLATEK PO OBRATU'\n```\n\n逻辑：`dsp.typ = 'OWNER'` 筛选 owner disposition，`acct.frqn = 'POPLATEK PO OBRATU'` 筛选交易后生成对账单的账户，两表通过 `dsp.ref2 = acct.accn_id` 关联，COUNT 计数得 93。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 106744,
+        "output": 1338,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 946,
+        "total": 108082
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 43.96,
+      "agent_duration_ms": 36132,
+      "extra_columns": []
+    },
+    {
+      "question_id": 88,
+      "datasource": "financial",
+      "chat_id": "b3b96068b02047b9be37f5cba2c708c9",
+      "final_sql": "SELECT ln.amnt, ln.stts FROM clnt JOIN dsp ON dsp.ref1 = clnt.clnt_id JOIN ln ON ln.ref1 = dsp.ref2 WHERE clnt.clnt_id = 992 AND dsp.typ = 'OWNER'",
+      "sql_history": [
+        "SELECT ln.amnt, ln.stts FROM clnt JOIN dsp ON dsp.ref1 = clnt.clnt_id JOIN ln ON ln.ref1 = dsp.ref2 WHERE clnt.clnt_id = 992 AND dsp.typ = 'OWNER'"
+      ],
+      "agent_text": "Client 992 的债务金额为 **53,076**，还款状态为 **A**（即合同已结清/正常履约）。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 4,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 82460,
+        "output": 335,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 28,
+        "total": 82795
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 145.76,
+      "agent_duration_ms": 138328,
+      "extra_columns": []
+    },
+    {
+      "question_id": 89,
+      "datasource": "financial",
+      "chat_id": "c3314c00ddfb49dbbf3113562c07073b",
+      "final_sql": "SELECT t.blnc, c.gndr FROM trns t JOIN dsp d ON d.ref2 = t.ref1 JOIN clnt c ON c.clnt_id = d.ref1 WHERE c.clnt_id = 4 AND d.typ = 'OWNER' AND t.trns_id = 851",
+      "sql_history": [
+        "SELECT t.blnc, c.gndr FROM trns t JOIN dsp d ON d.ref2 = t.ref1 JOIN clnt c ON c.clnt_id = d.ref1 WHERE c.clnt_id = 4 AND d.typ = 'OWNER' AND t.trns_id = 851"
+      ],
+      "agent_text": "最终结果：\n\n- **Transaction 851 后的账户余额（sum）：15096**\n- **账户所有者性别：M（男性）**\n\nSQL 逻辑：通过 `trns` 表找到 transaction 851 的 `blnc`（balance after transaction），同时经 `dsp`（disposition）表将账户关联到 client number 4，再经 `clnt` 表取性别。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78903,
+        "output": 2293,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 2064,
+        "total": 81196
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 58.23,
+      "agent_duration_ms": 50693,
+      "extra_columns": []
+    },
+    {
+      "question_id": 90,
+      "datasource": "financial",
+      "chat_id": "8569e5b7e48d4ec5ab8a68d42e612bb7",
+      "final_sql": "SELECT crd.typ FROM clnt JOIN dsp ON clnt.clnt_id = dsp.ref1 JOIN crd ON dsp.dsp_id = crd.ref1 WHERE clnt.clnt_id = 9",
+      "sql_history": [
+        "SELECT crd.typ FROM clnt JOIN dsp ON clnt.clnt_id = dsp.ref1 JOIN crd ON dsp.dsp_id = crd.ref1 WHERE clnt.clnt_id = 9"
+      ],
+      "agent_text": "Client\nnumber 9 possesses a **gold** credit card.",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78817,
+        "output": 396,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 270,
+        "total": 79213
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 24.12,
+      "agent_duration_ms": 16589,
+      "extra_columns": []
+    },
+    {
+      "question_id": 91,
+      "datasource": "financial",
+      "chat_id": "c78da601052a43b3bd5eaacb76bfa153",
+      "final_sql": "SELECT SUM(t.amnt) AS total_paid FROM trns t JOIN dsp d ON d.ref2 = t.ref1 WHERE d.ref1 = 617 AND d.typ = 'OWNER' AND YEAR(t.dt) = 1998",
+      "sql_history": [
+        "SELECT SUM(t.amnt) AS total_paid FROM trns t JOIN dsp d ON d.ref2 = t.ref1 WHERE d.ref1 = 617 AND d.typ = 'OWNER' AND YEAR(t.dt) = 1998"
+      ],
+      "agent_text": "Client 617 在 1998 年所有交易的总金额为 **303,276**。\n\n最终 SQL：\n\n```sql\nSELECT SUM(t.amnt) AS total_paid\nFROM trns t\nJOIN dsp d ON d.ref2 = t.ref1\nWHERE d.ref1 = 617\n  AND d.typ = 'OWNER'\n  AND YEAR(t.dt) = 1998\n```\n\n路径：`clnt(617) → dsp(ref1=clnt_id, typ=OWNER) → trns(ref1=acct_id)`，按 `typ='OWNER'` 过滤确保只算该客户作为账户所有者的交易，`YEAR(dt)=1998` 限定年份，`SUM(amnt)` 汇总所有交易金额。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 107545,
+        "output": 3321,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 3006,
+        "total": 110866
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 87.54,
+      "agent_duration_ms": 80102,
+      "extra_columns": []
+    },
+    {
+      "question_id": 92,
+      "datasource": "financial",
+      "chat_id": "fe1ae9f4f286451d9bc8f0cb241e24f7",
+      "final_sql": "SELECT DISTINCT clnt.clnt_id, acct.accn_id FROM clnt JOIN dsp ON dsp.ref1 = clnt.clnt_id JOIN acct ON acct.accn_id = dsp.ref2 JOIN dstr ON dstr.dstr_id = acct.ref1 WHERE clnt.brth_dt BETWEEN '1983-01-01' AND '1987-12-31' AND dstr.a3 = 'east Bohemia'",
+      "sql_history": [
+        "SELECT DISTINCT clnt.clnt_id, acct.accn_id FROM clnt JOIN dsp ON dsp.ref1 = clnt.clnt_id JOIN acct ON acct.accn_id = dsp.ref2 JOIN dstr ON dstr.dstr_id = acct.ref1 WHERE clnt.brth_dt BETWEEN '1983-01-01' AND '1987-12-31' AND dstr.a3 = 'east Bohemia'"
+      ],
+      "agent_text": "查询\n完成。结果如下：\n\n| clnt_id | accn_id |\n|---------|---------|\n| 379 | 311 |\n| 734 | 611 |\n| 3428 | 2836 |\n\n共 3 位客户，出生于 1983–1987 年间，且其账户开户分支位于 East Bohemia。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79105,
+        "output": 1004,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 765,
+        "total": 80109
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 34.54,
+      "agent_duration_ms": 26974,
+      "extra_columns": []
+    },
+    {
+      "question_id": 93,
+      "datasource": "financial",
+      "chat_id": "3af61dbfb037419396f19b3d5dffd8bf",
+      "final_sql": "SELECT c.clnt_id FROM clnt c JOIN dsp d ON c.clnt_id = d.ref1 JOIN acct a ON d.ref2 = a.accn_id JOIN ln l ON a.accn_id = l.ref1 WHERE c.gndr = 'F' AND d.typ = 'OWNER' GROUP BY c.clnt_id ORDER BY MAX(l.amnt) DESC LIMIT 3",
+      "sql_history": [
+        "SELECT c.clnt_id FROM clnt c JOIN dsp d ON c.clnt_id = d.ref1 JOIN acct a ON d.ref2 = a.accn_id JOIN ln l ON a.accn_id = l.ref1 WHERE c.gndr = 'F' AND d.typ = 'OWNER' GROUP BY c.clnt_id ORDER BY MAX(l.amnt) DESC LIMIT 3"
+      ],
+      "agent_text": "3 位贷款金额最大的女性客户 ID 为：\n\n| clnt_id |\n|---------|\n| 10997 |\n| 2823 |\n| 8506 |\n\nSQL 逻辑：通过 `clnt → dsp(OWNER) → acct → ln` 链找到每位女性客户作为账户所有者所关联的最大贷款金额，按贷款金额降序取前 3。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78944,
+        "output": 1711,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 1473,
+        "total": 80655
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 51.27,
+      "agent_duration_ms": 43905,
+      "extra_columns": []
+    },
+    {
+      "question_id": 94,
+      "datasource": "financial",
+      "chat_id": "4540aadf3d3248cdbc55a4c82b117bf4",
+      "final_sql": "SELECT COUNT(*) FROM clnt WHERE gndr = 'M' AND brth_dt BETWEEN '1974-01-01' AND '1976-12-31' AND clnt_id IN ( SELECT dsp.ref1 FROM dsp JOIN trns ON trns.ref1 = dsp.ref2 WHERE dsp.typ = 'OWNER' AND trns.k_symb = 'SIPO' AND trns.amnt > 4000 )",
+      "sql_history": [
+        "SELECT COUNT(*) FROM clnt WHERE gndr = 'M' AND brth_dt BETWEEN '1974-01-01' AND '1976-12-31' AND clnt_id IN ( SELECT dsp.ref1 FROM dsp JOIN trns ON trns.ref1 = dsp.ref2 WHERE dsp.typ = 'OWNER' AND trns.k_symb = 'SIPO' AND trns.amnt > 4000 )"
+      ],
+      "agent_text": "**39**\n\n1974–1976 年间出生的男性客户中，通过其作为 OWNER 的账户进行过单笔超过 $4000 的家庭支付（SIPO）的有 39 人。",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79162,
+        "output": 2349,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 2003,
+        "total": 81511
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 60.02,
+      "agent_duration_ms": 52632,
+      "extra_columns": []
+    },
+    {
+      "question_id": 95,
+      "datasource": "financial",
+      "chat_id": "8f737c78c485475ca59d22c69a6bdb9d",
+      "final_sql": "SELECT COUNT(*) FROM acct a JOIN dstr d ON a.ref1 = d.dstr_id WHERE d.a2 = 'Beroun' AND a.dt > '1996-12-31'",
+      "sql_history": [
+        "SELECT COUNT(*) FROM acct a JOIN dstr d ON a.ref1 = d.dstr_id WHERE d.a2 = 'Beroun' AND a.dt > '1996-12-31'"
+      ],
+      "agent_text": "**\n8** 个账户。\n\nBeroun 地区的账户（通过 `acct.ref1 → dstr.dstr_id` 关联，`dstr.a2 = 'Beroun'`），且开户日期在 1996 年之后（`dt > '1996-12-31'`），共 8 个。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78816,
+        "output": 597,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 415,
+        "total": 79413
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 27.21,
+      "agent_duration_ms": 19751,
+      "extra_columns": []
+    },
+    {
+      "question_id": 96,
+      "datasource": "financial",
+      "chat_id": "4edaa97950874b159dc387072a39262f",
+      "final_sql": "SELECT COUNT(*) FROM clnt WHERE gndr = 'F' AND EXISTS (SELECT 1 FROM dsp JOIN crd ON crd.ref1 = dsp.dsp_id WHERE dsp.ref1 = clnt.clnt_id AND crd.typ = 'junior')",
+      "sql_history": [
+        "SELECT COUNT(*) FROM clnt WHERE gndr = 'F' AND EXISTS (SELECT 1 FROM dsp JOIN crd ON crd.ref1 = dsp.dsp_id WHERE dsp.ref1 = clnt.clnt_id AND crd.typ = 'junior')"
+      ],
+      "agent_text": "71 名女性客户拥有 junior 信用卡。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78977,
+        "output": 1082,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 854,
+        "total": 80059
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 36.46,
+      "agent_duration_ms": 29105,
+      "extra_columns": []
+    },
+    {
+      "question_id": 97,
+      "datasource": "financial",
+      "chat_id": "1b6b1cad953e42619a8aa741ca3a1ee9",
+      "final_sql": "SELECT CAST(SUM(CASE WHEN c.gndr = 'F' THEN 1 ELSE 0 END) AS DOUBLE) * 100 / COUNT(*) AS percentage FROM ( SELECT DISTINCT c.clnt_id, c.gndr FROM clnt c JOIN dsp d ON c.clnt_id = d.ref1 JOIN acct a ON d.ref2 = a.accn_id JOIN dstr ds ON a.ref1 = ds.dstr_id WHERE ds.a3 = 'Prague' ) c",
+      "sql_history": [
+        "SELECT CAST(SUM(CASE WHEN c.gndr = 'F' THEN 1 ELSE 0 END) AS DOUBLE) * 100 / COUNT(*) AS percentage FROM ( SELECT DISTINCT c.clnt_id, c.gndr FROM clnt c JOIN dsp d ON c.clnt_id = d.ref1 JOIN acct a ON d.ref2 = a.accn_id JOIN dstr ds ON a.ref1 = ds.dstr_id WHERE ds.a3 = 'Prague' ) c"
+      ],
+      "agent_text": "Prague 分支女性客户占比约为 **49.78%**。\n\n最终 SQL 已执行完毕，结果为 `49.77645305514158`。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79198,
+        "output": 2788,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 2454,
+        "total": 81986
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 66.14,
+      "agent_duration_ms": 58272,
+      "extra_columns": []
+    },
+    {
+      "question_id": 98,
+      "datasource": "financial",
+      "chat_id": "daac51acf33b40a9b292ffeafc293a81",
+      "final_sql": "SELECT CAST(SUM(CASE WHEN gndr = 'M' THEN 1 ELSE 0 END) AS DOUBLE) * 100 / COUNT(*) FROM ( SELECT DISTINCT c.clnt_id, c.gndr FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON a.accn_id = d.ref2 WHERE a.frqn = 'POPLATEK TYDNE' ) t",
+      "sql_history": [
+        "SELECT CAST(SUM(CASE WHEN gndr = 'M' THEN 1 ELSE 0 END) AS DOUBLE) * 100 / COUNT(*) FROM ( SELECT DISTINCT c.clnt_id, c.gndr FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON a.accn_id = d.ref2 WHERE a.frqn = 'POPLATEK TYDNE' ) t"
+      ],
+      "agent_text": "**\n52.13%**（精确值 `52.12765957446808`）\n\n计算口径：在 `acct.frqn = 'POPLATEK TYDNE'`（每周发行）的账户中，通过 `dsp` 关联到的去重客户里，男性（`gndr = 'M'`）占比 = 男性人数 / 总人数 × 100。",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79211,
+        "output": 2691,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 2314,
+        "total": 81902
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 65.28,
+      "agent_duration_ms": 57698,
+      "extra_columns": []
+    },
+    {
+      "question_id": 99,
+      "datasource": "financial",
+      "chat_id": "9b45c94b2df2474788267fce4a915754",
+      "final_sql": "SELECT COUNT(clnt.clnt_id) FROM clnt JOIN dsp ON clnt.clnt_id = dsp.ref1 JOIN acct ON dsp.ref2 = acct.accn_id WHERE acct.frqn = 'POPLATEK TYDNE' AND dsp.typ = 'OWNER'",
+      "sql_history": [
+        "SELECT COUNT(clnt.clnt_id) FROM clnt JOIN dsp ON clnt.clnt_id = dsp.ref1 JOIN acct ON dsp.ref2 = acct.accn_id WHERE acct.frqn = 'POPLATEK TYDNE' AND dsp.typ = 'OWNER'"
+      ],
+      "agent_text": "**240**\n\n选择每周发放声明（`frqn = 'POPLATEK TYDNE'`）且为账户所有者（`dsp.typ = 'OWNER'`）的客户共 240 人。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79011,
+        "output": 961,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 706,
+        "total": 79972
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 34.38,
+      "agent_duration_ms": 26609,
+      "extra_columns": []
+    },
+    {
+      "question_id": 100,
+      "datasource": "financial",
+      "chat_id": "8d9a363fd3e342c7aa2ce76f7ef8b7ca",
+      "final_sql": "SELECT acct.accn_id FROM ln JOIN acct ON ln.ref1 = acct.accn_id WHERE ln.drtn > 24 AND acct.dt < '1997-01-01' ORDER BY ln.amnt ASC LIMIT 1",
+      "sql_history": [
+        "SELECT acct.accn_id FROM ln JOIN acct ON ln.ref1 = acct.accn_id WHERE ln.drtn > 24 AND acct.dt < '1997-01-01' ORDER BY ln.amnt ASC LIMIT 1"
+      ],
+      "agent_text": "账号\n**6453**。\n\n该账号满足三个条件：\n- 贷款期限 > 24 个月\n- 账号开户日期在 1997 年之前\n- 在符合以上条件的账号中，获批金额最低",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79025,
+        "output": 2348,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 2055,
+        "total": 81373
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 60.37,
+      "agent_duration_ms": 52579,
+      "extra_columns": []
+    },
+    {
+      "question_id": 101,
+      "datasource": "financial",
+      "chat_id": "a0137d15f9b54051bd3b902cde26520b",
+      "final_sql": "SELECT DISTINCT a.accn_id FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON a.accn_id = d.ref2 JOIN dstr ds ON ds.dstr_id = c.ref1 WHERE c.gndr = 'F' AND c.brth_dt = (SELECT MIN(brth_dt) FROM clnt WHERE gndr = 'F') AND ds.a11 = ( SELECT MIN(ds2.a11) FROM clnt c2 JOIN dstr ds2 ON ds2.dstr_id = c2.ref1 WHERE c2.gndr = 'F' AND c2.brth_dt = (SELECT MIN(brth_dt) FROM clnt WHERE gndr = 'F') )",
+      "sql_history": [
+        "SELECT DISTINCT a.accn_id FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON a.accn_id = d.ref2 JOIN dstr ds ON ds.dstr_id = c.ref1 WHERE c.gndr = 'F' AND c.brth_dt = (SELECT MIN(brth_dt) FROM clnt WHERE gndr = 'F') AND ds.a11 = (SELECT MIN(ds2.a11) FROM clnt c2 JOIN dstr ds2 ON ds2.dstr_id = c2.ref1 WHERE c2.gndr = 'F')",
+        "SELECT DISTINCT a.accn_id FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON a.accn_id = d.ref2 JOIN dstr ds ON ds.dstr_id = c.ref1 WHERE c.gndr = 'F' AND c.brth_dt = (SELECT MIN(brth_dt) FROM clnt WHERE gndr = 'F') AND ds.a11 = ( SELECT MIN(ds2.a11) FROM clnt c2 JOIN dstr ds2 ON ds2.dstr_id = c2.ref1 WHERE c2.gndr = 'F' AND c2.brth_dt = (SELECT MIN(brth_dt) FROM clnt WHERE gndr = 'F') )"
+      ],
+      "agent_text": "查询\n结果返回了账号 `1743`。\n\n**SQL 逻辑说明：**\n- `gndr = 'F'` 筛选女性客户\n- `brth_dt = (SELECT MIN(brth_dt) FROM clnt WHERE gndr = 'F')` 找出最年长（出生日期最早）的女性客户\n- 在这些最年长女性客户中，再取其所在地区 `dstr.a11`（平均工资）最低的\n- 通过 `clnt → dsp → acct` 链取出对应的账号号\n\n最终答案：**账号 1743**",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 106896,
+        "output": 5696,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 5180,
+        "total": 112592
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 119.84,
+      "agent_duration_ms": 112174,
+      "extra_columns": []
+    },
+    {
+      "question_id": 102,
+      "datasource": "financial",
+      "chat_id": "458e9ac59ca747ba8d8f5d4669a24dea",
+      "final_sql": "SELECT COUNT(clnt_id) FROM clnt c JOIN dstr d ON c.ref1 = d.dstr_id WHERE YEAR(c.brth_dt) = 1920 AND d.a3 = 'east Bohemia'",
+      "sql_history": [
+        "SELECT COUNT(clnt_id) FROM clnt c JOIN dstr d ON c.ref1 = d.dstr_id WHERE YEAR(c.brth_dt) = 1920 AND d.a3 = 'east Bohemia'"
+      ],
+      "agent_text": "6",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78940,
+        "output": 511,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 392,
+        "total": 79451
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 26.08,
+      "agent_duration_ms": 18511,
+      "extra_columns": []
+    },
+    {
+      "question_id": 103,
+      "datasource": "financial",
+      "chat_id": "d76dc19d71b5460d817d834a779a9731",
+      "final_sql": "SELECT COUNT(*) FROM ln JOIN acct ON ln.ref1 = acct.accn_id WHERE ln.drtn = 24 AND acct.frqn = 'POPLATEK TYDNE'",
+      "sql_history": [
+        "SELECT DISTINCT k_symb FROM ord",
+        "SELECT COUNT(*) FROM ln JOIN acct ON ln.ref1 = acct.accn_id WHERE ln.drtn = 24 AND acct.frqn = 'POPLATEK TYDNE'"
+      ],
+      "agent_text": "**15**\n\n最终 SQL：\n```sql\nSELECT COUNT(*) FROM ln JOIN acct ON ln.ref1 = acct.accn_id WHERE ln.drtn = 24 AND acct.frqn = 'POPLATEK TYDNE'\n```\n\n- `ln` 表（loans）关联 `acct` 表（accounts），外键 `ln.ref1 → acct.accn_id`\n- `ln.drtn = 24`：贷款期限 24 个月\n- `acct.frqn = 'POPLATEK TYDNE'`：每周出具对账单",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 106626,
+        "output": 7367,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 7113,
+        "total": 113993
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 165.66,
+      "agent_duration_ms": 158073,
+      "extra_columns": []
+    },
+    {
+      "question_id": 104,
+      "datasource": "financial",
+      "chat_id": "fe2c413ecf9c48228253a986c5440914",
+      "final_sql": "SELECT AVG(ln.amnt) FROM ln JOIN acct ON ln.ref1 = acct.accn_id WHERE ln.stts IN ('C', 'D') AND acct.frqn = 'POPLATEK PO OBRATU'",
+      "sql_history": [
+        "SELECT AVG(ln.amnt) FROM ln JOIN acct ON ln.ref1 = acct.accn_id WHERE ln.stts IN ('C', 'D') AND acct.frqn = 'POPLATEK PO OBRATU'"
+      ],
+      "agent_text": "**\n最终答案：192836.5714**\n\n- **running contract** → `ln.stts IN ('C', 'D')`（C=正常还款中，D=欠款但合同仍在运行）\n- **statement issuance after each transaction** → `acct.frqn = 'POPLATEK PO OBRATU'`\n- **average amount** → `AVG(ln.amnt)`\n- `ln.ref1 = acct.accn_id` 关联贷款与账户",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79184,
+        "output": 1351,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 973,
+        "total": 80535
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 42.23,
+      "agent_duration_ms": 34714,
+      "extra_columns": []
+    },
+    {
+      "question_id": 105,
+      "datasource": "financial",
+      "chat_id": "73eee203f89447f18e1212b34e287dff",
+      "final_sql": "SELECT DISTINCT c.clnt_id, d.a2 FROM clnt c JOIN dsp s ON s.ref1 = c.clnt_id AND s.typ = 'OWNER' JOIN dstr d ON d.dstr_id = c.ref1",
+      "sql_history": [
+        "SELECT DISTINCT c.clnt_id, d.a2 FROM clnt c JOIN dsp s ON s.ref1 = c.clnt_id AND s.typ = 'OWNER' JOIN dstr d ON d.dstr_id = c.ref1"
+      ],
+      "agent_text": "已执行最终\n答案 SQL 并获得结果。\n\n**查询逻辑：**\n- 外部知识说明：只有 OWNER 类型账户有权签发永久订单或申请贷款\n- `dsp` 表中 `typ = 'OWNER'` 的记录关联了 client 和 account\n- `clnt.ref1` → `dstr.dstr_id` 获取客户所在区域\n- 返回 `clnt_id`（客户ID）和 `a2`（区域名称）\n\n共返回 26 条记录，即所有作为账户所有者的客户ID及其所在区域。",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79316,
+        "output": 3618,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 3378,
+        "total": 82934
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 87.69,
+      "agent_duration_ms": 79957,
+      "extra_columns": []
+    },
+    {
+      "question_id": 106,
+      "datasource": "financial",
+      "chat_id": "a1e29aeff8a6482eaa2ecbfdc5e55644",
+      "final_sql": "SELECT DISTINCT c.clnt_id, TIMESTAMPDIFF(YEAR, c.brth_dt, CURDATE()) AS age FROM clnt c JOIN dsp d ON c.clnt_id = d.ref1 JOIN crd cr ON d.dsp_id = cr.ref1 WHERE cr.typ = 'gold' AND d.typ = 'OWNER'",
+      "sql_history": [
+        "SELECT DISTINCT c.clnt_id, TIMESTAMPDIFF(YEAR, c.brth_dt, CURDATE()) AS age FROM clnt c JOIN dsp d ON c.clnt_id = d.ref1 JOIN crd cr ON d.dsp_id = cr.ref1 WHERE cr.typ = 'gold' AND d.typ = 'OWNER'"
+      ],
+      "agent_text": "最终\n答案 SQL 已执行完毕，结果返回了 27 位拥有 gold 类型信用卡且为账户 OWNER（符合贷款资格）的客户 ID 及其年龄：\n\n| clnt_id | age |\n|---------|-----|\n| 9 | 90 |\n| 41 | 58 |\n| 79 | 57 |\n| 326 | 59 |\n| 548 | 88 |\n| 562 | 51 |\n| 694 | 90 |\n| 886 | 78 |\n| 928 | 75 |\n| 1067 | 74 |\n| 1089 | 86 |\n| 1133 | 68 |\n| 1179 | 96 |\n| 1220 | 72 |\n| 1246 | 63 |\n| 1289 | 80 |\n| 1388 | 64 |\n| 1452 | 86 |\n| 1453 | 60 |\n| 1536 | 59 |\n| 1579 | 63 |\n| 1629 | 60 |\n| 1668 | 77 |\n| 1707 | 75 |\n| 1718 | 88 |\n| 1777 | 63 |\n| 1799 | 67 |\n\n查询逻辑：`clnt → dsp（ref1=clnt_id, typ='OWNER'）→ crd（ref1=dsp_id, typ='gold'`，满足\"high level credit card\"（gold）和\"eligible for loans\"（OWNER）两个条件。",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 79309,
+        "output": 4193,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 3737,
+        "total": 83502
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 101.02,
+      "agent_duration_ms": 93370,
+      "extra_columns": []
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "runs": [
+    {
+      "question_id": 57,
+      "datasource": "financial",
+      "chat_id": "70a12fdd05f94527ad9d1e260dbaef69",
+      "final_sql": "SELECT ref1 FROM trns WHERE oprt = 'VYBER KARTOU' AND dt >= '1998-01-01' AND dt < '1999-01-01' AND amnt < (SELECT AVG(amnt) FROM trns)",
+      "sql_history": [
+        "SELECT oprt, COUNT(*) c, MIN(dt) mn, MAX(dt) mx FROM trns GROUP BY oprt",
+        "SELECT ref1 FROM trns WHERE oprt = 'VYBER KARTOU' AND dt >= '1998-01-01' AND dt < '1999-01-01' AND amnt < (SELECT AVG(amnt) FROM trns)"
+      ],
+      "agent_text": "信用在 1998 年用信用卡取现（`trns.oprt = 'VYBER KARTOU'`）且金额低于全表平均金额（比较基准取全集，不叠加主查询的过滤条件）的账户号（`trns.ref1` = 账户 id）如下：\n\n按交易行返回（含同一账户的多条匹配交易）：\n\n`7, 14, 14, 14, 14, 14, 14, 33, 33, 33, 33, 34, 43, 43, 43, 43, 43, 43, 43, 43, 43, 43, 48, 48, 51, 51, 51`\n\n去重后的账户号：**7, 14, 33, 34, 43, 48, 51**\n\n最终 SQL：\n\n```sql\nSELECT ref1\nFROM trns\nWHERE oprt = 'VYBER KARTOU'\n  AND dt >= '1998-01-01' AND dt < '1999-01-01'\n  AND amnt < (SELECT AVG(amnt) FROM trns)\n```",
+      "tool_calls": 18,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 12,
+      "tool_rounds": 11,
+      "tokens": {
+        "input": 23734,
+        "output": 15955,
+        "cache_read": 430464,
+        "cache_write": 0,
+        "reasoning": 14425,
+        "total": 470153
+      },
+      "cost_usd": 0.019843,
+      "elapsed_seconds": 153.34,
+      "agent_duration_ms": 145717,
+      "extra_columns": []
+    }
+  ]
+}

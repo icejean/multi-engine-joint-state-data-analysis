@@ -1,0 +1,123 @@
+{
+  "runs": [
+    {
+      "question_id": 6,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "8f4a7c5393e4497d97054decf8e10376",
+      "final_sql": "SELECT COUNT(*) AS cnt FROM ( SELECT p.prdc_id FROM prod p JOIN prod_rvw r ON r.ref1 = p.prdc_id WHERE p.mk_flg = 1 AND p.fnsh_gds_flg = 1 GROUP BY p.prdc_id HAVING COUNT(r.cmmn) > 10 ) AS t",
+      "sql_history": [
+        "SELECT COUNT(*) AS cnt FROM ( SELECT p.prdc_id FROM prod p JOIN prod_rvw r ON r.ref1 = p.prdc_id WHERE p.mk_flg = 1 AND p.fnsh_gds_flg = 1 GROUP BY p.prdc_id HAVING COUNT(r.cmmn) > 10 ) AS t"
+      ],
+      "agent_text": "**答案：0**\n\n最终 SQL 返回结果为 `0`——在同时满足自制（`mk_flg = 1`）和可售（`fnsh_gds_flg = 1`）的产品中，没有任何一个产品获得超过 10 条评论。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 70108,
+        "output": 1186,
+        "cache_read": 45632,
+        "cache_write": 0,
+        "reasoning": 967,
+        "total": 116926
+      },
+      "cost_usd": 0.099825,
+      "elapsed_seconds": 56.65,
+      "agent_duration_ms": 48719,
+      "extra_columns": []
+    },
+    {
+      "question_id": 96,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "4466b8f9df4c4bf194d2b67825c3bf9c",
+      "final_sql": "SELECT COUNT(*) AS clothing_products_on_ll_road_frame_sale FROM spcl_offr so JOIN spcl_prod sp ON sp.ref2 = so.spcl_offr_id JOIN prod p ON p.prdc_id = sp.ref1 JOIN prod_sub ps ON ps.prdc_sbct_id = p.ref2 JOIN prod_cat pc ON pc.prdc_ctgr_id = ps.ref1 WHERE so.dscr = 'LL Road Frame Sale' AND pc.nm = 'Clothing'",
+      "sql_history": [
+        "SELECT spcl_offr_id, dscr FROM spcl_offr",
+        "SELECT COUNT(*) AS clothing_products_on_ll_road_frame_sale FROM spcl_offr so JOIN spcl_prod sp ON sp.ref2 = so.spcl_offr_id JOIN prod p ON p.prdc_id = sp.ref1 JOIN prod_sub ps ON ps.prdc_sbct_id = p.ref2 JOIN prod_cat pc ON pc.prdc_ctgr_id = ps.ref1 WHERE so.dscr = 'LL Road Frame Sale' AND pc.nm = 'Clothing'"
+      ],
+      "agent_text": "**0** — Clothing 类别的产品没有参与「LL Road Frame Sale」促销。\n\n最终答案 SQL 已执行完毕，结果为 0。",
+      "tool_calls": 8,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 6,
+      "tool_rounds": 5,
+      "tokens": {
+        "input": 105728,
+        "output": 1657,
+        "cache_read": 158912,
+        "cache_write": 0,
+        "reasoning": 1301,
+        "total": 266297
+      },
+      "cost_usd": 0.17164,
+      "elapsed_seconds": 48.45,
+      "agent_duration_ms": 40334,
+      "extra_columns": []
+    },
+    {
+      "question_id": 99,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "75381f9cbe524d6695df13d6a3a11b77",
+      "final_sql": "WITH RECURSIVE bom_tree AS ( SELECT b.ref2 AS component_id, 1 AS lvl FROM bom b WHERE b.ref3 = 680 AND b.end_dt IS NULL UNION ALL SELECT b.ref2, t.lvl + 1 FROM bom b JOIN bom_tree t ON b.ref3 = t.component_id WHERE b.end_dt IS NULL ) SELECT DISTINCT p.nm AS component_name, t.lvl AS assembly_level FROM bom_tree t JOIN prod p ON p.prdc_id = t.component_id ORDER BY t.lvl, p.nm",
+      "sql_history": [
+        "SELECT prdc_id, nm, clr, sz FROM prod WHERE nm LIKE '%HL Road Frame%Black%58%'",
+        "WITH RECURSIVE bom_tree AS ( SELECT b.ref2 AS component_id, 1 AS lvl FROM bom b WHERE b.ref3 = 680 AND b.end_dt IS NULL UNION ALL SELECT b.ref2, t.lvl + 1 FROM bom b JOIN bom_tree t ON b.ref3 = t.component_id WHERE b.end_dt IS NULL ) SELECT DISTINCT p.nm AS component_name, t.lvl AS assembly_level FROM bom_tree t JOIN prod p ON p.prdc_id = t.component_id ORDER BY t.lvl, p.nm"
+      ],
+      "agent_text": "结果如下，列出了组装 'HL Road Frame - Black, 58' 所需的全部组件及其在装配层级中的级别：\n\n| component_name | assembly_level |\n|---|---|\n| Chain Stays | 1 |\n| Decal 1 | 1 |\n| Decal 2 | 1 |\n| Down Tube | 1 |\n| HL Fork | 1 |\n| Head Tube | 1 |\n| Paint - Black | 1 |\n| Seat Stays | 1 |\n| Seat Tube | 1 |\n| Top Tube | 1 |\n| Blade | 2 |\n| Fork Crown | 2 |\n| Fork End | 2 |\n| Metal Bar 2 | 2 |\n| Metal Sheet 2 | 2 |\n| Metal Sheet 3 | 2 |\n| Metal Sheet 4 | 2 |\n| Metal Sheet 5 | 2 |\n| Metal Sheet 7 | 2 |\n| Steerer | 2 |\n| Metal Sheet 2 | 3 |\n| Metal Sheet 5 | 3 |\n| Metal Sheet 6 | 3 |\n\n- **Level 1**（10件）：车架的直接组件——各管件、前叉、贴花、油漆等\n- **Level 2**（11件）：Level 1 组件的子件，主要来自 HL Fork 的拆解（Blade、Fork Crown、Steerer 等）和金属板材\n- **Level 3**（3件）：更深层嵌套的金属板件",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 26635,
+        "output": 1230,
+        "cache_read": 135040,
+        "cache_write": 0,
+        "reasoning": 608,
+        "total": 162905
+      },
+      "cost_usd": 0.069292,
+      "elapsed_seconds": 35.8,
+      "agent_duration_ms": 27617,
+      "extra_columns": []
+    },
+    {
+      "question_id": 124,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "a11ff417b21b4833b40afde764b98e97",
+      "final_sql": "SELECT DISTINCT s.nm AS store_name, a.cty AS city, sp.nm AS state_province FROM stor s JOIN biz_ent be ON s.ref2 = be.bsns_entt_id JOIN biz_addr ba ON ba.ref1 = be.bsns_entt_id JOIN addr a ON ba.ref3 = a.addr_id JOIN st_prv sp ON a.ref1 = sp.stt_prvn_id ORDER BY s.nm",
+      "sql_history": [
+        "SELECT s.nm AS store_name, a.cty AS city, sp.nm AS state_province FROM stor s JOIN biz_ent be ON s.ref2 = be.bsns_entt_id JOIN biz_addr ba ON ba.ref1 = be.bsns_entt_id JOIN addr a ON ba.ref3 = a.addr_id JOIN st_prv sp ON a.ref1 = sp.stt_prvn_id ORDER BY s.nm",
+        "SELECT DISTINCT s.nm AS store_name, a.cty AS city, sp.nm AS state_province FROM stor s JOIN biz_ent be ON s.ref2 = be.bsns_entt_id JOIN biz_addr ba ON ba.ref1 = be.bsns_entt_id JOIN addr a ON ba.ref3 = a.addr_id JOIN st_prv sp ON a.ref1 = sp.stt_prvn_id ORDER BY s.nm"
+      ],
+      "agent_text": "27 家门店，按店名排序，包含店名、城市、州/省三列。",
+      "tool_calls": 4,
+      "pass": false,
+      "error": null,
+      "model": "zai/glm-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 28825,
+        "output": 4714,
+        "cache_read": 139776,
+        "cache_write": 0,
+        "reasoning": 4385,
+        "total": 173315
+      },
+      "cost_usd": 0.086992,
+      "elapsed_seconds": 83.57,
+      "agent_duration_ms": 75744,
+      "extra_columns": []
+    }
+  ]
+}

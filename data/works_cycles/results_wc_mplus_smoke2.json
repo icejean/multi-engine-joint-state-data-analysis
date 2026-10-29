@@ -1,0 +1,33 @@
+{
+  "runs": [
+    {
+      "question_id": 1,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "eedc0a5652c0494e86d66f24bb304945",
+      "final_sql": "SELECT (SELECT COUNT(DISTINCT ref1) FROM biz_addr WHERE ref2 = 2) AS home_address_businesses, (SELECT COUNT(DISTINCT ref1) FROM biz_addr WHERE ref2 = 5) AS shipping_address_businesses",
+      "sql_history": [
+        "SELECT (SELECT COUNT(DISTINCT ref1) FROM biz_addr WHERE ref2 = 2) AS home_address_businesses, (SELECT COUNT(DISTINCT ref1) FROM biz_addr WHERE ref2 = 5) AS shipping_address_businesses"
+      ],
+      "agent_text": "答案（数据源 `works_cycles`，表 `biz_addr`，按地址类型区分，企业去重计数）：\n\n| 指标 | AddressTypeID | 企业数 |\n|---|---|---|\n| 家庭地址作为其地址的企业 | 2 | **18774** |\n| 有收货地址的企业 | 5 | **35** |\n\n- 家庭地址企业数：**18774**\n- 收货地址企业数：**35**",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 33446,
+        "output": 973,
+        "cache_read": 84352,
+        "cache_write": 0,
+        "reasoning": 663,
+        "total": 118771
+      },
+      "cost_usd": 0.007317,
+      "elapsed_seconds": 17.66,
+      "agent_duration_ms": 9607,
+      "extra_columns": []
+    }
+  ]
+}

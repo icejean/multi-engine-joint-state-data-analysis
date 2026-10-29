@@ -1,0 +1,529 @@
+{
+  "runs": [
+    {
+      "question_id": "A3",
+      "s_level": "S0",
+      "final_sql": "SELECT COUNT(*) FROM film WHERE rtng = 'PG-13'",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "A3",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(*) FROM film WHERE rtng = 'PG-13'",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "A3",
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(*) FROM film WHERE rtng = 'PG-13'",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "B1",
+      "s_level": "S0",
+      "final_sql": "SELECT a.frst_nm, a.last_nm, COUNT(DISTINCT fa.ref2) AS `出演数` FROM actr a LEFT JOIN flm_act fa ON a.actr_id = fa.ref1 GROUP BY a.actr_id, a.frst_nm, a.last_nm ORDER BY `出演数` DESC, a.frst_nm ASC, a.last_nm ASC LIMIT 10",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "B1",
+      "s_level": "S1",
+      "final_sql": "SELECT a.frst_nm, a.last_nm, COUNT(DISTINCT f.ref2) AS `出演数`\nFROM actr a\nLEFT JOIN flm_act f ON a.actr_id = f.ref1\nGROUP BY a.actr_id, a.frst_nm, a.last_nm\nORDER BY `出演数` DESC, a.frst_nm ASC, a.last_nm ASC\nLIMIT 10",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "B1",
+      "s_level": "S2",
+      "final_sql": "SELECT a.frst_nm, a.last_nm, COUNT(fa.ref2) AS 出演数\nFROM actr a\nJOIN flm_act fa ON a.actr_id = fa.ref1\nGROUP BY a.actr_id, a.frst_nm, a.last_nm\nORDER BY 出演数 DESC, a.frst_nm ASC, a.last_nm ASC\nLIMIT 10",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "B5",
+      "s_level": "S0",
+      "final_sql": "SELECT c.frst_nm, c.last_nm, SUM(p.amt) AS total_amt FROM cust c JOIN pymt p ON c.cust_id = p.ref1 GROUP BY c.cust_id, c.frst_nm, c.last_nm ORDER BY total_amt DESC, c.frst_nm ASC, c.last_nm ASC LIMIT 10",
+      "pass": false,
+      "error": null
+    },
+    {
+      "question_id": "B5",
+      "s_level": "S1",
+      "final_sql": "SELECT c.frst_nm, c.last_nm, COALESCE(SUM(p.amt),0) AS amount FROM cust c LEFT JOIN pymt p ON c.cust_id = p.ref1 GROUP BY c.cust_id, c.frst_nm, c.last_nm ORDER BY amount DESC, c.frst_nm ASC, c.last_nm ASC LIMIT 10",
+      "pass": false,
+      "error": null
+    },
+    {
+      "question_id": "B5",
+      "s_level": "S2",
+      "final_sql": "SELECT c.frst_nm, c.last_nm, SUM(p.amt) AS total_amt\nFROM cust c\nJOIN card cd ON cd.ref1 = c.cust_id\nJOIN pymt p ON p.ref1 = cd.card_id\nGROUP BY c.cust_id, c.frst_nm, c.last_nm\nORDER BY total_amt DESC, c.frst_nm ASC, c.last_nm ASC\nLIMIT 10",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "C3",
+      "s_level": "S0",
+      "final_sql": "SELECT COUNT(DISTINCT f.flm_id) FROM cust c JOIN rntl r ON r.ref2 = c.cust_id JOIN invt i ON i.invt_id = r.ref1 JOIN film f ON f.flm_id = i.ref1 WHERE c.frst_nm = 'MARY' AND c.last_nm = 'SMITH'",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "C3",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT f.flm_id) FROM cust c JOIN rntl r ON r.ref2 = c.cust_id JOIN invt i ON i.invt_id = r.ref1 JOIN film f ON f.flm_id = i.ref1 WHERE c.frst_nm = 'MARY' AND c.last_nm = 'SMITH'",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "C3",
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(DISTINCT f.flm_id) FROM cust c JOIN rntl r ON r.ref2 = c.cust_id JOIN invt i ON i.invt_id = r.ref1 JOIN film f ON f.flm_id = i.ref1 WHERE c.frst_nm = 'MARY' AND c.last_nm = 'SMITH'",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "C5",
+      "s_level": "S0",
+      "final_sql": "SELECT COUNT(DISTINCT f.flm_id) FROM film f JOIN flm_cat fc ON f.flm_id = fc.ref1 JOIN catg c ON c.catg_id = fc.ref2 WHERE c.nm = 'Comedy'",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "C5",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(*) FROM flm_cat JOIN catg ON flm_cat.ref2 = catg.catg_id WHERE catg.nm = 'Comedy'",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "C5",
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(*) FROM flm_cat JOIN catg ON flm_cat.ref2 = catg.catg_id WHERE catg.nm = 'Comedy'",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "C6",
+      "s_level": "S0",
+      "final_sql": "SELECT a.frst_nm, a.last_nm FROM actr a JOIN flm_act fa ON a.actr_id = fa.ref2 JOIN film f ON f.flm_id = fa.ref1 WHERE f.ttl = 'ACADEMY DINOSAUR' ORDER BY a.frst_nm ASC, a.last_nm ASC",
+      "pass": false,
+      "error": null
+    },
+    {
+      "question_id": "C6",
+      "s_level": "S1",
+      "final_sql": "SELECT actr.frst_nm, actr.last_nm FROM actr JOIN flm_act ON actr.actr_id = flm_act.ref1 JOIN film ON film.flm_id = flm_act.ref2 WHERE film.ttl = 'ACADEMY DINOSAUR' ORDER BY actr.frst_nm ASC, actr.last_nm ASC",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "C6",
+      "s_level": "S2",
+      "final_sql": "SELECT actr.frst_nm, actr.last_nm FROM actr JOIN flm_act ON actr.actr_id = flm_act.ref1 JOIN film ON flm_act.ref2 = film.flm_id WHERE film.ttl = 'ACADEMY DINOSAUR' ORDER BY actr.frst_nm ASC, actr.last_nm ASC",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "D1",
+      "s_level": "S0",
+      "final_sql": "SELECT COUNT(*) FROM film WHERE rnt_dur = 7",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "D1",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(*) FROM film WHERE rnt_dur = 7",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "D1",
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(*) FROM film WHERE rnt_dur = 7",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "E2",
+      "s_level": "S0",
+      "final_sql": "SELECT COUNT(*) FROM cust WHERE actv = 1",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "E2",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(*) FROM cust WHERE actv = 1",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "E2",
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(cust_id) FROM cust WHERE actv = 1",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "E3",
+      "s_level": "S0",
+      "final_sql": "SELECT COUNT(*) FROM (SELECT ref1 FROM pymt GROUP BY ref1 HAVING SUM(amt) > 150) AS t",
+      "pass": false,
+      "error": null
+    },
+    {
+      "question_id": "E3",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(*) FROM (SELECT ref1 FROM pymt GROUP BY ref1 HAVING SUM(amt) > 150) t",
+      "pass": false,
+      "error": null
+    },
+    {
+      "question_id": "E3",
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(*) FROM (SELECT c.cust_id FROM pymt p JOIN card cd ON p.ref1 = cd.card_id JOIN cust c ON cd.ref1 = c.cust_id GROUP BY c.cust_id HAVING SUM(p.amt) > 150) t",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "F1",
+      "s_level": "S0",
+      "final_sql": "SELECT COUNT(DISTINCT ref1) FROM pymt",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "F1",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT ref1) FROM pymt",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "F1",
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(DISTINCT ref1) FROM pymt",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "F2",
+      "s_level": "S0",
+      "final_sql": "SELECT COUNT(DISTINCT ref2) FROM pymt",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "F2",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT ref2) FROM pymt",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "F2",
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(DISTINCT ref2) FROM pymt",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "F3",
+      "s_level": "S0",
+      "final_sql": "SELECT COUNT(DISTINCT ref2) FROM rntl",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "F3",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT ref2) FROM rntl",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "F3",
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(DISTINCT ref2) FROM rntl",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "F4",
+      "s_level": "S0",
+      "final_sql": "SELECT COUNT(DISTINCT ref3) FROM rntl",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "F4",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT ref3) FROM rntl",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "F4",
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(DISTINCT ref3) FROM rntl",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "F5",
+      "s_level": "S0",
+      "final_sql": "SELECT COUNT(DISTINCT ref1) FROM cust",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "F5",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT ref1) FROM cust",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "F5",
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(DISTINCT ref1) FROM cust",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "G1",
+      "s_level": "S0",
+      "final_sql": "SELECT COUNT(DISTINCT ref1) FROM awd",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "G1",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT ref1) FROM awd",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "G1",
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(DISTINCT ref1) FROM awd",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "G2",
+      "s_level": "S0",
+      "final_sql": "SELECT a.frst_nm AS `名`, a.last_nm AS `姓`, COUNT(*) AS `获奖数`\nFROM actr a\nJOIN awd w ON a.actr_id = w.ref1\nGROUP BY a.actr_id, a.frst_nm, a.last_nm\nORDER BY `获奖数` DESC, a.frst_nm ASC, a.last_nm ASC\nLIMIT 3",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "G2",
+      "s_level": "S1",
+      "final_sql": "SELECT a.frst_nm, a.last_nm, COUNT(*) AS awd_cnt\nFROM awd w\nJOIN actr a ON w.ref1 = a.actr_id\nGROUP BY a.actr_id, a.frst_nm, a.last_nm\nORDER BY awd_cnt DESC, a.frst_nm ASC, a.last_nm ASC\nLIMIT 3",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "G2",
+      "s_level": "S2",
+      "final_sql": "SELECT a.frst_nm, a.last_nm, COUNT(w.awd_id) AS awd_cnt\nFROM actr a\nJOIN awd w ON w.ref1 = a.actr_id\nGROUP BY a.actr_id, a.frst_nm, a.last_nm\nORDER BY awd_cnt DESC, a.frst_nm ASC, a.last_nm ASC\nLIMIT 3",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "H1",
+      "s_level": "S0",
+      "final_sql": "",
+      "pass": false,
+      "error": "APITimeoutError: Request timed out."
+    },
+    {
+      "question_id": "H1",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT p.ref1) FROM pymt p JOIN card c ON p.ref1 = c.ref1 WHERE c.crd_typ = '虚拟卡'",
+      "pass": false,
+      "error": null
+    },
+    {
+      "question_id": "H1",
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(DISTINCT c.ref1) FROM pymt p JOIN card c ON p.ref1 = c.card_id WHERE c.crd_typ = '虚拟卡'",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "H2",
+      "s_level": "S0",
+      "final_sql": "SELECT COUNT(DISTINCT p.ref1) FROM pymt p JOIN card c ON c.ref1 = p.ref1 WHERE c.sts = 'blocked'",
+      "pass": false,
+      "error": null
+    },
+    {
+      "question_id": "H2",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT p.ref1) FROM pymt p JOIN card c ON p.ref1 = c.ref1 WHERE c.sts = 'blocked'",
+      "pass": false,
+      "error": null
+    },
+    {
+      "question_id": "H2",
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(DISTINCT cust.cust_id) FROM pymt JOIN card ON pymt.ref1 = card.card_id JOIN cust ON card.ref1 = cust.cust_id WHERE card.sts = 'blocked'",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "H3",
+      "s_level": "S0",
+      "final_sql": "SELECT c.frst_nm AS `名`, c.last_nm AS `姓`, COUNT(DISTINCT k.card_id) AS `卡数`\nFROM cust c\nLEFT JOIN card k ON k.ref1 = c.cust_id\nGROUP BY c.cust_id, c.frst_nm, c.last_nm\nORDER BY `卡数` DESC, c.frst_nm ASC, c.last_nm ASC\nLIMIT 10",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "H3",
+      "s_level": "S1",
+      "final_sql": "SELECT c.frst_nm AS 名, c.last_nm AS 姓, COUNT(d.card_id) AS 卡数\nFROM cust c\nLEFT JOIN card d ON d.ref1 = c.cust_id\nGROUP BY c.cust_id, c.frst_nm, c.last_nm\nORDER BY 卡数 DESC, c.frst_nm ASC, c.last_nm ASC\nLIMIT 10",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "H3",
+      "s_level": "S2",
+      "final_sql": "SELECT c.frst_nm AS 名, c.last_nm AS 姓, COUNT(DISTINCT k.card_id) AS 卡数\nFROM cust c\nJOIN card k ON k.ref1 = c.cust_id\nJOIN pymt p ON p.ref1 = k.card_id\nGROUP BY c.cust_id, c.frst_nm, c.last_nm\nORDER BY 卡数 DESC, c.frst_nm ASC, c.last_nm ASC\nLIMIT 10",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "H4",
+      "s_level": "S0",
+      "final_sql": "SELECT c.frst_nm, c.last_nm, COUNT(cd.card_id) AS card_cnt FROM cust c LEFT JOIN card cd ON cd.ref1 = c.cust_id GROUP BY c.cust_id, c.frst_nm, c.last_nm ORDER BY card_cnt DESC, c.frst_nm ASC, c.last_nm ASC LIMIT 10",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "H4",
+      "s_level": "S1",
+      "final_sql": "SELECT c.frst_nm, c.last_nm, COUNT(k.card_id) AS card_cnt\nFROM cust c\nLEFT JOIN card k ON k.ref1 = c.cust_id\nGROUP BY c.cust_id, c.frst_nm, c.last_nm\nORDER BY card_cnt DESC, c.frst_nm ASC, c.last_nm ASC\nLIMIT 10",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "H4",
+      "s_level": "S2",
+      "final_sql": "SELECT cust.frst_nm, cust.last_nm, COUNT(card.card_id) AS card_cnt\nFROM cust\nLEFT JOIN card ON card.ref1 = cust.cust_id\nGROUP BY cust.cust_id, cust.frst_nm, cust.last_nm\nORDER BY card_cnt DESC, cust.frst_nm ASC, cust.last_nm ASC\nLIMIT 10",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "H5",
+      "s_level": "S0",
+      "final_sql": "SELECT COUNT(*) FROM (SELECT ref1 FROM card GROUP BY ref1 HAVING COUNT(*) > 1) AS t",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "H5",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(*) FROM (SELECT ref1 FROM card GROUP BY ref1 HAVING COUNT(*) > 1) AS t",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "H5",
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(*) FROM (SELECT ref1 FROM card GROUP BY ref1 HAVING COUNT(*) > 1) t",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "H6",
+      "s_level": "S0",
+      "final_sql": "SELECT COUNT(*) FROM card WHERE sts = 'blocked'",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "H6",
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(*) FROM card WHERE sts = 'blocked'",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "H6",
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(*) FROM card WHERE sts = 'blocked'",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "Q39",
+      "s_level": "S0",
+      "final_sql": "SELECT c.cty\nFROM cust cu\nJOIN addr a ON cu.ref2 = a.addr_id\nJOIN city c ON a.ref1 = c.cty_id\nWHERE cu.cust_id = (\n  SELECT p.ref1\n  FROM pymt p\n  GROUP BY p.ref1\n  ORDER BY SUM(p.amt) DESC\n  LIMIT 1\n)",
+      "pass": false,
+      "error": null
+    },
+    {
+      "question_id": "Q39",
+      "s_level": "S1",
+      "final_sql": "SELECT c.cty\nFROM cust cu\nJOIN addr a ON a.addr_id = cu.ref2\nJOIN city c ON c.cty_id = a.ref1\nWHERE cu.cust_id = (\n  SELECT p.ref1\n  FROM pymt p\n  GROUP BY p.ref1\n  ORDER BY SUM(p.amt) DESC\n  LIMIT 1\n)",
+      "pass": false,
+      "error": null
+    },
+    {
+      "question_id": "Q39",
+      "s_level": "S2",
+      "final_sql": "SELECT city.cty FROM pymt JOIN card ON pymt.ref1 = card.card_id JOIN cust ON card.ref1 = cust.cust_id JOIN addr ON cust.ref2 = addr.addr_id JOIN city ON addr.ref1 = city.cty_id GROUP BY cust.cust_id, city.cty ORDER BY SUM(pymt.amt) DESC LIMIT 1",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "Q40",
+      "s_level": "S0",
+      "final_sql": "SELECT COUNT(*) FROM card WHERE card_id NOT IN (SELECT ref3 FROM pymt WHERE ref3 IS NOT NULL)",
+      "pass": false,
+      "error": null
+    },
+    {
+      "question_id": "Q40",
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "APITimeoutError: Request timed out."
+    },
+    {
+      "question_id": "Q40",
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(*) FROM card c WHERE NOT EXISTS (SELECT 1 FROM pymt p WHERE p.ref1 = c.card_id)",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "Q41",
+      "s_level": "S0",
+      "final_sql": "SELECT SUM(f.lngth) FROM film f JOIN doc d ON f.flm_id = d.doc_id",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "Q41",
+      "s_level": "S1",
+      "final_sql": "SELECT SUM(f.lngth) FROM film f JOIN doc d ON f.flm_id = d.doc_id",
+      "pass": true,
+      "error": null
+    },
+    {
+      "question_id": "Q41",
+      "s_level": "S2",
+      "final_sql": "SELECT SUM(film.lngth) FROM doc JOIN film ON doc.doc_id = film.flm_id",
+      "pass": true,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "runs": [
+    {
+      "question_id": 27,
+      "datasource": "financial",
+      "chat_id": "4089ae59c88843f28c583b2b02fd3be1",
+      "final_sql": "SELECT CAST(SUM(T1.gndr = 'M') AS DOUBLE) * 100 / COUNT(T1.clnt_id) AS male_client_percentage FROM clnt AS T1 INNER JOIN dstr AS T2 ON T1.ref1 = T2.dstr_id WHERE T2.a3 = 'south Bohemia' GROUP BY T2.a4 ORDER BY T2.a4 DESC LIMIT 1",
+      "sql_history": [
+        "SELECT dstr_id, a2, a3, a4 FROM dstr WHERE a3 = 'south Bohemia' ORDER BY a4 DESC",
+        "SELECT CAST(SUM(CASE WHEN gndr='M' THEN 1 ELSE 0 END) AS DOUBLE)*100/COUNT(clnt_id) AS pct_male, COUNT(clnt_id) AS n FROM clnt WHERE ref1 = 16",
+        "SELECT COUNT(*) AS rows_cnt, COUNT(c.clnt_id) AS cnt_cid, COUNT(DISTINCT c.clnt_id) AS cnt_distinct, SUM(CASE WHEN c.gndr='M' THEN 1 ELSE 0 END) AS male_rows, SUM(CASE WHEN c.gndr='M' THEN 1 ELSE 0 END)*100.0/COUNT(c.clnt_id) AS pct_rows, SUM(CASE WHEN c.gndr='M' THEN 1 ELSE 0 END)*100.0/COUNT(DISTINCT c.clnt_id) AS pct_distinct FROM clnt c JOIN dsp ON c.clnt_id=dsp.ref1 JOIN acct a ON dsp.ref2=a.accn_id WHERE a.ref1=16",
+        "SELECT CAST(SUM(T1.gndr = 'M') AS DOUBLE) * 100 / COUNT(T1.clnt_id) AS male_client_percentage FROM clnt AS T1 INNER JOIN dstr AS T2 ON T1.ref1 = T2.dstr_id WHERE T2.a3 = 'south Bohemia' GROUP BY T2.a4 ORDER BY T2.a4 DESC LIMIT 1"
+      ],
+      "agent_text": "**44.26229508196721 %**（约 44.26%）\n\n南波希米亚（south Bohemia）居民数最多的分行（district `a4` 排序最大，即 Jindrichuv Hradec），其客户中男性（`gndr='M'`）占比为 **44.26229508196721%**。\n\n最终 SQL：\n```sql\nSELECT CAST(SUM(T1.gndr = 'M') AS DOUBLE) * 100 / COUNT(T1.clnt_id) AS male_client_percentage\nFROM clnt AS T1\nINNER JOIN dstr AS T2 ON T1.ref1 = T2.dstr_id\nWHERE T2.a3 = 'south Bohemia'\nGROUP BY T2.a4\nORDER BY T2.a4 DESC\nLIMIT 1\n```",
+      "tool_calls": 8,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 7,
+      "tool_rounds": 6,
+      "tokens": {
+        "input": 23691,
+        "output": 9920,
+        "cache_read": 226048,
+        "cache_write": 0,
+        "reasoning": 8900,
+        "total": 259659
+      },
+      "cost_usd": 0.012424,
+      "elapsed_seconds": 75.1,
+      "agent_duration_ms": 67024,
+      "extra_columns": []
+    },
+    {
+      "question_id": 42,
+      "datasource": "financial",
+      "chat_id": "98d40f6945db49158dced821da234577",
+      "final_sql": "SELECT COUNT(d.ref2) AS num_accounts FROM clnt c JOIN dstr s ON c.ref1 = s.dstr_id JOIN dsp d ON d.ref1 = c.clnt_id WHERE s.a3 = 'south Bohemia' AND d.typ <> 'OWNER';",
+      "sql_history": [
+        "SELECT COUNT(d.ref2) AS num_accounts FROM clnt c JOIN dstr s ON c.ref1 = s.dstr_id JOIN dsp d ON d.ref1 = c.clnt_id WHERE s.a3 = 'south Bohemia' AND d.typ <> 'OWNER';"
+      ],
+      "agent_text": "South Bohemia 地区**不持有信用卡的账户持有人（DISPONENT）账户数：74**。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 16577,
+        "output": 881,
+        "cache_read": 97280,
+        "cache_write": 0,
+        "reasoning": 510,
+        "total": 114738
+      },
+      "cost_usd": 0.005291,
+      "elapsed_seconds": 19.22,
+      "agent_duration_ms": 11438,
+      "extra_columns": []
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "runs": [
+    {
+      "question_id": 1,
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(DISTINCT CASE WHEN ref2 = 2 THEN ref1 END) AS home_address_count, COUNT(DISTINCT CASE WHEN ref2 = 5 THEN ref1 END) AS shipping_address_count FROM biz_addr",
+      "pass": true,
+      "error": null,
+      "model": "glm-5.2",
+      "tokens": {
+        "input": 13625,
+        "output": 849,
+        "total": 14474
+      },
+      "elapsed_seconds": 8.78,
+      "extra_columns": []
+    }
+  ]
+}

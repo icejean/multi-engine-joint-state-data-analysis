@@ -1,0 +1,61 @@
+{
+  "runs": [
+    {
+      "question_id": 36,
+      "datasource": "financial",
+      "chat_id": "e62e9132d8f0451da90edc457a6e9599",
+      "final_sql": "SELECT ln.ln_id, dstr.a2, dstr.a11 FROM ln JOIN acct ON ln.ref1 = acct.accn_id JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE ln.drtn = 60",
+      "sql_history": [
+        "SELECT ln.ln_id, dstr.a2, dstr.a11 FROM ln JOIN acct ON ln.ref1 = acct.accn_id JOIN dstr ON acct.ref1 = dstr.dstr_id WHERE ln.drtn = 60"
+      ],
+      "agent_text": "贷款期限为 60 个月的贷款 ID、所在区县及平均工资：\n\n| ln_id | district (a2) | average salary (a11) |\n|-------|---------------|----------------------|\n| 4967 | Strakonice | 8547 |\n| 5041 | Pardubice | 9538 |\n| 5043 | Nachod | 8369 |\n| 5044 | Brno - mesto | 9897 |\n| 5051 | Frydek - Mistek | 9893 |\n| 5060 | Hl.m. Praha | 12541 |\n| 5082 | Rakovnik | 8598 |\n| 5110 | Jihlava | 8757 |\n| 5132 | Kolin | 9307 |\n| 5140 | Opava | 8746 |\n| 5147 | Karvina | 10177 |\n| 5148 | Litomerice | 9065 |\n| 5151 | Kladno | 9753 |\n| 5154 | Kutna Hora | 8546 |\n| 5160 | Jicin | 8390 |\n| 5169 | Usti nad Orlici | 8363 |\n| 5170 | Frydek - Mistek | 9893 |\n| 5265 | Uherske Hradiste | 8544 |\n| 5311 | Plzen - sever | 8594 |\n| 5319 | Teplice | 9317 |\n| 5329 | Prachatice | 8402 |\n| 5354 | Kolin | 9307 |\n| 5363 | Zlin | 9624 |\n| 5365 | Litomerice | 9065 |\n| 5409 | Prachatice | 8402 |\n| 5419 | Hl.m. Praha | 12541 |\n| 5447 | Karvina | 10177 |\n\n共 27 条贷款（`ln JOIN acct ON ln.ref1=acct.accn_id JOIN dstr ON acct.ref1=dstr.dstr_id`，条件 `ln.drtn = 60`；district 取 `dstr.a2`，平均工资取 `dstr.a11`）。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 16865,
+        "output": 963,
+        "cache_read": 66944,
+        "cache_write": 0,
+        "reasoning": 263,
+        "total": 84772
+      },
+      "cost_usd": 0.004505,
+      "elapsed_seconds": 16.8,
+      "agent_duration_ms": 8916,
+      "extra_columns": []
+    },
+    {
+      "question_id": 37,
+      "datasource": "financial",
+      "chat_id": "ea31896c85a44a699b388545a484be0e",
+      "final_sql": "SELECT CAST((T3.a13 - T3.a12) AS DOUBLE) * 100 / T3.a12 AS unemployment_rate_increment_pct FROM ln AS T1 INNER JOIN acct AS T2 ON T1.ref1 = T2.accn_id INNER JOIN dstr AS T3 ON T2.ref1 = T3.dstr_id WHERE T1.stts = 'D'",
+      "sql_history": [
+        "SELECT l.stts, COUNT(*) AS cnt, COUNT(DISTINCT a.ref1) AS districts FROM ln l JOIN acct a ON l.ref1 = a.accn_id GROUP BY l.stts ORDER BY l.stts",
+        "SELECT CAST((T3.a13 - T3.a12) AS DOUBLE) * 100 / T3.a12 AS unemployment_rate_increment_pct FROM ln AS T1 INNER JOIN acct AS T2 ON T1.ref1 = T2.accn_id INNER JOIN dstr AS T3 ON T2.ref1 = T3.dstr_id WHERE T1.stts = 'D'"
+      ],
+      "agent_text": "已完成，最终 SQL 已执行（`financial` 数据源，单条查询后停止）。\n\n**口径**：还在运行且客户欠款的贷款合同 = `ln.stts = 'D'`；经 `ln→acct→dstr` 链取开户分支所在区，计算 1995→1996 失业率增量 `(a13 - a12) * 100 / a12`，只返回增量这一列（不返回 district 列）。\n\n```sql\nSELECT CAST((T3.a13 - T3.a12) AS DOUBLE) * 100 / T3.a12 AS unemployment_rate_increment_pct\nFROM ln AS T1\nINNER JOIN acct AS T2 ON T1.ref1 = T2.accn_id\nINNER JOIN dstr AS T3 ON T2.ref1 = T3.dstr_id\nWHERE T1.stts = 'D'\n```\n\n返回结果（每行一个增量百分比）：40.0、39.259…、115.0、22.5、20.0、NULL、11.667…、NULL、44.375、13.333…、17.424…、39.259…、8.4375、−5.593…、28.571…、115.0、16.316…、42.4、22.5、13.542…、16.316…、26.053…、14.912…、40.0、115.0、9.783…、22.5（其中 2 行因 a12=0 为 NULL）。",
+      "tool_calls": 9,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 8,
+      "tool_rounds": 7,
+      "tokens": {
+        "input": 22608,
+        "output": 6966,
+        "cache_read": 248832,
+        "cache_write": 0,
+        "reasoning": 5859,
+        "total": 278406
+      },
+      "cost_usd": 0.012083,
+      "elapsed_seconds": 59.52,
+      "agent_duration_ms": 51126,
+      "extra_columns": []
+    }
+  ]
+}

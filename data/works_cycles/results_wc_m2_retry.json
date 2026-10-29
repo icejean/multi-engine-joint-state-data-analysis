@@ -1,0 +1,57 @@
+{
+  "runs": [
+    {
+      "question_id": 1,
+      "m_level": "M2",
+      "datasource": "works_cycles_er",
+      "chat_id": "8d5b3073ef424516a51569915680a04a",
+      "final_sql": "SELECT (SELECT COUNT(DISTINCT ba.ref1) FROM biz_addr ba JOIN addr_typ t ON ba.ref2 = t.addr_typ_id WHERE t.nm = 'Home') + (SELECT COUNT(DISTINCT ba.ref1) FROM biz_addr ba JOIN addr_typ t ON ba.ref2 = t.addr_typ_id WHERE t.nm = 'Shipping') AS total",
+      "sql_history": [
+        "SELECT * FROM sys_foreignkeys",
+        "SELECT * FROM sys_tables LIMIT 3",
+        "SELECT * FROM addr_typ",
+        "SELECT * FROM biz_addr LIMIT 10",
+        "SELECT * FROM biz_ent LIMIT 10",
+        "SELECT ref2 AS addr_typ_id, COUNT(DISTINCT ref1) AS biz_cnt FROM biz_addr WHERE ref2 IN (2,5) GROUP BY ref2",
+        "SELECT (SELECT COUNT(DISTINCT ba.ref1) FROM biz_addr ba JOIN addr_typ t ON ba.ref2 = t.addr_typ_id WHERE t.nm = 'Home') + (SELECT COUNT(DISTINCT ba.ref1) FROM biz_addr ba JOIN addr_typ t ON ba.ref2 = t.addr_typ_id WHERE t.nm = 'Shipping') AS total"
+      ],
+      "agent_text": "**18809**\n\n- 家庭地址（Home）类型的商户：18774\n- 收货地址（Shipping）类型的商户：35\n- 合计：**18809**\n\n关联路径：`biz_addr.ref2 → addr_typ.addr_typ_id`（地址类型），`biz_addr.ref1 → biz_ent.bsns_entt_id`（商户），按两类地址类型分别去重计数后相加。",
+      "tool_calls": 10,
+      "pass": false,
+      "error": null
+    },
+    {
+      "question_id": 99,
+      "m_level": "M2",
+      "datasource": "works_cycles_er",
+      "chat_id": "084323e3681748e9b87723d2dcdf2bb8",
+      "final_sql": "WITH RECURSIVE bom_tree AS ( SELECT b.ref2 AS component_id, b.bm_lvl AS level FROM bom b JOIN prod r ON b.ref3 = r.prdc_id WHERE r.nm = 'HL Road Frame - Black, 58' AND b.end_dt IS NULL UNION ALL SELECT b.ref2, b.bm_lvl FROM bom b JOIN bom_tree t ON b.ref3 = t.component_id WHERE b.end_dt IS NULL ) SELECT t.level, p.nm AS component_name FROM bom_tree t JOIN prod p ON p.prdc_id = t.component_id ORDER BY t.level, p.nm",
+      "sql_history": [
+        "SELECT * FROM sys_foreignkeys",
+        "SELECT * FROM sys_tables LIMIT 5",
+        "SELECT * FROM sys_table_fields LIMIT 5",
+        "SELECT table_name, field_name, field_desc FROM sys_table_fields WHERE table_name IN ('bom','prod')",
+        "SELECT * FROM bom LIMIT 10",
+        "SELECT prdc_id, nm, prdc_nmbr, fnsh_gds_flg FROM prod WHERE nm LIKE 'HL Road Frame%'",
+        "SELECT bll_of_mtrl_id, ref3, ref2, ref1, bm_lvl, pr_assm_qty FROM bom WHERE ref3 = 807",
+        "SELECT bll_of_mtrl_id, ref3, ref2, ref1, bm_lvl, pr_assm_qty FROM bom WHERE ref3 = 680",
+        "SELECT bll_of_mtrl_id, ref3, ref2, ref1, bm_lvl, pr_assm_qty, strt_dt, end_dt FROM bom WHERE ref3 = 680 ORDER BY ref2, strt_dt",
+        "SELECT COUNT(*) AS total, SUM(end_dt IS NULL) AS null_end FROM bom",
+        "WITH RECURSIVE tree AS ( SELECT b.ref3 AS parent_id, b.ref2 AS component_id, b.pr_assm_qty AS qty, b.ref1 AS uom, 1 AS lvl FROM bom b JOIN prod r ON b.ref3 = r.prdc_id WHERE r.nm = 'HL Road Frame - Black, 58' AND b.end_dt IS NULL UNION ALL SELECT b.ref3, b.ref2, b.pr_assm_qty, b.ref1, t.lvl + 1 FROM bom b JOIN tree t ON b.ref3 = t.component_id WHERE b.end_dt IS NULL AND t.lvl < 10 ) SELECT t.lvl AS level, t.parent_id, t.component_id, p.nm AS component_name, t.qty, t.uom FROM tree t JOIN prod p ON p.prdc_id = t.component_id ORDER BY t.lvl, p.nm",
+        "SELECT bm_lvl, COUNT(*) FROM bom GROUP BY bm_lvl ORDER BY bm_lvl",
+        "SELECT ref3, bm_lvl, COUNT(*) FROM bom WHERE ref3 IN (680,804,533,534,327,399,324,532,331,350,316,531) GROUP BY ref3, bm_lvl ORDER BY ref3",
+        "WITH RECURSIVE tree AS ( SELECT b.ref3 AS parent_id, b.ref2 AS component_id, b.bm_lvl, b.pr_assm_qty, b.end_dt, 1 AS depth FROM bom b JOIN prod r ON b.ref3 = r.prdc_id WHERE r.nm = 'HL Road Frame - Black, 58' AND b.end_dt IS NULL UNION ALL SELECT b.ref3, b.ref2, b.bm_lvl, b.pr_assm_qty, b.end_dt, t.depth + 1 FROM bom b JOIN tree t ON b.ref3 = t.component_id WHERE b.end_dt IS NULL AND t.depth < 10 ) SELECT depth, parent_id, component_id, bm_lvl, pr_assm_qty FROM tree ORDER BY depth, parent_id, component_id",
+        "SELECT ref2, COUNT(*) c FROM bom WHERE ref2 = 680 GROUP BY ref2",
+        "SELECT bll_of_mtrl_id, ref3, ref2, ref1, bm_lvl, pr_assm_qty, end_dt FROM bom WHERE ref2 = 680",
+        "SELECT bll_of_mtrl_id, ref3, ref2, ref1, bm_lvl, pr_assm_qty, end_dt FROM bom WHERE ref3 IS NULL LIMIT 15",
+        "WITH RECURSIVE tree AS ( SELECT b.ref3 AS parent_id, b.ref2 AS component_id, b.bm_lvl, b.end_dt, 1 AS depth FROM bom b JOIN prod r ON b.ref3 = r.prdc_id WHERE r.nm = 'HL Road Frame - Black, 58' UNION ALL SELECT b.ref3, b.ref2, b.bm_lvl, b.end_dt, t.depth + 1 FROM bom b JOIN tree t ON b.ref3 = t.component_id WHERE t.depth < 10 ) SELECT depth, parent_id, component_id, bm_lvl, end_dt FROM tree ORDER BY depth, parent_id, component_id",
+        "SELECT ref3, ref2, bm_lvl, pr_assm_qty, strt_dt, end_dt FROM bom WHERE ref3 IN (492,478,482,483,484,485,486,487) ORDER BY ref3, ref2",
+        "WITH RECURSIVE bom_tree AS ( SELECT b.ref2 AS component_id, b.bm_lvl AS level FROM bom b JOIN prod r ON b.ref3 = r.prdc_id WHERE r.nm = 'HL Road Frame - Black, 58' AND b.end_dt IS NULL UNION ALL SELECT b.ref2, b.bm_lvl FROM bom b JOIN bom_tree t ON b.ref3 = t.component_id WHERE b.end_dt IS NULL ) SELECT t.level, p.nm AS component_name FROM bom_tree t JOIN prod p ON p.prdc_id = t.component_id ORDER BY t.level, p.nm"
+      ],
+      "agent_text": "已用数据源 `works_cycles_er` 完成。按装配层级递归展开 `HL Road Frame - Black, 58`（prdc_id=680）的物料清单（BOM 自引用：`bom.ref3`=装配产品、`bom.ref2`=组件、`bom.bm_lvl`=层级，仅取当前有效行 `end_dt IS NULL`），共 24 个组件：\n\n| 层级 | 组件 |\n|---|---|\n| 2 | Chain Stays |\n| 2 | Decal 1 |\n| 2 | Decal 2 |\n| 2 | Down Tube |\n| 2 | HL Fork |\n| 2 | Head Tube |\n| 2 | Paint - Black |\n| 2 | Seat Stays |\n| 2 | Seat Tube |\n| 2 | Top Tube |\n| 3 | Blade |\n| 3 | Fork Crown |\n| 3 | Fork End |\n| 3 | Metal Bar 2 |\n| 3 | Metal Sheet 2 |\n| 3 | Metal Sheet 3 |\n| 3 | Metal Sheet 4 |\n| 3 | Metal Sheet 5 |\n| 3 | Metal Sheet 7 |\n| 3 | Steerer |\n| 4 | Metal Sheet 2 |\n| 4 | Metal Sheet 5 |\n| 4 | Metal Sheet 5 |\n| 4 | Metal Sheet 6 |\n\n说明：层级值取 BOM 的物料层级 `bm_lvl`（\"产品装配层级中的级别\"）。直接组件为层级 2（该车架本身位于第 1 层），嵌套件为层级 3、4。\n\n最终 SQL：\n\n```sql\nWITH RECURSIVE bom_tree AS (\n  SELECT b.ref2 AS component_id, b.bm_lvl AS level\n  FROM bom b\n  JOIN prod r ON b.ref3 = r.prdc_id\n  WHERE r.nm = 'HL Road Frame - Black, 58' AND b.end_dt IS NULL\n  UNION ALL\n  SELECT b.ref2, b.bm_lvl\n  FROM bom b\n  JOIN bom_tree t ON b.ref3 = t.component_id\n  WHERE b.end_dt IS NULL\n)\nSELECT t.level, p.nm AS component_name\nFROM bom_tree t\nJOIN prod p ON p.prdc_id = t.component_id\nORDER BY t.level, p.nm;\n```",
+      "tool_calls": 32,
+      "pass": false,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "runs": [
+    {
+      "question_id": 125,
+      "datasource": "formula_1",
+      "chat_id": "a156fa2bf2de46d0a5389d3a55b2adad",
+      "final_sql": "SELECT d.frnm, d.srnm FROM drvr d JOIN lp_tm l ON l.ref1 = d.drvr_id WHERE d.ntnl = 'German' AND YEAR(d.db) BETWEEN 1980 AND 1990 GROUP BY d.drvr_id, d.frnm, d.srnm ORDER BY MIN(l.tm) ASC LIMIT 3",
+      "sql_history": [
+        "SELECT d.frnm, d.srnm, MIN(l.tm) AS earliest_lap_time FROM drvr d JOIN lp_tm l ON l.ref1 = d.drvr_id WHERE d.ntnl = 'German' AND YEAR(d.db) BETWEEN 1980 AND 1990 GROUP BY d.drvr_id, d.frnm, d.srnm ORDER BY earliest_lap_time ASC LIMIT 3",
+        "SELECT d.frnm, d.srnm FROM drvr d JOIN lp_tm l ON l.ref1 = d.drvr_id WHERE d.ntnl = 'German' AND YEAR(d.db) BETWEEN 1980 AND 1990 GROUP BY d.drvr_id, d.frnm, d.srnm ORDER BY MIN(l.tm) ASC LIMIT 3"
+      ],
+      "agent_text": "Top 3 德国车手（1980–1990 出生，圈速最快）：\n\n| 名 | 姓 |\n|---|---|\n| Timo | Glock |\n| Sebastian | Vettel |\n| Nico | Hülkenberg |",
+      "tool_calls": 4,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 17486,
+        "output": 3328,
+        "cache_read": 102016,
+        "cache_write": 0,
+        "reasoning": 2856,
+        "total": 122830
+      },
+      "cost_usd": 0.006236,
+      "elapsed_seconds": 31.18,
+      "agent_duration_ms": 23314,
+      "extra_columns": []
+    },
+    {
+      "question_id": 165,
+      "datasource": "formula_1",
+      "chat_id": "b8afb35d44064fbd91271d6f195d3df6",
+      "final_sql": "SELECT r.fsts_lp_tm AS lap_record FROM rslt r JOIN drvr d ON r.ref3 = d.drvr_id WHERE d.frnm = 'Lewis' AND d.srnm = 'Hamilton' AND r.fsts_lp_tm IS NOT NULL AND r.fsts_lp_tm <> '' ORDER BY r.fsts_lp_tm ASC LIMIT 1;",
+      "sql_history": [
+        "SELECT r.fsts_lp_tm AS lap_record FROM rslt r JOIN drvr d ON r.ref3 = d.drvr_id WHERE d.frnm = 'Lewis' AND d.srnm = 'Hamilton' AND r.fsts_lp_tm IS NOT NULL AND r.fsts_lp_tm <> '' ORDER BY r.fsts_lp_tm ASC LIMIT 1;"
+      ],
+      "agent_text": "Lewis Hamilton 的圈速记录（最快单圈时间）是 **1:07.411**。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 17243,
+        "output": 1294,
+        "cache_read": 68352,
+        "cache_write": 0,
+        "reasoning": 1007,
+        "total": 86889
+      },
+      "cost_usd": 0.00469,
+      "elapsed_seconds": 19.95,
+      "agent_duration_ms": 12238,
+      "extra_columns": []
+    }
+  ]
+}

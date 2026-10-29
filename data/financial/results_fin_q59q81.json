@@ -1,0 +1,60 @@
+{
+  "runs": [
+    {
+      "question_id": 59,
+      "datasource": "financial",
+      "chat_id": "bc8c150055ec4e3a8086b5e9edb68c37",
+      "final_sql": "SELECT COUNT(*) AS female_client_accounts_south_bohemia FROM clnt c JOIN dsp d ON c.clnt_id = d.ref1 JOIN acct a ON d.ref2 = a.accn_id JOIN dstr ds ON a.ref1 = ds.dstr_id WHERE c.gndr = 'F' AND ds.a3 = 'south Bohemia'",
+      "sql_history": [
+        "SELECT COUNT(*) AS female_client_accounts_south_bohemia FROM clnt c JOIN dsp d ON c.clnt_id = d.ref1 JOIN acct a ON d.ref2 = a.accn_id JOIN dstr ds ON a.ref1 = ds.dstr_id WHERE c.gndr = 'F' AND ds.a3 = 'south Bohemia'"
+      ],
+      "agent_text": "231\n\n**SQL：**\n```sql\nSELECT COUNT(*) AS female_client_accounts_south_bohemia\nFROM clnt c\nJOIN dsp d ON c.clnt_id = d.ref1\nJOIN acct a ON d.ref2 = a.accn_id\nJOIN dstr ds ON a.ref1 = ds.dstr_id\nWHERE c.gndr = 'F' AND ds.a3 = 'south Bohemia'\n```\n\n女性客户在 South Bohemia 地区的账户数为 **231**。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 15103,
+        "output": 1259,
+        "cache_read": 66560,
+        "cache_write": 0,
+        "reasoning": 892,
+        "total": 82922
+      },
+      "cost_usd": 0.004331,
+      "elapsed_seconds": 20.08,
+      "agent_duration_ms": 12158,
+      "extra_columns": []
+    },
+    {
+      "question_id": 81,
+      "datasource": "financial",
+      "chat_id": "42e148d63dcc4f2e81046c8a75293320",
+      "final_sql": "SELECT (SUM(CASE WHEN YEAR(ln.dt)=1997 THEN ln.amnt ELSE 0 END) - SUM(CASE WHEN YEAR(ln.dt)=1996 THEN ln.amnt ELSE 0 END)) * 100.0 / SUM(CASE WHEN YEAR(ln.dt)=1996 THEN ln.amnt ELSE 0 END) AS growth_rate FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id AND d.typ = 'OWNER' JOIN acct a ON a.accn_id = d.ref2 JOIN ln ON ln.ref1 = a.accn_id WHERE c.gndr = 'M' AND YEAR(ln.dt) IN (1996, 1997)",
+      "sql_history": [
+        "SELECT (SUM(CASE WHEN YEAR(ln.dt)=1997 THEN ln.amnt ELSE 0 END) - SUM(CASE WHEN YEAR(ln.dt)=1996 THEN ln.amnt ELSE 0 END)) * 100.0 / SUM(CASE WHEN YEAR(ln.dt)=1996 THEN ln.amnt ELSE 0 END) AS growth_rate FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id AND d.typ = 'OWNER' JOIN acct a ON a.accn_id = d.ref2 JOIN ln ON ln.ref1 = a.accn_id WHERE c.gndr = 'M' AND YEAR(ln.dt) IN (1996, 1997)"
+      ],
+      "agent_text": "增长率为 **25.30%**。\n\n```sql\nSELECT (SUM(CASE WHEN YEAR(ln.dt)=1997 THEN ln.amnt ELSE 0 END)\n      - SUM(CASE WHEN YEAR(ln.dt)=1996 THEN ln.amnt ELSE 0 END)) * 100.0\n      / SUM(CASE WHEN YEAR(ln.dt)=1996 THEN ln.amnt ELSE 0 END) AS growth_rate\nFROM clnt c\nJOIN dsp  d ON d.ref1 = c.clnt_id AND d.typ = 'OWNER'\nJOIN acct a ON a.accn_id = d.ref2\nJOIN ln    ON ln.ref1 = a.accn_id\nWHERE c.gndr = 'M' AND YEAR(ln.dt) IN (1996, 1997);\n```\n\n结果：**25.30019**（约 **25.30%**）\n- 口径：男性客户（gender='M'）作为账户拥有者（OWNER），经 dsp→acct 关联其名下所有账户的贷款\n- 增长率 = (1997 年贷款总额 − 1996 年贷款总额) / 1996 年贷款总额 × 100%",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 20539,
+        "output": 2401,
+        "cache_read": 102272,
+        "cache_write": 0,
+        "reasoning": 1732,
+        "total": 125212
+      },
+      "cost_usd": 0.006411,
+      "elapsed_seconds": 26.7,
+      "agent_duration_ms": 18747,
+      "extra_columns": []
+    }
+  ]
+}

@@ -1,0 +1,3383 @@
+{
+  "runs": [
+    {
+      "question_id": 1,
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT CASE WHEN ref2 = 2 THEN ref1 END) AS home_address_count, COUNT(DISTINCT CASE WHEN ref2 = 5 THEN ref1 END) AS shipping_address_count FROM biz_addr",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12371,
+        "output": 246,
+        "total": 12617
+      },
+      "elapsed_seconds": 6.22,
+      "extra_columns": []
+    },
+    {
+      "question_id": 1,
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(CASE WHEN ref2 = 2 THEN 1 END) AS home_address_count, COUNT(CASE WHEN ref2 = 5 THEN 1 END) AS shipping_address_count FROM biz_addr",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13624,
+        "output": 1309,
+        "total": 14933
+      },
+      "elapsed_seconds": 23.9,
+      "extra_columns": []
+    },
+    {
+      "question_id": 2,
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(CASE WHEN emp.vctn_hrs > 20 THEN 1 END) * 100.0 / COUNT(*) AS percentage FROM emp WHERE emp.crrn_flg = 1 AND emp.sck_lv_hrs > 10",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12407,
+        "output": 380,
+        "total": 12787
+      },
+      "elapsed_seconds": 7.85,
+      "extra_columns": []
+    },
+    {
+      "question_id": 2,
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(CASE WHEN emp.vctn_hrs > 20 THEN emp.ref1 END) * 100.0 / COUNT(emp.ref1) AS percentage FROM emp WHERE emp.crrn_flg = 1 AND emp.sck_lv_hrs > 10",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13660,
+        "output": 499,
+        "total": 14159
+      },
+      "elapsed_seconds": 10.56,
+      "extra_columns": []
+    },
+    {
+      "question_id": 3,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.21,
+      "extra_columns": []
+    },
+    {
+      "question_id": 3,
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(*)\nFROM emp\nJOIN emp_pay_hist eph ON eph.ref1 = emp.ref1\nWHERE eph.rt > 40\n  AND emp.gndr = 'M'\n  AND eph.rt_chng_dt = (\n    SELECT MAX(eph2.rt_chng_dt)\n    FROM emp_pay_hist eph2\n    WHERE eph2.ref1 = eph.ref1\n  )",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13609,
+        "output": 4075,
+        "total": 17684
+      },
+      "elapsed_seconds": 71.24,
+      "extra_columns": []
+    },
+    {
+      "question_id": 4,
+      "s_level": "S1",
+      "final_sql": "SELECT SUM(CASE WHEN e.gndr = 'F' THEN 1 ELSE 0 END) * 100 / SUM(CASE WHEN e.gndr = 'F' OR e.gndr = 'M' THEN 1 ELSE 0 END) AS percentage FROM emp e JOIN prsn p ON e.ref1 = p.ref1 WHERE p.eml_prmt = 1",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12392,
+        "output": 4441,
+        "total": 16833
+      },
+      "elapsed_seconds": 82.32,
+      "extra_columns": []
+    },
+    {
+      "question_id": 4,
+      "s_level": "S2",
+      "final_sql": "SELECT SUM(emp.gndr = 'F') / SUM(emp.gndr = 'F' OR emp.gndr = 'M') AS percentage\nFROM emp\nJOIN prsn ON emp.ref1 = prsn.ref1\nWHERE prsn.eml_prmt = 1",
+      "pass": false,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13645,
+        "output": 1862,
+        "total": 15507
+      },
+      "elapsed_seconds": 29.57,
+      "extra_columns": []
+    },
+    {
+      "question_id": 5,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.15,
+      "extra_columns": []
+    },
+    {
+      "question_id": 5,
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(DISTINCT emp.ref1) FROM emp JOIN emp_pay_hist ON emp.ref1 = emp_pay_hist.ref1 WHERE emp_pay_hist.py_frqn = 2 AND emp.mrtl_stts = 'M'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13607,
+        "output": 665,
+        "total": 14272
+      },
+      "elapsed_seconds": 18.54,
+      "extra_columns": []
+    },
+    {
+      "question_id": 6,
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(*) FROM (SELECT p.prdc_id FROM prod p JOIN prod_rvw r ON r.ref1 = p.prdc_id WHERE p.mk_flg = 1 AND p.fnsh_gds_flg = 1 GROUP BY p.prdc_id HAVING COUNT(r.cmmn) > 10) AS t",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12376,
+        "output": 681,
+        "total": 13057
+      },
+      "elapsed_seconds": 16.17,
+      "extra_columns": []
+    },
+    {
+      "question_id": 6,
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(*) FROM (SELECT p.prdc_id FROM prod p JOIN prod_rvw r ON r.ref1 = p.prdc_id WHERE p.mk_flg = 1 AND p.fnsh_gds_flg = 1 GROUP BY p.prdc_id HAVING COUNT(r.cmmn) > 10) AS sub",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13629,
+        "output": 737,
+        "total": 14366
+      },
+      "elapsed_seconds": 17.09,
+      "extra_columns": []
+    },
+    {
+      "question_id": 7,
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(*) FROM (SELECT pr.ref1 FROM prod_rvw pr GROUP BY pr.ref1 HAVING COUNT(pr.prdc_rvw_id) > 1) AS reviewed_products JOIN prod p ON p.prdc_id = reviewed_products.ref1 WHERE p.prdc_ln = 'M'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12383,
+        "output": 637,
+        "total": 13020
+      },
+      "elapsed_seconds": 12.54,
+      "extra_columns": []
+    },
+    {
+      "question_id": 7,
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(*) FROM prod WHERE prod.prdc_ln = 'M' AND prod.prdc_id IN (SELECT ref1 FROM prod_rvw GROUP BY ref1 HAVING COUNT(*) > 1)",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13636,
+        "output": 500,
+        "total": 14136
+      },
+      "elapsed_seconds": 10.61,
+      "extra_columns": []
+    },
+    {
+      "question_id": 8,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.19,
+      "extra_columns": []
+    },
+    {
+      "question_id": 8,
+      "s_level": "S2",
+      "final_sql": "WITH review_counts AS (\n  SELECT p.prdc_id, COUNT(r.prdc_rvw_id) AS cnt\n  FROM prod p\n  LEFT JOIN prod_rvw r ON r.ref1 = p.prdc_id\n  WHERE p.fnsh_gds_flg = 1 AND p.prdc_ln = 'M'\n  GROUP BY p.prdc_id\n)\nSELECT COUNT(*) FROM review_counts WHERE cnt = (SELECT MAX(cnt) FROM review_counts)",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13613,
+        "output": 1721,
+        "total": 15334
+      },
+      "elapsed_seconds": 38.65,
+      "extra_columns": []
+    },
+    {
+      "question_id": 9,
+      "s_level": "S1",
+      "final_sql": "SELECT emp.gndr, AVG(latest_pay.rt) AS avg_rate\nFROM emp\nJOIN (\n    SELECT eph1.ref1, eph1.rt\n    FROM emp_pay_hist eph1\n    WHERE eph1.rt_chng_dt = (\n        SELECT MAX(eph2.rt_chng_dt)\n        FROM emp_pay_hist eph2\n        WHERE eph2.ref1 = eph1.ref1\n    )\n) latest_pay ON emp.ref1 = latest_pay.ref1\nWHERE emp.gndr IN ('M', 'F')\nGROUP BY emp.gndr",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12371,
+        "output": 885,
+        "total": 13256
+      },
+      "elapsed_seconds": 15.74,
+      "extra_columns": [
+        "gndr"
+      ]
+    },
+    {
+      "question_id": 9,
+      "s_level": "S2",
+      "final_sql": "SELECT emp.gndr, AVG(latest.rt) AS avg_rate\nFROM emp\nJOIN (\n  SELECT eph1.ref1, eph1.rt\n  FROM emp_pay_hist eph1\n  WHERE eph1.rt_chng_dt = (\n    SELECT MAX(eph2.rt_chng_dt) FROM emp_pay_hist eph2 WHERE eph2.ref1 = eph1.ref1\n  )\n) latest ON emp.ref1 = latest.ref1\nWHERE emp.gndr IN ('M', 'F')\nGROUP BY emp.gndr",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13624,
+        "output": 1012,
+        "total": 14636
+      },
+      "elapsed_seconds": 18.27,
+      "extra_columns": [
+        "gndr"
+      ]
+    },
+    {
+      "question_id": 10,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.16,
+      "extra_columns": []
+    },
+    {
+      "question_id": 10,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.16,
+      "extra_columns": []
+    },
+    {
+      "question_id": 11,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.16,
+      "extra_columns": []
+    },
+    {
+      "question_id": 11,
+      "s_level": "S2",
+      "final_sql": "SELECT emp.vctn_hrs FROM emp WHERE emp.ref1 IN (SELECT ref1 FROM emp_pay_hist WHERE py_frqn = 2)",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13597,
+        "output": 2445,
+        "total": 16042
+      },
+      "elapsed_seconds": 43.65,
+      "extra_columns": []
+    },
+    {
+      "question_id": 12,
+      "s_level": "S1",
+      "final_sql": "SELECT unit_msr.nm FROM bom JOIN unit_msr ON bom.ref1 = unit_msr.unt_msr_cd WHERE bom.ref2 = 494 AND bom.end_dt IS NULL",
+      "pass": false,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12358,
+        "output": 601,
+        "total": 12959
+      },
+      "elapsed_seconds": 11.78,
+      "extra_columns": []
+    },
+    {
+      "question_id": 12,
+      "s_level": "S2",
+      "final_sql": "SELECT DISTINCT unit_msr.nm FROM bom JOIN unit_msr ON bom.ref1 = unit_msr.unt_msr_cd WHERE bom.ref2 = 494 AND bom.end_dt IS NULL",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13611,
+        "output": 635,
+        "total": 14246
+      },
+      "elapsed_seconds": 13.7,
+      "extra_columns": []
+    },
+    {
+      "question_id": 13,
+      "s_level": "S1",
+      "final_sql": "SELECT avrg_ld_tm, nm FROM vnd WHERE ref1 = 1496",
+      "pass": false,
+      "error": "OperationalError: (1054, \"Unknown column 'avrg_ld_tm' in 'field list'\")",
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12371,
+        "output": 317,
+        "total": 12688
+      },
+      "elapsed_seconds": 7.0,
+      "extra_columns": []
+    },
+    {
+      "question_id": 13,
+      "s_level": "S2",
+      "final_sql": "SELECT vnd.nm, prod_vnd.avrg_ld_tm\nFROM vnd\nJOIN prod_vnd ON vnd.ref1 = prod_vnd.ref2\nWHERE vnd.ref1 = 1496",
+      "pass": false,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13624,
+        "output": 2029,
+        "total": 15653
+      },
+      "elapsed_seconds": 38.78,
+      "extra_columns": []
+    },
+    {
+      "question_id": 14,
+      "s_level": "S1",
+      "final_sql": "SELECT (SELECT COUNT(*) FROM cust c JOIN biz_addr ba ON c.ref3 = ba.ref1 JOIN addr a ON ba.ref3 = a.addr_id WHERE a.cty = 'Bothell') - (SELECT COUNT(*) FROM cust c JOIN biz_addr ba ON c.ref3 = ba.ref1 JOIN addr a ON ba.ref3 = a.addr_id WHERE a.cty = 'Kenmore') AS account_count_diff, sp.nm AS state_name FROM addr a JOIN st_prv sp ON a.ref1 = sp.stt_prvn_id WHERE a.cty = 'Bothell' GROUP BY sp.nm",
+      "pass": false,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12359,
+        "output": 13892,
+        "total": 26251
+      },
+      "elapsed_seconds": 225.02,
+      "extra_columns": []
+    },
+    {
+      "question_id": 14,
+      "s_level": "S2",
+      "final_sql": "SELECT SUM(CASE WHEN a.cty = 'Bothell' THEN 1 ELSE 0 END) - SUM(CASE WHEN a.cty = 'Kenmore' THEN 1 ELSE 0 END) AS account_diff, sp.nm AS state_name FROM cust c JOIN biz_addr ba ON ba.ref1 = COALESCE(c.ref1, c.ref3) JOIN addr a ON a.addr_id = ba.ref3 JOIN st_prv sp ON sp.stt_prvn_id = a.ref1 WHERE a.cty IN ('Bothell', 'Kenmore') GROUP BY sp.nm",
+      "pass": false,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13612,
+        "output": 12769,
+        "total": 26381
+      },
+      "elapsed_seconds": 210.34,
+      "extra_columns": []
+    },
+    {
+      "question_id": 15,
+      "s_level": "S1",
+      "final_sql": "SELECT SUM(CASE WHEN e.mrtl_stts = 'M' THEN 1 ELSE 0 END) * 100.0 / SUM(CASE WHEN e.mrtl_stts = 'S' THEN 1 ELSE 0 END) AS percentage\nFROM emp e\nJOIN prsn p ON e.ref1 = p.ref1\nWHERE p.prsn_typ = 'EM'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12411,
+        "output": 3752,
+        "total": 16163
+      },
+      "elapsed_seconds": 66.51,
+      "extra_columns": []
+    },
+    {
+      "question_id": 15,
+      "s_level": "S2",
+      "final_sql": "SELECT SUM(CASE WHEN emp.mrtl_stts = 'M' THEN 1 ELSE 0 END) * 100.0 / SUM(CASE WHEN emp.mrtl_stts = 'S' THEN 1 ELSE 0 END) AS percentage\nFROM emp\nJOIN prsn ON emp.ref1 = prsn.ref1\nWHERE prsn.prsn_typ = 'EM'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13664,
+        "output": 1394,
+        "total": 15058
+      },
+      "elapsed_seconds": 23.35,
+      "extra_columns": []
+    },
+    {
+      "question_id": 16,
+      "s_level": "S1",
+      "final_sql": "SELECT (SELECT COUNT(*) FROM pmdc JOIN cult ON pmdc.ref1 = cult.cltr_id WHERE cult.nm = 'English') - (SELECT COUNT(*) FROM pmdc JOIN cult ON pmdc.ref1 = cult.cltr_id WHERE cult.nm = 'Arabic') AS diff",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12386,
+        "output": 2181,
+        "total": 14567
+      },
+      "elapsed_seconds": 39.18,
+      "extra_columns": []
+    },
+    {
+      "question_id": 16,
+      "s_level": "S2",
+      "final_sql": "SELECT (SELECT COUNT(*) FROM pmdc JOIN cult ON pmdc.ref1 = cult.cltr_id WHERE cult.nm = 'English') - (SELECT COUNT(*) FROM pmdc JOIN cult ON pmdc.ref1 = cult.cltr_id WHERE cult.nm = 'Arabic') AS difference",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13639,
+        "output": 2130,
+        "total": 15769
+      },
+      "elapsed_seconds": 38.31,
+      "extra_columns": []
+    },
+    {
+      "question_id": 17,
+      "s_level": "S1",
+      "final_sql": "SELECT nm FROM prod WHERE stnd_cst < (SELECT AVG(stnd_cst) FROM prod)",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12347,
+        "output": 687,
+        "total": 13034
+      },
+      "elapsed_seconds": 14.04,
+      "extra_columns": []
+    },
+    {
+      "question_id": 17,
+      "s_level": "S2",
+      "final_sql": "SELECT nm FROM prod WHERE stnd_cst < (SELECT AVG(stnd_cst) FROM prod)",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13600,
+        "output": 391,
+        "total": 13991
+      },
+      "elapsed_seconds": 8.63,
+      "extra_columns": []
+    },
+    {
+      "question_id": 18,
+      "s_level": "S1",
+      "final_sql": "SELECT prsn.frst_nm, prsn.mddl_nm, prsn.lst_nm FROM emp JOIN prsn ON emp.ref1 = prsn.ref1 WHERE emp.jb_ttl = 'Production Technician - WC50'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12351,
+        "output": 618,
+        "total": 12969
+      },
+      "elapsed_seconds": 11.15,
+      "extra_columns": []
+    },
+    {
+      "question_id": 18,
+      "s_level": "S2",
+      "final_sql": "SELECT prsn.frst_nm, prsn.mddl_nm, prsn.lst_nm FROM emp JOIN prsn ON emp.ref1 = prsn.ref1 WHERE emp.jb_ttl = 'Production Technician - WC50'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13604,
+        "output": 264,
+        "total": 13868
+      },
+      "elapsed_seconds": 6.47,
+      "extra_columns": []
+    },
+    {
+      "question_id": 19,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.18,
+      "extra_columns": []
+    },
+    {
+      "question_id": 19,
+      "s_level": "S2",
+      "final_sql": "SELECT DISTINCT p.nm\nFROM prod p\nJOIN prod_cst_hist h ON h.ref1 = p.prdc_id\nWHERE h.end_dt IS NOT NULL\n  AND p.stnd_cst - h.stnd_cst > 80\n  AND h.strt_dt = (\n    SELECT MAX(h2.strt_dt)\n    FROM prod_cst_hist h2\n    WHERE h2.ref1 = h.ref1 AND h2.end_dt IS NOT NULL\n  )",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13601,
+        "output": 1993,
+        "total": 15594
+      },
+      "elapsed_seconds": 37.44,
+      "extra_columns": []
+    },
+    {
+      "question_id": 20,
+      "s_level": "S1",
+      "final_sql": "SELECT vnd.nm, prod_vnd.stnd_prc FROM prod JOIN prod_vnd ON prod.prdc_id = prod_vnd.ref3 JOIN vnd ON prod_vnd.ref2 = vnd.ref1 WHERE prod.nm = 'Hex Nut 5'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12343,
+        "output": 1057,
+        "total": 13400
+      },
+      "elapsed_seconds": 18.69,
+      "extra_columns": [
+        "nm"
+      ]
+    },
+    {
+      "question_id": 20,
+      "s_level": "S2",
+      "final_sql": "SELECT prod_vnd.stnd_prc FROM prod_vnd JOIN prod ON prod_vnd.ref3 = prod.prdc_id WHERE prod.nm = 'Hex Nut 5'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13596,
+        "output": 2452,
+        "total": 16048
+      },
+      "elapsed_seconds": 44.21,
+      "extra_columns": []
+    },
+    {
+      "question_id": 21,
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(*) FROM (SELECT p.prdc_id FROM prod p JOIN prod_rvw r ON r.ref1 = p.prdc_id WHERE p.fnsh_gds_flg = 1 GROUP BY p.prdc_id HAVING COUNT(r.cmmn) > 10) AS sub",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12354,
+        "output": 464,
+        "total": 12818
+      },
+      "elapsed_seconds": 11.07,
+      "extra_columns": []
+    },
+    {
+      "question_id": 21,
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(*) FROM (SELECT prod.prdc_id FROM prod JOIN prod_rvw ON prod_rvw.ref1 = prod.prdc_id WHERE prod.fnsh_gds_flg = 1 GROUP BY prod.prdc_id HAVING COUNT(prod_rvw.cmmn) > 10) AS sub",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13607,
+        "output": 886,
+        "total": 14493
+      },
+      "elapsed_seconds": 15.84,
+      "extra_columns": []
+    },
+    {
+      "question_id": 22,
+      "s_level": "S1",
+      "final_sql": "SELECT DISTINCT p.nm FROM prod p JOIN prod_rvw r ON p.prdc_id = r.ref1 WHERE r.rtng = (SELECT MIN(rtng) FROM prod_rvw)",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12356,
+        "output": 442,
+        "total": 12798
+      },
+      "elapsed_seconds": 8.48,
+      "extra_columns": []
+    },
+    {
+      "question_id": 22,
+      "s_level": "S2",
+      "final_sql": "SELECT DISTINCT prod.nm FROM prod JOIN prod_rvw ON prod_rvw.ref1 = prod.prdc_id WHERE prod_rvw.rtng = (SELECT MIN(rtng) FROM prod_rvw)",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13609,
+        "output": 393,
+        "total": 14002
+      },
+      "elapsed_seconds": 7.51,
+      "extra_columns": []
+    },
+    {
+      "question_id": 23,
+      "s_level": "S1",
+      "final_sql": "SELECT DISTINCT p.nm FROM prod p JOIN prod_rvw r ON p.prdc_id = r.ref1 WHERE r.rtng = 4",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12352,
+        "output": 397,
+        "total": 12749
+      },
+      "elapsed_seconds": 8.55,
+      "extra_columns": []
+    },
+    {
+      "question_id": 23,
+      "s_level": "S2",
+      "final_sql": "SELECT DISTINCT prod.nm FROM prod_rvw JOIN prod ON prod.prdc_id = prod_rvw.ref1 WHERE prod_rvw.rtng = 4",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13605,
+        "output": 271,
+        "total": 13876
+      },
+      "elapsed_seconds": 7.27,
+      "extra_columns": []
+    },
+    {
+      "question_id": 24,
+      "s_level": "S1",
+      "final_sql": "SELECT p.prdc_id FROM prod p LEFT JOIN wo ON p.prdc_id = wo.ref2 WHERE wo.wrk_ordr_id IS NULL",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12342,
+        "output": 1215,
+        "total": 13557
+      },
+      "elapsed_seconds": 22.5,
+      "extra_columns": []
+    },
+    {
+      "question_id": 24,
+      "s_level": "S2",
+      "final_sql": "SELECT p.prdc_id FROM prod p LEFT JOIN wo w ON p.prdc_id = w.ref2 WHERE w.wrk_ordr_id IS NULL",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13595,
+        "output": 959,
+        "total": 14554
+      },
+      "elapsed_seconds": 17.81,
+      "extra_columns": []
+    },
+    {
+      "question_id": 25,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.09,
+      "extra_columns": []
+    },
+    {
+      "question_id": 25,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.15,
+      "extra_columns": []
+    },
+    {
+      "question_id": 26,
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT e.ref1) AS employee_count\nFROM emp e\nJOIN prsn p ON e.ref1 = p.ref1\nJOIN emp_dept_hist edh ON edh.ref3 = e.ref1\nJOIN dept d ON edh.ref2 = d.dprt_id\nWHERE p.eml_prmt = 0 AND d.nm = 'Engineering'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12364,
+        "output": 1258,
+        "total": 13622
+      },
+      "elapsed_seconds": 28.33,
+      "extra_columns": []
+    },
+    {
+      "question_id": 26,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.15,
+      "extra_columns": []
+    },
+    {
+      "question_id": 27,
+      "s_level": "S1",
+      "final_sql": "WITH latest_rate AS (\n    SELECT ref1, rt\n    FROM emp_pay_hist eph\n    WHERE rt_chng_dt = (\n        SELECT MAX(eph2.rt_chng_dt)\n        FROM emp_pay_hist eph2\n        WHERE eph2.ref1 = eph.ref1\n    )\n)\nSELECT COUNT(*)\nFROM emp e\nJOIN latest_rate lr ON e.ref1 = lr.ref1\nWHERE e.jb_ttl = 'Production Technician'\n  AND lr.rt < (\n      SELECT AVG(lr2.rt)\n      FROM emp e2\n      JOIN latest_rate lr2 ON e2.ref1 = lr2.ref1\n      WHERE e2.jb_ttl = 'Production Technician'\n  )",
+      "pass": false,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12355,
+        "output": 4870,
+        "total": 17225
+      },
+      "elapsed_seconds": 84.08,
+      "extra_columns": []
+    },
+    {
+      "question_id": 27,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.2,
+      "extra_columns": []
+    },
+    {
+      "question_id": 28,
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(*)\nFROM emp_dept_hist edh\nJOIN dept d ON edh.ref2 = d.dprt_id\nJOIN prsn p ON edh.ref3 = p.ref1\nWHERE d.grp_nm = 'Manufacturing'\n  AND YEAR(edh.end_dt) > 2007\n  AND YEAR(edh.strt_dt) < 2007\n  AND p.prsn_typ = 'SC'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12361,
+        "output": 4610,
+        "total": 16971
+      },
+      "elapsed_seconds": 77.28,
+      "extra_columns": []
+    },
+    {
+      "question_id": 28,
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(DISTINCT emp.ref1) AS store_contact_count\nFROM emp\nJOIN emp_dept_hist ON emp_dept_hist.ref3 = emp.ref1\nJOIN dept ON dept.dprt_id = emp_dept_hist.ref2\nJOIN prsn ON prsn.ref1 = emp.ref1\nWHERE dept.grp_nm = 'Manufacturing'\n  AND YEAR(emp_dept_hist.end_dt) > 2007\n  AND YEAR(emp_dept_hist.strt_dt) < 2007\n  AND prsn.prsn_typ = 'SC'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13614,
+        "output": 1653,
+        "total": 15267
+      },
+      "elapsed_seconds": 33.43,
+      "extra_columns": []
+    },
+    {
+      "question_id": 29,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.16,
+      "extra_columns": []
+    },
+    {
+      "question_id": 29,
+      "s_level": "S2",
+      "final_sql": "SELECT MAX(ep.rt) - AVG(ep.rt)\nFROM emp_pay_hist ep\nJOIN emp e ON ep.ref1 = e.ref1\nJOIN prsn p ON e.ref1 = p.ref1\nWHERE e.mrtl_stts = 'M' AND p.eml_prmt = 1",
+      "pass": false,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13694,
+        "output": 5876,
+        "total": 19570
+      },
+      "elapsed_seconds": 95.6,
+      "extra_columns": []
+    },
+    {
+      "question_id": 30,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.16,
+      "extra_columns": []
+    },
+    {
+      "question_id": 30,
+      "s_level": "S2",
+      "final_sql": "SELECT shft.strt_tm, shft.end_tm FROM emp JOIN emp_dept_hist ON emp_dept_hist.ref3 = emp.ref1 AND emp_dept_hist.end_dt IS NULL JOIN shft ON shft.shft_id = emp_dept_hist.ref1 WHERE YEAR(emp.brth_dt) < 1969 ORDER BY emp.brth_dt ASC LIMIT 1 OFFSET 5",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13636,
+        "output": 941,
+        "total": 14577
+      },
+      "elapsed_seconds": 17.06,
+      "extra_columns": []
+    },
+    {
+      "question_id": 31,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.2,
+      "extra_columns": []
+    },
+    {
+      "question_id": 31,
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(DISTINCT e.ref1)\nFROM emp e\nJOIN prsn p ON e.ref1 = p.ref1\nJOIN emp_pay_hist ph ON e.ref1 = ph.ref1\nWHERE e.mrtl_stts = 'M'\n  AND p.nm_styl = 1\n  AND ph.py_frqn = (SELECT MAX(py_frqn) FROM emp_pay_hist)",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13611,
+        "output": 9651,
+        "total": 23262
+      },
+      "elapsed_seconds": 194.89,
+      "extra_columns": []
+    },
+    {
+      "question_id": 32,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.24,
+      "extra_columns": []
+    },
+    {
+      "question_id": 32,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.3,
+      "extra_columns": []
+    },
+    {
+      "question_id": 33,
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT p.ref1) AS cnt\nFROM prsn p\nJOIN prsn_crd pc ON p.ref1 = pc.ref1\nJOIN crd c ON pc.ref2 = c.crdt_crd_id\nWHERE p.prsn_typ = 'SC'\n  AND c.crd_typ COLLATE utf8mb4_bin = 'Vista'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12381,
+        "output": 1228,
+        "total": 13609
+      },
+      "elapsed_seconds": 27.59,
+      "extra_columns": []
+    },
+    {
+      "question_id": 33,
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(DISTINCT prsn.ref1) FROM prsn JOIN prsn_crd ON prsn_crd.ref1 = prsn.ref1 JOIN crd ON crd.crdt_crd_id = prsn_crd.ref2 WHERE prsn.prsn_typ = 'SC' AND crd.crd_typ = 'Vista'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13634,
+        "output": 518,
+        "total": 14152
+      },
+      "elapsed_seconds": 11.51,
+      "extra_columns": []
+    },
+    {
+      "question_id": 34,
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(*)\nFROM prod_vnd pv\nJOIN prod p ON pv.ref3 = p.prdc_id\nJOIN vnd v ON pv.ref2 = v.ref1\nWHERE p.nm = 'Hex Nut 5' AND v.crdt_rtng BETWEEN 1 AND 3",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12353,
+        "output": 1224,
+        "total": 13577
+      },
+      "elapsed_seconds": 20.84,
+      "extra_columns": []
+    },
+    {
+      "question_id": 34,
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(DISTINCT vnd.ref1) FROM prod JOIN prod_vnd ON prod_vnd.ref3 = prod.prdc_id JOIN vnd ON vnd.ref1 = prod_vnd.ref2 WHERE prod.nm = 'Hex Nut 5' AND vnd.crdt_rtng BETWEEN 1 AND 3",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13606,
+        "output": 557,
+        "total": 14163
+      },
+      "elapsed_seconds": 10.57,
+      "extra_columns": []
+    },
+    {
+      "question_id": 35,
+      "s_level": "S1",
+      "final_sql": "SELECT d.nm, \n       SUM(YEAR(CURRENT_DATE) - YEAR(e.brth_dt)) / COUNT(e.ref1) AS avg_age\nFROM emp_dept_hist edh\nJOIN emp e ON edh.ref3 = e.ref1\nJOIN dept d ON edh.ref2 = d.dprt_id\nWHERE edh.end_dt IS NULL\nGROUP BY d.dprt_id, d.nm\nORDER BY avg_age ASC\nLIMIT 1",
+      "pass": false,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12371,
+        "output": 11701,
+        "total": 24072
+      },
+      "elapsed_seconds": 182.91,
+      "extra_columns": []
+    },
+    {
+      "question_id": 35,
+      "s_level": "S2",
+      "final_sql": "SELECT dept.nm, SUM(YEAR(CURRENT_DATE) - YEAR(emp.brth_dt)) / COUNT(emp.ref1) AS avg_age FROM emp_dept_hist JOIN dept ON emp_dept_hist.ref2 = dept.dprt_id JOIN emp ON emp_dept_hist.ref3 = emp.ref1 WHERE emp_dept_hist.end_dt IS NULL GROUP BY dept.dprt_id, dept.nm ORDER BY avg_age ASC",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13624,
+        "output": 10036,
+        "total": 23660
+      },
+      "elapsed_seconds": 164.1,
+      "extra_columns": []
+    },
+    {
+      "question_id": 36,
+      "s_level": "S1",
+      "final_sql": "SELECT AVG(YEAR(CURRENT_DATE) - YEAR(e.hr_dt)) AS average_length_of_employment FROM emp e JOIN emp_dept_hist edh ON edh.ref3 = e.ref1 JOIN dept d ON d.dprt_id = edh.ref2 WHERE d.nm = 'Research and Development' AND edh.end_dt IS NULL",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12352,
+        "output": 1012,
+        "total": 13364
+      },
+      "elapsed_seconds": 24.51,
+      "extra_columns": []
+    },
+    {
+      "question_id": 36,
+      "s_level": "S2",
+      "final_sql": "SELECT AVG(YEAR(CURRENT_DATE) - YEAR(e.hr_dt)) AS avg_employment_length\nFROM emp e\nJOIN emp_dept_hist edh ON e.ref1 = edh.ref3\nJOIN dept d ON edh.ref2 = d.dprt_id\nWHERE d.nm = 'Research and Development'\n  AND edh.end_dt IS NULL",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13605,
+        "output": 2513,
+        "total": 16118
+      },
+      "elapsed_seconds": 43.76,
+      "extra_columns": []
+    },
+    {
+      "question_id": 37,
+      "s_level": "S1",
+      "final_sql": "SELECT SUM(po_dtl.ordr_qty) / COUNT(shp_mth.shp_mthd_id) AS avg_ordered_quantity\nFROM po_dtl\nJOIN po_hdr ON po_dtl.ref2 = po_hdr.prch_ordr_id\nJOIN shp_mth ON po_hdr.ref1 = shp_mth.shp_mthd_id\nWHERE shp_mth.nm = 'CARGO TRANSPORT 5'",
+      "pass": false,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12406,
+        "output": 955,
+        "total": 13361
+      },
+      "elapsed_seconds": 16.78,
+      "extra_columns": []
+    },
+    {
+      "question_id": 37,
+      "s_level": "S2",
+      "final_sql": "SELECT SUM(po_dtl.ordr_qty) / COUNT(po_hdr.ref1) FROM po_dtl JOIN po_hdr ON po_dtl.ref2 = po_hdr.prch_ordr_id JOIN shp_mth ON po_hdr.ref1 = shp_mth.shp_mthd_id WHERE shp_mth.nm = 'CARGO TRANSPORT 5'",
+      "pass": false,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13659,
+        "output": 2751,
+        "total": 16410
+      },
+      "elapsed_seconds": 44.44,
+      "extra_columns": []
+    },
+    {
+      "question_id": 38,
+      "s_level": "S1",
+      "final_sql": "SELECT CASE WHEN COUNT(*) > 0 THEN 'Yes' ELSE 'No' END FROM prod p JOIN spcl_prod sp ON sp.ref1 = p.prdc_id WHERE p.nm = 'Chainring Bolts'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12358,
+        "output": 268,
+        "total": 12626
+      },
+      "elapsed_seconds": 6.36,
+      "extra_columns": []
+    },
+    {
+      "question_id": 38,
+      "s_level": "S2",
+      "final_sql": "SELECT CASE WHEN COUNT(*) > 0 THEN 'Yes' ELSE 'No' END FROM prod p JOIN spcl_prod sp ON sp.ref1 = p.prdc_id WHERE p.nm = 'Chainring Bolts'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13611,
+        "output": 430,
+        "total": 14041
+      },
+      "elapsed_seconds": 8.28,
+      "extra_columns": []
+    },
+    {
+      "question_id": 39,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.22,
+      "extra_columns": []
+    },
+    {
+      "question_id": 39,
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(DISTINCT d.dprt_id) AS department_count\nFROM emp_dept_hist edh\nJOIN emp e ON edh.ref3 = e.ref1\nJOIN prsn p ON e.ref1 = p.ref1\nJOIN dept d ON edh.ref2 = d.dprt_id\nWHERE p.frst_nm = 'Sheela' AND p.lst_nm = 'Word'\nAND edh.strt_dt <= '2012-12-31'\nAND (edh.end_dt IS NULL OR edh.end_dt >= '2011-01-01')",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13646,
+        "output": 711,
+        "total": 14357
+      },
+      "elapsed_seconds": 15.27,
+      "extra_columns": []
+    },
+    {
+      "question_id": 40,
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT emp_dept_hist.ref2) AS department_count\nFROM emp\nJOIN prsn ON emp.ref1 = prsn.ref1\nJOIN emp_dept_hist ON emp_dept_hist.ref3 = emp.ref1\nWHERE prsn.frst_nm = 'David' AND prsn.lst_nm = 'Bradley'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12308,
+        "output": 1530,
+        "total": 13838
+      },
+      "elapsed_seconds": 26.64,
+      "extra_columns": []
+    },
+    {
+      "question_id": 40,
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(DISTINCT emp_dept_hist.ref2) FROM prsn JOIN emp ON emp.ref1 = prsn.ref1 JOIN emp_dept_hist ON emp_dept_hist.ref3 = emp.ref1 WHERE prsn.frst_nm = 'David' AND prsn.lst_nm = 'Bradley'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13561,
+        "output": 571,
+        "total": 14132
+      },
+      "elapsed_seconds": 11.06,
+      "extra_columns": []
+    },
+    {
+      "question_id": 41,
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT edh.ref3) AS employee_count\nFROM emp_dept_hist edh\nJOIN dept d ON edh.ref2 = d.dprt_id\nJOIN shft s ON edh.ref1 = s.shft_id\nWHERE d.nm = 'Information Services'\n  AND s.nm = 'Evening'\n  AND edh.end_dt IS NULL",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12338,
+        "output": 3061,
+        "total": 15399
+      },
+      "elapsed_seconds": 66.84,
+      "extra_columns": []
+    },
+    {
+      "question_id": 41,
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(DISTINCT emp_dept_hist.ref3) FROM emp_dept_hist JOIN dept ON emp_dept_hist.ref2 = dept.dprt_id JOIN shft ON emp_dept_hist.ref1 = shft.shft_id WHERE dept.nm = 'Information Services' AND shft.nm = 'Evening' AND emp_dept_hist.end_dt IS NULL",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13591,
+        "output": 690,
+        "total": 14281
+      },
+      "elapsed_seconds": 16.2,
+      "extra_columns": []
+    },
+    {
+      "question_id": 42,
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT prod.prdc_id) FROM prod JOIN prod_vnd ON prod.prdc_id = prod_vnd.ref3 JOIN vnd ON prod_vnd.ref2 = vnd.ref1 WHERE prod.clss = 'H' AND vnd.prfr_vndr_stts = 1",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12348,
+        "output": 370,
+        "total": 12718
+      },
+      "elapsed_seconds": 7.04,
+      "extra_columns": []
+    },
+    {
+      "question_id": 42,
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(DISTINCT prod.prdc_id)\nFROM prod\nJOIN prod_vnd ON prod_vnd.ref3 = prod.prdc_id\nJOIN vnd ON vnd.ref1 = prod_vnd.ref2\nWHERE prod.clss = 'H' AND vnd.prfr_vndr_stts = 1",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13601,
+        "output": 369,
+        "total": 13970
+      },
+      "elapsed_seconds": 6.65,
+      "extra_columns": []
+    },
+    {
+      "question_id": 43,
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT edh.ref3) FROM emp_dept_hist edh JOIN dept d ON edh.ref2 = d.dprt_id WHERE d.nm = 'Engineering' AND edh.strt_dt <= '2009-12-31' AND (edh.end_dt IS NULL OR edh.end_dt >= '2009-01-01')",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12376,
+        "output": 566,
+        "total": 12942
+      },
+      "elapsed_seconds": 12.73,
+      "extra_columns": []
+    },
+    {
+      "question_id": 43,
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(DISTINCT emp_dept_hist.ref3) FROM emp_dept_hist JOIN dept ON emp_dept_hist.ref2 = dept.dprt_id WHERE dept.nm = 'Engineering' AND emp_dept_hist.strt_dt <= '2009-12-31' AND (emp_dept_hist.end_dt IS NULL OR emp_dept_hist.end_dt >= '2009-01-01')",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13629,
+        "output": 420,
+        "total": 14049
+      },
+      "elapsed_seconds": 7.92,
+      "extra_columns": []
+    },
+    {
+      "question_id": 44,
+      "s_level": "S1",
+      "final_sql": "SELECT (MAX(p.lst_prc) - MIN(p.lst_prc)) / MIN(p.lst_prc) * 100 FROM prod p JOIN prod_sub ps ON p.ref2 = ps.prdc_sbct_id JOIN prod_cat pc ON ps.ref1 = pc.prdc_ctgr_id WHERE pc.nm = 'Clothing'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12369,
+        "output": 606,
+        "total": 12975
+      },
+      "elapsed_seconds": 10.49,
+      "extra_columns": []
+    },
+    {
+      "question_id": 44,
+      "s_level": "S2",
+      "final_sql": "SELECT (MAX(p.lst_prc) - MIN(p.lst_prc)) / MIN(p.lst_prc) * 100\nFROM prod p\nJOIN prod_sub ps ON p.ref2 = ps.prdc_sbct_id\nJOIN prod_cat pc ON ps.ref1 = pc.prdc_ctgr_id\nWHERE pc.nm = 'Clothing'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13622,
+        "output": 872,
+        "total": 14494
+      },
+      "elapsed_seconds": 14.78,
+      "extra_columns": []
+    },
+    {
+      "question_id": 45,
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(DISTINCT ref2) AS product_count FROM so_dtl WHERE unt_prc_dscn > 0 AND ordr_qty > 2",
+      "pass": false,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12383,
+        "output": 1048,
+        "total": 13431
+      },
+      "elapsed_seconds": 20.81,
+      "extra_columns": []
+    },
+    {
+      "question_id": 45,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.23,
+      "extra_columns": []
+    },
+    {
+      "question_id": 46,
+      "s_level": "S1",
+      "final_sql": "SELECT crd.exp_yr FROM prsn JOIN prsn_crd ON prsn.ref1 = prsn_crd.ref1 JOIN crd ON prsn_crd.ref2 = crd.crdt_crd_id WHERE prsn.frst_nm = 'David' AND prsn.lst_nm = 'Bradley'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12339,
+        "output": 904,
+        "total": 13243
+      },
+      "elapsed_seconds": 16.33,
+      "extra_columns": []
+    },
+    {
+      "question_id": 46,
+      "s_level": "S2",
+      "final_sql": "SELECT crd.exp_yr FROM prsn JOIN prsn_crd ON prsn.ref1 = prsn_crd.ref1 JOIN crd ON prsn_crd.ref2 = crd.crdt_crd_id WHERE prsn.frst_nm = 'David' AND prsn.lst_nm = 'Bradley'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13592,
+        "output": 569,
+        "total": 14161
+      },
+      "elapsed_seconds": 10.32,
+      "extra_columns": []
+    },
+    {
+      "question_id": 47,
+      "s_level": "S1",
+      "final_sql": "SELECT p.nm\nFROM prod p\nJOIN prod_vnd pv ON pv.ref3 = p.prdc_id\nJOIN vnd v ON v.ref1 = pv.ref2\nWHERE v.nm = 'Australia Bike Retailer'\nGROUP BY p.prdc_id\nORDER BY p.prdc_id",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12340,
+        "output": 1334,
+        "total": 13674
+      },
+      "elapsed_seconds": 22.62,
+      "extra_columns": []
+    },
+    {
+      "question_id": 47,
+      "s_level": "S2",
+      "final_sql": "SELECT prod.nm\nFROM prod\nJOIN prod_vnd ON prod.prdc_id = prod_vnd.ref3\nJOIN vnd ON prod_vnd.ref2 = vnd.ref1\nWHERE vnd.nm = 'Australia Bike Retailer'\nGROUP BY prod.prdc_id, prod.nm\nORDER BY prod.prdc_id",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13593,
+        "output": 1187,
+        "total": 14780
+      },
+      "elapsed_seconds": 20.22,
+      "extra_columns": []
+    },
+    {
+      "question_id": 48,
+      "s_level": "S1",
+      "final_sql": "SELECT DISTINCT prod.nm FROM prod JOIN prod_vnd ON prod.prdc_id = prod_vnd.ref3 WHERE prod_vnd.mn_ordr_qty = 1000 AND prod.stnd_cst > 17",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12373,
+        "output": 853,
+        "total": 13226
+      },
+      "elapsed_seconds": 15.2,
+      "extra_columns": []
+    },
+    {
+      "question_id": 48,
+      "s_level": "S2",
+      "final_sql": "SELECT DISTINCT p.nm FROM prod p JOIN prod_vnd pv ON pv.ref3 = p.prdc_id WHERE pv.mn_ordr_qty = 1000 AND p.stnd_cst > 17",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13626,
+        "output": 456,
+        "total": 14082
+      },
+      "elapsed_seconds": 9.31,
+      "extra_columns": []
+    },
+    {
+      "question_id": 49,
+      "s_level": "S1",
+      "final_sql": "SELECT eml.eml_addr FROM emp JOIN eml ON emp.ref1 = eml.ref1 WHERE emp.gndr = 'F' AND emp.mrtl_stts = 'S'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12345,
+        "output": 364,
+        "total": 12709
+      },
+      "elapsed_seconds": 7.94,
+      "extra_columns": []
+    },
+    {
+      "question_id": 49,
+      "s_level": "S2",
+      "final_sql": "SELECT eml.eml_addr FROM emp JOIN eml ON eml.ref1 = emp.ref1 WHERE emp.gndr = 'F' AND emp.mrtl_stts = 'S'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13598,
+        "output": 771,
+        "total": 14369
+      },
+      "elapsed_seconds": 16.08,
+      "extra_columns": []
+    },
+    {
+      "question_id": 50,
+      "s_level": "S1",
+      "final_sql": "SELECT DISTINCT p.frst_nm, p.lst_nm, e.hr_dt\nFROM emp e\nJOIN prsn p ON e.ref1 = p.ref1\nJOIN emp_dept_hist edh ON e.ref1 = edh.ref3\nWHERE edh.end_dt IS NOT NULL",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12347,
+        "output": 4639,
+        "total": 16986
+      },
+      "elapsed_seconds": 78.65,
+      "extra_columns": []
+    },
+    {
+      "question_id": 50,
+      "s_level": "S2",
+      "final_sql": "SELECT prsn.frst_nm, prsn.lst_nm, emp.hr_dt\nFROM emp\nJOIN prsn ON emp.ref1 = prsn.ref1\nWHERE emp.crrn_flg = 0",
+      "pass": false,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13600,
+        "output": 1719,
+        "total": 15319
+      },
+      "elapsed_seconds": 31.1,
+      "extra_columns": []
+    },
+    {
+      "question_id": 51,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.21,
+      "extra_columns": []
+    },
+    {
+      "question_id": 51,
+      "s_level": "S2",
+      "final_sql": "SELECT sls_tax.nm\nFROM sls_tax\nJOIN st_prv ON sls_tax.ref1 = st_prv.stt_prvn_id\nWHERE st_prv.ref1 = (\n  SELECT sls_terr.trrt_id\n  FROM sls_terr\n  ORDER BY (sls_terr.sls_ytd - sls_terr.sls_lst_yr) / NULLIF(sls_terr.sls_lst_yr, 0) * 100 DESC\n  LIMIT 1\n)",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13644,
+        "output": 1874,
+        "total": 15518
+      },
+      "elapsed_seconds": 40.62,
+      "extra_columns": []
+    },
+    {
+      "question_id": 52,
+      "s_level": "S1",
+      "final_sql": "SELECT prsn.frst_nm, prsn.lst_nm FROM prsn JOIN prsn_crd ON prsn.ref1 = prsn_crd.ref1 JOIN crd ON prsn_crd.ref2 = crd.crdt_crd_id WHERE crd.crd_typ = 'Distinguish'",
+      "pass": false,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12342,
+        "output": 1033,
+        "total": 13375
+      },
+      "elapsed_seconds": 17.59,
+      "extra_columns": []
+    },
+    {
+      "question_id": 52,
+      "s_level": "S2",
+      "final_sql": "SELECT DISTINCT p.frst_nm, p.lst_nm FROM prsn p JOIN prsn_crd pc ON p.ref1 = pc.ref1 JOIN crd c ON pc.ref2 = c.crdt_crd_id WHERE c.crd_typ = 'Distinguish'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13595,
+        "output": 520,
+        "total": 14115
+      },
+      "elapsed_seconds": 9.41,
+      "extra_columns": []
+    },
+    {
+      "question_id": 53,
+      "s_level": "S1",
+      "final_sql": "SELECT DISTINCT p.nm, v.nm FROM prod p JOIN prod_vnd pv ON pv.ref3 = p.prdc_id JOIN vnd v ON v.ref1 = pv.ref2 WHERE YEAR(p.sll_strt_dt) = 2013",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12353,
+        "output": 715,
+        "total": 13068
+      },
+      "elapsed_seconds": 14.53,
+      "extra_columns": []
+    },
+    {
+      "question_id": 53,
+      "s_level": "S2",
+      "final_sql": "SELECT DISTINCT p.nm, v.nm FROM prod p JOIN prod_vnd pv ON pv.ref3 = p.prdc_id JOIN vnd v ON v.ref1 = pv.ref2 WHERE YEAR(p.sll_strt_dt) = 2013",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13606,
+        "output": 438,
+        "total": 14044
+      },
+      "elapsed_seconds": 9.14,
+      "extra_columns": []
+    },
+    {
+      "question_id": 54,
+      "s_level": "S1",
+      "final_sql": "SELECT p.frst_nm, p.lst_nm, YEAR(CURRENT_TIMESTAMP) - YEAR(e.brth_dt) AS age FROM emp e JOIN emp_dept_hist edh ON e.ref1 = edh.ref3 JOIN prsn p ON e.ref1 = p.ref1 WHERE edh.ref1 = 3 AND edh.end_dt IS NULL AND e.crrn_flg = 1 ORDER BY e.brth_dt ASC LIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12367,
+        "output": 2190,
+        "total": 14557
+      },
+      "elapsed_seconds": 37.39,
+      "extra_columns": []
+    },
+    {
+      "question_id": 54,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.16,
+      "extra_columns": []
+    },
+    {
+      "question_id": 55,
+      "s_level": "S1",
+      "final_sql": "SELECT p.frst_nm, p.lst_nm, eph.rt\nFROM emp e\nJOIN emp_pay_hist eph ON e.ref1 = eph.ref1\nJOIN prsn p ON e.ref1 = p.ref1\nWHERE e.jb_ttl != 'Chief Executive Officer'\nORDER BY eph.rt DESC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12365,
+        "output": 2342,
+        "total": 14707
+      },
+      "elapsed_seconds": 40.91,
+      "extra_columns": []
+    },
+    {
+      "question_id": 55,
+      "s_level": "S2",
+      "final_sql": "SELECT p.frst_nm, p.lst_nm, eph.rt\nFROM emp_pay_hist eph\nJOIN emp e ON e.ref1 = eph.ref1\nJOIN prsn p ON p.ref1 = e.ref1\nWHERE e.jb_ttl != 'Chief Executive Officer'\nORDER BY eph.rt DESC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13618,
+        "output": 1889,
+        "total": 15507
+      },
+      "elapsed_seconds": 32.72,
+      "extra_columns": []
+    },
+    {
+      "question_id": 56,
+      "s_level": "S1",
+      "final_sql": "SELECT p.frst_nm, p.lst_nm\nFROM emp e\nJOIN emp_pay_hist ph ON e.ref1 = ph.ref1\nJOIN prsn p ON e.ref1 = p.ref1\nWHERE e.mrtl_stts = 'M'\nORDER BY ph.rt DESC\nLIMIT 1",
+      "pass": false,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12352,
+        "output": 6576,
+        "total": 18928
+      },
+      "elapsed_seconds": 108.79,
+      "extra_columns": []
+    },
+    {
+      "question_id": 56,
+      "s_level": "S2",
+      "final_sql": "SELECT p.frst_nm, p.mddl_nm, p.lst_nm, e.brth_dt, e.gndr, e.mrtl_stts, e.ntnl_id_nmbr\nFROM emp e\nJOIN emp_pay_hist ph ON e.ref1 = ph.ref1\nJOIN prsn p ON e.ref1 = p.ref1\nWHERE e.mrtl_stts = 'M'\nORDER BY ph.rt DESC\nLIMIT 1",
+      "pass": false,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13605,
+        "output": 10764,
+        "total": 24369
+      },
+      "elapsed_seconds": 233.24,
+      "extra_columns": []
+    },
+    {
+      "question_id": 57,
+      "s_level": "S1",
+      "final_sql": "SELECT DISTINCT d.nm\nFROM prsn p\nJOIN emp_dept_hist edh ON edh.ref3 = p.ref1\nJOIN dept d ON d.dprt_id = edh.ref2\nWHERE p.frst_nm = 'David' AND p.lst_nm = 'Bradley'\nAND edh.end_dt IS NOT NULL",
+      "pass": false,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12311,
+        "output": 2859,
+        "total": 15170
+      },
+      "elapsed_seconds": 48.96,
+      "extra_columns": []
+    },
+    {
+      "question_id": 57,
+      "s_level": "S2",
+      "final_sql": "SELECT DISTINCT dept.nm FROM emp_dept_hist JOIN emp ON emp_dept_hist.ref3 = emp.ref1 JOIN prsn ON emp.ref1 = prsn.ref1 JOIN dept ON emp_dept_hist.ref2 = dept.dprt_id WHERE prsn.frst_nm = 'David' AND prsn.lst_nm = 'Bradley' AND emp_dept_hist.end_dt IS NOT NULL",
+      "pass": false,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13564,
+        "output": 545,
+        "total": 14109
+      },
+      "elapsed_seconds": 9.61,
+      "extra_columns": []
+    },
+    {
+      "question_id": 58,
+      "s_level": "S1",
+      "final_sql": "SELECT p.frst_nm, p.lst_nm\nFROM prsn p\nJOIN prsn_crd pc ON p.ref1 = pc.ref1\nJOIN crd c ON pc.ref2 = c.crdt_crd_id\nWHERE p.prsn_typ = 'SC' AND c.exp_yr = 2007\nGROUP BY p.ref1, p.frst_nm, p.lst_nm",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12363,
+        "output": 1337,
+        "total": 13700
+      },
+      "elapsed_seconds": 28.13,
+      "extra_columns": []
+    },
+    {
+      "question_id": 58,
+      "s_level": "S2",
+      "final_sql": "SELECT DISTINCT prsn.frst_nm, prsn.lst_nm FROM prsn JOIN prsn_crd ON prsn.ref1 = prsn_crd.ref1 JOIN crd ON prsn_crd.ref2 = crd.crdt_crd_id WHERE prsn.prsn_typ = 'SC' AND crd.exp_yr = 2007",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13616,
+        "output": 931,
+        "total": 14547
+      },
+      "elapsed_seconds": 16.8,
+      "extra_columns": []
+    },
+    {
+      "question_id": 59,
+      "s_level": "S1",
+      "final_sql": "SELECT prod.nm FROM spcl_offr JOIN spcl_prod ON spcl_offr.spcl_offr_id = spcl_prod.ref2 JOIN prod ON prod.prdc_id = spcl_prod.ref1 WHERE spcl_offr.dscr = 'LL Road Frame Sale'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12344,
+        "output": 375,
+        "total": 12719
+      },
+      "elapsed_seconds": 9.64,
+      "extra_columns": []
+    },
+    {
+      "question_id": 59,
+      "s_level": "S2",
+      "final_sql": "SELECT DISTINCT T1.nm FROM prod T1 JOIN spcl_prod T2 ON T1.prdc_id = T2.ref1 JOIN spcl_offr T3 ON T2.ref2 = T3.spcl_offr_id WHERE T3.dscr = 'LL Road Frame Sale'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13597,
+        "output": 496,
+        "total": 14093
+      },
+      "elapsed_seconds": 10.0,
+      "extra_columns": []
+    },
+    {
+      "question_id": 60,
+      "s_level": "S1",
+      "final_sql": "SELECT COUNT(*)\nFROM prod\nJOIN prod_sub ON prod.ref2 = prod_sub.prdc_sbct_id\nJOIN prod_cat ON prod_sub.ref1 = prod_cat.prdc_ctgr_id\nWHERE prod_cat.nm = 'Clothing'\n  AND prod.mk_flg = 1\n  AND prod.fnsh_gds_flg = 1",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12359,
+        "output": 523,
+        "total": 12882
+      },
+      "elapsed_seconds": 9.61,
+      "extra_columns": []
+    },
+    {
+      "question_id": 60,
+      "s_level": "S2",
+      "final_sql": "SELECT COUNT(prod.prdc_id)\nFROM prod\nJOIN prod_sub ON prod.ref2 = prod_sub.prdc_sbct_id\nJOIN prod_cat ON prod_sub.ref1 = prod_cat.prdc_ctgr_id\nWHERE prod_cat.nm = 'Clothing' AND prod.mk_flg = 1 AND prod.fnsh_gds_flg = 1",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13612,
+        "output": 488,
+        "total": 14100
+      },
+      "elapsed_seconds": 9.16,
+      "extra_columns": []
+    },
+    {
+      "question_id": 61,
+      "s_level": "S1",
+      "final_sql": "SELECT vnd.prch_wb_srvc_url FROM vnd JOIN prod_vnd ON vnd.ref1 = prod_vnd.ref2 JOIN prod ON prod_vnd.ref3 = prod.prdc_id WHERE prod.nm = 'Hex Nut 5'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12348,
+        "output": 638,
+        "total": 12986
+      },
+      "elapsed_seconds": 14.5,
+      "extra_columns": []
+    },
+    {
+      "question_id": 61,
+      "s_level": "S2",
+      "final_sql": "SELECT vnd.prch_wb_srvc_url FROM prod JOIN prod_vnd ON prod_vnd.ref3 = prod.prdc_id JOIN vnd ON vnd.ref1 = prod_vnd.ref2 WHERE prod.nm = 'Hex Nut 5'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13601,
+        "output": 253,
+        "total": 13854
+      },
+      "elapsed_seconds": 5.43,
+      "extra_columns": []
+    },
+    {
+      "question_id": 62,
+      "s_level": "S1",
+      "final_sql": "SELECT c.crd_nmbr FROM prsn p JOIN prsn_crd pc ON pc.ref1 = p.ref1 JOIN crd c ON c.crdt_crd_id = pc.ref2 WHERE p.frst_nm = 'David' AND p.lst_nm = 'Bradley'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12335,
+        "output": 686,
+        "total": 13021
+      },
+      "elapsed_seconds": 12.81,
+      "extra_columns": []
+    },
+    {
+      "question_id": 62,
+      "s_level": "S2",
+      "final_sql": "SELECT crd.crd_nmbr FROM prsn JOIN prsn_crd ON prsn_crd.ref1 = prsn.ref1 JOIN crd ON crd.crdt_crd_id = prsn_crd.ref2 WHERE prsn.frst_nm = 'David' AND prsn.lst_nm = 'Bradley'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13588,
+        "output": 357,
+        "total": 13945
+      },
+      "elapsed_seconds": 6.8,
+      "extra_columns": []
+    },
+    {
+      "question_id": 63,
+      "s_level": "S1",
+      "final_sql": "SELECT prsn.lst_nm, emp.jb_ttl FROM doc JOIN emp ON emp.ref1 = doc.ref1 JOIN prsn ON prsn.ref1 = emp.ref1 WHERE doc.ttl = 'Crank Arm and Tire Maintenance'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12344,
+        "output": 3507,
+        "total": 15851
+      },
+      "elapsed_seconds": 78.47,
+      "extra_columns": []
+    },
+    {
+      "question_id": 63,
+      "s_level": "S2",
+      "final_sql": "SELECT prsn.lst_nm, emp.jb_ttl\nFROM doc\nJOIN emp ON doc.ref1 = emp.ref1\nJOIN prsn ON emp.ref1 = prsn.ref1\nWHERE doc.ttl = 'Crank Arm and Tire Maintenance'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13597,
+        "output": 710,
+        "total": 14307
+      },
+      "elapsed_seconds": 16.89,
+      "extra_columns": []
+    },
+    {
+      "question_id": 64,
+      "s_level": "S1",
+      "final_sql": "SELECT vnd.nm FROM prod JOIN prod_vnd ON prod_vnd.ref3 = prod.prdc_id JOIN vnd ON vnd.ref1 = prod_vnd.ref2 WHERE prod.prdc_nmbr = 'WB-H098'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12310,
+        "output": 741,
+        "total": 13051
+      },
+      "elapsed_seconds": 13.67,
+      "extra_columns": []
+    },
+    {
+      "question_id": 64,
+      "s_level": "S2",
+      "final_sql": "SELECT vnd.nm FROM prod JOIN prod_vnd ON prod_vnd.ref3 = prod.prdc_id JOIN vnd ON vnd.ref1 = prod_vnd.ref2 WHERE prod.prdc_nmbr = 'WB-H098'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13563,
+        "output": 154,
+        "total": 13717
+      },
+      "elapsed_seconds": 55.51,
+      "extra_columns": []
+    },
+    {
+      "question_id": 65,
+      "s_level": "S1",
+      "final_sql": "WITH latest_pay AS (\n  SELECT ref1, rt\n  FROM emp_pay_hist eph\n  WHERE rt_chng_dt = (SELECT MAX(rt_chng_dt) FROM emp_pay_hist WHERE ref1 = eph.ref1)\n),\neng_emps AS (\n  SELECT DISTINCT edh.ref3 AS emp_id\n  FROM emp_dept_hist edh\n  JOIN dept d ON edh.ref2 = d.dprt_id\n  WHERE d.nm = 'Engineering'\n    AND YEAR(edh.strt_dt) <= 2007\n    AND (edh.end_dt IS NULL OR YEAR(edh.end_dt) >= 2007)\n)\nSELECT AVG(lp.rt) AS avg_pay_rate\nFROM eng_emps ee\nJOIN latest_pay lp ON ee.emp_id = lp.ref1",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12371,
+        "output": 1009,
+        "total": 13380
+      },
+      "elapsed_seconds": 16.82,
+      "extra_columns": []
+    },
+    {
+      "question_id": 65,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.18,
+      "extra_columns": []
+    },
+    {
+      "question_id": 66,
+      "s_level": "S1",
+      "final_sql": "SELECT SUM(p.lst_prc - p.stnd_cst) / COUNT(p.ref2) AS avg_profit\nFROM prod p\nJOIN prod_sub ps ON p.ref2 = ps.prdc_sbct_id\nJOIN prod_cat pc ON ps.ref1 = pc.prdc_ctgr_id\nWHERE pc.nm = 'Clothing'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12355,
+        "output": 710,
+        "total": 13065
+      },
+      "elapsed_seconds": 13.37,
+      "extra_columns": []
+    },
+    {
+      "question_id": 66,
+      "s_level": "S2",
+      "final_sql": "SELECT SUM(p.lst_prc - p.stnd_cst) / COUNT(p.ref2) AS avg_profit FROM prod p JOIN prod_sub ps ON p.ref2 = ps.prdc_sbct_id JOIN prod_cat pc ON ps.ref1 = pc.prdc_ctgr_id WHERE pc.nm = 'Clothing'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13608,
+        "output": 653,
+        "total": 14261
+      },
+      "elapsed_seconds": 14.14,
+      "extra_columns": []
+    },
+    {
+      "question_id": 67,
+      "s_level": "S1",
+      "final_sql": "SELECT c.crd_nmbr FROM prsn p JOIN prsn_crd pc ON p.ref1 = pc.ref1 JOIN crd c ON pc.ref2 = c.crdt_crd_id WHERE p.frst_nm = 'Michelle' AND p.mddl_nm = 'E' AND p.lst_nm = 'Cox'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12349,
+        "output": 1762,
+        "total": 14111
+      },
+      "elapsed_seconds": 29.59,
+      "extra_columns": []
+    },
+    {
+      "question_id": 67,
+      "s_level": "S2",
+      "final_sql": "SELECT c.crd_nmbr FROM prsn p JOIN prsn_crd pc ON p.ref1 = pc.ref1 JOIN crd c ON pc.ref2 = c.crdt_crd_id WHERE p.frst_nm = 'Michelle' AND p.mddl_nm = 'E' AND p.lst_nm = 'Cox'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13602,
+        "output": 592,
+        "total": 14194
+      },
+      "elapsed_seconds": 10.33,
+      "extra_columns": []
+    },
+    {
+      "question_id": 68,
+      "s_level": "S1",
+      "final_sql": "SELECT cur.nm FROM cnty JOIN cnty_cur ON cnty.cntr_rgn_cd = cnty_cur.ref2 JOIN cur ON cnty_cur.ref1 = cur.crrn_cd WHERE cnty.nm = 'Brazil'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12306,
+        "output": 520,
+        "total": 12826
+      },
+      "elapsed_seconds": 10.64,
+      "extra_columns": []
+    },
+    {
+      "question_id": 68,
+      "s_level": "S2",
+      "final_sql": "SELECT cur.nm FROM cnty JOIN cnty_cur ON cnty_cur.ref2 = cnty.cntr_rgn_cd JOIN cur ON cur.crrn_cd = cnty_cur.ref1 WHERE cnty.nm = 'Brazil'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13559,
+        "output": 338,
+        "total": 13897
+      },
+      "elapsed_seconds": 6.92,
+      "extra_columns": []
+    },
+    {
+      "question_id": 69,
+      "s_level": "S1",
+      "final_sql": "SELECT T2.eml_addr FROM emp AS T1 JOIN eml AS T2 ON T1.ref1 = T2.ref1 WHERE T1.jb_ttl = 'Facilities Manager'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12335,
+        "output": 664,
+        "total": 12999
+      },
+      "elapsed_seconds": 12.62,
+      "extra_columns": []
+    },
+    {
+      "question_id": 69,
+      "s_level": "S2",
+      "final_sql": "SELECT DISTINCT T2.eml_addr FROM emp AS T1 JOIN eml AS T2 ON T1.ref1 = T2.ref1 WHERE T1.jb_ttl = 'Facilities Manager'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13588,
+        "output": 752,
+        "total": 14340
+      },
+      "elapsed_seconds": 14.94,
+      "extra_columns": []
+    },
+    {
+      "question_id": 70,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.34,
+      "extra_columns": []
+    },
+    {
+      "question_id": 70,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.23,
+      "extra_columns": []
+    },
+    {
+      "question_id": 71,
+      "s_level": "S1",
+      "final_sql": "SELECT emp.jb_ttl, emp_pay_hist.rt, prsn.frst_nm, prsn.mddl_nm, prsn.lst_nm\nFROM emp_pay_hist\nJOIN emp ON emp.ref1 = emp_pay_hist.ref1\nJOIN prsn ON prsn.ref1 = emp.ref1\nORDER BY emp_pay_hist.rt DESC\nLIMIT 1 OFFSET 9",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12360,
+        "output": 1977,
+        "total": 14337
+      },
+      "elapsed_seconds": 36.51,
+      "extra_columns": []
+    },
+    {
+      "question_id": 71,
+      "s_level": "S2",
+      "final_sql": "SELECT emp.jb_ttl, emp_pay_hist.rt, prsn.frst_nm, prsn.mddl_nm, prsn.lst_nm\nFROM emp_pay_hist\nJOIN emp ON emp.ref1 = emp_pay_hist.ref1\nJOIN prsn ON prsn.ref1 = emp.ref1\nORDER BY emp_pay_hist.rt DESC\nLIMIT 1 OFFSET 9",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13613,
+        "output": 3039,
+        "total": 16652
+      },
+      "elapsed_seconds": 53.31,
+      "extra_columns": []
+    },
+    {
+      "question_id": 72,
+      "s_level": "S1",
+      "final_sql": "SELECT emp_pay_hist.rt\nFROM emp\nJOIN emp_pay_hist ON emp.ref1 = emp_pay_hist.ref1\nORDER BY emp.hr_dt ASC\nLIMIT 5",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12384,
+        "output": 1132,
+        "total": 13516
+      },
+      "elapsed_seconds": 23.9,
+      "extra_columns": []
+    },
+    {
+      "question_id": 72,
+      "s_level": "S2",
+      "final_sql": "SELECT emp_pay_hist.rt FROM emp JOIN emp_pay_hist ON emp.ref1 = emp_pay_hist.ref1 ORDER BY emp.hr_dt ASC LIMIT 5",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13637,
+        "output": 2824,
+        "total": 16461
+      },
+      "elapsed_seconds": 54.36,
+      "extra_columns": []
+    },
+    {
+      "question_id": 73,
+      "s_level": "S1",
+      "final_sql": "SELECT SUM(wo.stck_qty) FROM wo WHERE wo.wrk_ordr_id IN (SELECT wo_rtg.ref2 FROM wo_rtg WHERE wo_rtg.ref1 = 40)",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12340,
+        "output": 2294,
+        "total": 14634
+      },
+      "elapsed_seconds": 42.84,
+      "extra_columns": []
+    },
+    {
+      "question_id": 73,
+      "s_level": "S2",
+      "final_sql": "SELECT SUM(wo.stck_qty) FROM wo WHERE wo.wrk_ordr_id IN (SELECT wo_rtg.ref2 FROM wo_rtg WHERE wo_rtg.ref1 = 40)",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13593,
+        "output": 1855,
+        "total": 15448
+      },
+      "elapsed_seconds": 32.15,
+      "extra_columns": []
+    },
+    {
+      "question_id": 74,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.18,
+      "extra_columns": []
+    },
+    {
+      "question_id": 74,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.21,
+      "extra_columns": []
+    },
+    {
+      "question_id": 75,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.12,
+      "extra_columns": []
+    },
+    {
+      "question_id": 75,
+      "s_level": "S2",
+      "final_sql": "SELECT t1.end_dt FROM emp_dept_hist t1 JOIN emp t2 ON t1.ref3 = t2.ref1 JOIN dept t3 ON t1.ref2 = t3.dprt_id WHERE t2.jb_ttl = 'Senior Tool Designer' AND t3.nm = 'Engineering' AND YEAR(t2.hr_dt) - YEAR(t2.brth_dt) = 33 AND t1.end_dt IS NOT NULL",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13633,
+        "output": 1711,
+        "total": 15344
+      },
+      "elapsed_seconds": 39.46,
+      "extra_columns": []
+    },
+    {
+      "question_id": 76,
+      "s_level": "S1",
+      "final_sql": "SELECT addr.addr_ln1, addr.addr_ln2\nFROM stor\nJOIN biz_addr ON stor.ref2 = biz_addr.ref1\nJOIN addr ON biz_addr.ref3 = addr.addr_id\nWHERE stor.nm = 'Valley Bicycle Specialists'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12348,
+        "output": 1640,
+        "total": 13988
+      },
+      "elapsed_seconds": 32.16,
+      "extra_columns": []
+    },
+    {
+      "question_id": 76,
+      "s_level": "S2",
+      "final_sql": "SELECT addr.addr_ln1, addr.addr_ln2 FROM stor JOIN biz_addr ON stor.ref2 = biz_addr.ref1 JOIN addr ON biz_addr.ref3 = addr.addr_id WHERE stor.nm = 'Valley Bicycle Specialists'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13601,
+        "output": 2930,
+        "total": 16531
+      },
+      "elapsed_seconds": 51.15,
+      "extra_columns": []
+    },
+    {
+      "question_id": 77,
+      "s_level": "S1",
+      "final_sql": "SELECT addr.addr_ln1, addr.addr_ln2, addr.cty, addr.pstl_cd, st_prv.nm\nFROM prsn\nJOIN biz_addr ON prsn.ref1 = biz_addr.ref1\nJOIN addr_typ ON biz_addr.ref2 = addr_typ.addr_typ_id\nJOIN addr ON biz_addr.ref3 = addr.addr_id\nLEFT JOIN st_prv ON addr.ref1 = st_prv.stt_prvn_id\nWHERE prsn.ref1 = 5555\n  AND addr_typ.nm = 'Home'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12346,
+        "output": 3168,
+        "total": 15514
+      },
+      "elapsed_seconds": 52.55,
+      "extra_columns": [
+        "addr_ln2",
+        "pstl_cd",
+        "nm"
+      ]
+    },
+    {
+      "question_id": 77,
+      "s_level": "S2",
+      "final_sql": "SELECT a.addr_ln1, a.addr_ln2, a.cty, a.pstl_cd, sp.nm, c.nm\nFROM prsn p\nJOIN biz_addr ba ON ba.ref1 = p.ref1\nJOIN addr a ON a.addr_id = ba.ref3\nJOIN addr_typ atyp ON atyp.addr_typ_id = ba.ref2\nJOIN st_prv sp ON sp.stt_prvn_id = a.ref1\nJOIN cnty c ON c.cntr_rgn_cd = sp.ref2\nWHERE p.ref1 = 5555 AND atyp.nm = 'Home'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13599,
+        "output": 1572,
+        "total": 15171
+      },
+      "elapsed_seconds": 26.1,
+      "extra_columns": [
+        "addr_ln2",
+        "pstl_cd",
+        "nm",
+        "nm"
+      ]
+    },
+    {
+      "question_id": 78,
+      "s_level": "S1",
+      "final_sql": "SELECT DISTINCT addr_typ.nm FROM stor JOIN biz_addr ON biz_addr.ref1 = stor.ref2 JOIN addr_typ ON addr_typ.addr_typ_id = biz_addr.ref2 WHERE stor.nm = 'Fun Toys and Bikes'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12342,
+        "output": 549,
+        "total": 12891
+      },
+      "elapsed_seconds": 14.1,
+      "extra_columns": []
+    },
+    {
+      "question_id": 78,
+      "s_level": "S2",
+      "final_sql": "SELECT DISTINCT atyp.nm\nFROM stor s\nJOIN biz_addr ba ON s.ref2 = ba.ref1\nJOIN addr_typ atyp ON ba.ref2 = atyp.addr_typ_id\nWHERE s.nm = 'Fun Toys and Bikes'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13595,
+        "output": 548,
+        "total": 14143
+      },
+      "elapsed_seconds": 13.03,
+      "extra_columns": []
+    },
+    {
+      "question_id": 79,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.21,
+      "extra_columns": []
+    },
+    {
+      "question_id": 79,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.19,
+      "extra_columns": []
+    },
+    {
+      "question_id": 80,
+      "s_level": "S1",
+      "final_sql": "SELECT d.nm FROM emp_dept_hist edh JOIN shft s ON edh.ref1 = s.shft_id JOIN dept d ON edh.ref2 = d.dprt_id WHERE s.nm = 'Night' GROUP BY d.dprt_id, d.nm ORDER BY COUNT(*) DESC LIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12341,
+        "output": 829,
+        "total": 13170
+      },
+      "elapsed_seconds": 15.71,
+      "extra_columns": []
+    },
+    {
+      "question_id": 80,
+      "s_level": "S2",
+      "final_sql": "SELECT d.nm FROM dept d JOIN emp_dept_hist h ON h.ref2 = d.dprt_id JOIN shft s ON h.ref1 = s.shft_id WHERE s.nm = 'Night' GROUP BY d.dprt_id, d.nm ORDER BY COUNT(*) DESC LIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13594,
+        "output": 5943,
+        "total": 19537
+      },
+      "elapsed_seconds": 134.41,
+      "extra_columns": []
+    },
+    {
+      "question_id": 81,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.21,
+      "extra_columns": []
+    },
+    {
+      "question_id": 81,
+      "s_level": "S2",
+      "final_sql": "SELECT d.nm\nFROM emp_dept_hist edh\nJOIN dept d ON edh.ref2 = d.dprt_id\nJOIN shft s ON edh.ref1 = s.shft_id\nWHERE s.nm = 'Evening' AND edh.end_dt IS NULL\nGROUP BY d.dprt_id, d.nm\nORDER BY COUNT(DISTINCT edh.ref3) DESC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13602,
+        "output": 973,
+        "total": 14575
+      },
+      "elapsed_seconds": 23.97,
+      "extra_columns": []
+    },
+    {
+      "question_id": 82,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.2,
+      "extra_columns": []
+    },
+    {
+      "question_id": 82,
+      "s_level": "S2",
+      "final_sql": "SELECT p.frst_nm, p.lst_nm\nFROM emp_dept_hist edh\nJOIN dept d ON edh.ref2 = d.dprt_id\nJOIN emp e ON edh.ref3 = e.ref1\nJOIN prsn p ON e.ref1 = p.ref1\nWHERE d.nm = 'Engineering'\nORDER BY DATEDIFF(COALESCE(edh.end_dt, CURRENT_DATE), edh.strt_dt) DESC\nLIMIT 1",
+      "pass": false,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13605,
+        "output": 3744,
+        "total": 17349
+      },
+      "elapsed_seconds": 62.64,
+      "extra_columns": []
+    },
+    {
+      "question_id": 83,
+      "s_level": "S1",
+      "final_sql": "SELECT sls_terr.grp, st_prv.nm\nFROM sls_tax\nJOIN st_prv ON sls_tax.ref1 = st_prv.stt_prvn_id\nJOIN sls_terr ON st_prv.ref1 = sls_terr.trrt_id\nORDER BY sls_tax.tx_rt ASC\nLIMIT 1 OFFSET 1",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12356,
+        "output": 2744,
+        "total": 15100
+      },
+      "elapsed_seconds": 48.78,
+      "extra_columns": []
+    },
+    {
+      "question_id": 83,
+      "s_level": "S2",
+      "final_sql": "SELECT sls_terr.grp, st_prv.nm\nFROM sls_tax\nJOIN st_prv ON sls_tax.ref1 = st_prv.stt_prvn_id\nJOIN sls_terr ON st_prv.ref1 = sls_terr.trrt_id\nORDER BY sls_tax.tx_rt ASC\nLIMIT 1 OFFSET 1",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13609,
+        "output": 2475,
+        "total": 16084
+      },
+      "elapsed_seconds": 44.52,
+      "extra_columns": []
+    },
+    {
+      "question_id": 84,
+      "s_level": "S1",
+      "final_sql": "SELECT vnd.nm FROM prod_vnd JOIN prod ON prod.prdc_id = prod_vnd.ref3 JOIN vnd ON vnd.ref1 = prod_vnd.ref2 WHERE prod.nm = 'Hex Nut 5' ORDER BY prod_vnd.stnd_prc ASC LIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12356,
+        "output": 2699,
+        "total": 15055
+      },
+      "elapsed_seconds": 57.81,
+      "extra_columns": []
+    },
+    {
+      "question_id": 84,
+      "s_level": "S2",
+      "final_sql": "SELECT v.nm FROM prod_vnd pv JOIN prod p ON pv.ref3 = p.prdc_id JOIN vnd v ON pv.ref2 = v.ref1 WHERE p.nm = 'Hex Nut 5' ORDER BY pv.stnd_prc ASC LIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13609,
+        "output": 692,
+        "total": 14301
+      },
+      "elapsed_seconds": 16.95,
+      "extra_columns": []
+    },
+    {
+      "question_id": 85,
+      "s_level": "S1",
+      "final_sql": "SELECT DISTINCT prsn.lst_nm FROM job_cand JOIN prsn ON job_cand.ref1 = prsn.ref1 WHERE job_cand.ref1 IS NOT NULL",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12357,
+        "output": 1839,
+        "total": 14196
+      },
+      "elapsed_seconds": 33.28,
+      "extra_columns": []
+    },
+    {
+      "question_id": 85,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.11,
+      "extra_columns": []
+    },
+    {
+      "question_id": 86,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.21,
+      "extra_columns": []
+    },
+    {
+      "question_id": 86,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.18,
+      "extra_columns": []
+    },
+    {
+      "question_id": 87,
+      "s_level": "S1",
+      "final_sql": "SELECT p.frst_nm, p.mddl_nm, p.lst_nm, e.jb_ttl\nFROM emp e\nJOIN prsn p ON e.ref1 = p.ref1\nJOIN emp_pay_hist eph ON e.ref1 = eph.ref1\nWHERE e.mrtl_stts = 'S'\n  AND e.gndr = 'F'\n  AND e.crrn_flg = 1\nORDER BY eph.rt DESC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12370,
+        "output": 2344,
+        "total": 14714
+      },
+      "elapsed_seconds": 41.72,
+      "extra_columns": []
+    },
+    {
+      "question_id": 87,
+      "s_level": "S2",
+      "final_sql": "WITH latest_rate AS (\n    SELECT ref1, rt\n    FROM emp_pay_hist eph\n    WHERE rt_chng_dt = (\n        SELECT MAX(rt_chng_dt)\n        FROM emp_pay_hist\n        WHERE ref1 = eph.ref1\n    )\n)\nSELECT p.frst_nm, p.mddl_nm, p.lst_nm, e.jb_ttl\nFROM emp e\nJOIN prsn p ON e.ref1 = p.ref1\nJOIN latest_rate lr ON e.ref1 = lr.ref1\nWHERE e.mrtl_stts = 'S'\n  AND e.gndr = 'F'\nORDER BY lr.rt DESC\nLIMIT 1",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13623,
+        "output": 3525,
+        "total": 17148
+      },
+      "elapsed_seconds": 59.58,
+      "extra_columns": []
+    },
+    {
+      "question_id": 89,
+      "s_level": "S1",
+      "final_sql": "SELECT prsn.frst_nm, prsn.lst_nm FROM emp JOIN emp_dept_hist ON emp_dept_hist.ref3 = emp.ref1 JOIN dept ON dept.dprt_id = emp_dept_hist.ref2 JOIN prsn ON prsn.ref1 = emp.ref1 WHERE dept.nm = 'Shipping and Receiving' AND YEAR(emp.hr_dt) = 2009 AND emp_dept_hist.end_dt IS NULL",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12353,
+        "output": 3999,
+        "total": 16352
+      },
+      "elapsed_seconds": 73.21,
+      "extra_columns": []
+    },
+    {
+      "question_id": 89,
+      "s_level": "S2",
+      "final_sql": "SELECT DISTINCT prsn.frst_nm, prsn.lst_nm\nFROM emp\nJOIN prsn ON emp.ref1 = prsn.ref1\nJOIN emp_dept_hist ON emp_dept_hist.ref3 = emp.ref1\nJOIN dept ON emp_dept_hist.ref2 = dept.dprt_id\nWHERE dept.nm = 'Shipping and Receiving'\n  AND emp_dept_hist.end_dt IS NULL\n  AND YEAR(emp.hr_dt) = 2009",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13606,
+        "output": 1446,
+        "total": 15052
+      },
+      "elapsed_seconds": 28.8,
+      "extra_columns": []
+    },
+    {
+      "question_id": 90,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.18,
+      "extra_columns": []
+    },
+    {
+      "question_id": 90,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.95,
+      "extra_columns": []
+    },
+    {
+      "question_id": 91,
+      "s_level": "S1",
+      "final_sql": "SELECT prsn.frst_nm, prsn.lst_nm, sls_terr.nm\nFROM stor\nJOIN sls_prsn ON stor.ref1 = sls_prsn.ref2\nJOIN sls_terr ON sls_prsn.ref1 = sls_terr.trrt_id\nJOIN emp ON sls_prsn.ref2 = emp.ref1\nJOIN prsn ON emp.ref1 = prsn.ref1\nWHERE stor.nm = 'Area Bike Accessories'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12317,
+        "output": 2161,
+        "total": 14478
+      },
+      "elapsed_seconds": 49.05,
+      "extra_columns": []
+    },
+    {
+      "question_id": 91,
+      "s_level": "S2",
+      "final_sql": "SELECT p.frst_nm, p.lst_nm, t.nm\nFROM stor s\nJOIN sls_prsn sp ON s.ref1 = sp.ref2\nJOIN emp e ON sp.ref2 = e.ref1\nJOIN prsn p ON e.ref1 = p.ref1\nJOIN sls_terr t ON sp.ref1 = t.trrt_id\nWHERE s.nm = 'Area Bike Accessories'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13570,
+        "output": 654,
+        "total": 14224
+      },
+      "elapsed_seconds": 16.5,
+      "extra_columns": []
+    },
+    {
+      "question_id": 93,
+      "s_level": "S1",
+      "final_sql": "SELECT v.nm\nFROM vnd v\nJOIN prod_vnd pv ON pv.ref2 = v.ref1\nJOIN prod p ON p.prdc_id = pv.ref3\nJOIN prod_sub ps ON ps.prdc_sbct_id = p.ref2\nWHERE p.mk_flg = 0\n  AND p.styl = 'W'\n  AND ps.nm = 'Tights'\nGROUP BY v.ref1, v.nm",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12365,
+        "output": 2593,
+        "total": 14958
+      },
+      "elapsed_seconds": 58.21,
+      "extra_columns": []
+    },
+    {
+      "question_id": 93,
+      "s_level": "S2",
+      "final_sql": "SELECT DISTINCT vnd.nm FROM vnd JOIN prod_vnd ON prod_vnd.ref2 = vnd.ref1 JOIN prod ON prod.prdc_id = prod_vnd.ref3 JOIN prod_sub ON prod_sub.prdc_sbct_id = prod.ref2 WHERE prod.mk_flg = 0 AND prod.styl = 'W' AND prod_sub.nm = 'Tights'",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 13618,
+        "output": 531,
+        "total": 14149
+      },
+      "elapsed_seconds": 12.95,
+      "extra_columns": []
+    },
+    {
+      "question_id": 94,
+      "s_level": "S1",
+      "final_sql": "SELECT pv.avrg_ld_tm, pv.lst_rcpt_cst - pv.stnd_prc AS profit_on_net, a.addr_ln1, a.addr_ln2, a.cty, a.pstl_cd FROM prod_vnd pv JOIN vnd v ON pv.ref2 = v.ref1 JOIN biz_addr ba ON v.ref1 = ba.ref1 JOIN addr a ON ba.ref3 = a.addr_id WHERE pv.ref3 = 843",
+      "pass": true,
+      "error": null,
+      "model": "GLM-5-Pro",
+      "tokens": {
+        "input": 12379,
+        "output": 2667,
+        "total": 15046
+      },
+      "elapsed_seconds": 46.76,
+      "extra_columns": []
+    },
+    {
+      "question_id": 94,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "ReadTimeout: The read operation timed out",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 240.24,
+      "extra_columns": []
+    },
+    {
+      "question_id": 95,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.6,
+      "extra_columns": []
+    },
+    {
+      "question_id": 95,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.55,
+      "extra_columns": []
+    },
+    {
+      "question_id": 96,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.48,
+      "extra_columns": []
+    },
+    {
+      "question_id": 96,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.52,
+      "extra_columns": []
+    },
+    {
+      "question_id": 97,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.52,
+      "extra_columns": []
+    },
+    {
+      "question_id": 97,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.48,
+      "extra_columns": []
+    },
+    {
+      "question_id": 98,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 57.99,
+      "extra_columns": []
+    },
+    {
+      "question_id": 98,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.86,
+      "extra_columns": []
+    },
+    {
+      "question_id": 99,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.54,
+      "extra_columns": []
+    },
+    {
+      "question_id": 99,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.59,
+      "extra_columns": []
+    },
+    {
+      "question_id": 100,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.7,
+      "extra_columns": []
+    },
+    {
+      "question_id": 100,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.55,
+      "extra_columns": []
+    },
+    {
+      "question_id": 101,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.55,
+      "extra_columns": []
+    },
+    {
+      "question_id": 101,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.71,
+      "extra_columns": []
+    },
+    {
+      "question_id": 102,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.7,
+      "extra_columns": []
+    },
+    {
+      "question_id": 102,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.43,
+      "extra_columns": []
+    },
+    {
+      "question_id": 103,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.68,
+      "extra_columns": []
+    },
+    {
+      "question_id": 103,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.79,
+      "extra_columns": []
+    },
+    {
+      "question_id": 104,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.46,
+      "extra_columns": []
+    },
+    {
+      "question_id": 104,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.58,
+      "extra_columns": []
+    },
+    {
+      "question_id": 105,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.53,
+      "extra_columns": []
+    },
+    {
+      "question_id": 105,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.65,
+      "extra_columns": []
+    },
+    {
+      "question_id": 106,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.55,
+      "extra_columns": []
+    },
+    {
+      "question_id": 106,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.61,
+      "extra_columns": []
+    },
+    {
+      "question_id": 107,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.64,
+      "extra_columns": []
+    },
+    {
+      "question_id": 107,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.55,
+      "extra_columns": []
+    },
+    {
+      "question_id": 108,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.62,
+      "extra_columns": []
+    },
+    {
+      "question_id": 108,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.7,
+      "extra_columns": []
+    },
+    {
+      "question_id": 109,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.55,
+      "extra_columns": []
+    },
+    {
+      "question_id": 109,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.7,
+      "extra_columns": []
+    },
+    {
+      "question_id": 110,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.55,
+      "extra_columns": []
+    },
+    {
+      "question_id": 110,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.7,
+      "extra_columns": []
+    },
+    {
+      "question_id": 111,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.73,
+      "extra_columns": []
+    },
+    {
+      "question_id": 111,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.67,
+      "extra_columns": []
+    },
+    {
+      "question_id": 112,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 1.03,
+      "extra_columns": []
+    },
+    {
+      "question_id": 112,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.7,
+      "extra_columns": []
+    },
+    {
+      "question_id": 113,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.56,
+      "extra_columns": []
+    },
+    {
+      "question_id": 113,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.73,
+      "extra_columns": []
+    },
+    {
+      "question_id": 114,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.58,
+      "extra_columns": []
+    },
+    {
+      "question_id": 114,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.62,
+      "extra_columns": []
+    },
+    {
+      "question_id": 115,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.48,
+      "extra_columns": []
+    },
+    {
+      "question_id": 115,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.64,
+      "extra_columns": []
+    },
+    {
+      "question_id": 116,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.68,
+      "extra_columns": []
+    },
+    {
+      "question_id": 116,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.53,
+      "extra_columns": []
+    },
+    {
+      "question_id": 117,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.69,
+      "extra_columns": []
+    },
+    {
+      "question_id": 117,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.71,
+      "extra_columns": []
+    },
+    {
+      "question_id": 118,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.57,
+      "extra_columns": []
+    },
+    {
+      "question_id": 118,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.67,
+      "extra_columns": []
+    },
+    {
+      "question_id": 119,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.55,
+      "extra_columns": []
+    },
+    {
+      "question_id": 119,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.69,
+      "extra_columns": []
+    },
+    {
+      "question_id": 120,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.54,
+      "extra_columns": []
+    },
+    {
+      "question_id": 120,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.71,
+      "extra_columns": []
+    },
+    {
+      "question_id": 121,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.7,
+      "extra_columns": []
+    },
+    {
+      "question_id": 121,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.67,
+      "extra_columns": []
+    },
+    {
+      "question_id": 122,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.54,
+      "extra_columns": []
+    },
+    {
+      "question_id": 122,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.64,
+      "extra_columns": []
+    },
+    {
+      "question_id": 123,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.65,
+      "extra_columns": []
+    },
+    {
+      "question_id": 123,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 1.03,
+      "extra_columns": []
+    },
+    {
+      "question_id": 124,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.55,
+      "extra_columns": []
+    },
+    {
+      "question_id": 124,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.78,
+      "extra_columns": []
+    },
+    {
+      "question_id": 125,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.51,
+      "extra_columns": []
+    },
+    {
+      "question_id": 125,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.53,
+      "extra_columns": []
+    },
+    {
+      "question_id": 126,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.81,
+      "extra_columns": []
+    },
+    {
+      "question_id": 126,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.71,
+      "extra_columns": []
+    },
+    {
+      "question_id": 127,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.53,
+      "extra_columns": []
+    },
+    {
+      "question_id": 127,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.7,
+      "extra_columns": []
+    },
+    {
+      "question_id": 128,
+      "s_level": "S1",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 1.17,
+      "extra_columns": []
+    },
+    {
+      "question_id": 128,
+      "s_level": "S2",
+      "final_sql": "",
+      "pass": false,
+      "error": "HTTPStatusError: Client error '429 Too Many Requests' for url 'https://ai.ctaigw.cn/coding/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429",
+      "model": null,
+      "tokens": null,
+      "elapsed_seconds": 0.54,
+      "extra_columns": []
+    }
+  ]
+}

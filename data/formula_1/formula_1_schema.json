@@ -1,0 +1,688 @@
+{
+  "database": "formula_1",
+  "description": "formula_1 完整数据字典(混淆名) + 外键 + 列类型, 一次性注入即免逐表探索。",
+  "tables": [
+    {
+      "name": "cnstr",
+      "desc": "F1 constructors (teams)",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "cnst_id",
+          "type": "integer",
+          "desc": "the unique identification number identifying constructors"
+        },
+        {
+          "name": "cnst_rf",
+          "type": "text",
+          "desc": "Constructor Reference name"
+        },
+        {
+          "name": "nm",
+          "type": "text",
+          "desc": "full name of the constructor"
+        },
+        {
+          "name": "ntnl",
+          "type": "text",
+          "desc": "nationality of the constructor"
+        },
+        {
+          "name": "url",
+          "type": "text",
+          "desc": "the introduction website of the constructor"
+        }
+      ]
+    },
+    {
+      "name": "cnstr_rslt",
+      "desc": "constructor points per race",
+      "table_type": "fact",
+      "columns": [
+        {
+          "name": "cnst_rslt_id",
+          "type": "integer",
+          "desc": "constructor Results Id"
+        },
+        {
+          "name": "ref2",
+          "type": "integer",
+          "desc": "race id"
+        },
+        {
+          "name": "ref1",
+          "type": "integer",
+          "desc": "constructor id"
+        },
+        {
+          "name": "pnts",
+          "type": "real",
+          "desc": "points"
+        },
+        {
+          "name": "stts",
+          "type": "text",
+          "desc": "status"
+        }
+      ]
+    },
+    {
+      "name": "cnstr_std",
+      "desc": "constructor standings after each race",
+      "table_type": "fact",
+      "columns": [
+        {
+          "name": "cnst_stnd_id",
+          "type": "integer",
+          "desc": "unique identification of the constructor standing records"
+        },
+        {
+          "name": "ref2",
+          "type": "integer",
+          "desc": "id number identifying which races"
+        },
+        {
+          "name": "ref1",
+          "type": "integer",
+          "desc": "id number identifying which id"
+        },
+        {
+          "name": "pnts",
+          "type": "real",
+          "desc": "how many points acquired in each race"
+        },
+        {
+          "name": "pstn",
+          "type": "integer",
+          "desc": "position or track of circuits"
+        },
+        {
+          "name": "pstn_txt",
+          "type": "text",
+          "desc": "position text"
+        },
+        {
+          "name": "wns",
+          "type": "integer",
+          "desc": "wins"
+        }
+      ]
+    },
+    {
+      "name": "crct",
+      "desc": "F1 race circuits (track locations)",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "crct_id",
+          "type": "integer",
+          "desc": "unique identification number of the circuit"
+        },
+        {
+          "name": "crct_rf",
+          "type": "text",
+          "desc": "circuit reference name"
+        },
+        {
+          "name": "nm",
+          "type": "text",
+          "desc": "full name of circuit"
+        },
+        {
+          "name": "lctn",
+          "type": "text",
+          "desc": "location of circuit"
+        },
+        {
+          "name": "cntr",
+          "type": "text",
+          "desc": "country of circuit"
+        },
+        {
+          "name": "lt",
+          "type": "real",
+          "desc": "latitude of location of circuit"
+        },
+        {
+          "name": "lng",
+          "type": "real",
+          "desc": "longitude of location of circuit"
+        },
+        {
+          "name": "alt",
+          "type": "integer",
+          "desc": ""
+        },
+        {
+          "name": "url",
+          "type": "text",
+          "desc": "url"
+        }
+      ]
+    },
+    {
+      "name": "drvr",
+      "desc": "F1 drivers",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "drvr_id",
+          "type": "integer",
+          "desc": "the unique identification number identifying each driver"
+        },
+        {
+          "name": "drvr_rf",
+          "type": "text",
+          "desc": "driver reference name"
+        },
+        {
+          "name": "nmbr",
+          "type": "integer",
+          "desc": "number"
+        },
+        {
+          "name": "cd",
+          "type": "text",
+          "desc": "abbreviated code for drivers"
+        },
+        {
+          "name": "frnm",
+          "type": "text",
+          "desc": "forename"
+        },
+        {
+          "name": "srnm",
+          "type": "text",
+          "desc": "surname"
+        },
+        {
+          "name": "db",
+          "type": "date",
+          "desc": "date of birth"
+        },
+        {
+          "name": "ntnl",
+          "type": "text",
+          "desc": "nationality of drivers"
+        },
+        {
+          "name": "url",
+          "type": "text",
+          "desc": "the introduction website of the drivers"
+        }
+      ]
+    },
+    {
+      "name": "drvr_std",
+      "desc": "driver standings after each race",
+      "table_type": "fact",
+      "columns": [
+        {
+          "name": "drvr_stnd_id",
+          "type": "integer",
+          "desc": "the unique identification number identifying driver standing records"
+        },
+        {
+          "name": "ref2",
+          "type": "integer",
+          "desc": "id number identifying which races"
+        },
+        {
+          "name": "ref1",
+          "type": "integer",
+          "desc": "id number identifying which drivers"
+        },
+        {
+          "name": "pnts",
+          "type": "real",
+          "desc": "how many points acquired in each race"
+        },
+        {
+          "name": "pstn",
+          "type": "integer",
+          "desc": "position or track of circuits"
+        },
+        {
+          "name": "pstn_txt",
+          "type": "text",
+          "desc": "position text"
+        },
+        {
+          "name": "wns",
+          "type": "integer",
+          "desc": "wins"
+        }
+      ]
+    },
+    {
+      "name": "lp_tm",
+      "desc": "lap times per driver per lap",
+      "table_type": "fact",
+      "columns": [
+        {
+          "name": "ref2",
+          "type": "integer",
+          "desc": "the identification number identifying race"
+        },
+        {
+          "name": "ref1",
+          "type": "integer",
+          "desc": "the identification number identifying each driver"
+        },
+        {
+          "name": "lp",
+          "type": "integer",
+          "desc": "lap number"
+        },
+        {
+          "name": "pstn",
+          "type": "integer",
+          "desc": "position or track of circuits"
+        },
+        {
+          "name": "tm",
+          "type": "text",
+          "desc": "lap time"
+        },
+        {
+          "name": "mlls",
+          "type": "integer",
+          "desc": "milliseconds"
+        }
+      ]
+    },
+    {
+      "name": "pt_stp",
+      "desc": "pit stops per driver per race",
+      "table_type": "fact",
+      "columns": [
+        {
+          "name": "ref2",
+          "type": "integer",
+          "desc": "the identification number identifying race"
+        },
+        {
+          "name": "ref1",
+          "type": "integer",
+          "desc": "the identification number identifying each driver"
+        },
+        {
+          "name": "stp",
+          "type": "integer",
+          "desc": "stop number"
+        },
+        {
+          "name": "lp",
+          "type": "integer",
+          "desc": "lap number"
+        },
+        {
+          "name": "tm",
+          "type": "text",
+          "desc": "time"
+        },
+        {
+          "name": "drtn",
+          "type": "text",
+          "desc": "duration time"
+        },
+        {
+          "name": "mlls",
+          "type": "integer",
+          "desc": "milliseconds"
+        }
+      ]
+    },
+    {
+      "name": "qlfy",
+      "desc": "qualifying results per driver per race",
+      "table_type": "fact",
+      "columns": [
+        {
+          "name": "qlfy_id",
+          "type": "integer",
+          "desc": "the unique identification number identifying qualifying"
+        },
+        {
+          "name": "ref3",
+          "type": "integer",
+          "desc": "the identification number identifying each race"
+        },
+        {
+          "name": "ref2",
+          "type": "integer",
+          "desc": "the identification number identifying each driver"
+        },
+        {
+          "name": "ref1",
+          "type": "integer",
+          "desc": "constructor Id"
+        },
+        {
+          "name": "nmbr",
+          "type": "integer",
+          "desc": "number"
+        },
+        {
+          "name": "pstn",
+          "type": "integer",
+          "desc": "position or track of circuit"
+        },
+        {
+          "name": "q1",
+          "type": "text",
+          "desc": "time in qualifying 1"
+        },
+        {
+          "name": "q2",
+          "type": "text",
+          "desc": "time in qualifying 2"
+        },
+        {
+          "name": "q3",
+          "type": "text",
+          "desc": "time in qualifying 3"
+        }
+      ]
+    },
+    {
+      "name": "rcs",
+      "desc": "F1 races (one per circuit per season)",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "rc_id",
+          "type": "integer",
+          "desc": "the unique identification number identifying the race"
+        },
+        {
+          "name": "ref2",
+          "type": "integer",
+          "desc": "year"
+        },
+        {
+          "name": "rnd",
+          "type": "integer",
+          "desc": "round"
+        },
+        {
+          "name": "ref1",
+          "type": "integer",
+          "desc": "circuit Id"
+        },
+        {
+          "name": "nm",
+          "type": "text",
+          "desc": "name of the race"
+        },
+        {
+          "name": "dt",
+          "type": "date",
+          "desc": "duration time"
+        },
+        {
+          "name": "tm",
+          "type": "text",
+          "desc": "time of the location"
+        },
+        {
+          "name": "url",
+          "type": "text",
+          "desc": "introduction of races"
+        }
+      ]
+    },
+    {
+      "name": "rslt",
+      "desc": "race results per driver per race",
+      "table_type": "fact",
+      "columns": [
+        {
+          "name": "rslt_id",
+          "type": "integer",
+          "desc": "the unique identification number identifying race result"
+        },
+        {
+          "name": "ref4",
+          "type": "integer",
+          "desc": "the identification number identifying the race"
+        },
+        {
+          "name": "ref3",
+          "type": "integer",
+          "desc": "the identification number identifying the driver"
+        },
+        {
+          "name": "ref2",
+          "type": "integer",
+          "desc": "the identification number identifying which constructors"
+        },
+        {
+          "name": "nmbr",
+          "type": "integer",
+          "desc": "number"
+        },
+        {
+          "name": "grd",
+          "type": "integer",
+          "desc": "the number identifying the area where cars are set into a grid formation in order to start the race."
+        },
+        {
+          "name": "pstn",
+          "type": "integer",
+          "desc": "The finishing position or track of circuits"
+        },
+        {
+          "name": "pstn_txt",
+          "type": "text",
+          "desc": "position text"
+        },
+        {
+          "name": "pstn_ordr",
+          "type": "integer",
+          "desc": "the finishing order of positions"
+        },
+        {
+          "name": "pnts",
+          "type": "real",
+          "desc": "points"
+        },
+        {
+          "name": "lps",
+          "type": "integer",
+          "desc": "lap number"
+        },
+        {
+          "name": "tm",
+          "type": "text",
+          "desc": "finish time"
+        },
+        {
+          "name": "mlls",
+          "type": "integer",
+          "desc": "the actual finishing time of drivers in milliseconds"
+        },
+        {
+          "name": "fsts_lp",
+          "type": "integer",
+          "desc": "fastest lap number"
+        },
+        {
+          "name": "rnk",
+          "type": "integer",
+          "desc": "starting rank positioned by fastest lap speed"
+        },
+        {
+          "name": "fsts_lp_tm",
+          "type": "text",
+          "desc": "fastest Lap Time"
+        },
+        {
+          "name": "fsts_lp_spd",
+          "type": "text",
+          "desc": "fastest Lap Speed"
+        },
+        {
+          "name": "ref1",
+          "type": "integer",
+          "desc": "status ID"
+        }
+      ]
+    },
+    {
+      "name": "ssn",
+      "desc": "F1 seasons (years)",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "yr",
+          "type": "integer",
+          "desc": "the unique identification number identifying the race"
+        },
+        {
+          "name": "url",
+          "type": "text",
+          "desc": "website link of season race introduction"
+        }
+      ]
+    },
+    {
+      "name": "stat",
+      "desc": "race finish status codes",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "stts_id",
+          "type": "integer",
+          "desc": "the unique identification number identifying status"
+        },
+        {
+          "name": "stts",
+          "type": "text",
+          "desc": "full name of status"
+        }
+      ]
+    }
+  ],
+  "foreign_keys": [
+    {
+      "from": "cnstr_rslt.ref1",
+      "to": "cnstr.cnst_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "cnstr_rslt.ref2",
+      "to": "rcs.rc_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "cnstr_std.ref1",
+      "to": "cnstr.cnst_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "cnstr_std.ref2",
+      "to": "rcs.rc_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "drvr_std.ref1",
+      "to": "drvr.drvr_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "drvr_std.ref2",
+      "to": "rcs.rc_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "lp_tm.ref1",
+      "to": "drvr.drvr_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "lp_tm.ref2",
+      "to": "rcs.rc_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "pt_stp.ref1",
+      "to": "drvr.drvr_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "pt_stp.ref2",
+      "to": "rcs.rc_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "qlfy.ref1",
+      "to": "cnstr.cnst_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "qlfy.ref2",
+      "to": "drvr.drvr_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "qlfy.ref3",
+      "to": "rcs.rc_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "rcs.ref1",
+      "to": "crct.crct_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "rcs.ref2",
+      "to": "ssn.yr",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "rslt.ref1",
+      "to": "stat.stts_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "rslt.ref2",
+      "to": "cnstr.cnst_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "rslt.ref3",
+      "to": "drvr.drvr_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "rslt.ref4",
+      "to": "rcs.rc_id",
+      "seq": 1,
+      "count": 1
+    }
+  ],
+  "stats": {
+    "tables": 13,
+    "columns": 94,
+    "foreign_keys": 19
+  }
+}

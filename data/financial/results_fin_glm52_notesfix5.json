@@ -1,0 +1,145 @@
+{
+  "runs": [
+    {
+      "question_id": 7,
+      "datasource": "financial",
+      "chat_id": "2644add06f75488e9ec8f7d4768e64f2",
+      "final_sql": "SELECT a.accn_id FROM clnt c JOIN dstr d ON c.ref1 = d.dstr_id JOIN dsp ds ON ds.ref1 = c.clnt_id JOIN acct a ON ds.ref2 = a.accn_id WHERE c.clnt_id = ( SELECT c2.clnt_id FROM clnt c2 JOIN dstr d2 ON c2.ref1 = d2.dstr_id ORDER BY c2.brth_dt DESC, d2.a11 DESC LIMIT 1 )",
+      "sql_history": [
+        "SELECT a.accn_id FROM clnt c JOIN dstr d ON c.ref1 = d.dstr_id JOIN dsp ds ON ds.ref1 = c.clnt_id JOIN acct a ON ds.ref2 = a.accn_id WHERE c.clnt_id = ( SELECT c2.clnt_id FROM clnt c2 JOIN dstr d2 ON c2.ref1 = d2.dstr_id ORDER BY c2.brth_dt DESC, d2.a11 DESC LIMIT 1 )"
+      ],
+      "agent_text": "最终\n答案已得到。账户号为 **2836**。\n\n该查询逻辑：\n1. 先在子查询中找到最年轻的客户（`brth_dt DESC` 即出生日期最晚=最年轻），并以最高平均工资（`a11 DESC`）作为同生日并列时的筛选条件\n2. 再通过 `clnt → dsp → acct` 链找到该客户关联的账户号\n\n> 依据 notes §16：「youngest」= `ORDER BY brth_dt DESC`，「highest average salary」作并列条件的去重/排序依据。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 81503,
+        "output": 3993,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 3686,
+        "total": 85496
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 88.8,
+      "agent_duration_ms": 81128,
+      "extra_columns": []
+    },
+    {
+      "question_id": 54,
+      "datasource": "financial",
+      "chat_id": "71d4dd37818949c2b90250cda4427945",
+      "final_sql": "SELECT DISTINCT a.accn_id FROM trns t JOIN acct a ON t.ref1 = a.accn_id JOIN dstr d ON a.ref1 = d.dstr_id WHERE t.k_symb = 'SIPO' AND d.a2 = 'Pisek'",
+      "sql_history": [
+        "SELECT a.accn_id FROM trns t JOIN acct a ON t.ref1 = a.accn_id JOIN dstr d ON a.ref1 = d.dstr_id WHERE t.k_symb = 'SIPO' AND d.a2 = 'Pisek'",
+        "SELECT DISTINCT a.accn_id FROM trns t JOIN acct a ON t.ref1 = a.accn_id JOIN dstr d ON a.ref1 = d.dstr_id WHERE t.k_symb = 'SIPO' AND d.a2 = 'Pisek'"
+      ],
+      "agent_text": "在\nPisek 地区开设了家庭支付（`k_symb = 'SIPO'`）的账户共有 27 个，account IDs 如上所示。\n\n> 注：根据注意事项 §4，\"placed orders for household payment\" 中的 \"orders\" 是误导词，household payment 应查 `trns` 表而非 `ord` 表。Pisek 通过 `dstr.a2 = 'Pisek'` 匹配账户开户分支地区。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 110907,
+        "output": 2254,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 1925,
+        "total": 113161
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 59.52,
+      "agent_duration_ms": 51964,
+      "extra_columns": []
+    },
+    {
+      "question_id": 57,
+      "datasource": "financial",
+      "chat_id": "95e3503af5854abfa26446b912ff5772",
+      "final_sql": "SELECT t.ref1 FROM trns t WHERE t.oprt = 'VYBER KARTOU' AND YEAR(t.dt) = 1998 AND t.amnt < (SELECT AVG(t2.amnt) FROM trns t2 WHERE YEAR(t2.dt) = 1998)",
+      "sql_history": [
+        "SELECT t.ref1 FROM trns t WHERE t.oprt = 'VYBER KARTOU' AND YEAR(t.dt) = 1998 AND t.amnt < (SELECT AVG(t2.amnt) FROM trns t2 WHERE YEAR(t2.dt) = 1998)"
+      ],
+      "agent_text": "最终答案已\n执行完毕。返回 27 行 `ref1`（账户 ID），对应 1998 年通过信用卡取款（`oprt = 'VYBER KARTOU'`）且金额低于 1998 年全量交易平均值的交易所属账户 ID。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 81749,
+        "output": 1467,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 1145,
+        "total": 83216
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 41.68,
+      "agent_duration_ms": 34288,
+      "extra_columns": []
+    },
+    {
+      "question_id": 62,
+      "datasource": "financial",
+      "chat_id": "dce0c51379134226b53cee35b3b3757e",
+      "final_sql": "SELECT COUNT(a.accn_id) FROM trns t JOIN acct a ON t.ref1 = a.accn_id JOIN dstr d ON a.ref1 = d.dstr_id WHERE d.a3 = 'north Bohemia' AND t.bnk = 'AB'",
+      "sql_history": [
+        "SELECT COUNT(a.accn_id) FROM trns t JOIN acct a ON t.ref1 = a.accn_id JOIN dstr d ON a.ref1 = d.dstr_id WHERE d.a3 = 'north Bohemia' AND t.bnk = 'AB'"
+      ],
+      "agent_text": "**\n2260**\n\n根据 notes §1，\"how many accounts... made a transaction\" 这类题要保留 fan-out 行数（JOIN 后直接 COUNT），不做 DISTINCT 去重。`a3` 区域名按 §5 用小写 `'north Bohemia'`。\n\n最终 SQL：\n\n```sql\nSELECT COUNT(a.accn_id)\nFROM trns t\nJOIN acct a ON t.ref1 = a.accn_id\nJOIN dstr d ON a.ref1 = d.dstr_id\nWHERE d.a3 = 'north Bohemia' AND t.bnk = 'AB'\n```\n\n结果：**2260**",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 110314,
+        "output": 2255,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 1917,
+        "total": 112569
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 95.51,
+      "agent_duration_ms": 87896,
+      "extra_columns": []
+    },
+    {
+      "question_id": 94,
+      "datasource": "financial",
+      "chat_id": "098b20cba48c4a5f97aa69beee3fd00a",
+      "final_sql": "SELECT COUNT(*) FROM clnt JOIN dsp ON dsp.ref1 = clnt.clnt_id JOIN acct ON acct.accn_id = dsp.ref2 JOIN trns ON trns.ref1 = acct.accn_id WHERE clnt.gndr = 'M' AND clnt.brth_dt BETWEEN '1974-01-01' AND '1976-12-31' AND trns.k_symb = 'SIPO' AND trns.amnt > 4000",
+      "sql_history": [
+        "SELECT COUNT(*) FROM clnt JOIN dsp ON dsp.ref1 = clnt.clnt_id JOIN acct ON acct.accn_id = dsp.ref2 JOIN trns ON trns.ref1 = acct.accn_id WHERE clnt.gndr = 'M' AND clnt.brth_dt BETWEEN '1974-01-01' AND '1976-12-31' AND trns.k_symb = 'SIPO' AND trns.amnt > 4000"
+      ],
+      "agent_text": "最终\n答案：**1556**\n\n```sql\nSELECT COUNT(*) \nFROM clnt \nJOIN dsp ON dsp.ref1 = clnt.clnt_id \nJOIN acct ON acct.accn_id = dsp.ref2 \nJOIN trns ON trns.ref1 = acct.accn_id \nWHERE clnt.gndr = 'M' \n  AND clnt.brth_dt BETWEEN '1974-01-01' AND '1976-12-31' \n  AND trns.k_symb = 'SIPO' \n  AND trns.amnt > 4000\n```\n\n- `gndr = 'M'` → 男性客户\n- `brth_dt BETWEEN '1974-01-01' AND '1976-12-31'` → 1974–1976 年出生\n- `k_symb = 'SIPO'` → 家庭付款（household payment，据 evidence）\n- `amnt > 4000` → 超过 $4000\n- 按 notes §1 保留 fan-out 不去重，§15 不加 `dsp.typ` 过滤",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 81484,
+        "output": 1448,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 1042,
+        "total": 82932
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 40.39,
+      "agent_duration_ms": 32809,
+      "extra_columns": []
+    }
+  ]
+}

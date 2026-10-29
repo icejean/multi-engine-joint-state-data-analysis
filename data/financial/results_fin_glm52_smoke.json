@@ -1,0 +1,32 @@
+{
+  "runs": [
+    {
+      "question_id": 1,
+      "datasource": "financial",
+      "chat_id": "d0ece14d586d456bbab0dcbe9767193b",
+      "final_sql": "SELECT COUNT(*) FROM acct a JOIN dstr d ON a.ref1 = d.dstr_id WHERE a.frqn = 'POPLATEK PO OBRATU' AND d.a3 = 'east Bohemia'",
+      "sql_history": [
+        "SELECT COUNT(*) FROM acct a JOIN dstr d ON a.ref1 = d.dstr_id WHERE a.frqn = 'POPLATEK PO OBRATU' AND d.a3 = 'east Bohemia'"
+      ],
+      "agent_text": "**13**\n\nEast Bohemia region（`dstr.a3 = 'east Bohemia'`）中，账户频率为 `POPLATEK PO OBRATU`（issuance after transaction）的账户共 **13** 个。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "xirang/GLM-5.2",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 78810,
+        "output": 959,
+        "cache_read": 0,
+        "cache_write": 0,
+        "reasoning": 778,
+        "total": 79769
+      },
+      "cost_usd": 0.0,
+      "elapsed_seconds": 36.14,
+      "agent_duration_ms": 27913,
+      "extra_columns": []
+    }
+  ]
+}

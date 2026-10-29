@@ -1,0 +1,4432 @@
+{
+  "database": "works_cycles",
+  "gradient": "L2_dict",
+  "gradient_label": "裸数据 + 数据字典",
+  "stats": {
+    "table_count": 65,
+    "column_count": 455,
+    "foreign_key_count": 0
+  },
+  "tables": [
+    {
+      "name": "Address",
+      "columns": [
+        {
+          "name": "AddressID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "address id",
+          "description": "Unique id number identifying the address.",
+          "value_description": "Primary key for Address records. Identity / Auto increment column."
+        },
+        {
+          "name": "AddressLine1",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "address line 1",
+          "description": "First street address line.",
+          "value_description": ""
+        },
+        {
+          "name": "AddressLine2",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "address line 2",
+          "description": "Second street address line.",
+          "value_description": "commonsense evidence:\n1. total address = (AddressLine1+AddressLine2) \n2. if AddressLine2 is not null, it means the address is too long"
+        },
+        {
+          "name": "City",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Name of the city.",
+          "value_description": ""
+        },
+        {
+          "name": "StateProvinceID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "state province id",
+          "description": "Identification number for the state or province.",
+          "value_description": ""
+        },
+        {
+          "name": "PostalCode",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "postal code",
+          "description": "Postal code for the street address.",
+          "value_description": ""
+        },
+        {
+          "name": "SpatialLocation",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "spatial location",
+          "description": "Latitude and longitude of this address.",
+          "value_description": ""
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "rowguid",
+          "description": "Uniquely identifying the record. Used to support a merge replication sample.",
+          "value_description": "Default: newid()"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "AddressType",
+      "columns": [
+        {
+          "name": "AddressTypeID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "address type id",
+          "description": "Unique numbers identifying address type records.",
+          "value_description": "Primary key for AddressType records. Identity / Auto increment column."
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Address type description.",
+          "value_description": ""
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "rowguid",
+          "description": "Uniquely identifying the record. Used to support a merge replication sample.",
+          "value_description": "Default: newid()"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "BillOfMaterials",
+      "columns": [
+        {
+          "name": "BillOfMaterialsID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "bill of materials id",
+          "description": "The unique number identifying bill of materials.",
+          "value_description": "Primary key for BillOfMaterials records. Identity / Auto increment column."
+        },
+        {
+          "name": "ProductAssemblyID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "product assembly id",
+          "description": "Parent product identification number.",
+          "value_description": ""
+        },
+        {
+          "name": "ComponentID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "component ID",
+          "description": "Component identification number.",
+          "value_description": ""
+        },
+        {
+          "name": "StartDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "start date",
+          "description": "Date the component started being used in the assembly item.",
+          "value_description": ""
+        },
+        {
+          "name": "EndDate",
+          "type": "DATETIME",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "end date",
+          "description": "Date the component stopped being used in the assembly item.",
+          "value_description": "commonsense evidence:\n1. assembly item duration = (EndDate - StartDate) \n2. if EndDate is null, it means the assembly item doesn't finish (still going on)."
+        },
+        {
+          "name": "UnitMeasureCode",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "unit measure code",
+          "description": "Standard code identifying the unit of measure for the quantity.",
+          "value_description": ""
+        },
+        {
+          "name": "BOMLevel",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "bill of materials level",
+          "description": "Indicates the depth the component is from its parent (column2)(AssemblyID).",
+          "value_description": ""
+        },
+        {
+          "name": "PerAssemblyQty",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "per assembly quantity",
+          "description": "Quantity of the component needed to create the assembly.",
+          "value_description": ""
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "BusinessEntity",
+      "columns": [
+        {
+          "name": "BusinessEntityID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "business entity id",
+          "description": "Unique number of identifying business entity.",
+          "value_description": "Primary key for all customers, vendors, and employees. Identity / Auto increment column"
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "rowguid",
+          "description": "Uniquely identifying the record. Used to support a merge replication sample.",
+          "value_description": "Default: newid()"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "BusinessEntityAddress",
+      "columns": [
+        {
+          "name": "BusinessEntityID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Business Entity ID",
+          "description": "Number identifying the business entity.",
+          "value_description": ""
+        },
+        {
+          "name": "AddressID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Address ID",
+          "description": "Number identifying the address.",
+          "value_description": ""
+        },
+        {
+          "name": "AddressTypeID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Address Type ID",
+          "description": "Number identifying the address type.",
+          "value_description": ""
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "rowguid",
+          "description": "Uniquely identifying the record. Used to support a merge replication sample.",
+          "value_description": "Default: newid()"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "BusinessEntityContact",
+      "columns": [
+        {
+          "name": "BusinessEntityID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Business Entity ID",
+          "description": "The id number identifying the Business Entity ID.",
+          "value_description": ""
+        },
+        {
+          "name": "PersonID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Person ID",
+          "description": "The id number identifying the Person ID.",
+          "value_description": ""
+        },
+        {
+          "name": "ContactTypeID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Contact Type ID",
+          "description": "The id number identifying the contact type ID.",
+          "value_description": ""
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "rowguid",
+          "description": "Uniquely identifying the record. Used to support a merge replication sample.",
+          "value_description": "Default: newid()"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "ContactType",
+      "columns": [
+        {
+          "name": "ContactTypeID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "Contact Type ID",
+          "description": "The unique id number identifying the contact type ID.",
+          "value_description": ""
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Contact type description.",
+          "value_description": ""
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "CountryRegion",
+      "columns": [
+        {
+          "name": "CountryRegionCode",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Country Region Code",
+          "description": "The unique id number identifying Country Region ISO standard code for countries and regions.",
+          "value_description": ""
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Country or region name.",
+          "value_description": ""
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "CountryRegionCurrency",
+      "columns": [
+        {
+          "name": "CountryRegionCode",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Country Region Code",
+          "description": "The id number identifying Country Region ISO standard code for countries and regions.",
+          "value_description": ""
+        },
+        {
+          "name": "CurrencyCode",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Currency Code",
+          "description": "ISO standard currency code.",
+          "value_description": ""
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "CreditCard",
+      "columns": [
+        {
+          "name": "CreditCardID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "Credit Card ID",
+          "description": "The unique id number identifying the credit card.",
+          "value_description": ""
+        },
+        {
+          "name": "CardType",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Card Type",
+          "description": "Credit card name.",
+          "value_description": ""
+        },
+        {
+          "name": "CardNumber",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Card Number",
+          "description": "Credit card number.",
+          "value_description": ""
+        },
+        {
+          "name": "ExpMonth",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Expiration Month",
+          "description": "Credit card expiration month.",
+          "value_description": ""
+        },
+        {
+          "name": "ExpYear",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Expiration Year",
+          "description": "Credit card expiration year.",
+          "value_description": ""
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "Culture",
+      "columns": [
+        {
+          "name": "CultureID",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Culture ID",
+          "description": "The unique id string identifying the language in which AdventrueWorks data is stored.",
+          "value_description": ""
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Name of the language.",
+          "value_description": ""
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "Currency",
+      "columns": [
+        {
+          "name": "CurrencyCode",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Currency Code",
+          "description": "The unique id string identifying the currency.",
+          "value_description": ""
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Currency name.",
+          "value_description": ""
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "CurrencyRate",
+      "columns": [
+        {
+          "name": "CurrencyRateID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "Currency Rate ID",
+          "description": "The unique id number identifying the currency rate record.",
+          "value_description": ""
+        },
+        {
+          "name": "CurrencyRateDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Currency Rate Date",
+          "description": "Date and time the exchange rate was obtained.",
+          "value_description": ""
+        },
+        {
+          "name": "FromCurrencyCode",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "From Currency Code",
+          "description": "Exchange rate was converted from this currency code.",
+          "value_description": ""
+        },
+        {
+          "name": "ToCurrencyCode",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "ToCurrencyCode",
+          "description": "Exchange rate was converted to this currency code.",
+          "value_description": ""
+        },
+        {
+          "name": "AverageRate",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Average Rate",
+          "description": "Average exchange rate for the day.",
+          "value_description": ""
+        },
+        {
+          "name": "EndOfDayRate",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "End Of Day Rate",
+          "description": "Final exchange rate for the day.",
+          "value_description": ""
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "Customer",
+      "columns": [
+        {
+          "name": "CustomerID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "Customer ID",
+          "description": "The unique id number identifying the customer.",
+          "value_description": ""
+        },
+        {
+          "name": "PersonID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "Person ID",
+          "description": "The id number identifying the person.",
+          "value_description": ""
+        },
+        {
+          "name": "StoreID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "Store ID",
+          "description": "The id number identifying the store / bussiness entity.",
+          "value_description": ""
+        },
+        {
+          "name": "TerritoryID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "Territory ID",
+          "description": "ID of the territory in which the customer is located.",
+          "value_description": ""
+        },
+        {
+          "name": "AccountNumber",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Account Number",
+          "description": "Unique number identifying the customer assigned by the accounting system.",
+          "value_description": "Computed: isnull('AW'+[ufnLeadingZeros]([CustomerID]),'')"
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "rowguid",
+          "description": "Uniquely identifying the record. Used to support a merge replication sample.",
+          "value_description": "Default: newid()"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "Department",
+      "columns": [
+        {
+          "name": "DepartmentID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "Department ID",
+          "description": "The unique id number identifying the department.",
+          "value_description": ""
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Name of the department.",
+          "value_description": ""
+        },
+        {
+          "name": "GroupName",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Group Name",
+          "description": "Name of the group to which the department belongs.",
+          "value_description": ""
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "Document",
+      "columns": [
+        {
+          "name": "DocumentNode",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Document Node",
+          "description": "The unique hierarchy id identifying the document nodes.",
+          "value_description": ""
+        },
+        {
+          "name": "DocumentLevel",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "Document Level",
+          "description": "Depth in the document hierarchy.",
+          "value_description": "Computed: [DocumentNode].[GetLevel]()"
+        },
+        {
+          "name": "Title",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Title of the document.",
+          "value_description": ""
+        },
+        {
+          "name": "Owner",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Employee who controls the document.",
+          "value_description": ""
+        },
+        {
+          "name": "FolderFlag",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Folder Flag",
+          "description": "The type of the folders.",
+          "value_description": "0 = This is a folder, 1 = This is a document. Default: 0"
+        },
+        {
+          "name": "FileName",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "File Name",
+          "description": "Uniquely identifying the record. Used to support a merge replication sample.",
+          "value_description": "File name of the document"
+        },
+        {
+          "name": "FileExtension",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "File Extension",
+          "description": "File extension indicating the document type.",
+          "value_description": ""
+        },
+        {
+          "name": "Revision",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Revision number of the document.",
+          "value_description": ""
+        },
+        {
+          "name": "ChangeNumber",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Change Number",
+          "description": "Engineering change approval number.",
+          "value_description": ""
+        },
+        {
+          "name": "Status",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Status of document processing.",
+          "value_description": "1 = Pending approval, 2 = Approved, 3 = Obsolete"
+        },
+        {
+          "name": "DocumentSummary",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "Document Summary",
+          "description": "Document abstract.",
+          "value_description": "commonsense evidence:\nif no document Summary: it means this document is private"
+        },
+        {
+          "name": "Document",
+          "type": "BLOB",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Complete document.",
+          "value_description": ""
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "rowguid",
+          "description": "Uniquely identifying the record. Used to support a merge replication sample.",
+          "value_description": "Default: newid()"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "EmailAddress",
+      "columns": [
+        {
+          "name": "BusinessEntityID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Business Entity ID",
+          "description": "The id number identifying the person associated with this email address.",
+          "value_description": ""
+        },
+        {
+          "name": "EmailAddressID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "Email Address ID",
+          "description": "The ID of this email address.",
+          "value_description": ""
+        },
+        {
+          "name": "EmailAddress",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "Email Address",
+          "description": "The E-mail address for the person.",
+          "value_description": ""
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "rowguid",
+          "description": "Uniquely identifying the record. Used to support a merge replication sample.",
+          "value_description": "Default: newid()"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "Employee",
+      "columns": [
+        {
+          "name": "BusinessEntityID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Business Entity ID",
+          "description": "The id number identifying the employee.",
+          "value_description": ""
+        },
+        {
+          "name": "NationalIDNumber",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "National ID Number",
+          "description": "The national identification number such as a social security number.",
+          "value_description": ""
+        },
+        {
+          "name": "LoginID",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Login ID",
+          "description": "Network login.",
+          "value_description": ""
+        },
+        {
+          "name": "OrganizationNode",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "Organization Node",
+          "description": "Where the employee is located in corporate hierarchy.",
+          "value_description": "Default: newid()"
+        },
+        {
+          "name": "OrganizationLevel",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "Organization Level",
+          "description": "The depth of the employee in the corporate hierarchy.",
+          "value_description": "Computed: [OrganizationNode].[GetLevel]()"
+        },
+        {
+          "name": "JobTitle",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Job Title",
+          "description": "Work title such as Buyer or Sales Representative.",
+          "value_description": ""
+        },
+        {
+          "name": "BirthDate",
+          "type": "DATE",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Birth Date",
+          "description": "Date of birth.",
+          "value_description": ""
+        },
+        {
+          "name": "MaritalStatus",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Marital Status",
+          "description": "Whether this employee is married or not.",
+          "value_description": "M = Married, S = Single"
+        },
+        {
+          "name": "Gender",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Gender",
+          "description": "The gender of this employee.",
+          "value_description": "M = Male, F = Female"
+        },
+        {
+          "name": "HireDate",
+          "type": "DATE",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Hire Date",
+          "description": "The employee was hired on this date.",
+          "value_description": ""
+        },
+        {
+          "name": "SalariedFlag",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Salaried Flag",
+          "description": "Job classification.",
+          "value_description": "0 = Hourly, not exempt from collective bargaining. 1 = Salaried, exempt from collective bargaining."
+        },
+        {
+          "name": "VacationHours",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Vacation Hours",
+          "description": "The number of available vacation hours.",
+          "value_description": ""
+        },
+        {
+          "name": "SickLeaveHours",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Sick Leave Hours",
+          "description": "The number of available sick leave hours.",
+          "value_description": ""
+        },
+        {
+          "name": "CurrentFlag",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Current Flag",
+          "description": "Whether this employee is active or not",
+          "value_description": "0 = Inactive, 1 = Active"
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "rowguid",
+          "description": "Uniquely identifying the record. Used to support a merge replication sample.",
+          "value_description": "Default: newid()"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "EmployeeDepartmentHistory",
+      "columns": [
+        {
+          "name": "BusinessEntityID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Business Entity ID",
+          "description": "Employee identification number.",
+          "value_description": ""
+        },
+        {
+          "name": "DepartmentID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "DepartmentI D",
+          "description": "Department in which the employee worked including currently.",
+          "value_description": ""
+        },
+        {
+          "name": "ShiftID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Shift ID",
+          "description": "Identifies which 8-hour shift the employee works.",
+          "value_description": ""
+        },
+        {
+          "name": "StartDate",
+          "type": "DATE",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Start Date",
+          "description": "Date the employee started working in the department.",
+          "value_description": ""
+        },
+        {
+          "name": "EndDate",
+          "type": "DATE",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "End Date",
+          "description": "Date the employee ended working in the department.",
+          "value_description": ""
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "EmployeePayHistory",
+      "columns": [
+        {
+          "name": "BusinessEntityID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Business Entity ID",
+          "description": "Employee identification number.",
+          "value_description": ""
+        },
+        {
+          "name": "RateChangeDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Rate Change Date",
+          "description": "Date the change in pay is effective.",
+          "value_description": ""
+        },
+        {
+          "name": "Rate",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Salary hourly rate.",
+          "value_description": ""
+        },
+        {
+          "name": "PayFrequency",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Pay Frequency",
+          "description": "Pay Frequency.",
+          "value_description": "1 = Salary received monthly, 2 = Salary received biweekly"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "JobCandidate",
+      "columns": [
+        {
+          "name": "JobCandidateID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "Job Candidate ID",
+          "description": "The unique id number identifying the job candidates.",
+          "value_description": ""
+        },
+        {
+          "name": "BusinessEntityID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "Business Entity ID",
+          "description": "Employee identification number if applicant was hired.",
+          "value_description": ""
+        },
+        {
+          "name": "Resume",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Résumé in XML format.",
+          "value_description": ""
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "Location",
+      "columns": [
+        {
+          "name": "LocationID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "Location ID",
+          "description": "The unique id number identifying the job candidates.",
+          "value_description": ""
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Location description.",
+          "value_description": ""
+        },
+        {
+          "name": "CostRate",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Cost Rate",
+          "description": "Standard hourly cost of the manufacturing location.",
+          "value_description": "Default: 0.00"
+        },
+        {
+          "name": "Availability",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Work capacity (in hours) of the manufacturing location.",
+          "value_description": "Default: 0.00"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "Password",
+      "columns": [
+        {
+          "name": "BusinessEntityID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Business Entity ID",
+          "description": "The unique id number identifying the person.",
+          "value_description": ""
+        },
+        {
+          "name": "PasswordHash",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Password Hash",
+          "description": "Password for the e-mail account.",
+          "value_description": ""
+        },
+        {
+          "name": "PasswordSalt",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Password Salt",
+          "description": "Random value concatenated with the password string before the password is hashed.",
+          "value_description": ""
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "rowguid",
+          "description": "Uniquely identifying the record. Used to support a merge replication sample.",
+          "value_description": "Default: newid()"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "Person",
+      "columns": [
+        {
+          "name": "BusinessEntityID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Business Entity ID",
+          "description": "The unique id number identifying the person.",
+          "value_description": ""
+        },
+        {
+          "name": "PersonType",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Person Type",
+          "description": "The type of person.",
+          "value_description": "Primary type of person: SC = Store Contact, IN = Individual (retail) customer, SP = Sales person, EM = Employee (non-sales), VC = Vendor contact, GC = General contact"
+        },
+        {
+          "name": "NameStyle",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Name Style",
+          "description": "Name Style.",
+          "value_description": "0 = The data in FirstName and LastName are stored in western style (first name, last name) order. 1 = Eastern style (last name, first name) order. Default: 0"
+        },
+        {
+          "name": "Title",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "",
+          "description": "A courtesy title.",
+          "value_description": ""
+        },
+        {
+          "name": "FirstName",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "First Name",
+          "description": "First name of the person.",
+          "value_description": "Default: getdate()"
+        },
+        {
+          "name": "MiddleName",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "Middle Name",
+          "description": "Middle name or middle initial of the person.",
+          "value_description": ""
+        },
+        {
+          "name": "LastName",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Last Name",
+          "description": "Last name of the person.",
+          "value_description": ""
+        },
+        {
+          "name": "Suffix",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Surname suffix.",
+          "value_description": ""
+        },
+        {
+          "name": "EmailPromotion",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Email Promotion",
+          "description": "Email Promotion.",
+          "value_description": "0 = Contact does not wish to receive e-mail promotions, 1 = Contact does wish to receive e-mail promotions from AdventureWorks, 2 = Contact does wish to receive e-mail promotions from AdventureWorks and selected partners. Default: 0"
+        },
+        {
+          "name": "AdditionalContactInfo",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "Additional Contact Info",
+          "description": "Additional contact information about the person stored in xml format.",
+          "value_description": ""
+        },
+        {
+          "name": "Demographics",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Personal information such as hobbies, and income collected from online shoppers. Used for sales analysis.",
+          "value_description": ""
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "rowguid",
+          "description": "Uniquely identifying the record. Used to support a merge replication sample.",
+          "value_description": "Default: newid()"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "PersonCreditCard",
+      "columns": [
+        {
+          "name": "BusinessEntityID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Business Entity ID",
+          "description": "The id number identifying the person.",
+          "value_description": ""
+        },
+        {
+          "name": "CreditCardID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Credit Card ID",
+          "description": "Credit card identification number.",
+          "value_description": ""
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "PhoneNumberType",
+      "columns": [
+        {
+          "name": "PhoneNumberTypeID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "Phone Number Type ID",
+          "description": "The id number identifying the telephone number type records.",
+          "value_description": ""
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Phone Number",
+          "description": "Name of the telephone number type.",
+          "value_description": ""
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "Product",
+      "columns": [
+        {
+          "name": "ProductID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "Product ID",
+          "description": "The unique id number identifying the product.",
+          "value_description": ""
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Name of the product.",
+          "value_description": ""
+        },
+        {
+          "name": "ProductNumber",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Product Number",
+          "description": "The unique product identification number.",
+          "value_description": ""
+        },
+        {
+          "name": "MakeFlag",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Make Flag",
+          "description": "The source of product make.",
+          "value_description": "0 = Product is purchased, 1 = Product is manufactured in-house. Default: 1"
+        },
+        {
+          "name": "FinishedGoodsFlag",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Finished Goods Flag",
+          "description": "Whether the product is salable or not.",
+          "value_description": "0 = Product is not a salable item. 1 = Product is salable. Default: 1"
+        },
+        {
+          "name": "Color",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Color",
+          "value_description": "Product color."
+        },
+        {
+          "name": "SafetyStockLevel",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Safety Stock Level",
+          "description": "The minimum inventory quantity.",
+          "value_description": ""
+        },
+        {
+          "name": "ReorderPoint",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Reorder Point",
+          "description": "Inventory level that triggers a purchase order or work order.",
+          "value_description": ""
+        },
+        {
+          "name": "StandardCost",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Standard Cost",
+          "description": "Standard cost of the product.",
+          "value_description": ""
+        },
+        {
+          "name": "ListPrice",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "List Price",
+          "description": "Selling price",
+          "value_description": "commonsense evidence: \nprofit = ListPrice - StandardCost"
+        },
+        {
+          "name": "Size",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Product size",
+          "value_description": ""
+        },
+        {
+          "name": "SizeUnitMeasureCode",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "Size Unit Measure Code",
+          "description": "Unit of measure for Size column.",
+          "value_description": ""
+        },
+        {
+          "name": "WeightUnitMeasureCode",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "Weight Unit Measure Code",
+          "description": "Unit of measure for Weight column.",
+          "value_description": ""
+        },
+        {
+          "name": "Weight",
+          "type": "REAL",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Product weight",
+          "value_description": ""
+        },
+        {
+          "name": "DaysToManufacture",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Days To Manufacture",
+          "description": "Number of days required to manufacture the product.",
+          "value_description": ""
+        },
+        {
+          "name": "ProductLine",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "Product Line",
+          "description": "Product Routine",
+          "value_description": "R = Road, M = Mountain, T = Touring, S = Standard"
+        },
+        {
+          "name": "Class",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Product quality class",
+          "value_description": "H = High, M = Medium, L = Low"
+        },
+        {
+          "name": "Style",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Style",
+          "value_description": "W = Womens, M = Mens, U = Universal"
+        },
+        {
+          "name": "ProductSubcategoryID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "Product Subcategory ID",
+          "description": "Product is a member of this product subcategory.",
+          "value_description": ""
+        },
+        {
+          "name": "ProductModelID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "Product Model ID",
+          "description": "Product is a member of this product model.",
+          "value_description": ""
+        },
+        {
+          "name": "SellStartDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Sell Start Date",
+          "description": "Date the product was available for sale.",
+          "value_description": ""
+        },
+        {
+          "name": "SellEndDate",
+          "type": "DATETIME",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "Sell End Date",
+          "description": "Date the product was no longer available for sale.",
+          "value_description": ""
+        },
+        {
+          "name": "DiscontinuedDate",
+          "type": "DATETIME",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "Discontinued Date",
+          "description": "Date the product was discontinued.",
+          "value_description": ""
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "rowguid",
+          "description": "Uniquely identifying the record. Used to support a merge replication sample.",
+          "value_description": "Default: newid()"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "ProductCategory",
+      "columns": [
+        {
+          "name": "ProductCategoryID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "Product Category ID",
+          "description": "The unique id number identifying the product category.",
+          "value_description": ""
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Category description",
+          "value_description": ""
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "rowguid",
+          "description": "Uniquely identifying the record. Used to support a merge replication sample.",
+          "value_description": "Default: newid()"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "ProductCostHistory",
+      "columns": [
+        {
+          "name": "ProductID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Product ID",
+          "description": "The id number identifying the product.",
+          "value_description": ""
+        },
+        {
+          "name": "StartDate",
+          "type": "DATE",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Start Date",
+          "description": "Product cost start date",
+          "value_description": ""
+        },
+        {
+          "name": "EndDate",
+          "type": "DATE",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "End Date",
+          "description": "Product cost end date",
+          "value_description": ""
+        },
+        {
+          "name": "StandardCost",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Standard Cost",
+          "description": "Standard cost of the product.",
+          "value_description": ""
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "ProductDescription",
+      "columns": [
+        {
+          "name": "ProductDescriptionID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "Product Description ID",
+          "description": "The unique id number identifying the product description.",
+          "value_description": ""
+        },
+        {
+          "name": "Description",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Description of the product.",
+          "value_description": ""
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "rowguid",
+          "description": "Uniquely identifying the record. Used to support a merge replication sample.",
+          "value_description": "Default: newid()"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "ProductDocument",
+      "columns": [
+        {
+          "name": "ProductID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Product ID",
+          "description": "The id number identifying the product.",
+          "value_description": ""
+        },
+        {
+          "name": "DocumentNode",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Document Node",
+          "description": "The hierarchy id number identifying the Document node.",
+          "value_description": "Document identification number"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "ProductInventory",
+      "columns": [
+        {
+          "name": "ProductID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Product ID",
+          "description": "Product identification number.",
+          "value_description": ""
+        },
+        {
+          "name": "LocationID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Location ID",
+          "description": "Inventory location identification number.",
+          "value_description": "Document identification number"
+        },
+        {
+          "name": "Shelf",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Storage compartment within an inventory location.",
+          "value_description": ""
+        },
+        {
+          "name": "Bin",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Storage container on a shelf in an inventory location.",
+          "value_description": ""
+        },
+        {
+          "name": "Quantity",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Quantity of products in the inventory location.",
+          "value_description": "Default: 0"
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "rowguid",
+          "description": "Uniquely identifying the record. Used to support a merge replication sample.",
+          "value_description": "Default: newid()"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "ProductListPriceHistory",
+      "columns": [
+        {
+          "name": "ProductID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Product ID",
+          "description": "Product identification number.",
+          "value_description": ""
+        },
+        {
+          "name": "StartDate",
+          "type": "DATE",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Start Date",
+          "description": "List price start date.",
+          "value_description": ""
+        },
+        {
+          "name": "EndDate",
+          "type": "DATE",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "End Date",
+          "description": "List price end date.",
+          "value_description": ""
+        },
+        {
+          "name": "ListPrice",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Product list price.",
+          "value_description": ""
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "ProductModel",
+      "columns": [
+        {
+          "name": "ProductModelID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "Product Model ID",
+          "description": "The unique id number identifying the product model.",
+          "value_description": ""
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Product model description.",
+          "value_description": ""
+        },
+        {
+          "name": "CatalogDescription",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "Catalog Description",
+          "description": "Detailed product catalog information in xml format.",
+          "value_description": ""
+        },
+        {
+          "name": "Instructions",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Manufacturing instructions in xml format.",
+          "value_description": ""
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "rowguid",
+          "description": "Uniquely identifying the record. Used to support a merge replication sample.",
+          "value_description": "Default: newid()"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "ProductModelProductDescriptionCulture",
+      "columns": [
+        {
+          "name": "ProductModelID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Product Model ID",
+          "description": "The id number identifying the product model.",
+          "value_description": ""
+        },
+        {
+          "name": "ProductDescriptionID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Product Description ID",
+          "description": "Product description identification number.",
+          "value_description": ""
+        },
+        {
+          "name": "CultureID",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Culture ID",
+          "description": "Culture identification number.",
+          "value_description": ""
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "ProductPhoto",
+      "columns": [
+        {
+          "name": "ProductPhotoID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "Product Photo ID",
+          "description": "unique id number identifying the products",
+          "value_description": ""
+        },
+        {
+          "name": "ThumbNailPhoto",
+          "type": "BLOB",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "Thumb Nail Photo",
+          "description": "Small image of the product.",
+          "value_description": "The size of small images.\ncommonsense evidence:\n\"80x49 GIF image 3.07 kB\". \"3.07\" represents the size of images, \"GIF\" refers to type of images like JPEG, GIF, etc."
+        },
+        {
+          "name": "ThumbnailPhotoFileName",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "Thumbnail Photo File Name",
+          "description": "Small image file name",
+          "value_description": ""
+        },
+        {
+          "name": "LargePhoto",
+          "type": "BLOB",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "large photo",
+          "description": "Large image of the product.",
+          "value_description": ""
+        },
+        {
+          "name": "LargePhotoFileName",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "Large Photo File Name",
+          "description": "Large image file name.",
+          "value_description": "commonsense evidence:\nsimilar to ThumbNailPhoto"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Modified Date",
+          "description": "Date and time the record was last updated.",
+          "value_description": ""
+        }
+      ]
+    },
+    {
+      "name": "ProductProductPhoto",
+      "columns": [
+        {
+          "name": "ProductID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Product ID",
+          "description": "Product identification number.",
+          "value_description": ""
+        },
+        {
+          "name": "ProductPhotoID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Product Photo ID",
+          "description": "Product photo identification number.",
+          "value_description": ""
+        },
+        {
+          "name": "Primary",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Whether this photo is the principal image or not.",
+          "value_description": "0 = Photo is not the principal image. \n1 = Photo is the principal image. \ncommonsense evidence:\nstaff can mention \"principal\" in the question in order to make the question more realistic."
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Modified Date",
+          "description": "",
+          "value_description": ""
+        }
+      ]
+    },
+    {
+      "name": "ProductReview",
+      "columns": [
+        {
+          "name": "ProductReviewID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "Product Review ID",
+          "description": "The unique id numbers identifying product reviews.",
+          "value_description": ""
+        },
+        {
+          "name": "ProductID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Product ID",
+          "description": "Product identification number.",
+          "value_description": ""
+        },
+        {
+          "name": "ReviewerName",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Reviewer Name",
+          "description": "The name of reviewer.",
+          "value_description": ""
+        },
+        {
+          "name": "ReviewDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Review Date",
+          "description": "Date review was submitted.",
+          "value_description": "Default: getdate()"
+        },
+        {
+          "name": "EmailAddress",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Email Address",
+          "description": "Reviewer's e-mail address.",
+          "value_description": ""
+        },
+        {
+          "name": "Rating",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Product rating given by the reviewer.",
+          "value_description": "commonsense evidence:\nScale is 1 to 5 with 5 as the highest rating."
+        },
+        {
+          "name": "Comments",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "",
+          "description": "",
+          "value_description": ""
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "ProductSubcategory",
+      "columns": [
+        {
+          "name": "ProductSubcategoryID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "Product Subcategory ID",
+          "description": "Unique id number identifying the subcategory of products.",
+          "value_description": ""
+        },
+        {
+          "name": "ProductCategoryID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Product Category ID",
+          "description": "Product category identification number.",
+          "value_description": ""
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Subcategory description.",
+          "value_description": ""
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "rowguid",
+          "description": "Uniquely identifying the record. Used to support a merge replication sample.",
+          "value_description": "Default: newid()"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "ProductVendor",
+      "columns": [
+        {
+          "name": "ProductID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Product ID",
+          "description": "The id number identifying the products.",
+          "value_description": ""
+        },
+        {
+          "name": "BusinessEntityID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Business Entity ID",
+          "description": "The id number identifying the business entities.",
+          "value_description": ""
+        },
+        {
+          "name": "AverageLeadTime",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Average Lead Time",
+          "description": "The average span of time between placing an order with the vendor and receiving the purchased product.",
+          "value_description": "in days"
+        },
+        {
+          "name": "StandardPrice",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Standard Price",
+          "description": "The vendor's usual selling price.",
+          "value_description": ""
+        },
+        {
+          "name": "LastReceiptCost",
+          "type": "REAL",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "Last Receipt Cost",
+          "description": "The selling price when last purchased.",
+          "value_description": "commonsense evidence:\nprofit on net can be computed by LastReceiptCost - StandardPrice"
+        },
+        {
+          "name": "LastReceiptDate",
+          "type": "DATETIME",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "Last Receipt Date",
+          "description": "Date the product was last received by the vendor.",
+          "value_description": ""
+        },
+        {
+          "name": "MinOrderQty",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Min Order Quantity",
+          "description": "The maximum quantity that should be ordered.",
+          "value_description": ""
+        },
+        {
+          "name": "MaxOrderQty",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Max Order Quantity",
+          "description": "The minimum quantity that should be ordered.",
+          "value_description": ""
+        },
+        {
+          "name": "OnOrderQty",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "On Order Quantity",
+          "description": "The quantity currently on order.",
+          "value_description": "if it's equal to 0, it means \"out of stock\""
+        },
+        {
+          "name": "UnitMeasureCode",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Unit Measure Code",
+          "description": "The product's unit of measure.",
+          "value_description": ""
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "PurchaseOrderDetail",
+      "columns": [
+        {
+          "name": "PurchaseOrderID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Purchase Order ID",
+          "description": "Purchase order number.",
+          "value_description": ""
+        },
+        {
+          "name": "PurchaseOrderDetailID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "Purchase Orde rDetail ID",
+          "description": "Unique purchase detail order.",
+          "value_description": ""
+        },
+        {
+          "name": "DueDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Due Date",
+          "description": "Date the product is expected to be received.",
+          "value_description": ""
+        },
+        {
+          "name": "OrderQty",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Order Quantity",
+          "description": "Quantity ordered.",
+          "value_description": ""
+        },
+        {
+          "name": "ProductID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Product ID",
+          "description": "The id number identifying products.",
+          "value_description": ""
+        },
+        {
+          "name": "UnitPrice",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Unit Price",
+          "description": "Vendor's selling price of a single product.",
+          "value_description": ""
+        },
+        {
+          "name": "LineTotal",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Line Total",
+          "description": "Per product subtotal",
+          "value_description": "Computed as OrderQty * UnitPrice. Computed: isnull([OrderQty]*[UnitPrice],(0.00))"
+        },
+        {
+          "name": "ReceivedQty",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "ReceivedQty",
+          "description": "Quantity actually received from the vendor.",
+          "value_description": ""
+        },
+        {
+          "name": "RejectedQty",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "",
+          "value_description": ""
+        },
+        {
+          "name": "StockedQty",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "",
+          "value_description": ""
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "",
+          "value_description": ""
+        }
+      ]
+    },
+    {
+      "name": "PurchaseOrderHeader",
+      "columns": [
+        {
+          "name": "PurchaseOrderID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "Purchase Order ID",
+          "description": "The unique id number identifying purchase order.",
+          "value_description": ""
+        },
+        {
+          "name": "RevisionNumber",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Revision Number",
+          "description": "Incremental number to track changes to the purchase order over time.",
+          "value_description": ""
+        },
+        {
+          "name": "Status",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Status",
+          "description": "Order current status.",
+          "value_description": "1 = Pending; 2 = Approved; 3 = Rejected; 4 = Complete Default: 1"
+        },
+        {
+          "name": "EmployeeID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Employee ID",
+          "description": "Employee who created the purchase order.",
+          "value_description": ""
+        },
+        {
+          "name": "VendorID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Vendor ID",
+          "description": "Vendor with whom the purchase order is placed.",
+          "value_description": ""
+        },
+        {
+          "name": "ShipMethodID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Ship Method ID",
+          "description": "Shipping method",
+          "value_description": ""
+        },
+        {
+          "name": "OrderDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Order Date",
+          "description": "Purchase order creation date",
+          "value_description": "Default: getdate()"
+        },
+        {
+          "name": "ShipDate",
+          "type": "DATETIME",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "Ship Date",
+          "description": "Estimated shipment date from the vendor.",
+          "value_description": ""
+        },
+        {
+          "name": "SubTotal",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "SubTotal",
+          "description": "Purchase order subtotal",
+          "value_description": "Computed as SUM (PurchaseOrderDetail.LineTotal)for the appropriate PurchaseOrderID"
+        },
+        {
+          "name": "TaxAmt",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Tax Amount",
+          "description": "Tax amount",
+          "value_description": ""
+        },
+        {
+          "name": "Freight",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Freight",
+          "description": "Shipping cost",
+          "value_description": ""
+        },
+        {
+          "name": "TotalDue",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Total Due",
+          "description": "Total due to vendor",
+          "value_description": "Computed as Subtotal + TaxAmt + Freight. Computed: isnull(([SubTotal]+[TaxAmt])+[Freight],(0))"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "SalesOrderDetail",
+      "columns": [
+        {
+          "name": "SalesOrderID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "",
+          "value_description": ""
+        },
+        {
+          "name": "SalesOrderDetailID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "",
+          "description": "",
+          "value_description": ""
+        },
+        {
+          "name": "CarrierTrackingNumber",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "",
+          "description": "",
+          "value_description": ""
+        },
+        {
+          "name": "OrderQty",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "",
+          "value_description": ""
+        },
+        {
+          "name": "ProductID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "",
+          "value_description": ""
+        },
+        {
+          "name": "SpecialOfferID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "",
+          "value_description": ""
+        },
+        {
+          "name": "UnitPrice",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "",
+          "value_description": ""
+        },
+        {
+          "name": "UnitPriceDiscount",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "",
+          "value_description": ""
+        },
+        {
+          "name": "LineTotal",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "",
+          "value_description": ""
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "",
+          "value_description": ""
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "ModifiedDate",
+          "description": "modified date",
+          "value_description": "Date and time the record was last updated."
+        }
+      ]
+    },
+    {
+      "name": "SalesOrderHeader",
+      "columns": [
+        {
+          "name": "SalesOrderID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "Sales Order ID",
+          "description": "The id number of sales order.",
+          "value_description": ""
+        },
+        {
+          "name": "RevisionNumber",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "",
+          "value_description": ""
+        },
+        {
+          "name": "OrderDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Order Date",
+          "description": "",
+          "value_description": ""
+        },
+        {
+          "name": "DueDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "",
+          "value_description": ""
+        },
+        {
+          "name": "ShipDate",
+          "type": "DATETIME",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "Ship Date",
+          "description": "Estimated shipment date from the vendor",
+          "value_description": ""
+        },
+        {
+          "name": "Status",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Status",
+          "description": "Order current status",
+          "value_description": "1 = Pending; 2 = Approved; 3 = Rejected; 4 = Complete Default: 1"
+        },
+        {
+          "name": "OnlineOrderFlag",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "",
+          "value_description": ""
+        },
+        {
+          "name": "SalesOrderNumber",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "",
+          "value_description": ""
+        },
+        {
+          "name": "PurchaseOrderNumber",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "",
+          "description": "",
+          "value_description": ""
+        },
+        {
+          "name": "AccountNumber",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "",
+          "description": "",
+          "value_description": ""
+        },
+        {
+          "name": "CustomerID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "",
+          "value_description": ""
+        },
+        {
+          "name": "SalesPersonID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "",
+          "description": "",
+          "value_description": ""
+        },
+        {
+          "name": "TerritoryID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "",
+          "description": "",
+          "value_description": ""
+        },
+        {
+          "name": "BillToAddressID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "",
+          "value_description": ""
+        },
+        {
+          "name": "ShipToAddressID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "",
+          "value_description": ""
+        },
+        {
+          "name": "ShipMethodID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Ship Method ID",
+          "description": "Shipping method",
+          "value_description": ""
+        },
+        {
+          "name": "CreditCardID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "",
+          "description": "",
+          "value_description": ""
+        },
+        {
+          "name": "CreditCardApprovalCode",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "",
+          "description": "",
+          "value_description": ""
+        },
+        {
+          "name": "CurrencyRateID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "",
+          "description": "",
+          "value_description": ""
+        },
+        {
+          "name": "SubTotal",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "",
+          "value_description": ""
+        },
+        {
+          "name": "TaxAmt",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Tax Amount",
+          "description": "Tax amount",
+          "value_description": ""
+        },
+        {
+          "name": "Freight",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Freight",
+          "description": "Shipping cost",
+          "value_description": ""
+        },
+        {
+          "name": "TotalDue",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Total Due",
+          "description": "Total due to vendor",
+          "value_description": ""
+        },
+        {
+          "name": "Comment",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "",
+          "description": "",
+          "value_description": ""
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "",
+          "value_description": ""
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "SalesOrderHeaderSalesReason",
+      "columns": [
+        {
+          "name": "SalesOrderID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Sales Order ID",
+          "description": "The id number of sales order.",
+          "value_description": ""
+        },
+        {
+          "name": "SalesReasonID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Sales Reason ID",
+          "description": "The id number for sales reasons.",
+          "value_description": ""
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "SalesPerson",
+      "columns": [
+        {
+          "name": "BusinessEntityID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Business Entity ID",
+          "description": "The unique id number identifying the business entity.",
+          "value_description": ""
+        },
+        {
+          "name": "TerritoryID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "Territory ID",
+          "description": "Territory currently assigned to.",
+          "value_description": ""
+        },
+        {
+          "name": "SalesQuota",
+          "type": "REAL",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "Sales Quota",
+          "description": "Projected yearly sales",
+          "value_description": ""
+        },
+        {
+          "name": "Bonus",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Bonus",
+          "description": "Bonus due if quota is met.",
+          "value_description": "commonsense evidence:\nif bonus is equal to 0, it means this salesperson doesn't meet quota. vice versa."
+        },
+        {
+          "name": "CommissionPct",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Commission percentage",
+          "description": "",
+          "value_description": "Commission percent received per sale"
+        },
+        {
+          "name": "SalesYTD",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "sales year to date",
+          "description": "Sales total year to date",
+          "value_description": ""
+        },
+        {
+          "name": "SalesLastYear",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Sales Last Year",
+          "description": "Sales total of previous year.",
+          "value_description": ""
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "rowguid",
+          "description": "Uniquely identifying the record. Used to support a merge replication sample.",
+          "value_description": "Default: newid()"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "SalesPersonQuotaHistory",
+      "columns": [
+        {
+          "name": "BusinessEntityID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Business Entity ID",
+          "description": "Sales person identification number",
+          "value_description": ""
+        },
+        {
+          "name": "QuotaDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Quota Date",
+          "description": "Sales quota date",
+          "value_description": ""
+        },
+        {
+          "name": "SalesQuota",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Sales Quota",
+          "description": "Sales quota amount",
+          "value_description": ""
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "rowguid",
+          "description": "Uniquely identifying the record. Used to support a merge replication sample.",
+          "value_description": "Default: newid()"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "SalesReason",
+      "columns": [
+        {
+          "name": "SalesReasonID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "",
+          "description": "The unique number identifying SalesReason records.",
+          "value_description": ""
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Sales reason description",
+          "value_description": ""
+        },
+        {
+          "name": "ReasonType",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Category the sales reason belongs to.",
+          "value_description": ""
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "SalesTaxRate",
+      "columns": [
+        {
+          "name": "SalesTaxRateID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "Sales Tax Rate ID",
+          "description": "Unique id number identifying sales tax records.",
+          "value_description": ""
+        },
+        {
+          "name": "StateProvinceID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "State Province ID",
+          "description": "id number identifying state province.",
+          "value_description": ""
+        },
+        {
+          "name": "TaxType",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Tax Type",
+          "description": "Tax Type",
+          "value_description": "1 = Tax applied to retail transactions, 2 = Tax applied to wholesale transactions, 3 = Tax applied to all sales (retail and wholesale) transactions"
+        },
+        {
+          "name": "TaxRate",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Tax Rate",
+          "description": "Tax rate amount",
+          "value_description": ""
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Tax rate description",
+          "value_description": "commonsense evidence:\nif there's \"+\" in the value, it means this sales are charged by multiple types of tax."
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "rowguid",
+          "description": "Uniquely identifying the record. Used to support a merge replication sample.",
+          "value_description": "Default: newid()"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "SalesTerritory",
+      "columns": [
+        {
+          "name": "TerritoryID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "TerritoryID",
+          "description": "The unique id number for SalesTerritory records.",
+          "value_description": ""
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Sales territory description.",
+          "value_description": ""
+        },
+        {
+          "name": "CountryRegionCode",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Country Region Code",
+          "description": "ISO standard country or region code.",
+          "value_description": ""
+        },
+        {
+          "name": "Group",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Geographic area to which the sales territory belong.",
+          "value_description": ""
+        },
+        {
+          "name": "SalesYTD",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Sales Year to Date",
+          "description": "Sales in the territory year to date.",
+          "value_description": ""
+        },
+        {
+          "name": "SalesLastYear",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Sales Last Year",
+          "description": "Sales in the territory the previous year.",
+          "value_description": ""
+        },
+        {
+          "name": "CostYTD",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Cost Year to Date",
+          "description": "Business costs in the territory year to date.",
+          "value_description": ""
+        },
+        {
+          "name": "CostLastYear",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Cost Last Year",
+          "description": "Business costs in the territory the previous year.",
+          "value_description": ""
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "rowguid",
+          "description": "Uniquely identifying the record. Used to support a merge replication sample.",
+          "value_description": "Default: newid()"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "SalesTerritoryHistory",
+      "columns": [
+        {
+          "name": "BusinessEntityID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Business Entity ID",
+          "description": "The sales representative.",
+          "value_description": ""
+        },
+        {
+          "name": "TerritoryID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Territory ID",
+          "description": "Territory identification number.",
+          "value_description": ""
+        },
+        {
+          "name": "StartDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Start Date",
+          "description": "Date the sales representive started work in the territory.",
+          "value_description": ""
+        },
+        {
+          "name": "EndDate",
+          "type": "DATETIME",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "End Date",
+          "description": "Date the sales representative left work in the territory.",
+          "value_description": ""
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "rowguid",
+          "description": "Uniquely identifying the record. Used to support a merge replication sample.",
+          "value_description": "Default: newid()"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "ScrapReason",
+      "columns": [
+        {
+          "name": "ScrapReasonID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "Scrap Reason ID",
+          "description": "The unique number identifying for ScrapReason records.",
+          "value_description": ""
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Name",
+          "description": "Failure description.",
+          "value_description": ""
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "Shift",
+      "columns": [
+        {
+          "name": "ShiftID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "ShiftID",
+          "description": "The unique number identifying the shift.",
+          "value_description": ""
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Shift description.",
+          "value_description": ""
+        },
+        {
+          "name": "StartTime",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Start Time",
+          "description": "Shift start time.",
+          "value_description": ""
+        },
+        {
+          "name": "EndTime",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "End Time",
+          "description": "Shift end time.",
+          "value_description": ""
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "ShipMethod",
+      "columns": [
+        {
+          "name": "ShipMethodID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "Ship Method ID",
+          "description": "The unique number for ShipMethod records.",
+          "value_description": ""
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Shipping company name.",
+          "value_description": ""
+        },
+        {
+          "name": "ShipBase",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Ship Base",
+          "description": "Minimum shipping charge.",
+          "value_description": ""
+        },
+        {
+          "name": "ShipRate",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Ship Rate",
+          "description": "Shipping charge per pound.",
+          "value_description": ""
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "rowguid",
+          "description": "Uniquely identifying the record. Used to support a merge replication sample.",
+          "value_description": "Default: newid()"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "ShoppingCartItem",
+      "columns": [
+        {
+          "name": "ShoppingCartItemID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "Shopping CartItem ID",
+          "description": "The unique id number identifying the shopping cart item records.",
+          "value_description": ""
+        },
+        {
+          "name": "ShoppingCartID",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Shopping Cart ID",
+          "description": "Shopping cart identification number.",
+          "value_description": ""
+        },
+        {
+          "name": "Quantity",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Quantity",
+          "description": "Product quantity ordered.",
+          "value_description": "Default: 1"
+        },
+        {
+          "name": "ProductID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Product ID",
+          "description": "Product ordered.",
+          "value_description": ""
+        },
+        {
+          "name": "DateCreated",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Date Created",
+          "description": "Date the time the record was created.",
+          "value_description": "Default: getdate()"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "SpecialOffer",
+      "columns": [
+        {
+          "name": "SpecialOfferID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "Special Offer ID",
+          "description": "The unique id number identifying the special offer.",
+          "value_description": ""
+        },
+        {
+          "name": "Description",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Discount description.",
+          "value_description": ""
+        },
+        {
+          "name": "DiscountPct",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Discount precentage",
+          "description": "Discount percentage.",
+          "value_description": ""
+        },
+        {
+          "name": "Type",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Discount type category.",
+          "value_description": ""
+        },
+        {
+          "name": "Category",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Group the discount applies to such as Reseller or Customer.",
+          "value_description": ""
+        },
+        {
+          "name": "StartDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Start Date",
+          "description": "Discount start date.",
+          "value_description": ""
+        },
+        {
+          "name": "EndDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "End Date",
+          "description": "Discount end date.",
+          "value_description": "commonsense evidence:\npromotion date = EndDate - StartDate"
+        },
+        {
+          "name": "MinQty",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Min Quality",
+          "description": "Minimum discount percent allowed.",
+          "value_description": ""
+        },
+        {
+          "name": "MaxQty",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "Max Quality",
+          "description": "Maximum discount percent allowed.",
+          "value_description": ""
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "rowguid",
+          "description": "Uniquely identifying the record. Used to support a merge replication sample.",
+          "value_description": "Default: newid()"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "SpecialOfferProduct",
+      "columns": [
+        {
+          "name": "SpecialOfferID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Special Offer ID",
+          "description": "The id for SpecialOfferProduct records",
+          "value_description": ""
+        },
+        {
+          "name": "ProductID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Product ID",
+          "description": "Product identification number.",
+          "value_description": ""
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "rowguid",
+          "description": "Uniquely identifying the record. Used to support a merge replication sample.",
+          "value_description": "Default: newid()"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "StateProvince",
+      "columns": [
+        {
+          "name": "StateProvinceID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "State Province ID",
+          "description": "The unique number for StateProvince records.",
+          "value_description": ""
+        },
+        {
+          "name": "StateProvinceCode",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "State Province Code",
+          "description": "ISO standard state or province code.",
+          "value_description": ""
+        },
+        {
+          "name": "CountryRegionCode",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Country Region Code",
+          "description": "ISO standard country or region code.",
+          "value_description": ""
+        },
+        {
+          "name": "IsOnlyStateProvinceFlag",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Is Only State Province Flag",
+          "description": "",
+          "value_description": "0 = StateProvinceCode exists. \n1 = StateProvinceCode unavailable, using CountryRegionCode. \nDefault: 1. \ncommonsense evidence:\nTo ask whether the StateProvinceCode exists or not."
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "State or province description.",
+          "value_description": ""
+        },
+        {
+          "name": "TerritoryID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Territory ID",
+          "description": "ID of the territory in which the state or province is located.",
+          "value_description": ""
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "rowguid",
+          "description": "Uniquely identifying the record. Used to support a merge replication sample.",
+          "value_description": "Default: newid()"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "Store",
+      "columns": [
+        {
+          "name": "BusinessEntityID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Business Entity ID",
+          "description": "The unique number identifying business entity.",
+          "value_description": ""
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Name of the store.",
+          "value_description": ""
+        },
+        {
+          "name": "SalesPersonID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "Sales Person ID",
+          "description": "ID of the sales person assigned to the customer.",
+          "value_description": ""
+        },
+        {
+          "name": "Demographics",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Demographic information about the store such as the number of employees, annual sales and store type.",
+          "value_description": ""
+        },
+        {
+          "name": "rowguid",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "rowguid",
+          "description": "Uniquely identifying the record. Used to support a merge replication sample.",
+          "value_description": "Default: newid()"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "TransactionHistory",
+      "columns": [
+        {
+          "name": "TransactionID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "Transaction ID",
+          "description": "The unique id number identifying TransactionHistory records.",
+          "value_description": ""
+        },
+        {
+          "name": "ProductID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Product ID",
+          "description": "Product identification number.",
+          "value_description": ""
+        },
+        {
+          "name": "ReferenceOrderID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Reference Order ID",
+          "description": "Purchase order, sales order, or work order identification number.",
+          "value_description": ""
+        },
+        {
+          "name": "ReferenceOrderLineID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Reference Order Line ID",
+          "description": "Line number associated with the purchase order, sales order, or work order.",
+          "value_description": ""
+        },
+        {
+          "name": "TransactionDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Transaction Date",
+          "description": "Date and time of the transaction.",
+          "value_description": ""
+        },
+        {
+          "name": "TransactionType",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Transaction Type",
+          "description": "Type of transaction records.",
+          "value_description": "commonsense evidence:\nW = WorkOrder, S = SalesOrder, P = PurchaseOrder"
+        },
+        {
+          "name": "Quantity",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Product quantity.",
+          "value_description": ""
+        },
+        {
+          "name": "ActualCost",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Actual Cost",
+          "description": "Product cost.",
+          "value_description": ""
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "TransactionHistoryArchive",
+      "columns": [
+        {
+          "name": "TransactionID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Transaction ID",
+          "description": "The unique id number identifying TransactionHistory records.",
+          "value_description": ""
+        },
+        {
+          "name": "ProductID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Product ID",
+          "description": "Product identification number.",
+          "value_description": ""
+        },
+        {
+          "name": "ReferenceOrderID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Reference Order ID",
+          "description": "Purchase order, sales order, or work order identification number.",
+          "value_description": ""
+        },
+        {
+          "name": "ReferenceOrderLineID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Reference Order Line ID",
+          "description": "Line number associated with the purchase order, sales order, or work order.",
+          "value_description": ""
+        },
+        {
+          "name": "TransactionDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Transaction Date",
+          "description": "Date and time of the transaction.",
+          "value_description": ""
+        },
+        {
+          "name": "TransactionType",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Transaction Type",
+          "description": "Type of transaction records.",
+          "value_description": "commonsense evidence: \nW = WorkOrder, S = SalesOrder, P = PurchaseOrder"
+        },
+        {
+          "name": "Quantity",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "",
+          "description": "Product quantity.",
+          "value_description": ""
+        },
+        {
+          "name": "ActualCost",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Actual Cost",
+          "description": "Product cost.",
+          "value_description": ""
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "UnitMeasure",
+      "columns": [
+        {
+          "name": "UnitMeasureCode",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Unit Measure Code",
+          "description": "The unique identifying numbers for measure.",
+          "value_description": ""
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Name",
+          "description": "Unit of measure description.",
+          "value_description": ""
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "Vendor",
+      "columns": [
+        {
+          "name": "BusinessEntityID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "BusinessEntityID",
+          "description": "The unique number identifying Vendor records.",
+          "value_description": ""
+        },
+        {
+          "name": "AccountNumber",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "AccountNumber",
+          "description": "Vendor account (identification) number.",
+          "value_description": ""
+        },
+        {
+          "name": "Name",
+          "type": "TEXT",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Name",
+          "description": "Company name.",
+          "value_description": ""
+        },
+        {
+          "name": "CreditRating",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "CreditRating",
+          "description": "Rating of credit.",
+          "value_description": "commonsense evidence: \n1 = Superior, 2 = Excellent, 3 = Above average, 4 = Average, 5 = Below average. \ncommonsense evidence:\n1, 2, 3 can represent good credit, 4 is average credit, 5 is bad credit."
+        },
+        {
+          "name": "PreferredVendorStatus",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Preferred Vendor Status",
+          "description": "Preferred Vendor Status",
+          "value_description": "commonsense evidence: \n0 = Do not use if another vendor is available. 1 = Preferred over other vendors supplying the same product."
+        },
+        {
+          "name": "ActiveFlag",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Active Flag",
+          "description": "Vendor URL",
+          "value_description": "commonsense evidence:\n0 = Vendor no longer used. 1 = Vendor is actively used. Default: 1"
+        },
+        {
+          "name": "PurchasingWebServiceURL",
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "PurchasingWebServiceURL",
+          "description": "Purchasing Web Service URL",
+          "value_description": ""
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "WorkOrder",
+      "columns": [
+        {
+          "name": "WorkOrderID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": true,
+          "display_name": "Work Order ID",
+          "description": "The unique id number identifying work order.",
+          "value_description": ""
+        },
+        {
+          "name": "ProductID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Product ID",
+          "description": "Product identification number.",
+          "value_description": ""
+        },
+        {
+          "name": "OrderQty",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Order Quantity",
+          "description": "Product quantity to build.",
+          "value_description": ""
+        },
+        {
+          "name": "StockedQty",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Stocked Quantity",
+          "description": "Quantity built and put in inventory.",
+          "value_description": "Computed: isnull([OrderQty]-[ScrappedQty],(0))"
+        },
+        {
+          "name": "ScrappedQty",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Scrapped Quantity",
+          "description": "Quantity that failed inspection.",
+          "value_description": ""
+        },
+        {
+          "name": "StartDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Start Date",
+          "description": "Work order start date.",
+          "value_description": ""
+        },
+        {
+          "name": "EndDate",
+          "type": "DATETIME",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "End Date",
+          "description": "Work order end date.",
+          "value_description": ""
+        },
+        {
+          "name": "DueDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Due Date",
+          "description": "Work order due date.",
+          "value_description": ""
+        },
+        {
+          "name": "ScrapReasonID",
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "Scrap Reason ID",
+          "description": "Reason for inspection failure.",
+          "value_description": ""
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    },
+    {
+      "name": "WorkOrderRouting",
+      "columns": [
+        {
+          "name": "WorkOrderID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "WorkOrderID",
+          "description": "The id number of work order.",
+          "value_description": ""
+        },
+        {
+          "name": "ProductID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "ProductID",
+          "description": "The id number identifying products.",
+          "value_description": ""
+        },
+        {
+          "name": "OperationSequence",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": true,
+          "display_name": "Operation Sequence",
+          "description": "Indicates the manufacturing process sequence.",
+          "value_description": ""
+        },
+        {
+          "name": "LocationID",
+          "type": "INTEGER",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Location ID",
+          "description": "Manufacturing location where the part is processed.",
+          "value_description": ""
+        },
+        {
+          "name": "ScheduledStartDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Scheduled Start Date",
+          "description": "Planned manufacturing start date.",
+          "value_description": ""
+        },
+        {
+          "name": "ScheduledEndDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Scheduled End Date",
+          "description": "Planned manufacturing end date.",
+          "value_description": ""
+        },
+        {
+          "name": "ActualStartDate",
+          "type": "DATETIME",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "Actual Start Date",
+          "description": "Actual start date.",
+          "value_description": ""
+        },
+        {
+          "name": "ActualEndDate",
+          "type": "DATETIME",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "ActualEndDate",
+          "description": "Actual end date.",
+          "value_description": ""
+        },
+        {
+          "name": "ActualResourceHrs",
+          "type": "REAL",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "Actual Resource Hours",
+          "description": "Number of manufacturing hours used.",
+          "value_description": ""
+        },
+        {
+          "name": "PlannedCost",
+          "type": "REAL",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "Planned Cost",
+          "description": "Estimated manufacturing cost.",
+          "value_description": ""
+        },
+        {
+          "name": "ActualCost",
+          "type": "REAL",
+          "nullable": true,
+          "primary_key": false,
+          "display_name": "ActualCost",
+          "description": "Actual manufacturing cost.",
+          "value_description": ""
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "DATETIME",
+          "nullable": false,
+          "primary_key": false,
+          "display_name": "modified date",
+          "description": "Date and time the record was last updated.",
+          "value_description": "Default: getdate()"
+        }
+      ]
+    }
+  ]
+}

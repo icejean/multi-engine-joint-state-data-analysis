@@ -1,0 +1,60 @@
+{
+  "runs": [
+    {
+      "question_id": 2,
+      "datasource": "movie",
+      "chat_id": "69b2d3f3d5f5459b833611da529ec56e",
+      "final_cypher": "MATCH (m:Movie)-[:producedBy]->(pc:ProductionCompany {name:'Biograf Jan Svěrák'})\nMATCH (m)-[:hasCastMember]->(p:Person {name:'Martin Bohadlo'})\nWITH DISTINCT m\nRETURN m.name AS name",
+      "cypher_history": [
+        "MATCH (m:Movie)-[:producedBy]->(pc:ProductionCompany {name:'Biograf Jan Svěrák'})\nMATCH (m)-[:hasCastMember]->(p:Person {name:'Martin Bohadlo'})\nWITH DISTINCT m\nRETURN m.name AS name"
+      ],
+      "agent_text": "电影名称：**Empties**\n\n（片名即捷克电影《Vratné lahve》，英文名 Empties）——由制片公司 Biograf Jan Svěrák 出品、Martin Bohadlo 参演的影片。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 15404,
+        "output": 463,
+        "cache_read": 64000,
+        "cache_write": 0,
+        "reasoning": 183,
+        "total": 79867
+      },
+      "cost_usd": 0.004078,
+      "elapsed_seconds": 15.1,
+      "agent_duration_ms": 7898,
+      "extra_columns": []
+    },
+    {
+      "question_id": 52,
+      "datasource": "movie",
+      "chat_id": "0b78f130582d4fa1a836ae6ee6fa37f0",
+      "final_cypher": "MATCH (m:Movie)\nWHERE exists((m)-[:hasCastMember]->(:Person {name:'Anatoly Sagalevich'}))\nOR exists((m)-[:receivesAward]->(:Award {name:'Academy Award for Best Costume Design'}))\nWITH DISTINCT m\nRETURN m.name",
+      "cypher_history": [
+        "MATCH (m:Movie)\nWHERE exists((m)-[:hasCastMember]->(:Person {name:'Anatoly Sagalevich'}))\nOR exists((m)-[:receivesAward]->(:Award {name:'Academy Award for Best Costume Design'}))\nWITH DISTINCT m\nRETURN m.name"
+      ],
+      "agent_text": "Query result — movies featuring **Anatoly Sagalevich** OR winning the **Academy Award for Best Costume Design** (53 films):\n\n1. The Last Emperor\n2. Death on the Nile\n3. Bram Stoker's Dracula\n4. Bugsy\n5. Elizabeth: The Golden Age\n6. The Adventures of Priscilla, Queen of the Desert\n7. The Young Victoria\n8. The Age of Innocence\n9. Topsy-Turvy\n10. Cromwell\n11. Henry V\n12. Phantom Thread\n13. The Great Gatsby\n14. Anna Karenina\n15. Marie Antoinette\n16. Dangerous Liaisons\n17. Doctor Zhivago\n18. The Great Gatsby *(同名电影，另一节点)*\n19. Anne of the Thousand Days\n20. Camelot\n21. Les Girls\n22. The Grand Budapest Hotel\n23. Gladiator\n24. Cyrano de Bergerac\n25. The Lord of the Rings: The Return of the King\n26. Tess\n27. All That Jazz\n28. Titanic\n29. Memoirs of a Geisha\n30. The Duchess\n31. Barry Lyndon\n32. Fanny and Alexander\n33. The Artist\n34. Travels with My Aunt\n35. Nicholas and Alexandra\n36. Romeo and Juliet\n37. Star Wars: Episode IV – A New Hope\n38. Fantastic Beasts and Where to Find Them\n39. Shakespeare in Love\n40. Fellini's Casanova\n41. Chicago\n42. Amadeus\n43. Moulin Rouge!\n44. Ran\n45. Little Women\n46. Gigi\n47. The Aviator\n48. Gandhi\n49. A Room with a View\n50. Chariots of Fire\n51. Restoration\n52. The Sting\n53. The English Patient\n\n说明：图里 Movie 有重名节点（如两部 \"The Great Gatsby\" 各占一行，按节点去重）。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 15749,
+        "output": 1305,
+        "cache_read": 64256,
+        "cache_write": 0,
+        "reasoning": 674,
+        "total": 81310
+      },
+      "cost_usd": 0.004369,
+      "elapsed_seconds": 18.68,
+      "agent_duration_ms": 11495,
+      "extra_columns": []
+    }
+  ]
+}

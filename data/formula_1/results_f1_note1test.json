@@ -1,0 +1,401 @@
+{
+  "runs": [
+    {
+      "question_id": 46,
+      "datasource": "formula_1",
+      "chat_id": "0df032086d5f40d0853cb67881950587",
+      "final_sql": "SELECT d.frnm, d.srnm FROM rcs ra INNER JOIN drvr_std ds ON ds.ref2 = ra.rc_id INNER JOIN drvr d ON d.drvr_id = ds.ref1 WHERE ra.nm = 'Singapore Grand Prix' AND ra.ref2 = 2010 ORDER BY ds.pstn ASC",
+      "sql_history": [
+        "SELECT rc_id, rnd, nm FROM rcs WHERE ref2 = 2010",
+        "SELECT d.frnm, d.srnm FROM rcs ra INNER JOIN drvr_std ds ON ds.ref2 = ra.rc_id INNER JOIN drvr d ON d.drvr_id = ds.ref1 WHERE ra.nm = 'Singapore Grand Prix' AND ra.ref2 = 2010 ORDER BY ds.pstn ASC"
+      ],
+      "agent_text": "2010 新加坡大奖赛的车手，按积分榜名次排列：\n\n| 名次 | 车手 |\n|---|---|\n| 1 | Mark Webber |\n| 2 | Fernando Alonso |\n| 3 | Lewis Hamilton |\n| 4 | Sebastian Vettel |\n| 5 | Jenson Button |\n| 6 | Felipe Massa |\n| 7 | Nico Rosberg |\n| 8 | Robert Kubica |\n| 9 | Adrian Sutil |\n| 10 | Michael Schumacher |\n| 11 | Rubens Barrichello |\n| 12 | Kamui Kobayashi |\n| 13 | Vitaly Petrov |\n| 14 | Nico Hülkenberg |\n| 15 | Vitantonio Liuzzi |\n| 16 | Sébastien Buemi |\n| 17 | Pedro de la Rosa |\n| 18 | Jaime Alguersuari |\n| 19 | Heikki Kovalainen |\n| 20 | Karun Chandhok |\n| 21 | Lucas di Grassi |\n| 22 | Jarno Trulli |\n| 23 | Bruno Senna |\n| 24 | Timo Glock |\n| 25 | Sakon Yamamoto |\n| 26 | Nick Heidfeld |\n| 27 | Christian Klien |\n\n（按该站后的车手积分榜 position 升序；`position`/名次 → 用 `drvr_std` 积分榜表。）",
+      "tool_calls": 6,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 18337,
+        "output": 6681,
+        "cache_read": 144640,
+        "cache_write": 0,
+        "reasoning": 5875,
+        "total": 169658
+      },
+      "cost_usd": 0.008488,
+      "elapsed_seconds": 53.77,
+      "agent_duration_ms": 46016,
+      "extra_columns": []
+    },
+    {
+      "question_id": 47,
+      "datasource": "formula_1",
+      "chat_id": "ec0e8759442b49e3b64a369665761eb7",
+      "final_sql": "SELECT d.frnm AS forename, d.srnm AS surname, MAX(s.pnts) AS points FROM drvr_std s JOIN drvr d ON s.ref1 = d.drvr_id GROUP BY d.drvr_id, d.frnm, d.srnm ORDER BY points DESC LIMIT 1;",
+      "sql_history": [
+        "SELECT d.frnm AS forename, d.srnm AS surname, MAX(s.pnts) AS points FROM drvr_std s JOIN drvr d ON s.ref1 = d.drvr_id GROUP BY d.drvr_id, d.frnm, d.srnm ORDER BY points DESC LIMIT 1;"
+      ],
+      "agent_text": "驾驶员：**Sebastian Vettel**，全名 **Sebastian Vettel**，积分 **397.0**。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 16605,
+        "output": 1703,
+        "cache_read": 67840,
+        "cache_write": 0,
+        "reasoning": 1423,
+        "total": 86148
+      },
+      "cost_usd": 0.004701,
+      "elapsed_seconds": 23.95,
+      "agent_duration_ms": 16353,
+      "extra_columns": []
+    },
+    {
+      "question_id": 48,
+      "datasource": "formula_1",
+      "chat_id": "ba965a4b15264e30a702d5cc330e5f45",
+      "final_sql": "SELECT d.frnm, d.srnm, s.pnts FROM drvr_std s JOIN drvr d ON d.drvr_id = s.ref1 JOIN rcs r ON r.rc_id = s.ref2 WHERE r.ref2 = 2017 AND r.nm = 'Chinese Grand Prix' ORDER BY s.pstn ASC LIMIT 3",
+      "sql_history": [
+        "SELECT d.frnm, d.srnm, s.pnts FROM drvr_std s JOIN drvr d ON d.drvr_id = s.ref1 JOIN rcs r ON r.rc_id = s.ref2 WHERE r.ref2 = 2017 AND r.nm = 'Chinese Grand Prix' ORDER BY s.pstn ASC LIMIT 3"
+      ],
+      "agent_text": "2017 中国大奖赛后车手积分榜前 3 名（累计积分）：\n\n| 名次 | 车手 | 积分 |\n|---|---|---|\n| 1 | Sebastian Vettel | 43 |\n| 2 | Lewis Hamilton | 43 |\n| 3 | Max Verstappen | 25 |",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 22505,
+        "output": 1196,
+        "cache_read": 138240,
+        "cache_write": 0,
+        "reasoning": 713,
+        "total": 161941
+      },
+      "cost_usd": 0.007356,
+      "elapsed_seconds": 21.95,
+      "agent_duration_ms": 14460,
+      "extra_columns": []
+    },
+    {
+      "question_id": 51,
+      "datasource": "formula_1",
+      "chat_id": "d66a68c1212d4df4b1c36cc33fa01b1b",
+      "final_sql": "SELECT 100.0 * SUM(CASE WHEN r.pstn > 1 THEN 1 ELSE 0 END) / COUNT(r.ref4) AS percentage FROM rslt r JOIN drvr d ON r.ref3 = d.drvr_id JOIN rcs c ON r.ref4 = c.rc_id WHERE d.srnm = 'Hamilton' AND c.ref2 >= 2010;",
+      "sql_history": [
+        "SELECT 100.0 * SUM(CASE WHEN r.pstn > 1 THEN 1 ELSE 0 END) / COUNT(r.ref4) AS percentage FROM rslt r JOIN drvr d ON r.ref3 = d.drvr_id JOIN rcs c ON r.ref4 = c.rc_id WHERE d.srnm = 'Hamilton' AND c.ref2 >= 2010;"
+      ],
+      "agent_text": "Hamilton 自 2010 年起未能在赛道取得第 1 名（position > 1）的比例为 **55.33%**。",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 16562,
+        "output": 699,
+        "cache_read": 66944,
+        "cache_write": 0,
+        "reasoning": 402,
+        "total": 84205
+      },
+      "cost_usd": 0.004389,
+      "elapsed_seconds": 17.08,
+      "agent_duration_ms": 9503,
+      "extra_columns": []
+    },
+    {
+      "question_id": 57,
+      "datasource": "formula_1",
+      "chat_id": "1707edd71b9e4ad8952341be59c8ddd4",
+      "final_sql": "SELECT DISTINCT r.nm AS race_name FROM drvr d JOIN rslt rs ON rs.ref3 = d.drvr_id JOIN rcs r ON rs.ref4 = r.rc_id WHERE d.frnm = 'Alex' AND d.srnm = 'Yoong' AND rs.pstn < 20 ORDER BY r.nm;",
+      "sql_history": [
+        "SELECT d.drvr_id, d.frnm, d.srnm, r.nm AS race_name, rs.pstn AS result_pos, rs.pstn_txt, ds.pstn AS standing_pos FROM drvr d JOIN rslt rs ON rs.ref3 = d.drvr_id JOIN rcs r ON rs.ref4 = r.rc_id LEFT JOIN drvr_std ds ON ds.ref1 = d.drvr_id AND ds.ref2 = r.rc_id WHERE d.frnm='Alex' AND d.srnm='Yoong' ORDER BY r.ref2, r.rnd;",
+        "SELECT DISTINCT r.nm AS race_name FROM drvr d JOIN rslt rs ON rs.ref3 = d.drvr_id JOIN rcs r ON rs.ref4 = r.rc_id WHERE d.frnm = 'Alex' AND d.srnm = 'Yoong' AND rs.pstn < 20 ORDER BY r.nm;"
+      ],
+      "agent_text": "Alex Yoong 在位置（track number）小于 20 时参加的比赛：\n\n- Australian Grand Prix\n- Brazilian Grand Prix\n- Canadian Grand Prix\n- French Grand Prix\n- Italian Grand Prix\n- Japanese Grand Prix\n\n（注：他未完赛的场次 position 为空，不满足 < 20，已自然排除。）",
+      "tool_calls": 11,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 9,
+      "tool_rounds": 8,
+      "tokens": {
+        "input": 22816,
+        "output": 19042,
+        "cache_read": 314112,
+        "cache_write": 0,
+        "reasoning": 17918,
+        "total": 355970
+      },
+      "cost_usd": 0.017321,
+      "elapsed_seconds": 195.44,
+      "agent_duration_ms": 187575,
+      "extra_columns": []
+    },
+    {
+      "question_id": 60,
+      "datasource": "formula_1",
+      "chat_id": "32c8fd6adade4022bec725acaea3d737",
+      "final_sql": "SELECT AVG(ds.pnts) AS avg_points FROM drvr_std ds JOIN drvr d ON ds.ref1 = d.drvr_id JOIN rcs r ON ds.ref2 = r.rc_id WHERE d.frnm = 'Eddie' AND d.srnm = 'Irvine' AND r.ref2 = 2000",
+      "sql_history": [
+        "SELECT AVG(ds.pnts) AS avg_points FROM drvr_std ds JOIN drvr d ON ds.ref1 = d.drvr_id JOIN rcs r ON ds.ref2 = r.rc_id WHERE d.frnm = 'Eddie' AND d.srnm = 'Irvine' AND r.ref2 = 2000"
+      ],
+      "agent_text": "Eddie Irvine 在 2000 年的平均积分为 **2.2667**（≈ 2.27）。\n\n（依据 notes 规则：points/score 一律用 `drvr_std` 赛季积分榜，year=2000 作为时间点过滤。）",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 16477,
+        "output": 3271,
+        "cache_read": 69376,
+        "cache_write": 0,
+        "reasoning": 2955,
+        "total": 89124
+      },
+      "cost_usd": 0.005165,
+      "elapsed_seconds": 33.04,
+      "agent_duration_ms": 25443,
+      "extra_columns": []
+    },
+    {
+      "question_id": 104,
+      "datasource": "formula_1",
+      "chat_id": "1b4992c678a04454a943bc20f5663a89",
+      "final_sql": "SELECT c.nm FROM cnstr_std s JOIN cnstr c ON s.ref1 = c.cnst_id ORDER BY s.pnts DESC LIMIT 1",
+      "sql_history": [
+        "SELECT c.nm FROM cnstr_std s JOIN cnstr c ON s.ref1 = c.cnst_id ORDER BY s.pnts DESC LIMIT 1"
+      ],
+      "agent_text": "**Mercedes** — 拥有最高的积分。",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 16838,
+        "output": 1085,
+        "cache_read": 97408,
+        "cache_write": 0,
+        "reasoning": 806,
+        "total": 115331
+      },
+      "cost_usd": 0.005389,
+      "elapsed_seconds": 20.84,
+      "agent_duration_ms": 13058,
+      "extra_columns": []
+    },
+    {
+      "question_id": 105,
+      "datasource": "formula_1",
+      "chat_id": "1e23c200c33641739765a6b929557738",
+      "final_sql": "SELECT DISTINCT c.nm FROM cnstr_std cs JOIN cnstr c ON cs.ref1 = c.cnst_id WHERE cs.ref2 = 291 AND cs.pnts = 0",
+      "sql_history": [
+        "SELECT DISTINCT c.nm FROM cnstr_std cs JOIN cnstr c ON cs.ref1 = c.cnst_id WHERE cs.ref2 = 291 AND cs.pnts = 0"
+      ],
+      "agent_text": "Constructor names with 0 points at race 291:\n\n- Ligier\n- Jordan\n- Larrousse\n- Brabham\n- Dallara\n- Minardi",
+      "tool_calls": 5,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 22289,
+        "output": 645,
+        "cache_read": 136832,
+        "cache_write": 0,
+        "reasoning": 281,
+        "total": 159766
+      },
+      "cost_usd": 0.007132,
+      "elapsed_seconds": 20.61,
+      "agent_duration_ms": 12753,
+      "extra_columns": []
+    },
+    {
+      "question_id": 106,
+      "datasource": "formula_1",
+      "chat_id": "534452cb82094badbd769583546c3ca7",
+      "final_sql": "SELECT COUNT(*) AS japanese_constructors FROM (SELECT c.cnst_id FROM cnstr c JOIN cnstr_std cs ON c.cnst_id = cs.ref1 WHERE c.ntnl = 'Japanese' GROUP BY c.cnst_id HAVING COUNT(cs.ref2) = 2 AND SUM(cs.pnts) = 0) t",
+      "sql_history": [
+        "SELECT cnst_id, cnst_rf, nm, ntnl FROM cnstr WHERE ntnl = 'Japanese'",
+        "SELECT ref1, COUNT(ref2) AS n_races, SUM(pnts) AS total_pnts, MIN(pnts) AS min_p, MAX(pnts) AS max_p FROM cnstr_std WHERE ref1 IN (7,8,11,72,74) GROUP BY ref1",
+        "SELECT COUNT(*) AS japanese_constructors FROM (SELECT c.cnst_id FROM cnstr c JOIN cnstr_std cs ON c.cnst_id = cs.ref1 WHERE c.ntnl = 'Japanese' GROUP BY c.cnst_id HAVING COUNT(cs.ref2) = 2 AND SUM(cs.pnts) = 0) t"
+      ],
+      "agent_text": "**答案：1**\n\n日本的 constructors 中，积分榜参赛恰好 2 场且积分为 0 的只有 1 个（Kojima）。\n\n```sql\nSELECT COUNT(*) AS japanese_constructors\nFROM (\n  SELECT c.cnst_id\n  FROM cnstr c\n  JOIN cnstr_std cs ON c.cnst_id = cs.ref1\n  WHERE c.ntnl = 'Japanese'\n  GROUP BY c.cnst_id\n  HAVING COUNT(cs.ref2) = 2 AND SUM(cs.pnts) = 0\n) t;\n```",
+      "tool_calls": 5,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 17028,
+        "output": 1845,
+        "cache_read": 129152,
+        "cache_write": 0,
+        "reasoning": 1246,
+        "total": 148025
+      },
+      "cost_usd": 0.006517,
+      "elapsed_seconds": 24.81,
+      "agent_duration_ms": 17169,
+      "extra_columns": []
+    },
+    {
+      "question_id": 107,
+      "datasource": "formula_1",
+      "chat_id": "758ff6ff764849589c486e5af6b7e3c3",
+      "final_sql": "SELECT DISTINCT c.nm FROM rslt AS r INNER JOIN cnstr AS c ON r.ref2 = c.cnst_id WHERE r.rnk = 1;",
+      "sql_history": [
+        "SELECT DISTINCT c.nm FROM rslt AS r INNER JOIN cnstr AS c ON r.ref2 = c.cnst_id WHERE r.rnk = 1;"
+      ],
+      "agent_text": "排名第 1 的车队（constructors）共 13 支：\n\nMcLaren、BMW Sauber、Ferrari、Williams、Renault、Toyota、Brawn、Red Bull、Force India、Lotus F1、Sauber、Mercedes、Toro Rosso",
+      "tool_calls": 6,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 26986,
+        "output": 4380,
+        "cache_read": 152960,
+        "cache_write": 0,
+        "reasoning": 3718,
+        "total": 184326
+      },
+      "cost_usd": 0.009287,
+      "elapsed_seconds": 41.23,
+      "agent_duration_ms": 33685,
+      "extra_columns": []
+    },
+    {
+      "question_id": 111,
+      "datasource": "formula_1",
+      "chat_id": "fee1c78e82cf46599af895faba0d60e1",
+      "final_sql": "SELECT DISTINCT d.frnm, d.srnm FROM rslt r JOIN drvr d ON r.ref3 = d.drvr_id WHERE r.rnk = 2 AND YEAR(d.db) > 1975",
+      "sql_history": [
+        "SELECT DISTINCT d.frnm, d.srnm FROM rslt r JOIN drvr d ON r.ref3 = d.drvr_id WHERE r.rnk = 2 AND YEAR(d.db) > 1975"
+      ],
+      "agent_text": "按 `rslt.rnk = 2`（题面 \"ranked 2\"）且出生年份 > 1975 筛选，得到以下车手的名与姓：\n\n| forename | surname |\n|---|---|\n| Lewis | Hamilton |\n| Kimi | Räikkönen |\n| Nick | Heidfeld |\n| Felipe | Massa |\n| Heikki | Kovalainen |\n| Sébastien | Bourdais |\n| Timo | Glock |\n| Fernando | Alonso |\n| Jenson | Button |\n| Mark | Webber |\n| Takuma | Sato |\n| Robert | Kubica |\n| Sebastian | Vettel |\n| Sébastien | Buemi |\n| Adrian | Sutil |\n| Nico | Rosberg |\n| Jaime | Alguersuari |\n| Sergio | Pérez |\n| Jean-Éric | Vergne |\n| Kamui | Kobayashi |\n| Nico | Hülkenberg |\n| Romain | Grosjean |\n| Bruno | Senna |\n| Daniel | Ricciardo |\n| Kevin | Magnussen |\n| Max | Verstappen |\n| Valtteri | Bottas |\n\n共 27 位，字段按要求拆为 forename、surname 两列返回。",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 16734,
+        "output": 1028,
+        "cache_read": 67072,
+        "cache_write": 0,
+        "reasoning": 553,
+        "total": 84834
+      },
+      "cost_usd": 0.004509,
+      "elapsed_seconds": 19.17,
+      "agent_duration_ms": 11293,
+      "extra_columns": []
+    },
+    {
+      "question_id": 121,
+      "datasource": "formula_1",
+      "chat_id": "e27aa02071be474282e884ad1f0c1585",
+      "final_sql": "SELECT COUNT(DISTINCT ref3) AS drivers_count FROM rslt WHERE ref4 = 18",
+      "sql_history": [
+        "SELECT COUNT(DISTINCT ref3) AS drivers_count FROM rslt WHERE ref4 = 18"
+      ],
+      "agent_text": "**答案：22 名车手**参加了 race ID 18。\n\n（`rslt` 表中 `ref4 = 18` 的比赛共对应 22 名不同车手，`COUNT(DISTINCT ref3)` = 22）",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 16441,
+        "output": 428,
+        "cache_read": 66560,
+        "cache_write": 0,
+        "reasoning": 177,
+        "total": 83429
+      },
+      "cost_usd": 0.004285,
+      "elapsed_seconds": 15.34,
+      "agent_duration_ms": 7884,
+      "extra_columns": []
+    },
+    {
+      "question_id": 139,
+      "datasource": "formula_1",
+      "chat_id": "5997261e97b84695bf2cccd84019721c",
+      "final_sql": "SELECT DISTINCT c.url FROM cnstr c JOIN ( SELECT ref2, COUNT(*) AS w FROM rslt WHERE pstn_ordr = 1 GROUP BY ref2 ORDER BY w DESC LIMIT 1 ) t ON t.ref2 = c.cnst_id;",
+      "sql_history": [
+        "SELECT c.cnst_id, c.nm, COUNT(*) AS wins FROM rslt r JOIN cnstr c ON c.cnst_id = r.ref2 WHERE r.pstn_ordr = 1 GROUP BY c.cnst_id, c.nm ORDER BY wins DESC LIMIT 5;",
+        "SELECT DISTINCT c.url FROM cnstr c JOIN ( SELECT ref2, COUNT(*) AS w FROM rslt WHERE pstn_ordr = 1 GROUP BY ref2 ORDER BY w DESC LIMIT 1 ) t ON t.ref2 = c.cnst_id;"
+      ],
+      "agent_text": "Ferrari 拿下最多胜场（229 胜），其官网地址为：\n\n**http://en.wikipedia.org/wiki/Scuderia_Ferrari**",
+      "tool_calls": 5,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 22345,
+        "output": 2231,
+        "cache_read": 141440,
+        "cache_write": 0,
+        "reasoning": 1711,
+        "total": 166016
+      },
+      "cost_usd": 0.007713,
+      "elapsed_seconds": 30.94,
+      "agent_duration_ms": 23514,
+      "extra_columns": []
+    },
+    {
+      "question_id": 150,
+      "datasource": "formula_1",
+      "chat_id": "6fbfba75769c40e895b591e857eec3d2",
+      "final_sql": "SELECT AVG(s.pnts) AS avg_score FROM drvr_std s JOIN drvr d ON s.ref1 = d.drvr_id JOIN rcs r ON s.ref2 = r.rc_id WHERE d.frnm = 'Lewis' AND d.srnm = 'Hamilton' AND r.nm = 'Turkish Grand Prix';",
+      "sql_history": [
+        "SELECT AVG(s.pnts) AS avg_score FROM drvr_std s JOIN drvr d ON s.ref1 = d.drvr_id JOIN rcs r ON s.ref2 = r.rc_id WHERE d.frnm = 'Lewis' AND d.srnm = 'Hamilton' AND r.nm = 'Turkish Grand Prix';"
+      ],
+      "agent_text": "平均分：**52.8**\n\n查询（数据源 `formula_1`，按「积分口径用 standings 表」规则）：\n\n```sql\nSELECT AVG(s.pnts) AS avg_score\nFROM drvr_std s\nJOIN drvr d ON s.ref1 = d.drvr_id\nJOIN rcs r ON s.ref2 = r.rc_id\nWHERE d.frnm = 'Lewis' AND d.srnm = 'Hamilton'\n  AND r.nm = 'Turkish Grand Prix';\n```\n\n结果：**52.8**（Lewis Hamilton 在所有土耳其大奖赛站后的累计积分均值）。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 22238,
+        "output": 1136,
+        "cache_read": 102784,
+        "cache_write": 0,
+        "reasoning": 629,
+        "total": 126158
+      },
+      "cost_usd": 0.006309,
+      "elapsed_seconds": 21.87,
+      "agent_duration_ms": 13950,
+      "extra_columns": []
+    }
+  ]
+}

@@ -1,0 +1,1911 @@
+{
+  "name": "works_cycles_question_set_final",
+  "description": "三梯度测试最终题集：官方 98 + 自拟 28 = 126",
+  "count": 126,
+  "breakdown": {
+    "official": 98,
+    "custom": 28
+  },
+  "questions": [
+    {
+      "id": 1,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "How many businesses indicate their home address as their address, and how many businesses have a shipping address? Return the two counts separately.",
+      "evidence": "their home address as their address refers to AddressTypeID = 2; address corresponds to the shipping address refers to AddressTypeID = 5",
+      "SQL": "SELECT SUM(CASE WHEN T2.Name = 'Home' THEN 1 ELSE 0 END) , SUM(CASE WHEN T2.Name = 'Shipping' THEN 1 ELSE 0 END) FROM BusinessEntityAddress AS T1 INNER JOIN AddressType AS T2 ON T1.AddressTypeID = T2.AddressTypeID",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "CASE"
+      ],
+      "domain": "Geography",
+      "SQL_obfuscated": "SELECT SUM(CASE WHEN T2.nm = 'Home' THEN 1 ELSE 0 END) , SUM(CASE WHEN T2.nm = 'Shipping' THEN 1 ELSE 0 END) FROM biz_addr AS T1 INNER JOIN addr_typ AS T2 ON T1.ref2 = T2.addr_typ_id",
+      "note": "题面 'Add' 有歧义(被 agent 稳定读成「求和」→ 单数)，但 gold 要两个独立计数(Home/Shipping)。已把题面改写为明确要求「两个独立计数」。"
+    },
+    {
+      "id": 2,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Among the active employees with over 10 hours of sick leave, what is the percentage of the employees with over 20 vacation hours?",
+      "evidence": "CurrentFlag = 1 refers to the active status of employees; Percentage = Divide (Count (BusinessEntityID (CurrentFlag = 1 & VacationHours >20 & SickLeaveHours > 10)), Count (BusinessEntityID (CurrentFlag = 1 & SickLeaveHours>10))) * 100;",
+      "SQL": "SELECT CAST(SUM(CASE WHEN T1.VacationHours > 20 THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(T1.BusinessEntityID) FROM Employee AS T1 WHERE T1.CurrentFlag = 1 AND T1.SickLeaveHours > 10",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "CASE"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT CAST(SUM(CASE WHEN T1.vctn_hrs > 20 THEN 1 ELSE 0 END) AS DOUBLE) * 100 / COUNT(T1.ref1) FROM emp AS T1 WHERE T1.crrn_flg = 1 AND T1.sck_lv_hrs > 10",
+      "note": "gold bug：无谓 join EmployeePayHistory 造成 fan-out（按薪资历史行加权而非按员工数），百分比 81.64 虚高；改直接对 Employee 计数，答案 80.69。"
+    },
+    {
+      "id": 3,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Among the employees who have a pay rate of above 40, how many of them are male?",
+      "evidence": "pay rate above 40 refers to Rate>40; male employee refers to Gender = M",
+      "SQL": "SELECT SUM(CASE WHEN T2.Gender = 'M' THEN 1 ELSE 0 END) FROM EmployeePayHistory AS T1 INNER JOIN Employee AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID WHERE T1.Rate > 40",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "CASE"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT SUM(CASE WHEN T2.gndr = 'M' THEN 1 ELSE 0 END) FROM emp_pay_hist AS T1 INNER JOIN emp AS T2 ON T1.ref1 = T2.ref1 WHERE T1.rt > 40"
+    },
+    {
+      "id": 4,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Among the employees who wish to receive e-mail promotion from AdventureWorks, how many percent of them are female?",
+      "evidence": "female refers to Gender = 'F'; employee who wish to receive email promotion refers to EmailPromotion = 1; percentage = DIVIDE(SUM(Gender = 'F')), (sum(Gender = 'F' or Gender = 'M'))) as percentage;",
+      "SQL": "SELECT CAST(SUM(CASE WHEN T1.Gender = 'F' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(T1.BusinessEntityID) FROM Employee AS T1 INNER JOIN Person AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID WHERE T2.EmailPromotion = 1",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "CASE"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT CAST(SUM(CASE WHEN T1.gndr = 'F' THEN 1 ELSE 0 END) AS DOUBLE) * 100 / COUNT(T1.ref1) FROM emp AS T1 INNER JOIN prsn AS T2 ON T1.ref1 = T2.ref1 WHERE T2.eml_prmt = 1"
+    },
+    {
+      "id": 5,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Among the employees whose pay frequencies are the highest, how many of them are married?",
+      "evidence": "married refers to MaritalStatus = M; highest pay frequency refers to PayFrequency = 2",
+      "SQL": "SELECT COUNT(DISTINCT T1.BusinessEntityID) FROM EmployeePayHistory AS T1 INNER JOIN Employee AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID WHERE T2.MaritalStatus = 'M' AND T1.PayFrequency = ( SELECT PayFrequency FROM EmployeePayHistory ORDER BY PayFrequency DESC LIMIT 1 )",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "SUBQUERY"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT COUNT(DISTINCT T1.ref1) FROM emp_pay_hist AS T1 INNER JOIN emp AS T2 ON T1.ref1 = T2.ref1 WHERE T2.mrtl_stts = 'M' AND T1.py_frqn = ( SELECT py_frqn FROM emp_pay_hist ORDER BY py_frqn DESC LIMIT 1 )",
+      "note": "gold bug：官方 COUNT(BusinessEntityID) 不去重，最高频员工里有员工含多条薪资历史被重复计数 70；改 COUNT(DISTINCT)，答案 66。"
+    },
+    {
+      "id": 6,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Among the products that are both manufactured in house and salable, how many of them get over 10 reviews?",
+      "evidence": "manufactured in house refers to MakeFlag = 1; salable product refers to FinishedGoodsFlag = 1; over 10 reviews refers to count(comments)>10",
+      "SQL": "SELECT COUNT(*) FROM (SELECT T2.ProductID FROM ProductReview AS T1 INNER JOIN Product AS T2 ON T1.ProductID = T2.ProductID WHERE T2.FinishedGoodsFlag = 1 AND T2.MakeFlag = 1 GROUP BY T2.ProductID HAVING COUNT(T1.Comments) > 10) AS t",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY"
+      ],
+      "domain": "Product",
+      "SQL_obfuscated": "SELECT COUNT(*) FROM (SELECT T2.prdc_id FROM prod_rvw AS T1 INNER JOIN prod AS T2 ON T1.ref1 = T2.prdc_id WHERE T2.fnsh_gds_flg = 1 AND T2.mk_flg = 1 GROUP BY T2.prdc_id HAVING COUNT(T1.cmmn) > 10) AS t",
+      "note": "gold bug：官方 SQL 用 ORDER BY COUNT(comments)>10 返回产品名列表而非题面「多少个」；改为 COUNT，答案 0（本库无产品评论>10）。"
+    },
+    {
+      "id": 7,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Among the products that get over at least 1 review, how many of them are from the mountain product line?",
+      "evidence": "mountain product line refers to ProductLine = 'M'；over at least 1 review = 超过 1 条评论（COUNT > 1，严格大于 1，不是 ≥1）",
+      "SQL": "SELECT COUNT(*) FROM (SELECT T1.ProductID FROM ProductReview AS T1 INNER JOIN Product AS T2 ON T1.ProductID = T2.ProductID WHERE T2.ProductLine = 'M' GROUP BY T1.ProductID HAVING COUNT(T1.ProductReviewID) > 1) AS t",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY",
+        "HAVING",
+        "CASE"
+      ],
+      "domain": "Product",
+      "SQL_obfuscated": "SELECT COUNT(*) FROM (SELECT T1.ref1 FROM prod_rvw AS T1 INNER JOIN prod AS T2 ON T1.ref1 = T2.prdc_id WHERE T2.prdc_ln = 'M' GROUP BY T1.ref1 HAVING COUNT(T1.prdc_rvw_id) > 1) AS t",
+      "note": "gold bug：SUM(CASE) 返「评论数 2」而非「mountain 产品数」（同 Q8 病）；改 COUNT，答案 1（HL Mountain Pedal）。"
+    },
+    {
+      "id": 8,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Among the salable products from the mountain product line, how many of them have the most reviews?",
+      "evidence": "salable product refers to FinishedGoodsFlag = 1; mountain product line refers to ProductLine = 'M'",
+      "SQL": "SELECT COUNT(*) FROM (SELECT T1.ProductID FROM ProductReview AS T1 INNER JOIN Product AS T2 ON T1.ProductID = T2.ProductID WHERE T2.FinishedGoodsFlag = 1 AND T2.ProductLine = 'M' GROUP BY T1.ProductID HAVING COUNT(*) = (SELECT MAX(c) FROM (SELECT COUNT(*) AS c FROM ProductReview AS r INNER JOIN Product AS p ON r.ProductID = p.ProductID WHERE p.FinishedGoodsFlag = 1 AND p.ProductLine = 'M' GROUP BY r.ProductID) AS m)) AS t",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY",
+        "CASE"
+      ],
+      "domain": "Product",
+      "SQL_obfuscated": "SELECT COUNT(*) FROM (SELECT T1.ref1 FROM prod_rvw AS T1 INNER JOIN prod AS T2 ON T1.ref1 = T2.prdc_id WHERE T2.fnsh_gds_flg = 1 AND T2.prdc_ln = 'M' GROUP BY T1.ref1 HAVING COUNT(*) = (SELECT MAX(c) FROM (SELECT COUNT(*) AS c FROM prod_rvw AS r INNER JOIN prod AS p ON r.ref1 = p.prdc_id WHERE p.fnsh_gds_flg = 1 AND p.prdc_ln = 'M' GROUP BY r.ref1) AS m)) AS t",
+      "note": "gold bug：官方 SUM(CASE mountain) ... ORDER BY 评论数 DESC LIMIT 1 返回「最高评论产品的评论数=2」而非「多少产品拥有最多评论」；改为 COUNT，答案 1（HL Mountain Pedal）。"
+    },
+    {
+      "id": 9,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Compare the average pay rate of male and female employees.",
+      "evidence": "male refers to Gender = 'M'; female refers to Gender = 'F'; use each employee's latest pay rate (most recent rate change date); return the average rate for male and female as two separate rows;",
+      "SQL": "SELECT AVG(T2.Rate) FROM Employee AS T1 INNER JOIN EmployeePayHistory AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID WHERE T2.RateChangeDate = (SELECT MAX(RateChangeDate) FROM EmployeePayHistory AS x WHERE x.BusinessEntityID = T2.BusinessEntityID) GROUP BY T1.Gender ORDER BY T1.Gender",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT AVG(T2.rt) FROM emp AS T1 INNER JOIN emp_pay_hist AS T2 ON T1.ref1 = T2.ref1 WHERE T2.rt_chng_dt = (SELECT MAX(rt_chng_dt) FROM emp_pay_hist AS x WHERE x.ref1 = T2.ref1) GROUP BY T1.gndr ORDER BY T1.gndr",
+      "note": "gold bug：平均薪资用全部薪资历史行加权，应按「每人最新薪资」求均值；改 rt_chng_dt=MAX 取最新，答案 [19.23,17.76]（原 [19.72,17.00]）。"
+    },
+    {
+      "id": 10,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "For the document Control Assistant who was hired on 2009/1/22, what is the percentage of private documents did he/she have?",
+      "evidence": "Document Control Assistant refers  to the  JobTitle = 'Document Control Assistant'; hired on 2009/1/22 means the person's hiring date is HireDate = '2009-01-22'; private documents indicate that DocumentSummary is null; DIVIDE(COUNT(DocumentSummary is null), COUNT(DocumentSummary))*100",
+      "SQL": "SELECT CAST(SUM(CASE WHEN T1.DocumentSummary IS NULL THEN 1 ELSE 0 END) AS REAL) / COUNT(*) * 100 FROM Document AS T1 INNER JOIN Employee AS T2 ON T1.Owner = T2.BusinessEntityID WHERE T2.JobTitle = 'Document Control Assistant' AND T2.HireDate = '2009-01-22'",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "CASE"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT CAST(SUM(CASE WHEN T1.dcmn_smmr IS NULL THEN 1 ELSE 0 END) AS DOUBLE) / COUNT(*) * 100 FROM doc AS T1 INNER JOIN emp AS T2 ON T1.ref1 = T2.ref1 WHERE T2.jb_ttl = 'Document Control Assistant' AND T2.hr_dt = '2009-01-22'",
+      "note": "gold bug round4：CASE 反号(IS NOT NULL 算出非私密占比=100%)，与 evidence「private=IS NULL」矛盾；分母 COUNT(dcmn_smmr) 应为 COUNT(*)，且 evidence 要求 ×100。改后=50%。"
+    },
+    {
+      "id": 11,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "For the employees who have the highest pay frequency, please list their vacation hours.",
+      "evidence": "highest pay frequency refers to PayFrequency = 2",
+      "SQL": "SELECT T2.VacationHours FROM Employee AS T2 WHERE T2.BusinessEntityID IN ( SELECT T1.BusinessEntityID FROM EmployeePayHistory AS T1 WHERE T1.PayFrequency = ( SELECT MAX(PayFrequency) FROM EmployeePayHistory ) )",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "SUBQUERY"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT T2.vctn_hrs FROM emp AS T2 WHERE T2.ref1 IN ( SELECT T1.ref1 FROM emp_pay_hist AS T1 WHERE T1.py_frqn = ( SELECT MAX(py_frqn) FROM emp_pay_hist ) )",
+      "note": "gold bug：官方用 rt(率) 当「最高支付频率」且 ORDER BY Rate LIMIT 1 只返 1 人；改 py_frqn(频)+IN 子查询返全部最高频员工，答案 126 行。"
+    },
+    {
+      "id": 12,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "For the on going assembly item Component ID No. 494, what's the Unit measure for it?",
+      "evidence": "On going assembly item means the assembly item haven't been finished, therefore EndDate is null",
+      "SQL": "SELECT T2.Name FROM BillOfMaterials AS T1 INNER JOIN UnitMeasure AS T2 ON T1.UnitMeasureCode = T2.UnitMeasureCode WHERE T1.ComponentID = 494 AND T1.EndDate IS NULL GROUP BY T2.name",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY"
+      ],
+      "domain": "Product",
+      "SQL_obfuscated": "SELECT T2.nm FROM bom AS T1 INNER JOIN unit_msr AS T2 ON T1.ref1 = T2.unt_msr_cd WHERE T1.ref2 = 494 AND T1.end_dt IS NULL GROUP BY T2.nm"
+    },
+    {
+      "id": 13,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "How long does it take for the business to receive the item it has purchased? Who is the vendor for business number 1496?",
+      "evidence": "business number refers to BusinessEntityID where BusinessEntityID = 1496; how long does it take refers to AverageLeadTime",
+      "SQL": "SELECT T1.AverageLeadTime, T2.Name FROM ProductVendor AS T1 INNER JOIN Vendor AS T2 USING (businessentityid) WHERE T2.BusinessEntityID = 1496 GROUP BY T1.AverageLeadTime, T2.Name",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY"
+      ],
+      "domain": "Purchasing",
+      "SQL_obfuscated": "SELECT T1.avrg_ld_tm, T2.nm FROM prod_vnd AS T1 INNER JOIN vnd AS T2 ON T1.ref2 = T2.ref1 WHERE T2.ref1 = 1496 GROUP BY T1.avrg_ld_tm, T2.nm"
+    },
+    {
+      "id": 14,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "How many accounts are in Bothell as opposed to Kenmore? What is the name of the State that comprises these two cities?",
+      "evidence": "SUBTRACT(count(city = 'Bothell'), count(city = 'Kenmore'))",
+      "SQL": "SELECT SUM(IIF(T1.city = 'Bothell', 1, 0)) - SUM(IIF(T1.city = 'Kenmore', 1, 0)) , T2.Name FROM Address AS T1 INNER JOIN StateProvince AS T2 ON T1.stateprovinceid = T2.stateprovinceid WHERE T1.city IN ('Bothell', 'Kenmore') GROUP BY T2.Name",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY"
+      ],
+      "domain": "Geography",
+      "SQL_obfuscated": "SELECT SUM(IF(T1.cty = 'Bothell', 1, 0)) - SUM(IF(T1.cty = 'Kenmore', 1, 0)) , T2.nm FROM addr AS T1 INNER JOIN st_prv AS T2 ON T1.ref1 = T2.stt_prvn_id WHERE T1.cty IN ('Bothell', 'Kenmore') GROUP BY T2.nm",
+      "note": "gold bug：官方 SQL GROUP BY 州未过滤 → 返 75 行（13 WA + 74 个 0 行），且返州码 stateprovincecode 而非题面问的州名。agent 返 [13,'Washington'] 1 行是对的。已加 WHERE city IN ('Bothell','Kenmore') 过滤 + 改返 StateProvince.Name，gold 75 行→1 行 [13,'Washington']。"
+    },
+    {
+      "id": 15,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "How many times is married non sales employees against single non-sales employees?",
+      "evidence": "non-sales employee refers to PersonType = 'EM'; married refers to MaritalStatus = 'M'; single refers to MaritalStatus = 'S'; percentage = DIVIDE(SUM(MaritalStatus = 'M'), (SUM(MaritalStatus = 'S') as percentage;；percentage = 乘 100 得到百分数（M/S × 100），不是裸比值",
+      "SQL": "SELECT CAST(SUM(CASE WHEN T1.MaritalStatus = 'M' THEN 1 ELSE 0 END) AS REAL) * 100 / SUM(CASE WHEN T1.MaritalStatus = 'S' THEN 1 ELSE 0 END) FROM Employee AS T1 INNER JOIN Person AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID WHERE T2.PersonType = 'EM'",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "CASE"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT CAST(SUM(CASE WHEN T1.mrtl_stts = 'M' THEN 1 ELSE 0 END) AS DOUBLE) * 100 / SUM(CASE WHEN T1.mrtl_stts = 'S' THEN 1 ELSE 0 END) FROM emp AS T1 INNER JOIN prsn AS T2 ON T1.ref1 = T2.ref1 WHERE T2.prsn_typ = 'EM'"
+    },
+    {
+      "id": 16,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "How much do the works data saved in English and Arabic differ from one another?",
+      "evidence": "Data saved in English refers to the name of the language where Culture.Name = 'English'; data saved in Arabic refers to the name of the language where Culture.Name = 'Arabic';   SUBTRACT(count(Name = 'English'), count(Name = 'Bothell'))",
+      "SQL": "SELECT SUM(CASE WHEN T1.Name = 'English' THEN 1 ELSE 0 END) - SUM(CASE WHEN T1.Name = 'Arabic' THEN 1 ELSE 0 END) FROM Culture AS T1 INNER JOIN ProductModelProductDescriptionCulture AS T2 ON T1.CultureID = T2.CultureID WHERE T1.Name = 'English' OR T1.Name = 'Arabic'",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "CASE"
+      ],
+      "domain": "Product",
+      "SQL_obfuscated": "SELECT SUM(CASE WHEN T1.nm = 'English' THEN 1 ELSE 0 END) - SUM(CASE WHEN T1.nm = 'Arabic' THEN 1 ELSE 0 END) FROM cult AS T1 INNER JOIN pmdc AS T2 ON T1.cltr_id = T2.ref1 WHERE T1.nm = 'English' OR T1.nm = 'Arabic'"
+    },
+    {
+      "id": 17,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "List all the products with lower than average cost.",
+      "evidence": "cost refers to StandardCost; lower than average cost = StandardCost<(AVG(StandardCost));",
+      "SQL": "SELECT Name FROM Product WHERE StandardCost < (SELECT AVG(StandardCost) FROM Product)",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "SUBQUERY"
+      ],
+      "domain": "Product",
+      "SQL_obfuscated": "SELECT nm FROM prod WHERE stnd_cst < (SELECT AVG(stnd_cst) FROM prod)",
+      "note": "gold bug：官方混用 ProductCostHistory(历史价) 比 AVG(Product.StandardCost)(现价) 口径不一致，且返 ProductID 而非产品名；改现价 StandardCost<均值，答案 368 产品名。"
+    },
+    {
+      "id": 18,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "List the full name of all the 'Production Technician - WC50'",
+      "evidence": "full name = FirstName+MiddleName+LastName; Production Technician - WC50 is a job title;",
+      "SQL": "SELECT T2.FirstName, T2.MiddleName, T2.LastName FROM Employee AS T1 INNER JOIN Person AS T2 USING (BusinessEntityID) WHERE T1.JobTitle = 'Production Technician - WC50' GROUP BY T2.FirstName, T2.MiddleName, T2.LastName",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT T2.frst_nm, T2.mddl_nm, T2.lst_nm FROM emp AS T1 INNER JOIN prsn AS T2 ON T1.ref1 = T2.ref1 WHERE T1.jb_ttl = 'Production Technician - WC50' GROUP BY T2.frst_nm, T2.mddl_nm, T2.lst_nm"
+    },
+    {
+      "id": 19,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "List the products whereby the standard cost is $80 more than previous standard cost in history.",
+      "evidence": "SUBTRACT(product.StandardCost, CostHistory.StandardCost)>80",
+      "SQL": "SELECT T1.Name FROM Product AS T1 INNER JOIN ProductCostHistory AS T2 ON T1.ProductID = T2.ProductID WHERE T1.StandardCost - T2.StandardCost > 80 GROUP BY T1.Name",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY"
+      ],
+      "domain": "Product",
+      "SQL_obfuscated": "SELECT T1.nm FROM prod AS T1 INNER JOIN prod_cst_hist AS T2 ON T1.prdc_id = T2.ref1 WHERE T1.stnd_cst - T2.stnd_cst > 80 GROUP BY T1.nm"
+    },
+    {
+      "id": 20,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Please list all the vendors' usual selling prices of the product Hex Nut 5.",
+      "evidence": "vendor's selling price refers to StandardPrice",
+      "SQL": "SELECT T1.StandardPrice FROM ProductVendor AS T1 INNER JOIN Product AS T2 ON T1.ProductID = T2.ProductID WHERE T2.Name = 'Hex Nut 5'",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY"
+      ],
+      "domain": "Product",
+      "SQL_obfuscated": "SELECT T1.stnd_prc FROM prod_vnd AS T1 INNER JOIN prod AS T2 ON T1.ref3 = T2.prdc_id WHERE T2.nm = 'Hex Nut 5'",
+      "note": "gold bug：官方 GROUP BY stnd_prc ORDER BY COUNT DESC LIMIT 1 只返「最常见价 41.21」；题面「list all vendors' prices」应返全部 3 行。"
+    },
+    {
+      "id": 21,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "How many products get over 10 reviews and are salable?",
+      "evidence": "salable product refers to FinishedGoodsFlag = 1; over 10 reviews refers to count(comments)>10",
+      "SQL": "SELECT COUNT(*) FROM (SELECT T1.ProductID FROM ProductReview AS T1 INNER JOIN Product AS T2 ON T1.ProductID = T2.ProductID WHERE T2.FinishedGoodsFlag = 1 GROUP BY T1.ProductID HAVING COUNT(T1.comments) > 10) AS t",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY"
+      ],
+      "domain": "Product",
+      "SQL_obfuscated": "SELECT COUNT(*) FROM (SELECT T1.ref1 FROM prod_rvw AS T1 INNER JOIN prod AS T2 ON T1.ref1 = T2.prdc_id WHERE T2.fnsh_gds_flg = 1 GROUP BY T1.ref1 HAVING COUNT(T1.cmmn) > 10) AS t",
+      "note": "gold bug：官方 ORDER BY COUNT(comments)>10 布尔塞 ORDER BY，返回「有任何评论」的 3 产品而非「>10 评论」；改 HAVING>10。题面 list→How many 避免空集退化(本库无产品评论>10，答案 0)。"
+    },
+    {
+      "id": 22,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "What are the names of the product that has the lowest rating?",
+      "evidence": "lowest rating refers to 最低评分 = 数据里的最小评分值(用 MIN(rating)，本库实际为 2);",
+      "SQL": "SELECT T2.Name FROM ProductReview AS T1 INNER JOIN Product AS T2 ON T1.ProductID = T2.ProductID WHERE T1.Rating = ( SELECT Rating FROM ProductReview ORDER BY Rating ASC LIMIT 1 )",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "SUBQUERY"
+      ],
+      "domain": "Product",
+      "SQL_obfuscated": "SELECT T2.nm FROM prod_rvw AS T1 INNER JOIN prod AS T2 ON T1.ref1 = T2.prdc_id WHERE T1.rtng = ( SELECT rtng FROM prod_rvw ORDER BY rtng ASC LIMIT 1 )"
+    },
+    {
+      "id": 23,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "What is the name of the product with the almost highest review score?",
+      "evidence": "almost highest review score refers to the second highest rating (= 4, since the highest is 5);",
+      "SQL": "SELECT T1.Name FROM Product AS T1 INNER JOIN ProductReview AS T2 ON T1.ProductID = T2.ProductID WHERE T2.Rating = (SELECT DISTINCT Rating FROM ProductReview ORDER BY Rating DESC LIMIT 1 OFFSET 1)",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "SUBQUERY"
+      ],
+      "domain": "Product",
+      "SQL_obfuscated": "SELECT T1.nm FROM prod AS T1 INNER JOIN prod_rvw AS T2 ON T1.prdc_id = T2.ref1 WHERE T2.rtng = (SELECT DISTINCT rtng FROM prod_rvw ORDER BY rtng DESC LIMIT 1 OFFSET 1)",
+      "note": "gold bug：官方取最高评分(rtng DESC LIMIT 1)而非题面「almost highest=次高」；改次高评分(4)，答案 'HL Mountain Pedal'。"
+    },
+    {
+      "id": 24,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Which product ID do not have any work order ID?",
+      "evidence": "Do not have any work order ID means WorkOrderID is null",
+      "SQL": "SELECT ProductID FROM Product WHERE ProductID NOT IN ( SELECT T1.ProductID FROM Product AS T1 INNER JOIN WorkOrder AS T2 ON T1.ProductID = T2.ProductID )",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "SUBQUERY"
+      ],
+      "domain": "Product",
+      "SQL_obfuscated": "SELECT prdc_id FROM prod WHERE prdc_id NOT IN ( SELECT T1.prdc_id FROM prod AS T1 INNER JOIN wo AS T2 ON T1.prdc_id = T2.ref2 )"
+    },
+    {
+      "id": 25,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Which product allows the company to make the highest profit on a single item among those that are the fastest to manufacture? Indicate the rating of the product if there any.",
+      "evidence": "profit on a single item = SUBTRACT(ListPrice, StandardCost); length of time to manufacture refers to DaysToManufacture; fastest to manucature refers to MIN(DaysToManufacture);",
+      "SQL": "SELECT T1.Name, (SELECT T2.Rating FROM ProductReview AS T2 WHERE T2.ProductID = T1.ProductID ORDER BY T2.Rating DESC LIMIT 1) AS Rating FROM Product AS T1 WHERE T1.DaysToManufacture = (SELECT MIN(DaysToManufacture) FROM Product) ORDER BY T1.ListPrice - T1.StandardCost DESC LIMIT 1",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "SUBQUERY"
+      ],
+      "domain": "Product",
+      "SQL_obfuscated": "SELECT T1.nm, (SELECT T2.rtng FROM prod_rvw AS T2 WHERE T2.ref1 = T1.prdc_id ORDER BY T2.rtng DESC LIMIT 1) AS rtng FROM prod AS T1 WHERE T1.dys_to_mnfc = (SELECT MIN(dys_to_mnfc) FROM prod) ORDER BY T1.lst_prc - T1.stnd_cst DESC LIMIT 1",
+      "note": "gold bug：官方 INNER JOIN prod_rvw 排除无评论的最快制造产品，漏掉利润最高的 'All-Purpose Bike Stand'（无评论）错选 'Mountain Bike Socks, M'；改子查询取评分（LEFT JOIN 语义，题面 if there any 暗示评分可缺），答案 'All-Purpose Bike Stand' 评分 NULL。"
+    },
+    {
+      "id": 26,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Among all the employees who don't wish to receive promotion e-mails, how many of them belong to or once belonged to the Engineering Department?",
+      "evidence": "Employees who don't wish to receive e-mail promotions refers to EmailPromotion = 0;",
+      "SQL": "SELECT COUNT(T1.BusinessEntityID) FROM EmployeeDepartmentHistory AS T1 INNER JOIN Person AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN Department AS T3 ON T1.DepartmentID = T3.DepartmentID WHERE T3.Name = 'Engineering' AND T2.EmailPromotion = 0",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT COUNT(DISTINCT T1.ref3) FROM emp_dept_hist AS T1 INNER JOIN prsn AS T2 ON T1.ref3 = T2.ref1 INNER JOIN dept AS T3 ON T1.ref2 = T3.dprt_id WHERE T3.nm = 'Engineering' AND T2.eml_prmt = 0",
+      "note": "补 DISTINCT：员工多次进出 Engineering 会被 emp_dept_hist 多行重复计数；结果不变(=4)。"
+    },
+    {
+      "id": 27,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Among all the production technicians, how many have a below average pay rate for a production technician?",
+      "evidence": "production technician is a job title; below average rate refers to Rate<AVG(Rate);",
+      "SQL": "SELECT COUNT(*) FROM (SELECT e.BusinessEntityID, eph.Rate FROM Employee e INNER JOIN EmployeePayHistory eph ON e.BusinessEntityID = eph.BusinessEntityID WHERE e.JobTitle LIKE 'Production Technician%' AND eph.RateChangeDate = (SELECT MAX(RateChangeDate) FROM EmployeePayHistory x WHERE x.BusinessEntityID = e.BusinessEntityID)) p WHERE p.Rate < (SELECT AVG(Rate) FROM (SELECT e.BusinessEntityID, eph.Rate FROM Employee e INNER JOIN EmployeePayHistory eph ON e.BusinessEntityID = eph.BusinessEntityID WHERE e.JobTitle LIKE 'Production Technician%' AND eph.RateChangeDate = (SELECT MAX(RateChangeDate) FROM EmployeePayHistory x WHERE x.BusinessEntityID = e.BusinessEntityID)) a)",
+      "join_count": 2,
+      "features": [
+        "JOIN×2",
+        "SUBQUERY"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT COUNT(*) FROM (SELECT e.ref1, eph.rt FROM emp e INNER JOIN emp_pay_hist eph ON e.ref1 = eph.ref1 WHERE e.jb_ttl LIKE 'Production Technician%' AND eph.rt_chng_dt = (SELECT MAX(rt_chng_dt) FROM emp_pay_hist x WHERE x.ref1 = e.ref1)) p WHERE p.rt < (SELECT AVG(rt) FROM (SELECT e.ref1, eph.rt FROM emp e INNER JOIN emp_pay_hist eph ON e.ref1 = eph.ref1 WHERE e.jb_ttl LIKE 'Production Technician%' AND eph.rt_chng_dt = (SELECT MAX(rt_chng_dt) FROM emp_pay_hist x WHERE x.ref1 = e.ref1)) a)",
+      "note": "gold bug：官方未取每个员工最新薪资（emp_pay_hist 历史行重复计数），答案 82 虚高；改为每员工最新 RateChangeDate 的薪资再比均值，答案 66。"
+    },
+    {
+      "id": 28,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Among the employees in the Manufacturing group in 2007, how many of them are store contacts?",
+      "evidence": "store contact refers to PersonType = 'SC'; year(EndDate)>2007 and year(StartDate)<2007;",
+      "SQL": "SELECT COUNT(T1.BusinessEntityID) FROM EmployeeDepartmentHistory AS T1 INNER JOIN Department AS T2 ON T1.DepartmentID = T2.DepartmentID INNER JOIN Person AS T3 ON T1.BusinessEntityID = T3.BusinessEntityID WHERE T3.PersonType = 'SC' AND T2.GroupName = 'Manufacturing' AND STRFTIME('%Y', T1.EndDate) >= '2007' AND STRFTIME('%Y', T1.StartDate) <= '2007'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT COUNT(T1.ref3) FROM emp_dept_hist AS T1 INNER JOIN dept AS T2 ON T1.ref2 = T2.dprt_id INNER JOIN prsn AS T3 ON T1.ref3 = T3.ref1 WHERE T3.prsn_typ = 'SC' AND T2.grp_nm = 'Manufacturing' AND YEAR(T1.end_dt) >= '2007' AND YEAR(T1.strt_dt) <= '2007'",
+      "note": "gold SQL 病句：INNER JOIN Person ON T1.BusinessEntityID 缺 =T3.BusinessEntityID（BIRD 原句就缺）；补上，答案仍 0。"
+    },
+    {
+      "id": 29,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Among the employees who are married and wish to receive e-mail promotions, how much higher is their highest pay rate from the average pay rate?",
+      "evidence": "married refers to MaritalStatus = 'M'; Contact does wish to receive e-mail promotions from Adventure Works refers to EmailPromotion = 1; Average = Divide (Sum(Rate (MaritalStatus = 'M' & EmailPromotion = 1))), Count (BusinessEntityID (MaritalStatus = 'M' & EmailPromotion = 1)); MAX(Rate (MaritalStatus = 'M' & EmailPromotion = 1) - Average;",
+      "SQL": "SELECT MAX(Rate) - AVG(Rate) FROM (SELECT e.BusinessEntityID, ph.Rate FROM Employee AS e INNER JOIN Person AS p ON e.BusinessEntityID = p.BusinessEntityID INNER JOIN EmployeePayHistory AS ph ON e.BusinessEntityID = ph.BusinessEntityID WHERE p.EmailPromotion = 1 AND e.MaritalStatus = 'M' AND ph.RateChangeDate = (SELECT MAX(RateChangeDate) FROM EmployeePayHistory AS x WHERE x.BusinessEntityID = e.BusinessEntityID)) AS t",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT MAX(rt) - AVG(rt) FROM (SELECT e.ref1, ph.rt FROM emp AS e INNER JOIN prsn AS p ON e.ref1 = p.ref1 INNER JOIN emp_pay_hist AS ph ON e.ref1 = ph.ref1 WHERE p.eml_prmt = 1 AND e.mrtl_stts = 'M' AND ph.rt_chng_dt = (SELECT MAX(rt_chng_dt) FROM emp_pay_hist AS x WHERE x.ref1 = e.ref1)) AS t",
+      "note": "gold bug：MAX(Rate)-AVG(Rate) 按全部薪资历史行加权，应按「每人最新薪资」求；改 rt_chng_dt=MAX 取最新，答案 33.94→33.02。 gold bug round2：eml_prmt=2 与自身 evidence(=1)及 Q4(=1)冲突，改 =1"
+    },
+    {
+      "id": 30,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Among the employees who were born before 1969, what is the work shift of the 6th oldest employee?",
+      "evidence": "oldest employee born before 1969 refers to year(BirthDate)<'1969';；work shift 返回班次时段（strt_tm、end_tm 两列），不是班次名字 nm",
+      "SQL": "SELECT T3.StartTime, T3.EndTime FROM Employee AS T1 INNER JOIN EmployeeDepartmentHistory AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN Shift AS T3 ON T2.ShiftId = T3.ShiftId WHERE STRFTIME('%Y', T1.BirthDate) < '1969' ORDER BY T1.BirthDate LIMIT 5, 1",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT T3.strt_tm, T3.end_tm FROM emp AS T1 INNER JOIN emp_dept_hist AS T2 ON T1.ref1 = T2.ref3 INNER JOIN shft AS T3 ON T2.ref1 = T3.shft_id WHERE YEAR(T1.brth_dt) < '1969' ORDER BY T1.brth_dt LIMIT 5, 1"
+    },
+    {
+      "id": 31,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Among the married employees with the highest pay frequency, how many of them have an eastern name style?",
+      "evidence": "married refers to MaritalStatus = 'M'; Eastern name style refers to NameStyle = 1;",
+      "SQL": "SELECT COUNT(T1.BusinessEntityID) FROM Employee AS T1 INNER JOIN Person AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN EmployeePayHistory AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID WHERE T1.MaritalStatus = 'M' AND T2.NameStyle = 1 AND T3.PayFrequency = (SELECT MAX(PayFrequency) FROM EmployeePayHistory)",
+      "join_count": 2,
+      "features": [
+        "JOIN×2",
+        "SUBQUERY"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT COUNT(T1.ref1) FROM emp AS T1 INNER JOIN prsn AS T2 ON T1.ref1 = T2.ref1 INNER JOIN emp_pay_hist AS T3 ON T2.ref1 = T3.ref1 WHERE T1.mrtl_stts = 'M' AND T2.nm_styl = 1 AND T3.py_frqn = (SELECT MAX(py_frqn) FROM emp_pay_hist)",
+      "note": "gold bug：官方把「最高支付频率」写成 rt(率) 而非 py_frqn(频)；改 py_frqn，答案仍 0（无分差，仅语义纠正）。"
+    },
+    {
+      "id": 32,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Among the products from the mountain product line, how many of them are sold by over 2 vendors?",
+      "evidence": "mountain product line refers to ProductLine = 'M'; sold by over 5 vendors refers to count(Name)>5",
+      "SQL": "SELECT COUNT(*) FROM (SELECT T1.ProductID FROM Product AS T1 INNER JOIN ProductVendor AS T2 ON T1.ProductID = T2.ProductID WHERE T1.ProductLine = 'M' GROUP BY T1.ProductID HAVING COUNT(DISTINCT T2.VendorID) > 2) AS t",
+      "join_count": 2,
+      "features": [
+        "JOIN×2",
+        "GROUP_BY",
+        "HAVING",
+        "CASE"
+      ],
+      "domain": "Purchasing",
+      "SQL_obfuscated": "SELECT COUNT(*) FROM (SELECT T1.prdc_id FROM prod AS T1 INNER JOIN prod_vnd AS T2 ON T1.prdc_id = T2.ref3 WHERE T1.prdc_ln = 'M' GROUP BY T1.prdc_id HAVING COUNT(DISTINCT T2.ref2) > 2) AS t",
+      "note": "gold bug：官方漏 mountain 过滤（GROUP BY 全产品 HAVING>2 vendors 返 43 行 0）；改为 WHERE mountain 再计数，答案 0。"
+    },
+    {
+      "id": 33,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Among the store contact employees, how many of them have a Vista credit card?",
+      "evidence": "store contact refers to PersonType = 'SC'; type of credit card refers to CardType; CardType = 'Vista'（注意数据为 TitleCase 'Vista'，utf8mb4_bin 大小写敏感）;",
+      "SQL": "SELECT COUNT(T1.FirstName) FROM Person AS T1 INNER JOIN PersonCreditCard AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN CreditCard AS T3 ON T2.CreditCardID = T3.CreditCardID WHERE T3.CardType = 'Vista' AND T1.PersonType = 'SC'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Sales",
+      "SQL_obfuscated": "SELECT COUNT(T1.frst_nm) FROM prsn AS T1 INNER JOIN prsn_crd AS T2 ON T1.ref1 = T2.ref1 INNER JOIN crd AS T3 ON T2.ref2 = T3.crdt_crd_id WHERE T3.crd_typ = 'Vista' AND T1.prsn_typ = 'SC'",
+      "note": "evidence 修正 round4：CardType 真实值 'Vista'(TitleCase)，原 evidence 小写 'vista' 误导 single-shot 照猜→0 行。"
+    },
+    {
+      "id": 34,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Among the vendors that sell the product Hex Nut 5, how many of them have a good credit rating?",
+      "evidence": "good credit rating refers to CreditRating between 1 and 3",
+      "SQL": "SELECT COUNT(DISTINCT T3.Name) FROM ProductVendor AS T1 INNER JOIN Product AS T2 ON T1.ProductID = T2.ProductID INNER JOIN Vendor AS T3 ON T1.BusinessEntityID = T3.BusinessEntityID WHERE T2.Name = 'Hex Nut 5' AND T3.CreditRating BETWEEN 1 AND 3",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Purchasing",
+      "SQL_obfuscated": "SELECT COUNT(DISTINCT T3.nm) FROM prod_vnd AS T1 INNER JOIN prod AS T2 ON T1.ref3 = T2.prdc_id INNER JOIN vnd AS T3 ON T1.ref2 = T3.ref1 WHERE T2.nm = 'Hex Nut 5' AND T3.crdt_rtng BETWEEN 1 AND 3",
+      "note": "gold SQL 病句：evidence「good=BETWEEN 1 AND 3」被写成 =1 AND 3(=1)；改 BETWEEN，答案仍 3（本库 Hex Nut 5 vendor 恰好都 1）。"
+    },
+    {
+      "id": 35,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Calculate the average age of employee in each department and state which department has the youngest employees.",
+      "evidence": "Average = Divide(Sum(Substract(year(@today),year(BirthDate))),Count(BusinessEntityID) by each Department ID; youngest employee refers to Min(BirthDate);",
+      "SQL": "SELECT T3.Name, AVG(YEAR(CURRENT_TIMESTAMP) - YEAR(T1.BirthDate)) FROM Employee AS T1 INNER JOIN EmployeeDepartmentHistory AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN Department AS T3 ON T2.DepartmentID = T3.DepartmentID WHERE T2.EndDate IS NULL GROUP BY T3.Name ORDER BY 2 ASC",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT T3.nm, AVG(YEAR(CURRENT_TIMESTAMP) - YEAR(T1.brth_dt)) FROM emp AS T1 INNER JOIN emp_dept_hist AS T2 ON T1.ref1 = T2.ref3 INNER JOIN dept AS T3 ON T2.ref2 = T3.dprt_id WHERE T2.end_dt IS NULL GROUP BY T3.nm ORDER BY 2 ASC",
+      "note": "gold 补全：题面问「每部门平均年龄 + 哪个部门最年轻」但 gold 只返最年轻个体；改按部门分组求平均年龄、按均值升序(最年轻在前)，答案 16 行。"
+    },
+    {
+      "id": 36,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Calculate the average length of employment for employee working in the Research and Development deparment.",
+      "evidence": "average length of employment = AVG(subtract(当前年份, year(HireDate)))",
+      "SQL": "SELECT AVG(STRFTIME('%Y', CURRENT_TIMESTAMP) - STRFTIME('%Y', T1.HireDate)) FROM Employee AS T1 INNER JOIN EmployeeDepartmentHistory AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN Department AS T3 ON T2.DepartmentID = T3.DepartmentID WHERE T3.Name = 'Research and Development'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT AVG(YEAR(CURRENT_TIMESTAMP) - YEAR(T1.hr_dt)) FROM emp AS T1 INNER JOIN emp_dept_hist AS T2 ON T1.ref1 = T2.ref3 INNER JOIN dept AS T3 ON T2.ref2 = T3.dprt_id WHERE T3.nm = 'Research and Development'"
+    },
+    {
+      "id": 37,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Calculate the average of the total ordered quantity of products purchased whose shipping method was Cargo Transport 5.",
+      "evidence": "shipping method was Cargo Transport 5 refers to Name = 'CARGO TRANSPORT 5'; average = DIVIDE(SUM(OrderQty where Name = 'CARGO TRANSPORT 5'), COUNT(ShipMethodID))；注意：average = SUM(OrderQty)/COUNT(所有行) 的加权平均，不是 AVG(OrderQty)",
+      "SQL": "SELECT CAST(SUM(IIF(T1.ShipMethodID = 5, T3.OrderQty, 0)) AS REAL) / COUNT(T3.ProductID) FROM ShipMethod AS T1 INNER JOIN PurchaseOrderHeader AS T2 ON T1.ShipMethodID = T2.ShipMethodID INNER JOIN PurchaseOrderDetail AS T3 ON T2.PurchaseOrderID = T3.PurchaseOrderID",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Purchasing",
+      "SQL_obfuscated": "SELECT CAST(SUM(IF(T1.shp_mthd_id = 5, T3.ordr_qty, 0)) AS DOUBLE) / COUNT(T3.ref1) FROM shp_mth AS T1 INNER JOIN po_hdr AS T2 ON T1.shp_mthd_id = T2.ref1 INNER JOIN po_dtl AS T3 ON T2.prch_ordr_id = T3.ref2",
+      "note": "evidence 修正 round4：真实值 'CARGO TRANSPORT 5'(全大写)，原 evidence 混合大小写误导。"
+    },
+    {
+      "id": 38,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Has the product Chainring Bolts been on any of the sales?",
+      "evidence": "a product that has been on sale refers to 有促销记录（special offer 表 spcl_offr），不是 SellStartDate NOT null",
+      "SQL": "SELECT CASE WHEN COUNT(T1.Description) >= 1 THEN 'Yes' ELSE 'No' END FROM SpecialOffer AS T1 INNER JOIN SpecialOfferProduct AS T2 ON T1.SpecialOfferID = T2.SpecialOfferID INNER JOIN Product AS T3 ON T2.ProductID = T3.ProductID WHERE T3.Name = 'Chainring Bolts'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2",
+        "CASE"
+      ],
+      "domain": "Sales",
+      "SQL_obfuscated": "SELECT CASE WHEN COUNT(T1.dscr) >= 1 THEN 'Yes' ELSE 'No' END FROM spcl_offr AS T1 INNER JOIN spcl_prod AS T2 ON T1.spcl_offr_id = T2.ref2 INNER JOIN prod AS T3 ON T2.ref1 = T3.prdc_id WHERE T3.nm = 'Chainring Bolts'"
+    },
+    {
+      "id": 39,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "How many departments did Sheela Word work in between 1/1/2011 to 12/31/2012",
+      "evidence": "worked between 2011 and 2012 refers to the employment period overlapping with 2011-2012 (StartDate <= '2012-12-31' AND (EndDate IS NULL OR EndDate >= '2011-01-01'));",
+      "SQL": "SELECT COUNT(DISTINCT T2.DepartmentID) FROM Person AS T1 INNER JOIN EmployeeDepartmentHistory AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID WHERE T1.FirstName = 'Sheela' AND T1.LastName = 'Word' AND T2.StartDate <= '2012-12-31' AND (T2.EndDate IS NULL OR T2.EndDate >= '2011-01-01')",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT COUNT(DISTINCT T2.ref2) FROM prsn AS T1 INNER JOIN emp_dept_hist AS T2 ON T1.ref1 = T2.ref3 WHERE T1.frst_nm = 'Sheela' AND T1.lst_nm = 'Word' AND T2.strt_dt <= '2012-12-31' AND (T2.end_dt IS NULL OR T2.end_dt >= '2011-01-01')",
+      "note": "gold bug：误用 Department.ModifiedDate(全 2008) 过滤，应改用员工任期 emp_dept_hist.StartDate/EndDate 与 2011-2012 重叠；答案 0→3。题面 Sheela Ward 实为数据 Sheela Word。"
+    },
+    {
+      "id": 40,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "How many departments have David Bradley been in?",
+      "evidence": "",
+      "SQL": "SELECT COUNT(T3.DepartmentID) FROM Person AS T1 INNER JOIN EmployeeDepartmentHistory AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN Department AS T3 ON T2.DepartmentID = T3.DepartmentID WHERE T1.FirstName = 'David' AND T1.LastName = 'Bradley'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT COUNT(T3.dprt_id) FROM prsn AS T1 INNER JOIN emp_dept_hist AS T2 ON T1.ref1 = T2.ref3 INNER JOIN dept AS T3 ON T2.ref2 = T3.dprt_id WHERE T1.frst_nm = 'David' AND T1.lst_nm = 'Bradley'"
+    },
+    {
+      "id": 41,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "How many employees in the Information Services department work the evening shift?",
+      "evidence": "Information Services is a name of department;",
+      "SQL": "SELECT COUNT(T2.BusinessEntityID) FROM Department AS T1 INNER JOIN EmployeeDepartmentHistory AS T2 ON T1.DepartmentID = T2.DepartmentID INNER JOIN Shift AS T3 ON T2.ShiftId = T3.ShiftId WHERE T1.Name = 'Information Services' AND T3.Name = 'Evening'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT COUNT(T2.ref3) FROM dept AS T1 INNER JOIN emp_dept_hist AS T2 ON T1.dprt_id = T2.ref2 INNER JOIN shft AS T3 ON T2.ref1 = T3.shft_id WHERE T1.nm = 'Information Services' AND T3.nm = 'Evening'"
+    },
+    {
+      "id": 42,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "How many high-class products are sold by preferred vendors?",
+      "evidence": "preferred vendor refers to PreferredVendorStatus = 1; high class refers to Class = 'H'",
+      "SQL": "SELECT COUNT(DISTINCT T2.ProductID) FROM ProductVendor AS T1 INNER JOIN Product AS T2 USING (ProductID) INNER JOIN Vendor AS T3 ON T1.BusinessEntityID = T3.BusinessEntityID WHERE T3.PreferredVendorStatus = 1 AND T2.Class = 'H'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Purchasing",
+      "SQL_obfuscated": "SELECT COUNT(DISTINCT T2.prdc_id) FROM prod_vnd AS T1 INNER JOIN prod AS T2 ON T1.ref3 = T2.prdc_id INNER JOIN vnd AS T3 ON T1.ref2 = T3.ref1 WHERE T3.prfr_vndr_stts = 1 AND T2.clss = 'H'",
+      "note": "gold bug：官方把「high-class」写成 clss='M'(Medium) 且 COUNT(nm) 不去重(19)；改 clss='H' + COUNT(DISTINCT)，答案 7。"
+    },
+    {
+      "id": 43,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "How many people were there in the Engineering Department in the year 2009?",
+      "evidence": "in 2009 refers to the employment period overlapping with year 2009 (StartDate <= '2009-12-31' AND (EndDate IS NULL OR EndDate >= '2009-01-01'));",
+      "SQL": "SELECT COUNT(DISTINCT T1.BusinessEntityID) FROM Person AS T1 INNER JOIN EmployeeDepartmentHistory AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN Department AS T3 ON T2.DepartmentID = T3.DepartmentID WHERE T3.Name = 'Engineering' AND T2.StartDate <= '2009-12-31' AND (T2.EndDate IS NULL OR T2.EndDate >= '2009-01-01')",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT COUNT(DISTINCT T1.ref1) FROM prsn AS T1 INNER JOIN emp_dept_hist AS T2 ON T1.ref1 = T2.ref3 INNER JOIN dept AS T3 ON T2.ref2 = T3.dprt_id WHERE T3.nm = 'Engineering' AND T2.strt_dt <= '2009-12-31' AND (T2.end_dt IS NULL OR T2.end_dt >= '2009-01-01')",
+      "note": "gold bug：「in 2009」应用在职重叠；官方开区间 year(EndDate)>2009 AND year(StartDate)<2009 只算贯穿全年的人，漏掉 2009 年内入职/离职者；改重叠，答案 1→5。"
+    },
+    {
+      "id": 44,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "How much more expensive in percentage is the product with the highest selling price from the product with the lowest selling price in the Clothing category?",
+      "evidence": "selling price refers to ListPrice; highest selling price refers to MAX(ListPrice); lowest selling price refers to MIN(ListPrice);",
+      "SQL": "SELECT (MAX(T1.ListPrice) - MIN(T1.ListPrice)) * 100 / MIN(T1.ListPrice) FROM Product AS T1 INNER JOIN ProductSubcategory AS T2 ON T1.ProductSubcategoryID = T2.ProductSubcategoryID INNER JOIN ProductCategory AS T3 ON T2.ProductCategoryID = T3.ProductCategoryID WHERE T3.Name = 'Clothing'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Product",
+      "SQL_obfuscated": "SELECT (MAX(T1.lst_prc) - MIN(T1.lst_prc)) * 100 / MIN(T1.lst_prc) FROM prod AS T1 INNER JOIN prod_sub AS T2 ON T1.ref2 = T2.prdc_sbct_id INNER JOIN prod_cat AS T3 ON T2.ref1 = T3.prdc_ctgr_id WHERE T3.nm = 'Clothing'"
+    },
+    {
+      "id": 45,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "If we discount the products that do not have any type of offer, how many different products have been sold in an amount greater than 2 units per order?",
+      "evidence": "do not have any type of offer/discount refers to unit price discount = 0; sold in an amount greater than 2 refers to OrderQty > 2;",
+      "SQL": "SELECT COUNT(DISTINCT T1.ProductID) FROM SalesOrderDetail AS T1 INNER JOIN SpecialOfferProduct AS T2 ON T1.SpecialOfferID = T2.SpecialOfferID INNER JOIN SpecialOffer AS T3 ON T2.SpecialOfferID = T3.SpecialOfferID WHERE T1.OrderQty > 2 AND T1.UnitPriceDiscount = 0",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Sales",
+      "SQL_obfuscated": "SELECT COUNT(DISTINCT T1.ref2) FROM so_dtl AS T1 INNER JOIN spcl_prod AS T2 ON T1.ref1 = T2.ref2 INNER JOIN spcl_offr AS T3 ON T2.ref2 = T3.spcl_offr_id WHERE T1.ordr_qty > 2 AND T1.unt_prc_dscn = 0"
+    },
+    {
+      "id": 46,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "In which year will the David Bradley's credit card expire?",
+      "evidence": "year of credit card expiration refers to ExpYear;",
+      "SQL": "SELECT T3.ExpYear FROM Person AS T1 INNER JOIN PersonCreditCard AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN CreditCard AS T3 ON T2.CreditCardID = T3.CreditCardID WHERE T1.FirstName = 'David' AND T1.LastName = 'Bradley'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Sales",
+      "SQL_obfuscated": "SELECT T3.exp_yr FROM prsn AS T1 INNER JOIN prsn_crd AS T2 ON T1.ref1 = T2.ref1 INNER JOIN crd AS T3 ON T2.ref2 = T3.crdt_crd_id WHERE T1.frst_nm = 'David' AND T1.lst_nm = 'Bradley'"
+    },
+    {
+      "id": 47,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "List all product name from Australia Bike Retailer order by product ID.",
+      "evidence": "Australia Bike Retailer is name of vendor",
+      "SQL": "SELECT T3.Name FROM Vendor AS T1 INNER JOIN ProductVendor AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN Product AS T3 ON T2.ProductID = T3.ProductID WHERE T1.Name = 'Australia Bike Retailer'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Purchasing",
+      "SQL_obfuscated": "SELECT T3.nm FROM vnd AS T1 INNER JOIN prod_vnd AS T2 ON T1.ref1 = T2.ref2 INNER JOIN prod AS T3 ON T2.ref3 = T3.prdc_id WHERE T1.nm = 'Australia Bike Retailer'"
+    },
+    {
+      "id": 48,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "List all product only MOQ of 1,000 and with standard cost more than 17.",
+      "evidence": "MOQ refers to minimum order quantity; MOQ of 1 refers to MinOrderQty = 1; standard cost more than 48 refers to StandardCost > 48;",
+      "SQL": "SELECT T2.Name FROM ProductVendor AS T1 INNER JOIN Product AS T2 ON T1.ProductID = T2.ProductID INNER JOIN Vendor AS T3 ON T1.BusinessEntityID = T3.BusinessEntityID WHERE T1.MinOrderQty = 1000 AND T2.StandardCost > 17",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Purchasing",
+      "SQL_obfuscated": "SELECT T2.nm FROM prod_vnd AS T1 INNER JOIN prod AS T2 ON T1.ref3 = T2.prdc_id INNER JOIN vnd AS T3 ON T1.ref2 = T3.ref1 WHERE T1.mn_ordr_qty = 1000 AND T2.stnd_cst > 17",
+      "note": "gold bug：官方把 MOQ(最小起订量)写成 MaxOrderQty(mx_ordr_qty 最大)；改 MinOrderQty(mn_ordr_qty)，答案 6。"
+    },
+    {
+      "id": 49,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "List down the email address of female single employees.",
+      "evidence": "female refers to Gender = 'F'; single refers to MaritalStatus = 'S';",
+      "SQL": "SELECT T3.EmailAddress FROM Employee AS T1 INNER JOIN Person AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN EmailAddress AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID WHERE T1.Gender = 'F' AND T1.MaritalStatus = 'S'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT T3.eml_addr FROM emp AS T1 INNER JOIN prsn AS T2 ON T1.ref1 = T2.ref1 INNER JOIN eml AS T3 ON T2.ref1 = T3.ref1 WHERE T1.gndr = 'F' AND T1.mrtl_stts = 'S'"
+    },
+    {
+      "id": 50,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "List the name of employees who had left the company? When were they hired?",
+      "evidence": "employee that has left the company refers to EndDate is not null",
+      "SQL": "SELECT DISTINCT T1.FirstName, T1.LastName, T2.HireDate FROM Person AS T1 INNER JOIN Employee AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN EmployeeDepartmentHistory AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID WHERE T3.EndDate IS NOT NULL",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT DISTINCT T1.frst_nm, T1.lst_nm, T2.hr_dt FROM prsn AS T1 INNER JOIN emp AS T2 ON T1.ref1 = T2.ref1 INNER JOIN emp_dept_hist AS T3 ON T2.ref1 = T3.ref3 WHERE T3.end_dt IS NOT NULL",
+      "note": "gold bug round3：fan-out 未去重，加 DISTINCT"
+    },
+    {
+      "id": 51,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "List the name of the rates that apply to the provinces that are in the territory that obtained the greatest increase in sales with respect to the previous year.",
+      "evidence": "sales of previous year refers to SalesLastYear; SalesYTD refers to year to date sales; increase in sales = DIVIDE(SUBTRACT(SalesYTD, SalesLastYear), SalesLastYear)*100",
+      "SQL": "SELECT T3.Name FROM SalesTerritory AS T1 INNER JOIN StateProvince AS T2 ON T1.CountryRegionCode = T2.CountryRegionCode INNER JOIN SalesTaxRate AS T3 ON T2.StateProvinceID = T3.StateProvinceID ORDER BY (T1.SalesYTD - T1.SalesLastYear) / T1.SalesLastYear DESC LIMIT 1",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Sales",
+      "SQL_obfuscated": "SELECT T3.nm FROM sls_terr AS T1 INNER JOIN st_prv AS T2 ON T1.ref1 = T2.ref2 INNER JOIN sls_tax AS T3 ON T2.stt_prvn_id = T3.ref1 ORDER BY (T1.sls_ytd - T1.sls_lst_yr) / T1.sls_lst_yr DESC LIMIT 1",
+      "note": "gold bug：返省名(StateProvince.Name='England')而非题面「rate 名」；改返 SalesTaxRate.Name，答案 'United Kingdom Output Tax'。"
+    },
+    {
+      "id": 52,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "List the person who owns a distinguish credt card.",
+      "evidence": "distinguish credt card refers to cardType = 'Distinguish'",
+      "SQL": "SELECT DISTINCT T3.FirstName, T3.LastName FROM CreditCard AS T1 INNER JOIN PersonCreditCard AS T2 ON T1.CreditCardID = T2.CreditCardID INNER JOIN Person AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID WHERE T1.CardType = 'Distinguish'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Sales",
+      "SQL_obfuscated": "SELECT DISTINCT T3.frst_nm, T3.lst_nm FROM crd AS T1 INNER JOIN prsn_crd AS T2 ON T1.crdt_crd_id = T2.ref2 INNER JOIN prsn AS T3 ON T2.ref1 = T3.ref1 WHERE T1.crd_typ = 'Distinguish'",
+      "note": "gold bug round3：fan-out 未去重，加 DISTINCT"
+    },
+    {
+      "id": 53,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Name all products that started selling in 2013. State its respective vendor's name.",
+      "evidence": "Started selling in 2013 refers to year(SellStartDate) = 2013;",
+      "SQL": "SELECT T1.Name, T3.Name FROM Product AS T1 INNER JOIN ProductVendor AS T2 ON T1.ProductID = T2.ProductID INNER JOIN Vendor AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID WHERE STRFTIME('%Y', T1.SellStartDate) = '2013'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Purchasing",
+      "SQL_obfuscated": "SELECT T1.nm, T3.nm FROM prod AS T1 INNER JOIN prod_vnd AS T2 ON T1.prdc_id = T2.ref3 INNER JOIN vnd AS T3 ON T2.ref2 = T3.ref1 WHERE YEAR(T1.sll_strt_dt) = '2013'"
+    },
+    {
+      "id": 54,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Name the oldest employee who is working on night shift. How old is the employee?",
+      "evidence": "working on night shift refers to ShiftID = 3; oldest employee refers to min(BirthDate); age = YEAR(CURRENT_TIMESTAMP)-YEAR(BirthDate)",
+      "SQL": "SELECT T1.FirstName, T1.LastName , STRFTIME('%Y', CURRENT_TIMESTAMP) - STRFTIME('%Y', BirthDate) FROM Person AS T1 INNER JOIN Employee AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN EmployeeDepartmentHistory AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID WHERE T3.ShiftId = 3 ORDER BY STRFTIME('%Y', CURRENT_TIMESTAMP) - STRFTIME('%Y', BirthDate) DESC LIMIT 1",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT T1.frst_nm, T1.lst_nm , YEAR(CURRENT_TIMESTAMP) - YEAR(brth_dt) FROM prsn AS T1 INNER JOIN emp AS T2 ON T1.ref1 = T2.ref1 INNER JOIN emp_dept_hist AS T3 ON T2.ref1 = T3.ref3 WHERE T3.ref1 = 3 ORDER BY YEAR(CURRENT_TIMESTAMP) - YEAR(brth_dt) DESC LIMIT 1"
+    },
+    {
+      "id": 55,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Other than the Chief Executive Officer, who is the employee who has the highest payrate? State the rate.",
+      "evidence": "other than the Chief Executive Officer refers to JobTitle! = 'Chief Executive Officer'; highest payrate refers to max(Rate)",
+      "SQL": "SELECT T2.FirstName, T2.LastName, T1.Rate FROM EmployeePayHistory AS T1 INNER JOIN Person AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN Employee AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID WHERE T3.JobTitle NOT LIKE 'Chief Executive Officer' ORDER BY T1.Rate DESC LIMIT 1",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT T2.frst_nm, T2.lst_nm, T1.rt FROM emp_pay_hist AS T1 INNER JOIN prsn AS T2 ON T1.ref1 = T2.ref1 INNER JOIN emp AS T3 ON T2.ref1 = T3.ref1 WHERE T3.jb_ttl NOT LIKE 'Chief Executive Officer' ORDER BY T1.rt DESC LIMIT 1",
+      "note": "gold 补全：题面「State the rate」但 gold 只返人名；补上 Rate 列，答案加 rate。"
+    },
+    {
+      "id": 56,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Please give the personal information of the married employee who has the highest pay rate.",
+      "evidence": "married refers to MaritalStatus = 'M'; Highest pay rate refers to Max(Rate)",
+      "SQL": "SELECT T2.Demographics FROM Employee AS T1 INNER JOIN Person AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN EmployeePayHistory AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID WHERE T1.MaritalStatus = 'M' ORDER BY T3.Rate DESC LIMIT 1",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT T2.dmgr FROM emp AS T1 INNER JOIN prsn AS T2 ON T1.ref1 = T2.ref1 INNER JOIN emp_pay_hist AS T3 ON T2.ref1 = T3.ref1 WHERE T1.mrtl_stts = 'M' ORDER BY T3.rt DESC LIMIT 1",
+      "note": "歧义：'personal information' 可指 Demographics(XML 列，原 gold) 或 姓名列；两轴 agent 各取其一，均合法。尝试归一为姓名列时 S2/M1 反向回归，故保留原 gold(不归一)。"
+    },
+    {
+      "id": 57,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Please list the departments that David Bradley used to belong to.",
+      "evidence": "",
+      "SQL": "SELECT T3.Name FROM Person AS T1 INNER JOIN EmployeeDepartmentHistory AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN Department AS T3 ON T2.DepartmentID = T3.DepartmentID WHERE T1.FirstName = 'David' AND T1.LastName = 'Bradley'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT T3.nm FROM prsn AS T1 INNER JOIN emp_dept_hist AS T2 ON T1.ref1 = T2.ref3 INNER JOIN dept AS T3 ON T2.ref2 = T3.dprt_id WHERE T1.frst_nm = 'David' AND T1.lst_nm = 'Bradley'",
+      "note": "gold bug：返 DepartmentID(5,4) 而非题面「departments」=部门名；改返 Department.Name，答案 Purchasing/Marketing。"
+    },
+    {
+      "id": 58,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Please list the names of all the store contact employees whose credit cards expired in 2007.",
+      "evidence": "year of credit card expiration refers to ExpYear; ExpYear = 2007; store contact refers to PersonType = 'SC';",
+      "SQL": "SELECT T1.FirstName, T1.LastName FROM Person AS T1 INNER JOIN PersonCreditCard AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN CreditCard AS T3 ON T2.CreditCardID = T3.CreditCardID WHERE T3.ExpYear = 2007 AND T1.PersonType = 'SC'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Sales",
+      "SQL_obfuscated": "SELECT T1.frst_nm, T1.lst_nm FROM prsn AS T1 INNER JOIN prsn_crd AS T2 ON T1.ref1 = T2.ref1 INNER JOIN crd AS T3 ON T2.ref2 = T3.crdt_crd_id WHERE T3.exp_yr = 2007 AND T1.prsn_typ = 'SC'"
+    },
+    {
+      "id": 59,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Please list the product names of all the products on the LL Road Frame Sale.",
+      "evidence": "LL Road Frame Sale is a description of special offer",
+      "SQL": "SELECT T3.Name FROM SpecialOffer AS T1 INNER JOIN SpecialOfferProduct AS T2 ON T1.SpecialOfferID = T2.SpecialOfferID INNER JOIN Product AS T3 ON T2.ProductID = T3.ProductID WHERE T1.Description = 'LL Road Frame Sale'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Sales",
+      "SQL_obfuscated": "SELECT T3.nm FROM spcl_offr AS T1 INNER JOIN spcl_prod AS T2 ON T1.spcl_offr_id = T2.ref2 INNER JOIN prod AS T3 ON T2.ref1 = T3.prdc_id WHERE T1.dscr = 'LL Road Frame Sale'"
+    },
+    {
+      "id": 60,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "How many products are under the Clothing category that are manufactured in-house and salable?",
+      "evidence": "product is manufactured in-house refers to MakeFlag = 1; salable product refers to FinishedGoodsFlag = 1;",
+      "SQL": "SELECT COUNT(*) FROM Product AS T1 INNER JOIN ProductSubcategory AS T2 ON T1.ProductSubcategoryID = T2.ProductSubcategoryID INNER JOIN ProductCategory AS T3 ON T2.ProductCategoryID = T3.ProductCategoryID WHERE T3.Name = 'Clothing' AND T1.MakeFlag = 1 AND T1.FinishedGoodsFlag = 1",
+      "join_count": 2,
+      "features": [
+        "JOIN×2",
+        "CASE"
+      ],
+      "domain": "Product",
+      "SQL_obfuscated": "SELECT COUNT(*) FROM prod AS T1 INNER JOIN prod_sub AS T2 ON T1.ref2 = T2.prdc_sbct_id INNER JOIN prod_cat AS T3 ON T2.ref1 = T3.prdc_ctgr_id WHERE T3.nm = 'Clothing' AND T1.mk_flg = 1 AND T1.fnsh_gds_flg = 1",
+      "note": "gold bug：官方硬编码 subcat=3(=Touring Bikes 非 Clothing)且漏 salable 过滤；改按类目名 Clothing+双旗标。题面 list→How many 避免空集退化(本库无 Clothing 自制+可售，答案 0)。"
+    },
+    {
+      "id": 61,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Please list the website purchasing links of the vendors from whom the product Hex Nut 5 can be purchased.",
+      "evidence": "website purchasing link refers to PurchasingWebServiceURL",
+      "SQL": "SELECT T3.PurchasingWebServiceURL FROM ProductVendor AS T1 INNER JOIN Product AS T2 ON T1.ProductID = T2.ProductID INNER JOIN Vendor AS T3 ON T1.BusinessEntityID = T3.BusinessEntityID WHERE T2.Name = 'Hex Nut 5'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Purchasing",
+      "SQL_obfuscated": "SELECT T3.prch_wb_srvc_url FROM prod_vnd AS T1 INNER JOIN prod AS T2 ON T1.ref3 = T2.prdc_id INNER JOIN vnd AS T3 ON T1.ref2 = T3.ref1 WHERE T2.nm = 'Hex Nut 5'"
+    },
+    {
+      "id": 62,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Please show the credit card number of David Bradley.",
+      "evidence": "credit card number refers to CardNumber;",
+      "SQL": "SELECT T3.CardNumber FROM Person AS T1 INNER JOIN PersonCreditCard AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN CreditCard AS T3 ON T2.CreditCardID = T3.CreditCardID WHERE T1.FirstName = 'David' AND T1.LastName = 'Bradley'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Sales",
+      "SQL_obfuscated": "SELECT T3.crd_nmbr FROM prsn AS T1 INNER JOIN prsn_crd AS T2 ON T1.ref1 = T2.ref1 INNER JOIN crd AS T3 ON T2.ref2 = T3.crdt_crd_id WHERE T1.frst_nm = 'David' AND T1.lst_nm = 'Bradley'"
+    },
+    {
+      "id": 63,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "State the last name and job title of owner for document \"Crank Arm and Tire Maintenance\".",
+      "evidence": "The owner refers to BusinessEntityID",
+      "SQL": "SELECT T1.LastName, T3.JobTitle FROM Person AS T1 INNER JOIN Document AS T2 ON T1.BusinessEntityID = T2.Owner INNER JOIN Employee AS T3 ON T1.BusinessEntityID = T3.BusinessEntityID WHERE T2.Title = 'Crank Arm and Tire Maintenance'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT T1.lst_nm, T3.jb_ttl FROM prsn AS T1 INNER JOIN doc AS T2 ON T1.ref1 = T2.ref1 INNER JOIN emp AS T3 ON T1.ref1 = T3.ref1 WHERE T2.ttl = 'Crank Arm and Tire Maintenance'"
+    },
+    {
+      "id": 64,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "State the vendor for product number WB-H098.",
+      "evidence": "",
+      "SQL": "SELECT T3.Name FROM Product AS T1 INNER JOIN ProductVendor AS T2 ON T1.ProductID = T2.ProductID INNER JOIN Vendor AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID WHERE T1.ProductNumber = 'WB-H098'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Purchasing",
+      "SQL_obfuscated": "SELECT T3.nm FROM prod AS T1 INNER JOIN prod_vnd AS T2 ON T1.prdc_id = T2.ref3 INNER JOIN vnd AS T3 ON T2.ref2 = T3.ref1 WHERE T1.prdc_nmbr = 'WB-H098'"
+    },
+    {
+      "id": 65,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "What is the average pay rate of the employees who worked in the Engineering Departmentin 2007?",
+      "evidence": "average pay rate = AVG(Rate); work in 2007 refers to year(StartDate)<=2007 AND (EndDate IS NULL OR year(EndDate)>=2007)",
+      "note": "官方 SQL 原条件 year(StartDate)<2007 AND year(EndDate)>2007 在本库匹配 0 行 → AVG 退化为 NULL;已修正为 2007 年在职重叠条件。gold bug：AVG(Rate) 按全部薪资历史行加权，应按「每人最新薪资」求均值；改 rt_chng_dt=MAX 取最新，答案 26.36→36.56。",
+      "SQL": "SELECT AVG(T3.Rate) FROM EmployeeDepartmentHistory AS T1 INNER JOIN Department AS T2 ON T1.DepartmentID = T2.DepartmentID INNER JOIN EmployeePayHistory AS T3 ON T1.BusinessEntityID = T3.BusinessEntityID WHERE T2.Name = 'Engineering' AND STRFTIME('%Y', T1.StartDate) <= '2007' AND (T1.EndDate IS NULL OR STRFTIME('%Y', T1.EndDate) >= '2007') AND T3.RateChangeDate = (SELECT MAX(RateChangeDate) FROM EmployeePayHistory AS x WHERE x.BusinessEntityID = T3.BusinessEntityID)",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT AVG(T3.rt) FROM emp_dept_hist AS T1 INNER JOIN dept AS T2 ON T1.ref2 = T2.dprt_id INNER JOIN emp_pay_hist AS T3 ON T1.ref3 = T3.ref1 WHERE T2.nm = 'Engineering' AND YEAR(T1.strt_dt) <= '2007' AND (T1.end_dt IS NULL OR YEAR(T1.end_dt) >= '2007') AND T3.rt_chng_dt = (SELECT MAX(rt_chng_dt) FROM emp_pay_hist AS x WHERE x.ref1 = T3.ref1)"
+    },
+    {
+      "id": 66,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "What is the average profit of all the products from the Clothing category?",
+      "evidence": "average profit = DIVIDE(SUM(SUBTRACT(ListPrice, StandardCost))), (COUNT(ProductSubcategoryID))));",
+      "SQL": "SELECT SUM(T1.ListPrice - T1.StandardCost) / COUNT(T1.ProductID) FROM Product AS T1 INNER JOIN ProductSubcategory AS T2 ON T1.ProductSubcategoryID = T2.ProductSubcategoryID INNER JOIN ProductCategory AS T3 ON T2.ProductCategoryID = T3.ProductCategoryID WHERE T3.Name = 'Clothing'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Product",
+      "SQL_obfuscated": "SELECT SUM(T1.lst_prc - T1.stnd_cst) / COUNT(T1.prdc_id) FROM prod AS T1 INNER JOIN prod_sub AS T2 ON T1.ref2 = T2.prdc_sbct_id INNER JOIN prod_cat AS T3 ON T2.ref1 = T3.prdc_ctgr_id WHERE T3.nm = 'Clothing'"
+    },
+    {
+      "id": 67,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "What is the credit card number for Michelle E Cox?",
+      "evidence": "credit card number refers to the actual card number value (a long numeric string), not the internal ID;",
+      "SQL": "SELECT T3.CardNumber FROM Person AS T1 INNER JOIN PersonCreditCard AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN CreditCard AS T3 ON T2.CreditCardID = T3.CreditCardID WHERE T1.FirstName = 'Michelle' AND T1.MiddleName = 'E' AND T1.LastName = 'Cox'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Sales",
+      "SQL_obfuscated": "SELECT T3.crd_nmbr FROM prsn AS T1 INNER JOIN prsn_crd AS T2 ON T1.ref1 = T2.ref1 INNER JOIN crd AS T3 ON T2.ref2 = T3.crdt_crd_id WHERE T1.frst_nm = 'Michelle' AND T1.mddl_nm = 'E' AND T1.lst_nm = 'Cox'",
+      "note": "gold bug：官方返 crdt_crd_id(内部 ID) 而非题面「信用卡号」crd_nmbr；改 crd_nmbr，答案 '11111462416609'。"
+    },
+    {
+      "id": 68,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "What is the currency of Brazil?",
+      "evidence": "",
+      "SQL": "SELECT T1.Name FROM Currency AS T1 INNER JOIN CountryRegionCurrency AS T2 ON T1.CurrencyCode = T2.CurrencyCode INNER JOIN CountryRegion AS T3 ON T2.CountryRegionCode = T3.CountryRegionCode WHERE T3.Name = 'Brazil'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Sales",
+      "SQL_obfuscated": "SELECT T1.nm FROM cur AS T1 INNER JOIN cnty_cur AS T2 ON T1.crrn_cd = T2.ref1 INNER JOIN cnty AS T3 ON T2.ref2 = T3.cntr_rgn_cd WHERE T3.nm = 'Brazil'"
+    },
+    {
+      "id": 69,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "What is the email address of the Facilities Manager?",
+      "evidence": "Facilities Manager is a job title",
+      "SQL": "SELECT T3.EmailAddress FROM Employee AS T1 INNER JOIN Person AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN EmailAddress AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID WHERE T1.JobTitle = 'Facilities Manager'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT T3.eml_addr FROM emp AS T1 INNER JOIN prsn AS T2 ON T1.ref1 = T2.ref1 INNER JOIN eml AS T3 ON T2.ref1 = T3.ref1 WHERE T1.jb_ttl = 'Facilities Manager'"
+    },
+    {
+      "id": 70,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "What is the full name of the Document Control Manager who is in charge of all Level 1 approved documents?",
+      "evidence": "full Name = FirstName+MiddleName+Last Name; approved document refers to Status = 2;",
+      "SQL": "SELECT T1.FirstName, T1.MiddleName, T1.LastName FROM Person AS T1 INNER JOIN Employee AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN Document AS T3 ON T3.Owner = T2.BusinessEntityID WHERE T2.JobTitle = 'Document Control Manager' AND T3.DocumentLevel = 1 AND T3.Status = 2 GROUP BY T1.FirstName, T1.MiddleName, T1.LastName",
+      "join_count": 2,
+      "features": [
+        "JOIN×2",
+        "GROUP_BY"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT T1.frst_nm, T1.mddl_nm, T1.lst_nm FROM prsn AS T1 INNER JOIN emp AS T2 ON T1.ref1 = T2.ref1 INNER JOIN doc AS T3 ON T3.ref1 = T2.ref1 WHERE T2.jb_ttl = 'Document Control Manager' AND T3.dcmn_lvl = 1 AND T3.stts = 2 GROUP BY T1.frst_nm, T1.mddl_nm, T1.lst_nm"
+    },
+    {
+      "id": 71,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "What is the position of the employee with the 10th highest salary? Indicate his/her salary amount and his/her full name.",
+      "evidence": "salary and Rate are synonyms; full name = FirstName+MiddleName+LastName;",
+      "SQL": "SELECT T2.JobTitle, T1.Rate, T3.FirstName, T3.MiddleName, T3.LastName FROM EmployeePayHistory AS T1 INNER JOIN Employee AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN Person AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID ORDER BY T1.Rate DESC LIMIT 9, 1",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT T2.jb_ttl, T1.rt, T3.frst_nm, T3.mddl_nm, T3.lst_nm FROM emp_pay_hist AS T1 INNER JOIN emp AS T2 ON T1.ref1 = T2.ref1 INNER JOIN prsn AS T3 ON T2.ref1 = T3.ref1 ORDER BY T1.rt DESC LIMIT 9, 1"
+    },
+    {
+      "id": 72,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "What is the salary rate per hour that the company paid to the first 5 employees that they hired?",
+      "evidence": "salary rate per hour refers to Rate; first 5 employees that were hired refers to 5 oldest HireDate; 每人取入职时薪（RateChangeDate 最早的一条），再按 HireDate 升序取前 5 人",
+      "SQL": "SELECT T1.Rate FROM EmployeePayHistory AS T1 INNER JOIN Employee AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID WHERE T1.RateChangeDate = (SELECT MIN(x.RateChangeDate) FROM EmployeePayHistory AS x WHERE x.BusinessEntityID = T2.BusinessEntityID) ORDER BY T2.HireDate ASC LIMIT 5",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT T1.rt FROM emp_pay_hist AS T1 INNER JOIN emp AS T2 ON T1.ref1 = T2.ref1 WHERE T1.rt_chng_dt = (SELECT MIN(x.rt_chng_dt) FROM emp_pay_hist AS x WHERE x.ref1 = T2.ref1) ORDER BY T2.hr_dt ASC LIMIT 5",
+      "note": "gold bug：官方 SQL 未对 EmployeePayHistory 一人多行去重，最早入职的 emp 有 3 条薪资史、LIMIT 5 把它算 2 行、漏掉第 5 名。agent 取每人入职时薪（5 个不同员工）是对的。已加「每人最早薪资」子查询（RateChangeDate=MIN per employee），gold → [12.45,13.4615,43.2692,8.62,25.0]。"
+    },
+    {
+      "id": 73,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "What is the stocked quantity of products manufactured from location ID 40?",
+      "evidence": "Stocked quantity refers to StockedQty",
+      "SQL": "SELECT SUM(T3.StockedQty) FROM WorkOrderRouting AS T1 INNER JOIN WorkOrder AS T3 ON T3.WorkOrderID = T1.WorkOrderID WHERE T1.LocationID = 40",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Product",
+      "SQL_obfuscated": "SELECT SUM(T3.stck_qty) FROM wo_rtg AS T1 INNER JOIN wo AS T3 ON T3.wrk_ordr_id = T1.ref2 WHERE T1.ref1 = 40",
+      "note": "gold bug round2：COUNT(*)=0(错 join bom)，stocked quantity 应 SUM(stck_qty)=8431"
+    },
+    {
+      "id": 74,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "What is the total amount due of all the purchases made by the company to the vendor that has the lowest selling price amount of a single product? Indicate the name of the vendor to which the purchases was made.",
+      "evidence": "Vendor's selling price of a single product refers to UnitPrice;",
+      "SQL": "SELECT T3.Name, SUM(T2.TotalDue) FROM PurchaseOrderHeader AS T2 INNER JOIN Vendor AS T3 ON T2.VendorID = T3.BusinessEntityID WHERE T3.BusinessEntityID = (SELECT T2b.VendorID FROM PurchaseOrderDetail AS T1b INNER JOIN PurchaseOrderHeader AS T2b ON T1b.PurchaseOrderID = T2b.PurchaseOrderID ORDER BY T1b.UnitPrice LIMIT 1) GROUP BY T3.Name",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Purchasing",
+      "SQL_obfuscated": "SELECT T3.nm, SUM(T2.ttl_due) FROM po_hdr AS T2 INNER JOIN vnd AS T3 ON T2.ref2 = T3.ref1 WHERE T3.ref1 = (SELECT T2b.ref2 FROM po_dtl AS T1b INNER JOIN po_hdr AS T2b ON T1b.ref2 = T2b.prch_ordr_id ORDER BY T1b.unt_prc LIMIT 1) GROUP BY T3.nm",
+      "note": "gold bug round2：题问 total amount due 但 gold 返 unt_prc(0.0)，改 SUM(ttl_due)=29006.25"
+    },
+    {
+      "id": 75,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "When did the Senior Tool Designer, who was 33 years old at the time he was hired, stopped working in the Engineering department?",
+      "evidence": "Senior Tool Designer is a JobTitle; 33 years old at the time of hiring refers to SUBTRACT(year(HireDate)), (year(BirthDate)) = 33;",
+      "SQL": "SELECT T2.EndDate FROM Employee AS T1 INNER JOIN EmployeeDepartmentHistory AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN Department AS T3 ON T2.DepartmentID = T3.DepartmentID WHERE T1.JobTitle = 'Senior Tool Designer' AND STRFTIME('%Y', T1.HireDate) - STRFTIME('%Y', T1.BirthDate) = 33 AND T2.EndDate IS NOT NULL",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT T2.end_dt FROM emp AS T1 INNER JOIN emp_dept_hist AS T2 ON T1.ref1 = T2.ref3 INNER JOIN dept AS T3 ON T2.ref2 = T3.dprt_id WHERE T1.jb_ttl = 'Senior Tool Designer' AND YEAR(T1.hr_dt) - YEAR(T1.brth_dt) = 33 AND T2.end_dt IS NOT NULL"
+    },
+    {
+      "id": 76,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Where can I find the Valley Bicycle Specialists store?",
+      "evidence": "Valley Bicycle Specialists is a name of store; full address = AddressLine1+AddressLine2;",
+      "SQL": "SELECT T2.AddressLine1, T2.AddressLine2 FROM BusinessEntityAddress AS T1 INNER JOIN Address AS T2 ON T1.AddressID = T2.AddressID INNER JOIN Store AS T3 ON T1.BusinessEntityID = T3.BusinessEntityID WHERE T3.Name = 'Valley Bicycle Specialists'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Geography",
+      "SQL_obfuscated": "SELECT T2.addr_ln1, T2.addr_ln2 FROM biz_addr AS T1 INNER JOIN addr AS T2 ON T1.ref3 = T2.addr_id INNER JOIN stor AS T3 ON T1.ref1 = T3.ref2 WHERE T3.nm = 'Valley Bicycle Specialists'"
+    },
+    {
+      "id": 77,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Where does the person with the BusinessEntityID \"5555\" live?",
+      "evidence": "where the person live refers addresstype.Name = 'Home'",
+      "SQL": "SELECT T3.City, T3.AddressLine1 FROM BusinessEntityAddress AS T1 INNER JOIN AddressType AS T2 ON T1.AddressTypeID = T2.AddressTypeID INNER JOIN Address AS T3 ON T1.AddressID = T3.AddressID WHERE T1.BusinessEntityID = 5555 AND T2.Name = 'Home'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Geography",
+      "SQL_obfuscated": "SELECT T3.cty, T3.addr_ln1 FROM biz_addr AS T1 INNER JOIN addr_typ AS T2 ON T1.ref2 = T2.addr_typ_id INNER JOIN addr AS T3 ON T1.ref3 = T3.addr_id WHERE T1.ref1 = 5555 AND T2.nm = 'Home'"
+    },
+    {
+      "id": 78,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Which address type does \"Fun Toys and Bikes\" fall under?",
+      "evidence": "Fun Toys and Bikes is name of a store",
+      "SQL": "SELECT T2.Name FROM BusinessEntityAddress AS T1 INNER JOIN AddressType AS T2 ON T1.AddressTypeID = T2.AddressTypeID INNER JOIN Store AS T3 ON T1.BusinessEntityID = T3.BusinessEntityID WHERE T3.Name = 'Fun Toys and Bikes'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Geography",
+      "SQL_obfuscated": "SELECT T2.nm FROM biz_addr AS T1 INNER JOIN addr_typ AS T2 ON T1.ref2 = T2.addr_typ_id INNER JOIN stor AS T3 ON T1.ref1 = T3.ref2 WHERE T3.nm = 'Fun Toys and Bikes'"
+    },
+    {
+      "id": 79,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Which chromoly steel product model has AdventureWorks saved in English?",
+      "evidence": "Saved in English refers to product description written in English where Culture.name = 'English'",
+      "SQL": "SELECT T4.Name FROM ProductModelProductDescriptionCulture AS T1 INNER JOIN Culture AS T2 USING (cultureid) INNER JOIN ProductDescription AS T3 USING (productdescriptionid) INNER JOIN ProductModel AS T4 ON T1.ProductModelID = T4.ProductModelID WHERE T3.Description LIKE 'Chromoly steel%' AND T2.Name = 'English'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Product",
+      "SQL_obfuscated": "SELECT T4.nm FROM pmdc AS T1 INNER JOIN cult AS T2 ON T1.ref1 = T2.cltr_id INNER JOIN prod_dsc AS T3 ON T1.ref2 = T3.prdc_dscr_id INNER JOIN prod_mdl AS T4 ON T1.ref3 = T4.prdc_mdl_id WHERE T3.dscr LIKE 'Chromoly steel%' AND T2.nm = 'English'",
+      "note": "gold bug：官方 SQL 返 ProductModelID（95）而非题面问的「which model」名字列。agent 返模型名 'LL Bottom Bracket'（=ID 95）是对的。已改 JOIN ProductModel 返 Name，gold 95→'LL Bottom Bracket'。"
+    },
+    {
+      "id": 80,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Which department has the most number of night shifts?",
+      "evidence": "most number of night shift = MAX(count(shift.Name = 'Night'))",
+      "SQL": "SELECT T3.Name FROM Shift AS T1 INNER JOIN EmployeeDepartmentHistory AS T2 ON T1.ShiftId = T2.ShiftId INNER JOIN Department AS T3 ON T2.DepartmentID = T3.DepartmentID GROUP BY T2.DepartmentID ORDER BY SUM(T1.Name = 'Night') DESC LIMIT 1",
+      "join_count": 2,
+      "features": [
+        "JOIN×2",
+        "GROUP_BY"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT T3.nm FROM shft AS T1 INNER JOIN emp_dept_hist AS T2 ON T1.shft_id = T2.ref1 INNER JOIN dept AS T3 ON T2.ref2 = T3.dprt_id GROUP BY T2.ref2 ORDER BY SUM(T1.nm = 'Night') DESC LIMIT 1",
+      "note": "gold SQL 病句：COUNT(Name='Night') 布尔计数=数全部行，应 SUM(Name='Night')；答案仍 Production（SUM=46 恰为最多）。"
+    },
+    {
+      "id": 81,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Which department, altogether, has the most personnel who work the evening shift?",
+      "evidence": "evening shift refers to the shift named 'Evening' (not 'Night');",
+      "SQL": "SELECT T3.Name FROM EmployeeDepartmentHistory AS T1 INNER JOIN Shift AS T2 ON T1.ShiftId = T2.ShiftId INNER JOIN Department AS T3 ON T1.DepartmentID = T3.DepartmentID WHERE T2.Name = 'Evening' GROUP BY T3.Name ORDER BY COUNT(DISTINCT T1.BusinessEntityID) DESC LIMIT 1",
+      "join_count": 2,
+      "features": [
+        "JOIN×2",
+        "GROUP_BY"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT T3.nm FROM emp_dept_hist AS T1 INNER JOIN shft AS T2 ON T1.ref1 = T2.shft_id INNER JOIN dept AS T3 ON T1.ref2 = T3.dprt_id WHERE T2.nm = 'Evening' GROUP BY T3.nm ORDER BY COUNT(DISTINCT T1.ref3) DESC LIMIT 1",
+      "note": "gold bug：题面「evening shift」官方写成 Name='Night'(与 Q41 的 'Evening' 口径打架)；改 Evening + COUNT(DISTINCT)，答案仍 Production(榜首不变)。"
+    },
+    {
+      "id": 82,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Which employee has been in the Engineering Department the longest? Please give his or her firstname and lastname.",
+      "evidence": "length of stay in a department = SUBTRACT(EndDate, StartDate);",
+      "SQL": "SELECT T1.FirstName, T1.LastName FROM Person AS T1 INNER JOIN EmployeeDepartmentHistory AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN Department AS T3 ON T2.DepartmentID = T3.DepartmentID WHERE T3.Name = 'Engineering' ORDER BY T2.EndDate - T2.StartDate DESC LIMIT 1",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT T1.frst_nm, T1.lst_nm FROM prsn AS T1 INNER JOIN emp_dept_hist AS T2 ON T1.ref1 = T2.ref3 INNER JOIN dept AS T3 ON T2.ref2 = T3.dprt_id WHERE T3.nm = 'Engineering' ORDER BY T2.end_dt - T2.strt_dt DESC LIMIT 1"
+    },
+    {
+      "id": 83,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Which geographic area does the city with the second lowest tax rate belongs to? Indicate the name of the state or province as well.",
+      "evidence": "geographic area to which the city belong refers to Group;",
+      "SQL": "SELECT T3.'Group', T2.Name FROM SalesTaxRate AS T1 INNER JOIN StateProvince AS T2 ON T1.StateProvinceID = T2.StateProvinceID INNER JOIN SalesTerritory AS T3 ON T2.TerritoryID = T3.TerritoryID ORDER BY T1.TaxRate LIMIT 1, 1",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Sales",
+      "SQL_obfuscated": "SELECT T3.grp, T2.nm FROM sls_tax AS T1 INNER JOIN st_prv AS T2 ON T1.ref1 = T2.stt_prvn_id INNER JOIN sls_terr AS T3 ON T2.ref1 = T3.trrt_id ORDER BY T1.tx_rt LIMIT 1, 1"
+    },
+    {
+      "id": 84,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Which vendor's selling price for Hex Nut 5 is the lowest, please give the vendor's name.",
+      "evidence": "vendor's selling price refers to StandardPrice; lowest selling price = MIN(StandardPrice)",
+      "SQL": "SELECT T3.Name FROM ProductVendor AS T1 INNER JOIN Product AS T2 ON T1.ProductID = T2.ProductID INNER JOIN Vendor AS T3 ON T1.BusinessEntityID = T3.BusinessEntityID WHERE T2.Name = 'Hex Nut 5' ORDER BY T1.StandardPrice, T3.Name LIMIT 1",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Purchasing",
+      "SQL_obfuscated": "SELECT T3.nm FROM prod_vnd AS T1 INNER JOIN prod AS T2 ON T1.ref3 = T2.prdc_id INNER JOIN vnd AS T3 ON T1.ref2 = T3.ref1 WHERE T2.nm = 'Hex Nut 5' ORDER BY T1.stnd_prc, T3.nm LIMIT 1"
+    },
+    {
+      "id": 85,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Who are the employees that submitted resume to Human Resource Department and got hired? State the last name.",
+      "evidence": "employees that submitted resume to Human Resource Department and got hired refers to BusinessEntittyID NOT null;",
+      "SQL": "SELECT T3.LastName FROM Employee AS T1 INNER JOIN JobCandidate AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN Person AS T3 ON T1.BusinessEntityID = T3.BusinessEntityID",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT T3.lst_nm FROM emp AS T1 INNER JOIN job_cand AS T2 ON T1.ref1 = T2.ref1 INNER JOIN prsn AS T3 ON T1.ref1 = T3.ref1",
+      "note": "gold SQL 病句：硬编码 IN (212,274) 而非 join JobCandidate；改去掉硬编码，靠 job_cand join 取「有简历记录的员工」，答案 Jiang/Wu 不变。"
+    },
+    {
+      "id": 86,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Who is the \"Next-Door Bike Store\" point of contact?",
+      "evidence": "Next-Door Bike Store is name of a store",
+      "SQL": "SELECT T1.FirstName, T1.LastName FROM Person AS T1 INNER JOIN BusinessEntityContact AS T2 ON T1.BusinessEntityID = T2.PersonID INNER JOIN Store AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID WHERE T3.Name = 'Next-Door Bike Store'",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Geography",
+      "SQL_obfuscated": "SELECT T1.frst_nm, T1.lst_nm FROM prsn AS T1 INNER JOIN biz_cnt AS T2 ON T1.ref1 = T2.ref1 INNER JOIN stor AS T3 ON T2.ref3 = T3.ref2 WHERE T3.nm = 'Next-Door Bike Store'",
+      "note": "gold bug：官方返联系类型(Owner)而非题面「who」=联系人姓名；改返人名 frst_nm+lst_nm，答案 Gustavo Achong。"
+    },
+    {
+      "id": 87,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Who is the company's highest-paid single female employee? Include her full name and job title.",
+      "evidence": "full name = FirstName+MiddleName+LastName; highest-paid refers to max(Rate); single refers to Status = 'S'; female refers to Gender = 'F';",
+      "SQL": "SELECT T3.FirstName, T3.MiddleName, T3.LastName, T1.JobTitle FROM Employee AS T1 INNER JOIN EmployeePayHistory AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN Person AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID WHERE T1.MaritalStatus = 'S' AND T1.Gender = 'F' ORDER BY T2.Rate DESC LIMIT 1",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT T3.frst_nm, T3.mddl_nm, T3.lst_nm, T1.jb_ttl FROM emp AS T1 INNER JOIN emp_pay_hist AS T2 ON T1.ref1 = T2.ref1 INNER JOIN prsn AS T3 ON T2.ref1 = T3.ref1 WHERE T1.mrtl_stts = 'S' AND T1.gndr = 'F' ORDER BY T2.rt DESC LIMIT 1"
+    },
+    {
+      "id": 89,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "List all staff in the Shipping and Receiving department who are hired in 2009.",
+      "evidence": "hired in 2009 refers to year(HireDate) = 2009",
+      "SQL": "SELECT T1.FirstName, T1.LastName FROM Person AS T1 INNER JOIN Employee AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN EmployeeDepartmentHistory AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID INNER JOIN Department AS T4 ON T3.DepartmentID = T4.DepartmentID WHERE STRFTIME('%Y', T2.HireDate) = '2009' AND T4.Name = 'Shipping and Receiving'",
+      "join_count": 3,
+      "features": [
+        "JOIN×3"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT T1.frst_nm, T1.lst_nm FROM prsn AS T1 INNER JOIN emp AS T2 ON T1.ref1 = T2.ref1 INNER JOIN emp_dept_hist AS T3 ON T2.ref1 = T3.ref3 INNER JOIN dept AS T4 ON T3.ref2 = T4.dprt_id WHERE YEAR(T2.hr_dt) = '2009' AND T4.nm = 'Shipping and Receiving' AND T3.end_dt IS NULL",
+      "note": "补 end_dt IS NULL(当前在 Shipping and Receiving)；结果不变(3 行)。"
+    },
+    {
+      "id": 90,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Name all stores located in the France territory, along with each store's assigned salesperson (first and last name).",
+      "evidence": "France territory refers to SalesTerritory.Name = 'France';",
+      "SQL": "SELECT T3.Name, T5.FirstName, T5.LastName FROM SalesTerritory AS T1 INNER JOIN Customer AS T2 ON T1.TerritoryID = T2.TerritoryID INNER JOIN Store AS T3 ON T2.StoreID = T3.BusinessEntityID INNER JOIN SalesPerson AS T4 ON T3.SalesPersonID = T4.BusinessEntityID INNER JOIN Person AS T5 ON T4.BusinessEntityID = T5.BusinessEntityID WHERE T1.Name = \"France\"",
+      "join_count": 3,
+      "features": [
+        "JOIN×3"
+      ],
+      "domain": "Sales",
+      "SQL_obfuscated": "SELECT T3.nm, T5.frst_nm, T5.lst_nm FROM sls_terr AS T1 INNER JOIN cust AS T2 ON T1.trrt_id = T2.ref2 INNER JOIN stor AS T3 ON T2.ref1 = T3.ref2 INNER JOIN sls_prsn AS T4 ON T3.ref1 = T4.ref2 INNER JOIN prsn AS T5 ON T4.ref2 = T5.ref1 WHERE T1.nm = \"France\"",
+      "note": " gold bug:sales representative 误映射 Customer.PersonID(主联系人)→改 Store.SalesPersonID(门店销售员)，答案 34→74 行。 题面消歧:in France=门店所在territory(Customer.TerritoryID)非销售员territory;sales representative=门店指派销售员(Store.SalesPersonID)非主联系人。"
+    },
+    {
+      "id": 91,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Name the sales person for store Area Bike Accessories. Which territory is he / she in?",
+      "evidence": "",
+      "SQL": "SELECT T3.FirstName, T3.LastName, T4.Name FROM Store AS T1 INNER JOIN SalesPerson AS T2 ON T1.SalesPersonID = T2.BusinessEntityID INNER JOIN Person AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID INNER JOIN SalesTerritory AS T4 ON T2.TerritoryID = T4.TerritoryID WHERE T1.Name = 'Area Bike Accessories'",
+      "join_count": 3,
+      "features": [
+        "JOIN×3"
+      ],
+      "domain": "Sales",
+      "SQL_obfuscated": "SELECT T3.frst_nm, T3.lst_nm, T4.nm FROM stor AS T1 INNER JOIN sls_prsn AS T2 ON T1.ref1 = T2.ref2 INNER JOIN prsn AS T3 ON T2.ref2 = T3.ref1 INNER JOIN sls_terr AS T4 ON T2.ref1 = T4.trrt_id WHERE T1.nm = 'Area Bike Accessories'",
+      "note": "gold 补全：题面问「sales person + territory」但 gold 只返 territory；补上人名，答案 Shu Ito + Southwest。"
+    },
+    {
+      "id": 93,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "What are the names of the vendors to which the company purchased its women's tights products?",
+      "evidence": "product is purchased refers to MakeFlag = 0; women's refers to Style = 'W'; ProductSubcategoryID = 'Tights';",
+      "SQL": "SELECT DISTINCT T4.Name FROM Product AS T1 INNER JOIN ProductVendor AS T2 ON T1.ProductID = T2.ProductID INNER JOIN ProductSubcategory AS T3 ON T1.ProductSubcategoryID = T3.ProductSubcategoryID INNER JOIN Vendor AS T4 ON T2.BusinessEntityID = T4.BusinessEntityID WHERE T1.MakeFlag = 0 AND T1.Style = 'W' AND T3.Name = 'Tights'",
+      "join_count": 3,
+      "features": [
+        "JOIN×3"
+      ],
+      "domain": "Product",
+      "SQL_obfuscated": "SELECT DISTINCT T4.nm FROM prod AS T1 INNER JOIN prod_vnd AS T2 ON T1.prdc_id = T2.ref3 INNER JOIN prod_sub AS T3 ON T1.ref2 = T3.prdc_sbct_id INNER JOIN vnd AS T4 ON T2.ref2 = T4.ref1 WHERE T1.mk_flg = 0 AND T1.styl = 'W' AND T3.nm = 'Tights'"
+    },
+    {
+      "id": 94,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "What is the average lead time of product ID 843? Calculate for its profit on net and indicate the full location to which the vendor is located.",
+      "evidence": "Profit on net = LastReceiptCost - StandardPrice; full location = return AddressLine1, AddressLine2, City, PostalCode as separate columns;",
+      "SQL": "SELECT T1.AverageLeadTime, T1.LastReceiptCost - T1.StandardPrice, T4.AddressLine1, T4.AddressLine2 , T4.City, T4.PostalCode FROM ProductVendor AS T1 INNER JOIN Vendor AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN BusinessEntityAddress AS T3 ON T1.BusinessEntityID = T3.BusinessEntityID INNER JOIN Address AS T4 ON T3.AddressID = T4.AddressID WHERE T1.ProductID = 843",
+      "join_count": 3,
+      "features": [
+        "JOIN×3"
+      ],
+      "domain": "Geography",
+      "SQL_obfuscated": "SELECT T1.avrg_ld_tm, T1.lst_rcpt_cst - T1.stnd_prc, T4.addr_ln1, T4.addr_ln2 , T4.cty, T4.pstl_cd FROM prod_vnd AS T1 INNER JOIN vnd AS T2 ON T1.ref2 = T2.ref1 INNER JOIN biz_addr AS T3 ON T1.ref2 = T3.ref1 INNER JOIN addr AS T4 ON T3.ref3 = T4.addr_id WHERE T1.ref3 = 843"
+    },
+    {
+      "id": 95,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "What is the job title of the oldest employee in the company? In which department is he in?",
+      "evidence": "oldest employee refers to min(BirthDate)",
+      "SQL": "SELECT T2.JobTitle, T4.Name FROM Person AS T1 INNER JOIN Employee AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN EmployeeDepartmentHistory AS T3 ON T2.BusinessEntityID = T3.BusinessEntityID INNER JOIN Department AS T4 ON T3.DepartmentID = T4.DepartmentID ORDER BY T2.BirthDate LIMIT 1",
+      "join_count": 3,
+      "features": [
+        "JOIN×3"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT T2.jb_ttl, T4.nm FROM prsn AS T1 INNER JOIN emp AS T2 ON T1.ref1 = T2.ref1 INNER JOIN emp_dept_hist AS T3 ON T2.ref1 = T3.ref3 INNER JOIN dept AS T4 ON T3.ref2 = T4.dprt_id WHERE T3.end_dt IS NULL ORDER BY T2.brth_dt LIMIT 1",
+      "note": "补 end_dt IS NULL(最年长员工当前部门，避免多部门历史行 LIMIT 1 非确定)；结果不变。 gold bug:evidence 写 min(BirthDate) 但 SQL 误用 HireDate→改 BirthDate，答案 [Production Technician - WC60,Production]→[North American Sales Manager,Sales]。"
+    },
+    {
+      "id": 96,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "How many products from the Clothing category were on the LL Road Frame Sale?",
+      "evidence": "LL Road Frame Sale is a description of special offer",
+      "SQL": "SELECT COUNT(T2.ProductID) FROM SpecialOffer AS T1 INNER JOIN SpecialOfferProduct AS T2 ON T1.SpecialOfferID = T2.SpecialOfferID INNER JOIN Product AS T3 ON T2.ProductID = T3.ProductID INNER JOIN ProductSubcategory AS T4 ON T3.ProductSubcategoryID = T4.ProductSubcategoryID INNER JOIN ProductCategory AS T5 ON T4.ProductCategoryID = T5.ProductCategoryID WHERE T1.Description = 'LL Road Frame Sale' AND T4.Name = 'Clothing'",
+      "join_count": 4,
+      "features": [
+        "JOIN×4"
+      ],
+      "domain": "Product",
+      "SQL_obfuscated": "SELECT COUNT(T2.ref1) FROM spcl_offr AS T1 INNER JOIN spcl_prod AS T2 ON T1.spcl_offr_id = T2.ref2 INNER JOIN prod AS T3 ON T2.ref1 = T3.prdc_id INNER JOIN prod_sub AS T4 ON T3.ref2 = T4.prdc_sbct_id INNER JOIN prod_cat AS T5 ON T4.ref1 = T5.prdc_ctgr_id WHERE T1.dscr = 'LL Road Frame Sale' AND T4.nm = 'Clothing'"
+    },
+    {
+      "id": 97,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "How many employees do not have any suffix and what are their organization level?",
+      "evidence": "Do not have any suffix means Suffix is null",
+      "SQL": "SELECT T1.OrganizationLevel, COUNT(*) FROM Employee AS T1 INNER JOIN Person AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID WHERE T2.Suffix IS NULL GROUP BY T1.OrganizationLevel ORDER BY T1.OrganizationLevel",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY",
+        "SUBQUERY"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT T1.orgn_lvl, COUNT(*) FROM emp AS T1 INNER JOIN prsn AS T2 ON T1.ref1 = T2.ref1 WHERE T2.sffx IS NULL GROUP BY T1.orgn_lvl ORDER BY T1.orgn_lvl",
+      "note": "gold 补全：题面问「how many + 各组织层级」但 gold 只返总数 288；改按 OrganizationLevel 分组计数，答案 5 行(层 None/1/2/3/4)。"
+    },
+    {
+      "id": 98,
+      "source": "official",
+      "db_id": "works_cycles",
+      "question": "Based on the latest payrate of each employee, calculate the average hourly payrate for each department.",
+      "evidence": "latest payrate refers to max(RateChangeDate); average hourly payrate = divide(sum(Rate), count(BusinessEntityID)) for each DepartmentID",
+      "SQL": "SELECT AVG(T1.Rate) FROM EmployeePayHistory AS T1 INNER JOIN EmployeeDepartmentHistory AS T2 ON T1.BusinessEntityID = T2.BusinessEntityID INNER JOIN Department AS T3 ON T2.DepartmentID = T3.DepartmentID WHERE T1.RateChangeDate = ( SELECT MAX(T1.RateChangeDate) FROM EmployeePayHistory AS T1 INNER JOIN Department AS T2 ON T1.BusinessEntityID = T2.DepartmentID )",
+      "join_count": 3,
+      "features": [
+        "JOIN×3",
+        "SUBQUERY"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT d.nm, ROUND(AVG(eph.rt), 2) FROM emp_pay_hist eph INNER JOIN emp_dept_hist edh ON eph.ref1 = edh.ref3 AND edh.end_dt IS NULL INNER JOIN dept d ON edh.ref2 = d.dprt_id WHERE eph.rt_chng_dt = (SELECT MAX(e2.rt_chng_dt) FROM emp_pay_hist e2 WHERE e2.ref1 = eph.ref1) GROUP BY d.nm ORDER BY d.nm",
+      "note": "官方 gold 有 3 处错：①无 GROUP BY(返回单值 37.5 而非每部门)；②子查询把 BusinessEntityID join 到 DepartmentID；③未过滤历史部门行。已重写为每部门最新时薪平均(16 行)，并改题面 lastet→latest。"
+    },
+    {
+      "id": 99,
+      "source": "custom",
+      "db_id": "works_cycles",
+      "question": "List all components (direct and nested) needed to assemble 'HL Road Frame - Black, 58', along with their level in the assembly hierarchy.",
+      "SQL": "WITH RECURSIVE bom(ComponentID, level) AS (SELECT ComponentID, 1 FROM BillOfMaterials WHERE ProductAssemblyID=(SELECT ProductID FROM Product WHERE Name='HL Road Frame - Black, 58') UNION ALL SELECT b.ComponentID, bom.level+1 FROM BillOfMaterials b JOIN bom ON b.ProductAssemblyID=bom.ComponentID) SELECT p.Name, bom.level FROM bom JOIN Product p ON p.ProductID=bom.ComponentID ORDER BY bom.level, p.Name",
+      "evidence": "",
+      "join_count": 2,
+      "features": [
+        "CTE",
+        "JOIN×2",
+        "SUBQUERY"
+      ],
+      "domain": "BOM",
+      "SQL_obfuscated": "WITH RECURSIVE bt(ref2, level) AS (SELECT ref2, 1 FROM bom WHERE ref3=(SELECT prdc_id FROM prod WHERE nm='HL Road Frame - Black, 58') AND end_dt IS NULL UNION ALL SELECT b.ref2, bt.level+1 FROM bom b JOIN bt ON b.ref3=bt.ref2 WHERE b.end_dt IS NULL) SELECT DISTINCT p.nm, bt.level FROM bt JOIN prod p ON p.prdc_id=bt.ref2 ORDER BY bt.level, p.nm",
+      "note": "官方 gold 未过滤 EndDate，把 199 条历史 BOM 行也算了进来(28 行)。题面 'needed to assemble' 应只含当前装配(EndDate IS NULL)，已补 end_dt/EndDate IS NULL，gold 从 28 行收敛到 24 行。；官方 gold 无 DISTINCT，递归会产出重复行(如 'Paint - Black' 在 level 1 两条 BOM 记录)。'list all components' 应去重，已加 SELECT DISTINCT，gold 24→23 行。"
+    },
+    {
+      "id": 100,
+      "source": "custom",
+      "db_id": "works_cycles",
+      "question": "How many components in total (counting all nesting levels) go into assembling 'HL Road Frame - Black, 58'?",
+      "SQL": "WITH RECURSIVE bom(ComponentID, level) AS (SELECT ComponentID, 1 FROM BillOfMaterials WHERE ProductAssemblyID=(SELECT ProductID FROM Product WHERE Name='HL Road Frame - Black, 58') UNION ALL SELECT b.ComponentID, bom.level+1 FROM BillOfMaterials b JOIN bom ON b.ProductAssemblyID=bom.ComponentID) SELECT COUNT(*) FROM bom",
+      "evidence": "",
+      "join_count": 1,
+      "features": [
+        "CTE",
+        "JOIN×1",
+        "SUBQUERY"
+      ],
+      "domain": "BOM",
+      "SQL_obfuscated": "WITH RECURSIVE bt(ref2, level) AS (SELECT ref2, 1 FROM bom WHERE ref3=(SELECT prdc_id FROM prod WHERE nm='HL Road Frame - Black, 58') AND end_dt IS NULL UNION ALL SELECT b.ref2, bt.level+1 FROM bom b JOIN bt ON b.ref3=bt.ref2 WHERE b.end_dt IS NULL) SELECT COUNT(*) FROM bt",
+      "note": "自拟 gold 未过滤 EndDate，含 199 条历史 BOM 行(28 行)；已补 end_dt/EndDate IS NULL，gold 28→24 行。"
+    },
+    {
+      "id": 101,
+      "source": "custom",
+      "db_id": "works_cycles",
+      "question": "What is the deepest assembly level in the bill of materials of 'HL Road Frame - Black, 58'?",
+      "SQL": "WITH RECURSIVE bom(ComponentID, level) AS (SELECT ComponentID, 1 FROM BillOfMaterials WHERE ProductAssemblyID=(SELECT ProductID FROM Product WHERE Name='HL Road Frame - Black, 58') UNION ALL SELECT b.ComponentID, bom.level+1 FROM BillOfMaterials b JOIN bom ON b.ProductAssemblyID=bom.ComponentID) SELECT MAX(level) FROM bom",
+      "evidence": "",
+      "join_count": 1,
+      "features": [
+        "CTE",
+        "JOIN×1",
+        "SUBQUERY"
+      ],
+      "domain": "BOM",
+      "SQL_obfuscated": "WITH RECURSIVE bt(ref2, level) AS (SELECT ref2, 1 FROM bom WHERE ref3=(SELECT prdc_id FROM prod WHERE nm='HL Road Frame - Black, 58') AND end_dt IS NULL UNION ALL SELECT b.ref2, bt.level+1 FROM bom b JOIN bt ON b.ref3=bt.ref2 WHERE b.end_dt IS NULL) SELECT MAX(level) FROM bt",
+      "note": "同 Q99/Q100，补 end_dt/EndDate IS NULL 对齐当前 BOM；MAX(level) 结果不变(=3)。"
+    },
+    {
+      "id": 102,
+      "source": "custom",
+      "db_id": "works_cycles",
+      "question": "What is the total standard cost of all components (at every level) in the bill of materials of 'HL Road Frame - Black, 58'?",
+      "SQL": "WITH RECURSIVE bom(ComponentID, level) AS (SELECT ComponentID, 1 FROM BillOfMaterials WHERE ProductAssemblyID=(SELECT ProductID FROM Product WHERE Name='HL Road Frame - Black, 58') UNION ALL SELECT b.ComponentID, bom.level+1 FROM BillOfMaterials b JOIN bom ON b.ProductAssemblyID=bom.ComponentID) SELECT ROUND(SUM(p.StandardCost),2) FROM bom JOIN Product p ON p.ProductID=bom.ComponentID",
+      "evidence": "",
+      "join_count": 2,
+      "features": [
+        "CTE",
+        "JOIN×2",
+        "SUBQUERY"
+      ],
+      "domain": "BOM",
+      "SQL_obfuscated": "WITH RECURSIVE bt(ref2, level) AS (SELECT ref2, 1 FROM bom WHERE ref3=(SELECT prdc_id FROM prod WHERE nm='HL Road Frame - Black, 58') AND end_dt IS NULL UNION ALL SELECT b.ref2, bt.level+1 FROM bom b JOIN bt ON b.ref3=bt.ref2 WHERE b.end_dt IS NULL) SELECT ROUND(SUM(p.stnd_cst),2) FROM bt JOIN prod p ON p.prdc_id=bt.ref2",
+      "note": "同 Q99/Q100，补 end_dt/EndDate IS NULL；SUM 结果不变(=101.89)。"
+    },
+    {
+      "id": 103,
+      "source": "custom",
+      "db_id": "works_cycles",
+      "question": "Which products use 'Adjustable Race' as a component, directly or indirectly? List the product names.",
+      "SQL": "WITH RECURSIVE up(ProductAssemblyID, level) AS (SELECT ProductAssemblyID, 1 FROM BillOfMaterials WHERE ComponentID=(SELECT ProductID FROM Product WHERE Name='Adjustable Race') UNION ALL SELECT b.ProductAssemblyID, up.level+1 FROM BillOfMaterials b JOIN up ON b.ComponentID=up.ProductAssemblyID) SELECT DISTINCT p.Name FROM up JOIN Product p ON p.ProductID=up.ProductAssemblyID ORDER BY p.Name",
+      "evidence": "",
+      "join_count": 2,
+      "features": [
+        "CTE",
+        "JOIN×2",
+        "SUBQUERY"
+      ],
+      "domain": "BOM",
+      "SQL_obfuscated": "WITH RECURSIVE up(ref3, level) AS (SELECT ref3, 1 FROM bom WHERE ref2=(SELECT prdc_id FROM prod WHERE nm='Adjustable Race') AND end_dt IS NULL UNION ALL SELECT b.ref3, up.level+1 FROM bom b JOIN up ON b.ref2=up.ref3 WHERE b.end_dt IS NULL) SELECT DISTINCT p.nm FROM up JOIN prod p ON p.prdc_id=up.ref3 ORDER BY p.nm",
+      "note": "补 end_dt/EndDate IS NULL 对齐当前 BOM；结果不变(100 行)。"
+    },
+    {
+      "id": 104,
+      "source": "custom",
+      "db_id": "works_cycles",
+      "question": "How many products serve as intermediate components, i.e. they are both a component of some assembly and an assembly themselves?",
+      "SQL": "SELECT COUNT(DISTINCT ComponentID) FROM BillOfMaterials WHERE ComponentID IN (SELECT ProductAssemblyID FROM BillOfMaterials)",
+      "evidence": "intermediate component = 既是组件又是父件，且 end_dt IS NULL（当前生效）",
+      "join_count": 0,
+      "features": [
+        "SUBQUERY"
+      ],
+      "domain": "BOM",
+      "SQL_obfuscated": "SELECT COUNT(DISTINCT ref2) FROM bom WHERE end_dt IS NULL AND ref2 IN (SELECT ref3 FROM bom WHERE end_dt IS NULL)",
+      "note": "补 end_dt/EndDate IS NULL；结果不变(=238)。"
+    },
+    {
+      "id": 105,
+      "source": "custom",
+      "db_id": "works_cycles",
+      "question": "How many customers placed at least one order in 2013?",
+      "SQL": "SELECT p.FirstName||' '||p.LastName, a.City, COUNT(DISTINCT soh.SalesOrderID) FROM SalesOrderHeader soh JOIN Customer c ON soh.CustomerID=c.CustomerID JOIN Person p ON c.PersonID=p.BusinessEntityID JOIN Address a ON soh.BillToAddressID=a.AddressID WHERE substr(soh.OrderDate,1,4)='2013' AND c.PersonID IS NOT NULL GROUP BY p.FirstName,p.LastName,a.City ORDER BY 3 DESC",
+      "evidence": "",
+      "join_count": 3,
+      "features": [
+        "JOIN×3",
+        "GROUP_BY"
+      ],
+      "domain": "Sales",
+      "SQL_obfuscated": "SELECT COUNT(DISTINCT c.cstm_id) FROM so_hdr soh JOIN cust c ON soh.ref8=c.cstm_id WHERE substr(soh.ordr_dt,1,4)='2013'",
+      "note": "原题每客户 list 11k 行过大；改题面为计数，gold=11095。"
+    },
+    {
+      "id": 106,
+      "source": "custom",
+      "db_id": "works_cycles",
+      "question": "What is the total order value (sum of TotalDue) for each sales territory, ordered from highest to lowest?",
+      "SQL": "SELECT st.Name, ROUND(SUM(soh.TotalDue),2) FROM SalesOrderHeader soh JOIN SalesTerritory st ON soh.TerritoryID=st.TerritoryID GROUP BY st.Name ORDER BY 2 DESC",
+      "evidence": "",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY"
+      ],
+      "domain": "Sales",
+      "SQL_obfuscated": "SELECT st.nm, ROUND(SUM(soh.ttl_due),2) FROM so_hdr soh JOIN sls_terr st ON soh.ref6=st.trrt_id GROUP BY st.nm ORDER BY 2 DESC"
+    },
+    {
+      "id": 107,
+      "source": "custom",
+      "db_id": "works_cycles",
+      "question": "List the orders whose billing address and shipping address are in different cities, showing both cities.",
+      "SQL": "SELECT soh.SalesOrderID, ba.City AS bill_city, sa.City AS ship_city FROM SalesOrderHeader soh JOIN Address ba ON soh.BillToAddressID=ba.AddressID JOIN Address sa ON soh.ShipToAddressID=sa.AddressID WHERE ba.City<>sa.City LIMIT 20",
+      "evidence": "",
+      "join_count": 2,
+      "features": [
+        "JOIN×2"
+      ],
+      "domain": "Sales",
+      "SQL_obfuscated": "SELECT soh.sls_ordr_id, ba.cty AS bill_city, sa.cty AS ship_city FROM so_hdr soh JOIN addr ba ON soh.ref5=ba.addr_id JOIN addr sa ON soh.ref4=sa.addr_id WHERE ba.cty<>sa.cty LIMIT 20",
+      "note": "歧义：'list the orders' 订单标识可用 SalesOrderID(代理键，原 gold) 或 SalesOrderNumber('SO48507'，人类可读号)；S 轴返 ID、M 轴返号，均合法。尝试归一为号时 S 三档反向回归，故保留原 gold(不归一)。"
+    },
+    {
+      "id": 108,
+      "source": "custom",
+      "db_id": "works_cycles",
+      "question": "For each product category, what is the total quantity sold and total revenue?",
+      "SQL": "SELECT pc.Name, SUM(sod.OrderQty), ROUND(SUM(sod.LineTotal),2) FROM SalesOrderDetail sod JOIN Product p ON sod.ProductID=p.ProductID JOIN ProductSubcategory ps ON p.ProductSubcategoryID=ps.ProductSubcategoryID JOIN ProductCategory pc ON ps.ProductCategoryID=pc.ProductCategoryID GROUP BY pc.Name ORDER BY 3 DESC",
+      "evidence": "",
+      "join_count": 3,
+      "features": [
+        "JOIN×3",
+        "GROUP_BY"
+      ],
+      "domain": "Sales",
+      "SQL_obfuscated": "SELECT pc.nm, SUM(sod.ordr_qty), ROUND(SUM(sod.ln_ttl),2) FROM so_dtl sod JOIN prod p ON sod.ref2=p.prdc_id JOIN prod_sub ps ON p.ref2=ps.prdc_sbct_id JOIN prod_cat pc ON ps.ref1=pc.prdc_ctgr_id GROUP BY pc.nm ORDER BY 3 DESC"
+    },
+    {
+      "id": 109,
+      "source": "custom",
+      "db_id": "works_cycles",
+      "question": "How many customers have a credit card on file AND placed at least one order in 2013?",
+      "SQL": "SELECT DISTINCT p.FirstName||' '||p.LastName FROM SalesOrderHeader soh JOIN Customer c ON soh.CustomerID=c.CustomerID JOIN Person p ON c.PersonID=p.BusinessEntityID JOIN PersonCreditCard pcc ON p.BusinessEntityID=pcc.BusinessEntityID WHERE substr(soh.OrderDate,1,4)='2013' ORDER BY 1 LIMIT 20",
+      "evidence": "",
+      "join_count": 3,
+      "features": [
+        "JOIN×3"
+      ],
+      "domain": "Sales",
+      "SQL_obfuscated": "SELECT COUNT(DISTINCT c.cstm_id) FROM so_hdr soh JOIN cust c ON soh.ref8=c.cstm_id JOIN prsn p ON c.ref3=p.ref1 JOIN prsn_crd pcc ON p.ref1=pcc.ref1 WHERE substr(soh.ordr_dt,1,4)='2013'",
+      "note": "原题 list 11k 客户名 + LIMIT 20 截断；改题面为计数，gold=11094。"
+    },
+    {
+      "id": 110,
+      "source": "custom",
+      "db_id": "works_cycles",
+      "question": "Who are the top 5 customers by total order value (TotalDue) across all time?",
+      "SQL": "SELECT p.FirstName, p.LastName, ROUND(SUM(soh.TotalDue),2) FROM SalesOrderHeader soh JOIN Customer c ON soh.CustomerID=c.CustomerID JOIN Person p ON c.PersonID=p.BusinessEntityID WHERE c.PersonID IS NOT NULL GROUP BY c.CustomerID, p.FirstName, p.LastName ORDER BY 3 DESC LIMIT 5",
+      "evidence": "customer 仅指自然人客户（ref3 非空），门店不算",
+      "join_count": 2,
+      "features": [
+        "JOIN×2",
+        "GROUP_BY"
+      ],
+      "domain": "Sales",
+      "SQL_obfuscated": "SELECT p.frst_nm, p.lst_nm, ROUND(SUM(soh.ttl_due),2) FROM so_hdr soh JOIN cust c ON soh.ref8=c.cstm_id JOIN prsn p ON c.ref3=p.ref1 WHERE c.ref3 IS NOT NULL GROUP BY c.cstm_id, p.frst_nm, p.lst_nm ORDER BY 3 DESC LIMIT 5",
+      "note": "gold bug round4：GROUP BY 姓名会把同名客户(Roger Harui×2)合并(989400.98)；「top 5 customers」应按客户 ID 分组(989184.08)。同时 full name 拆列(对齐 Q90/Q91 表示)。"
+    },
+    {
+      "id": 111,
+      "source": "custom",
+      "db_id": "works_cycles",
+      "question": "How many orders in 2013 were placed by customers located in Canada?",
+      "SQL": "SELECT COUNT(DISTINCT soh.SalesOrderID) FROM SalesOrderHeader soh JOIN Customer c ON soh.CustomerID=c.CustomerID JOIN Address a ON soh.BillToAddressID=a.AddressID JOIN StateProvince sp ON a.StateProvinceID=sp.StateProvinceID JOIN CountryRegion cr ON sp.CountryRegionCode=cr.CountryRegionCode WHERE cr.Name='Canada' AND substr(soh.OrderDate,1,4)='2013'",
+      "evidence": "",
+      "join_count": 4,
+      "features": [
+        "JOIN×4"
+      ],
+      "domain": "Sales",
+      "SQL_obfuscated": "SELECT COUNT(DISTINCT soh.sls_ordr_id) FROM so_hdr soh JOIN cust c ON soh.ref8=c.cstm_id JOIN addr a ON soh.ref5=a.addr_id JOIN st_prv sp ON a.ref1=sp.stt_prvn_id JOIN cnty cr ON sp.ref2=cr.cntr_rgn_cd WHERE cr.nm='Canada' AND substr(soh.ordr_dt,1,4)='2013'"
+    },
+    {
+      "id": 112,
+      "source": "custom",
+      "db_id": "works_cycles",
+      "question": "For each salesperson, how many orders did they handle in 2013? List their name and count, ordered by count.",
+      "SQL": "SELECT p.FirstName, p.LastName, COUNT(soh.SalesOrderID) FROM SalesOrderHeader soh JOIN SalesPerson sp ON soh.SalesPersonID=sp.BusinessEntityID JOIN Person p ON sp.BusinessEntityID=p.BusinessEntityID WHERE substr(soh.OrderDate,1,4)='2013' GROUP BY p.FirstName,p.LastName ORDER BY 3 DESC",
+      "evidence": "",
+      "join_count": 2,
+      "features": [
+        "JOIN×2",
+        "GROUP_BY"
+      ],
+      "domain": "Sales",
+      "SQL_obfuscated": "SELECT p.frst_nm, p.lst_nm, COUNT(soh.sls_ordr_id) FROM so_hdr soh JOIN sls_prsn sp ON soh.ref7=sp.ref2 JOIN prsn p ON sp.ref2=p.ref1 WHERE substr(soh.ordr_dt,1,4)='2013' GROUP BY p.frst_nm,p.lst_nm ORDER BY 3 DESC",
+      "note": "gold 归一 round4：full name 由 CONCAT 单列改拆列(对齐 Q90/Q91)，ORDER BY 列号同步 2→3。"
+    },
+    {
+      "id": 113,
+      "source": "custom",
+      "db_id": "works_cycles",
+      "question": "Which finished products have never been ordered? List their names.",
+      "SQL": "SELECT p.Name FROM Product p WHERE p.FinishedGoodsFlag=1 AND p.ProductID NOT IN (SELECT DISTINCT ProductID FROM SalesOrderDetail) ORDER BY p.Name",
+      "evidence": "",
+      "join_count": 0,
+      "features": [
+        "SUBQUERY"
+      ],
+      "domain": "Sales",
+      "SQL_obfuscated": "SELECT p.nm FROM prod p WHERE p.fnsh_gds_flg=1 AND p.prdc_id NOT IN (SELECT DISTINCT ref2 FROM so_dtl) ORDER BY p.nm",
+      "note": "官方 SQL 带 LIMIT 20 截断真答案(该题 finished goods 从未被订购的共 29 个,gold 只取 20 行)。M2 用 NOT EXISTS 无 LIMIT 返回全量 29 行被判错;已去掉 LIMIT 20 还原真值。"
+    },
+    {
+      "id": 114,
+      "source": "custom",
+      "db_id": "works_cycles",
+      "question": "What is the average order value (TotalDue) per month in 2013?",
+      "SQL": "SELECT substr(OrderDate,1,7) AS month, ROUND(AVG(TotalDue),2) FROM SalesOrderHeader WHERE substr(OrderDate,1,4)='2013' GROUP BY month ORDER BY month",
+      "evidence": "per month = 按年月分组（substr(ordr_dt,1,7) 得到 2013-01 形式），不是 MONTH() 的 1-12",
+      "join_count": 0,
+      "features": [
+        "GROUP_BY"
+      ],
+      "domain": "Sales",
+      "SQL_obfuscated": "SELECT substr(ordr_dt,1,7) AS month, ROUND(AVG(ttl_due),2) FROM so_hdr WHERE substr(ordr_dt,1,4)='2013' GROUP BY month ORDER BY month"
+    },
+    {
+      "id": 115,
+      "source": "custom",
+      "db_id": "works_cycles",
+      "question": "What is the average number of line items per order in 2013?",
+      "SQL": "SELECT ROUND(AVG(cnt),2) FROM (SELECT soh.SalesOrderID, COUNT(sod.SalesOrderDetailID) cnt FROM SalesOrderHeader soh JOIN SalesOrderDetail sod ON soh.SalesOrderID=sod.SalesOrderID WHERE substr(soh.OrderDate,1,4)='2013' GROUP BY soh.SalesOrderID)",
+      "evidence": "",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY",
+        "SUBQUERY"
+      ],
+      "domain": "Sales",
+      "SQL_obfuscated": "SELECT ROUND(AVG(cnt),2) FROM (SELECT soh.sls_ordr_id, COUNT(sod.sls_ordr_dtl_id) cnt FROM so_hdr soh JOIN so_dtl sod ON soh.sls_ordr_id=sod.ref3 WHERE substr(soh.ordr_dt,1,4)='2013' GROUP BY soh.sls_ordr_id) AS _d"
+    },
+    {
+      "id": 116,
+      "source": "custom",
+      "db_id": "works_cycles",
+      "question": "How many employees are currently in each department? List department and headcount, ordered by headcount.",
+      "SQL": "SELECT d.Name, COUNT(DISTINCT edh.BusinessEntityID) FROM EmployeeDepartmentHistory edh JOIN Department d ON edh.DepartmentID=d.DepartmentID WHERE edh.EndDate IS NULL GROUP BY d.Name ORDER BY 2 DESC",
+      "evidence": "",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT d.nm, COUNT(DISTINCT edh.ref3) FROM emp_dept_hist edh JOIN dept d ON edh.ref2=d.dprt_id WHERE edh.end_dt IS NULL GROUP BY d.nm ORDER BY 2 DESC"
+    },
+    {
+      "id": 117,
+      "source": "custom",
+      "db_id": "works_cycles",
+      "question": "Which employees have worked in more than one department? List their name and number of departments.",
+      "SQL": "SELECT p.FirstName, p.LastName, COUNT(DISTINCT edh.DepartmentID) FROM EmployeeDepartmentHistory edh JOIN Person p ON edh.BusinessEntityID=p.BusinessEntityID GROUP BY p.FirstName,p.LastName HAVING COUNT(DISTINCT edh.DepartmentID)>1 ORDER BY 3 DESC",
+      "evidence": "",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY",
+        "HAVING"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT p.frst_nm, p.lst_nm, COUNT(DISTINCT edh.ref2) FROM emp_dept_hist edh JOIN prsn p ON edh.ref3=p.ref1 GROUP BY p.frst_nm,p.lst_nm HAVING COUNT(DISTINCT edh.ref2)>1 ORDER BY 3 DESC",
+      "note": "gold 归一 round4：full name 由 CONCAT 单列改拆列。"
+    },
+    {
+      "id": 118,
+      "source": "custom",
+      "db_id": "works_cycles",
+      "question": "How many times has each employee's pay rate changed? List name and change count, ordered by count.",
+      "SQL": "SELECT p.FirstName, p.LastName, COUNT(*) FROM EmployeePayHistory eph JOIN Person p ON eph.BusinessEntityID=p.BusinessEntityID GROUP BY p.FirstName,p.LastName ORDER BY 3 DESC, 1",
+      "evidence": "",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT p.frst_nm, p.lst_nm, COUNT(*) FROM emp_pay_hist eph JOIN prsn p ON eph.ref1=p.ref1 GROUP BY p.frst_nm,p.lst_nm ORDER BY 3 DESC, 1",
+      "note": "gold 归一 round4：full name 拆列；去掉任意 LIMIT 20（题面「each employee」=全部，非 top 20）。"
+    },
+    {
+      "id": 119,
+      "source": "custom",
+      "db_id": "works_cycles",
+      "question": "Which vendors supply the most distinct products? List vendor name and product count, top 10.",
+      "SQL": "SELECT v.Name, COUNT(DISTINCT pv.ProductID) FROM ProductVendor pv JOIN Vendor v ON pv.BusinessEntityID=v.BusinessEntityID GROUP BY v.Name ORDER BY 2 DESC, 1 LIMIT 10",
+      "evidence": "",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY"
+      ],
+      "domain": "Purchasing",
+      "SQL_obfuscated": "SELECT v.nm, COUNT(DISTINCT pv.ref3) FROM prod_vnd pv JOIN vnd v ON pv.ref2=v.ref1 GROUP BY v.nm ORDER BY 2 DESC, 1 LIMIT 10"
+    },
+    {
+      "id": 120,
+      "source": "custom",
+      "db_id": "works_cycles",
+      "question": "How many purchase orders were placed with each vendor? Order by count descending.",
+      "SQL": "SELECT v.Name, COUNT(poh.PurchaseOrderID) FROM PurchaseOrderHeader poh JOIN Vendor v ON poh.VendorID=v.BusinessEntityID GROUP BY v.Name ORDER BY 2 DESC",
+      "evidence": "",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "GROUP_BY"
+      ],
+      "domain": "Purchasing",
+      "SQL_obfuscated": "SELECT v.nm, COUNT(poh.prch_ordr_id) FROM po_hdr poh JOIN vnd v ON poh.ref2=v.ref1 GROUP BY v.nm ORDER BY 2 DESC"
+    },
+    {
+      "id": 121,
+      "source": "custom",
+      "db_id": "works_cycles",
+      "question": "How many products are supplied by more than one vendor?",
+      "SQL": "SELECT COUNT(*) FROM (SELECT ProductID FROM ProductVendor GROUP BY ProductID HAVING COUNT(DISTINCT BusinessEntityID)>1)",
+      "evidence": "",
+      "join_count": 0,
+      "features": [
+        "GROUP_BY",
+        "HAVING",
+        "SUBQUERY"
+      ],
+      "domain": "Product",
+      "SQL_obfuscated": "SELECT COUNT(*) FROM (SELECT ref3 FROM prod_vnd GROUP BY ref3 HAVING COUNT(DISTINCT ref2)>1) AS _d"
+    },
+    {
+      "id": 122,
+      "source": "custom",
+      "db_id": "works_cycles",
+      "question": "What are the top 5 most common job titles among employees?",
+      "SQL": "SELECT JobTitle, COUNT(*) FROM Employee GROUP BY JobTitle ORDER BY 2 DESC LIMIT 5",
+      "evidence": "",
+      "join_count": 0,
+      "features": [
+        "GROUP_BY"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT jb_ttl, COUNT(*) FROM emp GROUP BY jb_ttl ORDER BY 2 DESC LIMIT 5"
+    },
+    {
+      "id": 123,
+      "source": "custom",
+      "db_id": "works_cycles",
+      "question": "List the full name and job title of employees currently in the 'Sales' department, ordered by last name.",
+      "SQL": "SELECT p.FirstName, p.LastName, e.JobTitle FROM Employee e JOIN Person p ON e.BusinessEntityID = p.BusinessEntityID JOIN EmployeeDepartmentHistory edh ON e.BusinessEntityID = edh.BusinessEntityID JOIN Department d ON edh.DepartmentID = d.DepartmentID WHERE d.Name = 'Sales' AND edh.EndDate IS NULL ORDER BY p.LastName",
+      "evidence": "",
+      "join_count": 3,
+      "features": [
+        "JOIN×3"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT p.frst_nm, p.lst_nm, e.jb_ttl FROM emp e JOIN prsn p ON e.ref1 = p.ref1 JOIN emp_dept_hist edh ON e.ref1 = edh.ref3 JOIN dept d ON edh.ref2 = d.dprt_id WHERE d.nm = 'Sales' AND edh.end_dt IS NULL ORDER BY p.lst_nm"
+    },
+    {
+      "id": 124,
+      "source": "custom",
+      "db_id": "works_cycles",
+      "question": "List the store name, city, and state/province of every store, ordered by store name.",
+      "SQL": "SELECT s.Name, a.City, sp.Name FROM Store s JOIN BusinessEntityAddress bea ON s.BusinessEntityID = bea.BusinessEntityID JOIN Address a ON bea.AddressID = a.AddressID JOIN StateProvince sp ON a.StateProvinceID = sp.StateProvinceID ORDER BY s.Name",
+      "evidence": "",
+      "join_count": 3,
+      "features": [
+        "JOIN×3"
+      ],
+      "domain": "Sales",
+      "SQL_obfuscated": "SELECT s.nm, a.cty, sp.nm FROM stor s JOIN biz_addr bea ON s.ref2 = bea.ref1 JOIN addr a ON bea.ref3 = a.addr_id JOIN st_prv sp ON a.ref1 = sp.stt_prvn_id ORDER BY s.nm"
+    },
+    {
+      "id": 125,
+      "source": "custom",
+      "db_id": "works_cycles",
+      "question": "How many employees have no name suffix (such as Jr. or Sr.)?",
+      "SQL": "SELECT COUNT(*) FROM (SELECT e.BusinessEntityID FROM Employee e JOIN Person p ON e.BusinessEntityID = p.BusinessEntityID WHERE p.Suffix IS NULL GROUP BY e.BusinessEntityID) AS X",
+      "evidence": "",
+      "join_count": 1,
+      "features": [
+        "JOIN×1",
+        "SUBQUERY",
+        "GROUP_BY"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT COUNT(*) FROM (SELECT e.ref1 FROM emp e JOIN prsn p ON e.ref1 = p.ref1 WHERE p.sffx IS NULL GROUP BY e.ref1) AS X"
+    },
+    {
+      "id": 126,
+      "source": "custom",
+      "db_id": "works_cycles",
+      "question": "List the full name and job title of employees whose latest pay rate is above $50.",
+      "SQL": "SELECT p.FirstName, p.LastName, e.JobTitle FROM Employee e JOIN Person p ON e.BusinessEntityID = p.BusinessEntityID JOIN EmployeePayHistory eph ON e.BusinessEntityID = eph.BusinessEntityID WHERE eph.Rate > 50 AND eph.RateChangeDate = (SELECT MAX(eph2.RateChangeDate) FROM EmployeePayHistory eph2 WHERE eph2.BusinessEntityID = e.BusinessEntityID)",
+      "evidence": "",
+      "join_count": 3,
+      "features": [
+        "JOIN×3",
+        "SUBQUERY"
+      ],
+      "domain": "HR",
+      "SQL_obfuscated": "SELECT p.frst_nm, p.lst_nm, e.jb_ttl FROM emp e JOIN prsn p ON e.ref1 = p.ref1 JOIN emp_pay_hist eph ON e.ref1 = eph.ref1 WHERE eph.rt > 50 AND eph.rt_chng_dt = (SELECT MAX(eph2.rt_chng_dt) FROM emp_pay_hist eph2 WHERE eph2.ref1 = e.ref1)"
+    },
+    {
+      "id": 127,
+      "source": "custom",
+      "db_id": "works_cycles",
+      "question": "How many employees currently working in the Production department have a latest pay rate above $20 per hour?",
+      "SQL_obfuscated": "SELECT COUNT(DISTINCT eph.ref1) FROM emp_pay_hist eph JOIN emp_dept_hist edh ON eph.ref1=edh.ref3 JOIN dept d ON edh.ref2=d.dprt_id WHERE d.nm='Production' AND edh.end_dt IS NULL AND eph.rt > 20 AND eph.rt_chng_dt=(SELECT MAX(e2.rt_chng_dt) FROM emp_pay_hist e2 WHERE e2.ref1=eph.ref1)",
+      "evidence": "",
+      "join_count": 3,
+      "features": [
+        "JOIN×3",
+        "SUBQUERY"
+      ],
+      "domain": "HR",
+      "note": "自拟替代题：补 Q88/Q92(员工信用卡 ill-posed)剔除后的 HR 多表 join 空白。测 emp_dept_hist(3外键)+emp_pay_hist(最新时薪) FK 消歧，ER 敏感。gold=22。"
+    },
+    {
+      "id": 128,
+      "source": "custom",
+      "db_id": "works_cycles",
+      "question": "What is the total revenue (sum of line totals) in 2013 for products in the 'Bikes' category?",
+      "SQL_obfuscated": "SELECT ROUND(SUM(sod.ln_ttl),2) FROM so_dtl sod JOIN so_hdr soh ON sod.ref3=soh.sls_ordr_id JOIN prod p ON sod.ref2=p.prdc_id JOIN prod_sub ps ON p.ref2=ps.prdc_sbct_id JOIN prod_cat pc ON ps.ref1=pc.prdc_ctgr_id WHERE pc.nm='Bikes' AND substr(soh.ordr_dt,1,4)='2013'",
+      "evidence": "",
+      "join_count": 4,
+      "features": [
+        "JOIN×4"
+      ],
+      "domain": "Sales",
+      "note": "自拟替代题：5 表链 so_dtl→so_hdr→prod→prod_sub→prod_cat，测 so_hdr/so_dtl 多外键消歧，ER 敏感。gold=36266202.0。"
+    }
+  ]
+}

@@ -1,0 +1,247 @@
+{
+  "runs": [
+    {
+      "question_id": 207,
+      "datasource": "movie",
+      "chat_id": "3f89ea07f98044cc8b5561a331b77644",
+      "final_cypher": "",
+      "cypher_history": [],
+      "agent_text": "",
+      "tool_calls": 0,
+      "pass": false,
+      "error": "agent rc=1: \u001b[35m[plugins]\u001b[39m \u001b[33mplugins.allow is empty; discovered non-bundled plugins may auto-load: deepseek (/usr/local/lib/nodejs/node-v24.21.0-linux-x64/lib/node_modules/@openclaw/deepseek-provider/dist/index.js), zai (/usr/local/lib/nodejs/node-v24.21.0-linux-x64/lib/node_modules/@openclaw/zai-provid",
+      "model": "deepseek-v4-flash",
+      "turns": 0,
+      "tool_rounds": 0,
+      "tokens": null,
+      "cost_usd": null,
+      "elapsed_seconds": 14.01,
+      "agent_duration_ms": null,
+      "extra_columns": []
+    },
+    {
+      "question_id": 227,
+      "datasource": "movie",
+      "chat_id": "919a328170e04dd2832627c20e5ecdfd",
+      "final_cypher": "MATCH (n:Movie)-[:hasGenre]->(m1:Genre {name: 'thriller'})\nOPTIONAL MATCH (n)-[:hasCastMember]->(m0:Person)\nWITH n, count(DISTINCT m0) AS num\nRETURN n.name, num",
+      "cypher_history": [
+        "MATCH (g:Genre) WHERE toLower(g.name) CONTAINS 'thriller' RETURN g.name AS name, count(*) AS c ORDER BY c DESC",
+        "MATCH (m:Movie)-[:hasGenre]->(g:Genre) WHERE g.name IN ['thriller','thriller film'] RETURN g.name AS name, count(DISTINCT m) AS movies",
+        "MATCH (n:Movie)-[:hasGenre]->(m1:Genre {name: 'thriller'})\nOPTIONAL MATCH (n)-[:hasCastMember]->(m0:Person)\nWITH n, count(DISTINCT m0) AS num\nRETURN n.name, num"
+      ],
+      "agent_text": "已用数据源 `movie` 完成查询。genre 值经核查确认为 `'thriller'`（146 部；另有一个 `'thriller film'` 是不同值，题面「thriller movies」对应前者）。\n\n最终 Cypher（保留 0 主演的电影，按节点分组避免同名合并）：\n\n```cypher\nMATCH (n:Movie)-[:hasGenre]->(m1:Genre {name: 'thriller'})\nOPTIONAL MATCH (n)-[:hasCastMember]->(m0:Person)\nWITH n, count(DISTINCT m0) AS num\nRETURN n.name, num\n```\n\n结果共 146 行（展示前 100 行），示例：`Moonraker 36`、`Octopussy 31`、`A View to a Kill 26`、`Mercury Rising 23`、`Tinker Tailor Soldier Spy 43`、`Batman Returns 28`、`Fatal Attraction 17`，以及若干 0 主演的电影（如 `Scooby-Doo! and the Witch's Ghost 0`、`Silence 0`）。",
+      "tool_calls": 8,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 8,
+      "tool_rounds": 7,
+      "tokens": {
+        "input": 20794,
+        "output": 3390,
+        "cache_read": 223360,
+        "cache_write": 0,
+        "reasoning": 2452,
+        "total": 247544
+      },
+      "cost_usd": 0.010114,
+      "elapsed_seconds": 133.82,
+      "agent_duration_ms": 132277,
+      "extra_columns": []
+    },
+    {
+      "question_id": 231,
+      "datasource": "movie",
+      "chat_id": "160bda6adda3466daed771ce6d07b8cb",
+      "final_cypher": "",
+      "cypher_history": [],
+      "agent_text": "",
+      "tool_calls": 0,
+      "pass": false,
+      "error": "agent rc=1: \u001b[35m[plugins]\u001b[39m \u001b[33mplugins.allow is empty; discovered non-bundled plugins may auto-load: deepseek (/usr/local/lib/nodejs/node-v24.21.0-linux-x64/lib/node_modules/@openclaw/deepseek-provider/dist/index.js), zai (/usr/local/lib/nodejs/node-v24.21.0-linux-x64/lib/node_modules/@openclaw/zai-provid",
+      "model": "deepseek-v4-flash",
+      "turns": 0,
+      "tool_rounds": 0,
+      "tokens": null,
+      "cost_usd": null,
+      "elapsed_seconds": 118.88,
+      "agent_duration_ms": null,
+      "extra_columns": []
+    },
+    {
+      "question_id": 241,
+      "datasource": "movie",
+      "chat_id": "90ad9741f0e140dbb28d630e26c86f5e",
+      "final_cypher": "MATCH (m:Movie)-[:receivesAward]->(j:Award {name:\"Jameson People's Choice Award for Best Actor\"})\nMATCH (m)-[:receivesAward]->(a:Award)\nWITH a, count(DISTINCT m) AS num\nRETURN a.name AS award, num ORDER BY num DESC, award",
+      "cypher_history": [
+        "MATCH (a:Award) WHERE toLower(a.name) CONTAINS 'jameson' RETURN a.name AS name",
+        "MATCH (m:Movie)-[:receivesAward]->(a:Award {name:\"Jameson People's Choice Award for Best Actor\"}) RETURN count(DISTINCT m) AS n",
+        "MATCH (m:Movie)-[:receivesAward]->(j:Award {name:\"Jameson People's Choice Award for Best Actor\"})\nMATCH (m)-[:receivesAward]->(a:Award)\nWITH a, count(DISTINCT m) AS num\nRETURN a.name AS award, num ORDER BY num DESC, award"
+      ],
+      "agent_text": "已加载 schema 与 notes，直接查询得到结果（最后一条即为最终答案 Cypher）。\n\n**最终答案 Cypher：**\n```cypher\nMATCH (m:Movie)-[:receivesAward]->(j:Award {name:\"Jameson People's Choice Award for Best Actor\"})\nMATCH (m)-[:receivesAward]->(a:Award)\nWITH a, count(DISTINCT m) AS num\nRETURN a.name AS award, num ORDER BY num DESC, award\n```\n\n**结果**（共 8 部电影获得「Jameson People's Choice Award for Best Actor」，它们获得过的奖项及对应电影数）：\n\n| award | num |\n|---|---|\n| Jameson People's Choice Award for Best Actor | 8 |\n| European Film Award - People's Choice Award for Best Director | 2 |\n| European Film Award for Best Director | 2 |\n| European Film Award for Best Film | 2 |\n| European Film Award for Best Screenwriter | 2 |\n| Jameson People's Choice Award for Best Actress | 2 |\n| Academy Award for Best Writing, Original Screenplay | 1 |\n| César Award for Best Film from the European Union | 1 |\n| Edda Award for Best Film | 1 |\n| European Film Award for Best Actor | 1 |\n\n说明：按 Award **节点**分组、`count(DISTINCT m)` 按电影节点去重（避免同名合并且避免 fan-out 重复计数）；`num` 表示获得该奖项的这类电影数量。",
+      "tool_calls": 5,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 15804,
+        "output": 3052,
+        "cache_read": 121600,
+        "cache_write": 0,
+        "reasoning": 2305,
+        "total": 140456
+      },
+      "cost_usd": 0.006472,
+      "elapsed_seconds": 155.79,
+      "agent_duration_ms": 152318,
+      "extra_columns": []
+    },
+    {
+      "question_id": 249,
+      "datasource": "movie",
+      "chat_id": "8f425aec6a66400482abc124244ec4cf",
+      "final_cypher": "MATCH (m:Movie)-[:hasGenre]->(:Genre {name:'arthouse science fiction film'})\nMATCH (m)-[:hasGenre]->(g:Genre)\nWHERE g.name <> 'arthouse science fiction film'\nWITH g, count(DISTINCT m) AS num\nRETURN g.name AS genre, num\nORDER BY num DESC",
+      "cypher_history": [
+        "MATCH (g:Genre) WHERE toLower(g.name) CONTAINS 'arthouse' RETURN g.name AS name",
+        "MATCH (m:Movie)-[:hasGenre]->(:Genre {name:'arthouse science fiction film'})\nMATCH (m)-[:hasGenre]->(g:Genre)\nWHERE g.name <> 'arthouse science fiction film'\nWITH g, count(DISTINCT m) AS num\nRETURN g.name AS genre, num\nORDER BY num DESC"
+      ],
+      "agent_text": "电影数据源 `movie` 的答案如下（以标定 genre `arthouse science fiction film` 的电影为集合，统计与之关联的其他 genre 及对应电影数，按数量降序）：\n\n| genre | num |\n|---|---|\n| science fiction film | 59 |\n| drama film | 41 |\n| dystopian film | 20 |\n| film based on a novel | 13 |\n| horror film | 12 |\n| thriller film | 11 |\n| fantasy film | 9 |\n| comedy film | 7 |\n| cyberpunk | 6 |\n| romance film | 6 |\n| film based on literature | 6 |\n| mystery film | 5 |\n| LGBT-related film | 4 |\n| post-apocalyptic film | 4 |\n| action film | 4 |\n| neo-noir | 4 |\n| crime film | 4 |\n| biopunk | 4 |\n| science fiction comedy | 3 |\n| comedy drama | 3 |\n| adventure film | 3 |\n| art film | 3 |\n| romantic comedy | 2 |\n| body horror film | 2 |\n| film noir | 2 |\n| silent film | 2 |\n| speculative/fantastic fiction film | 2 |\n| apocalyptic film | 2 |\n| erotic thriller | 1 |\n| retro-futurism | 1 |\n| Christmas film | 1 |\n| post-apocalyptic fiction | 1 |\n| melodrama | 1 |\n| steampunk film | 1 |\n| tech noir | 1 |\n| prison film | 1 |\n| psychological drama film | 1 |\n| psychological thriller | 1 |\n| psychological thriller film | 1 |\n| comedy thriller | 1 |\n| girls with guns | 1 |\n| pritcha | 1 |\n| black comedy | 1 |\n| space adventure film | 1 |\n| epic film | 1 |\n\n说明：这里的「其他 genre」已排除锚定 genre `arthouse science fiction film` 本身（题面中 \"also have the genre\" 的语义），计数用 `count(DISTINCT m)` 按电影节点去重。\n\n最终查询：\n```cypher\nMATCH (m:Movie)-[:hasGenre]->(:Genre {name:'arthouse science fiction film'})\nMATCH (m)-[:hasGenre]->(g:Genre)\nWHERE g.name <> 'arthouse science fiction film'\nWITH g, count(DISTINCT m) AS num\nRETURN g.name AS genre, num\nORDER BY num DESC\n```",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 15905,
+        "output": 2096,
+        "cache_read": 93568,
+        "cache_write": 0,
+        "reasoning": 1243,
+        "total": 111569
+      },
+      "cost_usd": 0.005433,
+      "elapsed_seconds": 225.29,
+      "agent_duration_ms": 226823,
+      "extra_columns": []
+    },
+    {
+      "question_id": 294,
+      "datasource": "movie",
+      "chat_id": "c59d8965b0ed4198b89fcfeefd18e697",
+      "final_cypher": "MATCH (b:Movie {name:'The Bourne Supremacy'})-[:producedBy]->(c:ProductionCompany)\nMATCH (m:Movie)-[:producedBy]->(c)\nWITH DISTINCT m\nRETURN avg(m.global_box_office_usd) AS avg_box_office",
+      "cypher_history": [
+        "MATCH (b:Movie {name:'The Bourne Supremacy'})-[:producedBy]->(c:ProductionCompany)\nMATCH (m:Movie)-[:producedBy]->(c)\nWITH DISTINCT m\nRETURN avg(m.global_box_office_usd) AS avg_box_office"
+      ],
+      "agent_text": "平均全球票房：**288,280,428.51 USD**（约 2.88 亿美元）\n\n查询逻辑：先找到《The Bourne Supremacy》的制片公司，再取该公司出品的所有电影，对其 `global_box_office_usd`（NULL 自动忽略）求平均。\n\n```cypher\nMATCH (b:Movie {name:'The Bourne Supremacy'})-[:producedBy]->(c:ProductionCompany)\nMATCH (m:Movie)-[:producedBy]->(c)\nWITH DISTINCT m\nRETURN avg(m.global_box_office_usd) AS avg_box_office\n```",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 15540,
+        "output": 783,
+        "cache_read": 64256,
+        "cache_write": 0,
+        "reasoning": 432,
+        "total": 80579
+      },
+      "cost_usd": 0.004194,
+      "elapsed_seconds": 169.94,
+      "agent_duration_ms": 169399,
+      "extra_columns": []
+    },
+    {
+      "question_id": 338,
+      "datasource": "movie",
+      "chat_id": "4956262cf36b44a0b0bcfe48743ee88f",
+      "final_cypher": "MATCH (g:Genre) RETURN DISTINCT g.name AS name ORDER BY name",
+      "cypher_history": [
+        "MATCH (g:Genre) RETURN DISTINCT g.name AS name ORDER BY name"
+      ],
+      "agent_text": "已生成答案 Cypher 并执行。\n\n**最终答案查询：**\n```cypher\nMATCH (g:Genre) RETURN DISTINCT g.name AS name ORDER BY name\n```\n\n结果：共 **690 个不同的 genre 名称**（Genre 节点 694 个，含 4 个重名节点），返回超过 100 行被截断，全量结果保留在 kernel 中。示例值：Afrofuturism、Spaghetti Western、action film、adventure game、adult video …",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 15931,
+        "output": 702,
+        "cache_read": 64128,
+        "cache_write": 0,
+        "reasoning": 425,
+        "total": 80761
+      },
+      "cost_usd": 0.004222,
+      "elapsed_seconds": 75.71,
+      "agent_duration_ms": 71416,
+      "extra_columns": []
+    },
+    {
+      "question_id": 361,
+      "datasource": "movie",
+      "chat_id": "3015509ea1f54eb59cb111a78aaeade3",
+      "final_cypher": "MATCH (n:Award)<-[:receivesAward]-(m:Movie)-[:partOfSeries]->(s:FilmSeries {name:'James Bond'})\nWITH DISTINCT n\nRETURN count(DISTINCT n)",
+      "cypher_history": [
+        "MATCH (s:FilmSeries) WHERE toLower(s.name) CONTAINS 'bond' RETURN s.name",
+        "MATCH (m:Movie)-[:partOfSeries]->(s:FilmSeries {name:'James Bond'})\nOPTIONAL MATCH (m)-[:receivesAward]->(a:Award)\nRETURN count(DISTINCT m) AS movies, count(DISTINCT a) AS distinct_awards, count(a) AS award_edges",
+        "MATCH (m:Movie)-[:partOfSeries]->(s:FilmSeries)\nWHERE s.name IN ['James Bond','EON James Bond series']\nOPTIONAL MATCH (m)-[:receivesAward]->(a:Award)\nRETURN s.name AS series, count(DISTINCT m) AS movies, count(DISTINCT a) AS distinct_awards, count(a) AS award_edges",
+        "MATCH (m:Movie)-[:partOfSeries]->(s:FilmSeries {name:'James Bond'})\nMATCH (m)-[:receivesAward]->(a:Award)\nRETURN m.name AS movie, a.name AS award\nORDER BY movie, award",
+        "MATCH (n:Award)<-[:receivesAward]-(m:Movie)-[:partOfSeries]->(s:FilmSeries {name:'James Bond'})\nWITH DISTINCT n\nRETURN count(DISTINCT n)"
+      ],
+      "agent_text": "**4** 个奖项。\n\n属于 James Bond 系列的电影共获得 4 个不同的奖项（Academy Award for Best Sound Editing、Academy Award for Best Visual Effects、Academy Award for Best Original Song、Golden Globe Award for New Star of the Year – Actress；其中 Best Sound Editing 被 Goldfinger 与 Skyfall 两部片各拿一次，按奖项节点去重后为 4）。",
+      "tool_calls": 10,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 10,
+      "tool_rounds": 9,
+      "tokens": {
+        "input": 51482,
+        "output": 6805,
+        "cache_read": 354944,
+        "cache_write": 0,
+        "reasoning": 5620,
+        "total": 413231
+      },
+      "cost_usd": 0.019051,
+      "elapsed_seconds": 150.28,
+      "agent_duration_ms": 149123,
+      "extra_columns": []
+    },
+    {
+      "question_id": 369,
+      "datasource": "movie",
+      "chat_id": "95e1317e1a044653a1279e284cdcfcdf",
+      "final_cypher": "MATCH (t:Movie {name:'The Matrix Reloaded'})-[:directedBy]->(p:Person)\nMATCH (m:Movie)-[:directedBy]->(p)\nWITH DISTINCT m\nRETURN m.name AS name\nORDER BY m.runtime_minute ASC",
+      "cypher_history": [
+        "MATCH (t:Movie {name:'The Matrix Reloaded'})-[:directedBy]->(p:Person)\nMATCH (m:Movie)-[:directedBy]->(p)\nWITH DISTINCT m\nRETURN m.name AS name\nORDER BY m.runtime_minute ASC"
+      ],
+      "agent_text": "The Matrix Reloaded 的导演是沃卓斯基（Lana & Lilly Wachowski，图中为同一 Person 节点），其执导的电影按片长由短到长排序：\n\n1. Bound\n2. Jupiter Ascending\n3. Speed Racer\n4. The Matrix Revolutions\n5. The Matrix\n6. The Matrix Reloaded\n7. The Matrix Resurrections\n8. Cloud Atlas\n\n```cypher\nMATCH (t:Movie {name:'The Matrix Reloaded'})-[:directedBy]->(p:Person)\nMATCH (m:Movie)-[:directedBy]->(p)\nWITH DISTINCT m\nRETURN m.name AS name\nORDER BY m.runtime_minute ASC\n```",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 15413,
+        "output": 860,
+        "cache_read": 64384,
+        "cache_write": 0,
+        "reasoning": 477,
+        "total": 80657
+      },
+      "cost_usd": 0.004201,
+      "elapsed_seconds": 31.61,
+      "agent_duration_ms": 24682,
+      "extra_columns": []
+    }
+  ]
+}

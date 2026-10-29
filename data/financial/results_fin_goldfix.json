@@ -1,0 +1,65 @@
+{
+  "runs": [
+    {
+      "question_id": 80,
+      "datasource": "financial",
+      "chat_id": "9947866e759d400bbc2a2a6f014203e8",
+      "final_sql": "SELECT CAST(SUM(CASE WHEN c.gndr = 'F' THEN 1 ELSE 0 END) AS DOUBLE) * 100.0 / COUNT(c.clnt_id) AS women_pct FROM clnt c JOIN dsp d ON c.clnt_id = d.ref1 JOIN acct a ON d.ref2 = a.accn_id JOIN dstr ds ON a.ref1 = ds.dstr_id WHERE ds.a11 > 10000",
+      "sql_history": [
+        "SELECT dstr_id, a2, a3, a11 FROM dstr WHERE a11 > 10000 ORDER BY a11 DESC",
+        "SELECT COUNT(*) AS n_rows, COUNT(DISTINCT c.clnt_id) AS n_clients, SUM(CASE WHEN c.gndr='F' THEN 1 ELSE 0 END) AS f_rows, COUNT(DISTINCT CASE WHEN c.gndr='F' THEN c.clnt_id END) AS f_clients, SUM(CASE WHEN d.typ='OWNER' THEN 1 ELSE 0 END) AS owner_rows, SUM(CASE WHEN d.typ='DISPONENT' THEN 1 ELSE 0 END) AS disp_rows FROM clnt c JOIN dsp d ON c.clnt_id=d.ref1 JOIN acct a ON d.ref2=a.accn_id JOIN dstr ds ON a.ref1=ds.dstr_id WHERE ds.a11>10000",
+        "SELECT SUM(CASE WHEN c.gndr='F' THEN 1 ELSE 0 END) AS f_owner, SUM(CASE WHEN c.gndr='M' THEN 1 ELSE 0 END) AS m_owner, COUNT(*) AS n_owner FROM clnt c JOIN dsp d ON c.clnt_id=d.ref1 JOIN acct a ON d.ref2=a.accn_id JOIN dstr ds ON a.ref1=ds.dstr_id WHERE ds.a11>10000 AND d.typ='OWNER'",
+        "SELECT COUNT(*) AS n_home, SUM(CASE WHEN c.gndr='F' THEN 1 ELSE 0 END) AS f_home FROM clnt c JOIN dstr ds ON c.ref1=ds.dstr_id WHERE ds.a11>10000",
+        "SELECT CAST(SUM(CASE WHEN c.gndr = 'F' THEN 1 ELSE 0 END) AS DOUBLE) * 100.0 / COUNT(c.clnt_id) AS women_pct FROM clnt c JOIN dsp d ON c.clnt_id = d.ref1 JOIN acct a ON d.ref2 = a.accn_id JOIN dstr ds ON a.ref1 = ds.dstr_id WHERE ds.a11 > 10000"
+      ],
+      "agent_text": "**50.38819875776397%**\n\n基于数据源 `financial`：筛选平均薪资（`dstr.a11`）> 10000 的各区（共 8 个），统计在这些区开户（账户分支 `acct.ref1` → `dstr`）的客户，其中女性（`clnt.gndr = 'F'`）占比 = 649 / 1288 = **50.38819875776397%**。\n\n- 涉及表：`clnt` → `dsp` → `acct` → `dstr`\n- 条件：`dstr.a11 > 10000`（平均薪资可查 A11）",
+      "tool_calls": 7,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 6,
+      "tool_rounds": 5,
+      "tokens": {
+        "input": 16097,
+        "output": 7653,
+        "cache_read": 169088,
+        "cache_write": 0,
+        "reasoning": 6645,
+        "total": 192838
+      },
+      "cost_usd": 0.009131,
+      "elapsed_seconds": 52.51,
+      "agent_duration_ms": 44677,
+      "extra_columns": []
+    },
+    {
+      "question_id": 97,
+      "datasource": "financial",
+      "chat_id": "8e6bd61f40f24c399b4712c373c4f660",
+      "final_sql": "SELECT CAST(SUM(CASE WHEN t.gndr = 'F' THEN 1 ELSE 0 END) AS DOUBLE) * 100 / COUNT(*) AS female_pct FROM ( SELECT DISTINCT c.clnt_id, c.gndr FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON a.accn_id = d.ref2 JOIN dstr ds ON ds.dstr_id = a.ref1 WHERE ds.a3 = 'Prague' ) t",
+      "sql_history": [
+        "SELECT dstr_id, a2, a3 FROM dstr WHERE a2 LIKE '%Praha%' OR a3 LIKE '%Praha%' OR a2 LIKE '%Prague%' OR a3 LIKE '%Prague%' LIMIT 20",
+        "SELECT CAST(SUM(CASE WHEN t.gndr = 'F' THEN 1 ELSE 0 END) AS DOUBLE) * 100 / COUNT(*) AS female_pct FROM ( SELECT DISTINCT c.clnt_id, c.gndr FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON a.accn_id = d.ref2 JOIN dstr ds ON ds.dstr_id = a.ref1 WHERE ds.a3 = 'Prague' ) t"
+      ],
+      "agent_text": "占比 ≈ **49.78%**（Prague 分行有账户的客户中，女性客户占 49.78%）。\n\n- 口径：客户经 disposition 关联到账户，账户开户分支 `acct.ref1 → dstr`，取 `a3 = 'Prague'`（即 Hl.m. Praha 区）。\n- 分子/分母按客户实体计数（去重 `clnt_id`），性别 `gndr = 'F'`。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 15511,
+        "output": 2427,
+        "cache_read": 97024,
+        "cache_write": 0,
+        "reasoning": 1924,
+        "total": 114962
+      },
+      "cost_usd": 0.005568,
+      "elapsed_seconds": 26.72,
+      "agent_duration_ms": 19151,
+      "extra_columns": []
+    }
+  ]
+}

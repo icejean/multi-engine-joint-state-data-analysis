@@ -1,0 +1,3265 @@
+{
+  "database": "works_cycles_er",
+  "description": "该库的完整数据字典（表/字段描述）+ 外键关系 + 列类型，一次性加载即免逐表探索。sys_* 三张元数据表的内容已打包进本文件（对应库已 drop 这三张表，改读本文件）。",
+  "tables": [
+    {
+      "name": "addr",
+      "desc": "地址维度表",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "addr_id",
+          "type": "bigint",
+          "desc": "地址编号"
+        },
+        {
+          "name": "addr_ln1",
+          "type": "varchar(49)",
+          "desc": "地址第一行"
+        },
+        {
+          "name": "addr_ln2",
+          "type": "varchar(38)",
+          "desc": "地址第二行(NULL=地址较短(无第二行))"
+        },
+        {
+          "name": "cty",
+          "type": "varchar(31)",
+          "desc": "城市"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "pstl_cd",
+          "type": "varchar(20)",
+          "desc": "邮编"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "州/省编号"
+        },
+        {
+          "name": "rwgd",
+          "type": "varchar(46)",
+          "desc": "行GUID"
+        },
+        {
+          "name": "sptl_lctn",
+          "type": "varchar(62)",
+          "desc": "空间位置"
+        }
+      ]
+    },
+    {
+      "name": "addr_typ",
+      "desc": "地址类型维度表",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "addr_typ_id",
+          "type": "bigint",
+          "desc": "地址类型编号"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "nm",
+          "type": "varchar(21)",
+          "desc": "名称"
+        },
+        {
+          "name": "rwgd",
+          "type": "varchar(46)",
+          "desc": "行GUID"
+        }
+      ]
+    },
+    {
+      "name": "biz_addr",
+      "desc": "实体-地址关联表(多对多)",
+      "table_type": "junction",
+      "columns": [
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "业务实体编号"
+        },
+        {
+          "name": "ref2",
+          "type": "bigint",
+          "desc": "地址类型编号"
+        },
+        {
+          "name": "ref3",
+          "type": "bigint",
+          "desc": "地址编号"
+        },
+        {
+          "name": "rwgd",
+          "type": "varchar(46)",
+          "desc": "行GUID"
+        }
+      ]
+    },
+    {
+      "name": "biz_cnt",
+      "desc": "实体-联系人关联表(多对多)",
+      "table_type": "junction",
+      "columns": [
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "个人编号"
+        },
+        {
+          "name": "ref2",
+          "type": "bigint",
+          "desc": "联系类型编号"
+        },
+        {
+          "name": "ref3",
+          "type": "bigint",
+          "desc": "业务实体编号"
+        },
+        {
+          "name": "rwgd",
+          "type": "varchar(46)",
+          "desc": "行GUID"
+        }
+      ]
+    },
+    {
+      "name": "biz_ent",
+      "desc": "业务实体主表(个人/门店的父类型)",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "bsns_entt_id",
+          "type": "bigint",
+          "desc": "业务实体编号"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "rwgd",
+          "type": "varchar(46)",
+          "desc": "行GUID"
+        }
+      ]
+    },
+    {
+      "name": "bom",
+      "desc": "物料清单表,产品装配关系(自引用/递归)",
+      "table_type": "fact",
+      "columns": [
+        {
+          "name": "bll_of_mtrl_id",
+          "type": "bigint",
+          "desc": "物料清单编号"
+        },
+        {
+          "name": "bm_lvl",
+          "type": "bigint",
+          "desc": "物料层级(全局层级号,0=顶层成品;求某产品的最深装配层级时,用递归CTE里 level+1 累计,勿用本列)"
+        },
+        {
+          "name": "end_dt",
+          "type": "datetime",
+          "desc": "结束日期(NULL=当前生效,非空=已失效)"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "pr_assm_qty",
+          "type": "double",
+          "desc": "每装配数量"
+        },
+        {
+          "name": "ref1",
+          "type": "varchar(12)",
+          "desc": "计量单位编号"
+        },
+        {
+          "name": "ref2",
+          "type": "bigint",
+          "desc": "组件编号"
+        },
+        {
+          "name": "ref3",
+          "type": "bigint",
+          "desc": "装配产品编号"
+        },
+        {
+          "name": "strt_dt",
+          "type": "datetime",
+          "desc": "开始日期"
+        }
+      ]
+    },
+    {
+      "name": "cart_itm",
+      "desc": "购物车条目表",
+      "table_type": "junction",
+      "columns": [
+        {
+          "name": "dt_crtd",
+          "type": "datetime",
+          "desc": "日期创建"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "qntt",
+          "type": "bigint",
+          "desc": "数量"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "产品编号"
+        },
+        {
+          "name": "shpp_crt_id",
+          "type": "varchar(15)",
+          "desc": "购物购物车编号"
+        },
+        {
+          "name": "shpp_crt_itm_id",
+          "type": "bigint",
+          "desc": "购物购物车条目编号"
+        }
+      ]
+    },
+    {
+      "name": "cnt_typ",
+      "desc": "联系类型维度表",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "cntc_typ_id",
+          "type": "bigint",
+          "desc": "联系类型编号"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "nm",
+          "type": "varchar(41)",
+          "desc": "名称"
+        }
+      ]
+    },
+    {
+      "name": "cnty",
+      "desc": "国家/地区维度表",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "cntr_rgn_cd",
+          "type": "varchar(12)",
+          "desc": "国家地区代码"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "nm",
+          "type": "varchar(54)",
+          "desc": "名称"
+        }
+      ]
+    },
+    {
+      "name": "cnty_cur",
+      "desc": "国家-货币关联表",
+      "table_type": "junction",
+      "columns": [
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "ref1",
+          "type": "varchar(13)",
+          "desc": "货币编号"
+        },
+        {
+          "name": "ref2",
+          "type": "varchar(12)",
+          "desc": "国家/地区编号"
+        }
+      ]
+    },
+    {
+      "name": "crd",
+      "desc": "信用卡维度表",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "crd_nmbr",
+          "type": "varchar(24)",
+          "desc": "卡编号"
+        },
+        {
+          "name": "crd_typ",
+          "type": "varchar(23)",
+          "desc": "卡类型"
+        },
+        {
+          "name": "crdt_crd_id",
+          "type": "bigint",
+          "desc": "信用卡编号"
+        },
+        {
+          "name": "exp_mnth",
+          "type": "bigint",
+          "desc": "到期月"
+        },
+        {
+          "name": "exp_yr",
+          "type": "bigint",
+          "desc": "到期年"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        }
+      ]
+    },
+    {
+      "name": "cult",
+      "desc": "文化/语言维度表",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "cltr_id",
+          "type": "varchar(16)",
+          "desc": "文化编号"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "nm",
+          "type": "varchar(48)",
+          "desc": "名称"
+        }
+      ]
+    },
+    {
+      "name": "cur",
+      "desc": "货币维度表",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "crrn_cd",
+          "type": "varchar(13)",
+          "desc": "货币代码(ISO标准)"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "nm",
+          "type": "varchar(39)",
+          "desc": "名称"
+        }
+      ]
+    },
+    {
+      "name": "cur_rate",
+      "desc": "货币汇率表",
+      "table_type": "fact",
+      "columns": [
+        {
+          "name": "avrg_rt",
+          "type": "double",
+          "desc": "日均汇率"
+        },
+        {
+          "name": "crrn_rt_dt",
+          "type": "datetime",
+          "desc": "汇率日期"
+        },
+        {
+          "name": "crrn_rt_id",
+          "type": "bigint",
+          "desc": "汇率编号"
+        },
+        {
+          "name": "end_of_dy_rt",
+          "type": "double",
+          "desc": "收盘汇率"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "ref1",
+          "type": "varchar(13)",
+          "desc": "目标货币代码"
+        },
+        {
+          "name": "ref2",
+          "type": "varchar(13)",
+          "desc": "源货币代码"
+        }
+      ]
+    },
+    {
+      "name": "cust",
+      "desc": "客户维度表(个人或门店)",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "accn_nmbr",
+          "type": "varchar(20)",
+          "desc": "账户编号(计算列:'AW'+客户编号)"
+        },
+        {
+          "name": "cstm_id",
+          "type": "bigint",
+          "desc": "客户编号"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "门店编号"
+        },
+        {
+          "name": "ref2",
+          "type": "bigint",
+          "desc": "销售区域编号"
+        },
+        {
+          "name": "ref3",
+          "type": "bigint",
+          "desc": "个人编号"
+        },
+        {
+          "name": "rwgd",
+          "type": "varchar(46)",
+          "desc": "行GUID"
+        }
+      ]
+    },
+    {
+      "name": "dept",
+      "desc": "部门维度表",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "dprt_id",
+          "type": "bigint",
+          "desc": "部门编号"
+        },
+        {
+          "name": "grp_nm",
+          "type": "varchar(46)",
+          "desc": "组名称"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "nm",
+          "type": "varchar(36)",
+          "desc": "名称"
+        }
+      ]
+    },
+    {
+      "name": "doc",
+      "desc": "文档表",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "chng_nmbr",
+          "type": "bigint",
+          "desc": "变更编号"
+        },
+        {
+          "name": "dcmn",
+          "type": "mediumblob",
+          "desc": "文档内容"
+        },
+        {
+          "name": "dcmn_lvl",
+          "type": "bigint",
+          "desc": "文档层级深度(计算列:文档层级深度)"
+        },
+        {
+          "name": "dcmn_nd",
+          "type": "varchar(15)",
+          "desc": "文档层级节点"
+        },
+        {
+          "name": "dcmn_smmr",
+          "type": "mediumtext",
+          "desc": "文档摘要(NULL=私密文档)"
+        },
+        {
+          "name": "fl_extn",
+          "type": "varchar(14)",
+          "desc": "文件扩展名"
+        },
+        {
+          "name": "fl_nm",
+          "type": "varchar(62)",
+          "desc": "文件名"
+        },
+        {
+          "name": "fldr_flg",
+          "type": "bigint",
+          "desc": "是否文件夹(0=文件夹,1=文档)"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "员工编号"
+        },
+        {
+          "name": "rvsn",
+          "type": "varchar(11)",
+          "desc": "修订"
+        },
+        {
+          "name": "rwgd",
+          "type": "varchar(46)",
+          "desc": "行GUID"
+        },
+        {
+          "name": "stts",
+          "type": "bigint",
+          "desc": "状态(1=待审批,2=已批准,3=已作废)"
+        },
+        {
+          "name": "ttl",
+          "type": "varchar(58)",
+          "desc": "头衔"
+        }
+      ]
+    },
+    {
+      "name": "eml",
+      "desc": "邮箱地址表",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "eml_addr",
+          "type": "varchar(53)",
+          "desc": "邮箱地址"
+        },
+        {
+          "name": "eml_addr_id",
+          "type": "bigint",
+          "desc": "邮箱编号"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "人员编号"
+        },
+        {
+          "name": "rwgd",
+          "type": "varchar(46)",
+          "desc": "行GUID"
+        }
+      ]
+    },
+    {
+      "name": "emp",
+      "desc": "员工维度表(带职位/工号)",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "brth_dt",
+          "type": "datetime",
+          "desc": "出生日期"
+        },
+        {
+          "name": "crrn_flg",
+          "type": "bigint",
+          "desc": "当前在职标志(0=离职,1=在职)"
+        },
+        {
+          "name": "gndr",
+          "type": "varchar(11)",
+          "desc": "性别(M=男,F=女)"
+        },
+        {
+          "name": "hr_dt",
+          "type": "datetime",
+          "desc": "入职日期"
+        },
+        {
+          "name": "jb_ttl",
+          "type": "varchar(50)",
+          "desc": "工作头衔"
+        },
+        {
+          "name": "lgn_id",
+          "type": "varchar(38)",
+          "desc": "登录账号"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "mrtl_stts",
+          "type": "varchar(11)",
+          "desc": "婚姻状况(M=已婚,S=单身)"
+        },
+        {
+          "name": "ntnl_id_nmbr",
+          "type": "varchar(19)",
+          "desc": "身份证号"
+        },
+        {
+          "name": "orgn_lvl",
+          "type": "bigint",
+          "desc": "组织层级深度(计算列:组织层级深度)"
+        },
+        {
+          "name": "orgn_nd",
+          "type": "varchar(21)",
+          "desc": "组织层级节点(公司层级位置)"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "人员编号"
+        },
+        {
+          "name": "rwgd",
+          "type": "varchar(46)",
+          "desc": "行GUID"
+        },
+        {
+          "name": "sck_lv_hrs",
+          "type": "bigint",
+          "desc": "可用病假小时数"
+        },
+        {
+          "name": "slrd_flg",
+          "type": "bigint",
+          "desc": "是否领薪(0=时薪,1=月薪)"
+        },
+        {
+          "name": "vctn_hrs",
+          "type": "bigint",
+          "desc": "可用年假小时数"
+        }
+      ]
+    },
+    {
+      "name": "emp_dept_hist",
+      "desc": "员工-部门任职历史表(时间区间)",
+      "table_type": "fact",
+      "columns": [
+        {
+          "name": "end_dt",
+          "type": "datetime",
+          "desc": "结束日期"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "班次编号"
+        },
+        {
+          "name": "ref2",
+          "type": "bigint",
+          "desc": "部门编号"
+        },
+        {
+          "name": "ref3",
+          "type": "bigint",
+          "desc": "员工编号"
+        },
+        {
+          "name": "strt_dt",
+          "type": "datetime",
+          "desc": "开始日期"
+        }
+      ]
+    },
+    {
+      "name": "emp_pay_hist",
+      "desc": "员工薪资历史表",
+      "table_type": "fact",
+      "columns": [
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "py_frqn",
+          "type": "bigint",
+          "desc": "发薪频率(1=月薪,2=双周薪)"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "员工编号"
+        },
+        {
+          "name": "rt",
+          "type": "double",
+          "desc": "时薪(小时工资率)"
+        },
+        {
+          "name": "rt_chng_dt",
+          "type": "datetime",
+          "desc": "调薪日期"
+        }
+      ]
+    },
+    {
+      "name": "job_cand",
+      "desc": "求职者维度表",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "jb_cndd_id",
+          "type": "bigint",
+          "desc": "工作求职者编号"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "员工编号"
+        },
+        {
+          "name": "rsm",
+          "type": "mediumtext",
+          "desc": "简历"
+        }
+      ]
+    },
+    {
+      "name": "loc",
+      "desc": "生产位置维度表",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "avlb",
+          "type": "double",
+          "desc": "可用工时(小时)"
+        },
+        {
+          "name": "cst_rt",
+          "type": "double",
+          "desc": "小时成本率"
+        },
+        {
+          "name": "lctn_id",
+          "type": "bigint",
+          "desc": "位置编号"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "nm",
+          "type": "varchar(32)",
+          "desc": "名称"
+        }
+      ]
+    },
+    {
+      "name": "phn_typ",
+      "desc": "电话类型维度表",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "nm",
+          "type": "varchar(14)",
+          "desc": "名称"
+        },
+        {
+          "name": "phn_nmbr_typ_id",
+          "type": "bigint",
+          "desc": "电话类型编号"
+        }
+      ]
+    },
+    {
+      "name": "pmdc",
+      "desc": "型号-描述-文化关联表",
+      "table_type": "junction",
+      "columns": [
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "ref1",
+          "type": "varchar(16)",
+          "desc": "文化/语言编号"
+        },
+        {
+          "name": "ref2",
+          "type": "bigint",
+          "desc": "产品描述编号"
+        },
+        {
+          "name": "ref3",
+          "type": "bigint",
+          "desc": "产品型号编号"
+        }
+      ]
+    },
+    {
+      "name": "po_dtl",
+      "desc": "采购订单明细表",
+      "table_type": "fact",
+      "columns": [
+        {
+          "name": "due_dt",
+          "type": "datetime",
+          "desc": "到期日期"
+        },
+        {
+          "name": "ln_ttl",
+          "type": "double",
+          "desc": "行总额(计算列:订购数量×单价)"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "ordr_qty",
+          "type": "bigint",
+          "desc": "订购数量"
+        },
+        {
+          "name": "prch_ordr_dtl_id",
+          "type": "bigint",
+          "desc": "采购订单明细编号"
+        },
+        {
+          "name": "rcvd_qty",
+          "type": "double",
+          "desc": "已收数量"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "产品编号"
+        },
+        {
+          "name": "ref2",
+          "type": "bigint",
+          "desc": "采购订单编号"
+        },
+        {
+          "name": "rjct_qty",
+          "type": "double",
+          "desc": "拒收数量"
+        },
+        {
+          "name": "stck_qty",
+          "type": "double",
+          "desc": "入库数量"
+        },
+        {
+          "name": "unt_prc",
+          "type": "double",
+          "desc": "单价"
+        }
+      ]
+    },
+    {
+      "name": "po_hdr",
+      "desc": "采购订单头表",
+      "table_type": "fact",
+      "columns": [
+        {
+          "name": "frgh",
+          "type": "double",
+          "desc": "运费"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "ordr_dt",
+          "type": "datetime",
+          "desc": "下单日期"
+        },
+        {
+          "name": "prch_ordr_id",
+          "type": "bigint",
+          "desc": "采购订单编号"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "运输方式编号"
+        },
+        {
+          "name": "ref2",
+          "type": "bigint",
+          "desc": "供应商编号"
+        },
+        {
+          "name": "ref3",
+          "type": "bigint",
+          "desc": "员工编号"
+        },
+        {
+          "name": "rvsn_nmbr",
+          "type": "bigint",
+          "desc": "修订编号"
+        },
+        {
+          "name": "sb_ttl",
+          "type": "double",
+          "desc": "小计金额(计算列:明细行总额之和)"
+        },
+        {
+          "name": "shp_dt",
+          "type": "datetime",
+          "desc": "发货日期"
+        },
+        {
+          "name": "stts",
+          "type": "bigint",
+          "desc": "状态(1=待定,2=已批准,3=已拒绝,4=已完成)"
+        },
+        {
+          "name": "ttl_due",
+          "type": "double",
+          "desc": "应付总额(计算列:小计+税+运费)"
+        },
+        {
+          "name": "tx_amt",
+          "type": "double",
+          "desc": "税额"
+        }
+      ]
+    },
+    {
+      "name": "ppp",
+      "desc": "产品-照片关联表(多对多)",
+      "table_type": "junction",
+      "columns": [
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "prmr",
+          "type": "bigint",
+          "desc": "是否主图(0=非主图,1=主图)"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "产品照片编号"
+        },
+        {
+          "name": "ref2",
+          "type": "bigint",
+          "desc": "产品编号"
+        }
+      ]
+    },
+    {
+      "name": "prod",
+      "desc": "产品维度表,含名称/价格/成本",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "clr",
+          "type": "varchar(22)",
+          "desc": "颜色"
+        },
+        {
+          "name": "clss",
+          "type": "varchar(11)",
+          "desc": "质量等级(H=高,M=中,L=低)"
+        },
+        {
+          "name": "dscn_dt",
+          "type": "datetime",
+          "desc": "停产日期"
+        },
+        {
+          "name": "dys_to_mnfc",
+          "type": "bigint",
+          "desc": "制造天数"
+        },
+        {
+          "name": "fnsh_gds_flg",
+          "type": "bigint",
+          "desc": "是否成品(可售)(0=非成品,1=成品(可售))"
+        },
+        {
+          "name": "lst_prc",
+          "type": "double",
+          "desc": "标价(利润=标价-标准成本)"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "mk_flg",
+          "type": "bigint",
+          "desc": "是否自制(0=外购,1=自制)"
+        },
+        {
+          "name": "nm",
+          "type": "varchar(42)",
+          "desc": "名称"
+        },
+        {
+          "name": "prdc_id",
+          "type": "bigint",
+          "desc": "产品编号"
+        },
+        {
+          "name": "prdc_ln",
+          "type": "varchar(11)",
+          "desc": "产品线(R=公路,M=山地,T=旅行,S=标准)"
+        },
+        {
+          "name": "prdc_nmbr",
+          "type": "varchar(20)",
+          "desc": "产品编号"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "产品型号编号"
+        },
+        {
+          "name": "ref2",
+          "type": "bigint",
+          "desc": "产品子类编号"
+        },
+        {
+          "name": "ref3",
+          "type": "varchar(12)",
+          "desc": "重量单位代码"
+        },
+        {
+          "name": "ref4",
+          "type": "varchar(12)",
+          "desc": "尺寸单位代码"
+        },
+        {
+          "name": "rrdr_pnt",
+          "type": "bigint",
+          "desc": "再订货点(触发补货)"
+        },
+        {
+          "name": "rwgd",
+          "type": "varchar(46)",
+          "desc": "行GUID"
+        },
+        {
+          "name": "sfty_stck_lvl",
+          "type": "bigint",
+          "desc": "最低库存量(安全库存)"
+        },
+        {
+          "name": "sll_end_dt",
+          "type": "datetime",
+          "desc": "停售日期"
+        },
+        {
+          "name": "sll_strt_dt",
+          "type": "datetime",
+          "desc": "开售日期"
+        },
+        {
+          "name": "stnd_cst",
+          "type": "double",
+          "desc": "标准成本"
+        },
+        {
+          "name": "styl",
+          "type": "varchar(11)",
+          "desc": "款式(W=女式,M=男式,U=通用)"
+        },
+        {
+          "name": "sz",
+          "type": "varchar(12)",
+          "desc": "尺寸"
+        },
+        {
+          "name": "wght",
+          "type": "double",
+          "desc": "重量"
+        }
+      ]
+    },
+    {
+      "name": "prod_cat",
+      "desc": "产品大类维度表",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "nm",
+          "type": "varchar(21)",
+          "desc": "名称"
+        },
+        {
+          "name": "prdc_ctgr_id",
+          "type": "bigint",
+          "desc": "产品大类编号"
+        },
+        {
+          "name": "rwgd",
+          "type": "varchar(46)",
+          "desc": "行GUID"
+        }
+      ]
+    },
+    {
+      "name": "prod_cst_hist",
+      "desc": "产品成本历史表",
+      "table_type": "fact",
+      "columns": [
+        {
+          "name": "end_dt",
+          "type": "datetime",
+          "desc": "结束日期"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "产品编号"
+        },
+        {
+          "name": "stnd_cst",
+          "type": "double",
+          "desc": "标准成本"
+        },
+        {
+          "name": "strt_dt",
+          "type": "datetime",
+          "desc": "开始日期"
+        }
+      ]
+    },
+    {
+      "name": "prod_doc",
+      "desc": "产品-文档关联表(多对多)",
+      "table_type": "junction",
+      "columns": [
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "ref1",
+          "type": "varchar(15)",
+          "desc": "文档编号"
+        },
+        {
+          "name": "ref2",
+          "type": "bigint",
+          "desc": "产品编号"
+        }
+      ]
+    },
+    {
+      "name": "prod_dsc",
+      "desc": "产品描述维度表",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "dscr",
+          "type": "varchar(265)",
+          "desc": "描述"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "prdc_dscr_id",
+          "type": "bigint",
+          "desc": "产品描述编号"
+        },
+        {
+          "name": "rwgd",
+          "type": "varchar(46)",
+          "desc": "行GUID"
+        }
+      ]
+    },
+    {
+      "name": "prod_inv",
+      "desc": "产品库存表",
+      "table_type": "fact",
+      "columns": [
+        {
+          "name": "bn",
+          "type": "bigint",
+          "desc": "货位"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "qntt",
+          "type": "bigint",
+          "desc": "数量"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "生产位置编号"
+        },
+        {
+          "name": "ref2",
+          "type": "bigint",
+          "desc": "产品编号"
+        },
+        {
+          "name": "rwgd",
+          "type": "varchar(46)",
+          "desc": "行GUID"
+        },
+        {
+          "name": "shlf",
+          "type": "varchar(13)",
+          "desc": "货架"
+        }
+      ]
+    },
+    {
+      "name": "prod_lst_hist",
+      "desc": "产品标价历史表",
+      "table_type": "fact",
+      "columns": [
+        {
+          "name": "end_dt",
+          "type": "datetime",
+          "desc": "结束日期"
+        },
+        {
+          "name": "lst_prc",
+          "type": "double",
+          "desc": "标价"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "产品编号"
+        },
+        {
+          "name": "strt_dt",
+          "type": "datetime",
+          "desc": "开始日期"
+        }
+      ]
+    },
+    {
+      "name": "prod_mdl",
+      "desc": "产品型号维度表",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "ctlg_dscr",
+          "type": "mediumtext",
+          "desc": "目录描述"
+        },
+        {
+          "name": "inst",
+          "type": "mediumtext",
+          "desc": "使用说明"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "nm",
+          "type": "varchar(37)",
+          "desc": "名称"
+        },
+        {
+          "name": "prdc_mdl_id",
+          "type": "bigint",
+          "desc": "产品型号编号"
+        },
+        {
+          "name": "rwgd",
+          "type": "varchar(46)",
+          "desc": "行GUID"
+        }
+      ]
+    },
+    {
+      "name": "prod_ph",
+      "desc": "产品照片表",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "lrg_pht",
+          "type": "mediumblob",
+          "desc": "大图"
+        },
+        {
+          "name": "lrg_pht_fl_nm",
+          "type": "varchar(45)",
+          "desc": "大图文件名"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "prdc_pht_id",
+          "type": "bigint",
+          "desc": "产品照片编号"
+        },
+        {
+          "name": "thmb_nl_pht",
+          "type": "mediumblob",
+          "desc": "缩略图"
+        },
+        {
+          "name": "thmb_pht_fl_nm",
+          "type": "varchar(45)",
+          "desc": "缩略图文件名"
+        }
+      ]
+    },
+    {
+      "name": "prod_rvw",
+      "desc": "产品评论表",
+      "table_type": "fact",
+      "columns": [
+        {
+          "name": "cmmn",
+          "type": "varchar(265)",
+          "desc": "备注"
+        },
+        {
+          "name": "eml_addr",
+          "type": "varchar(42)",
+          "desc": "邮箱地址"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "prdc_rvw_id",
+          "type": "bigint",
+          "desc": "产品评论编号"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "产品编号"
+        },
+        {
+          "name": "rtng",
+          "type": "bigint",
+          "desc": "评分(1-5,5最高)"
+        },
+        {
+          "name": "rvw_dt",
+          "type": "datetime",
+          "desc": "评论日期"
+        },
+        {
+          "name": "rvwr_nm",
+          "type": "varchar(22)",
+          "desc": "评论者姓名"
+        }
+      ]
+    },
+    {
+      "name": "prod_sub",
+      "desc": "产品子类维度表",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "nm",
+          "type": "varchar(27)",
+          "desc": "名称"
+        },
+        {
+          "name": "prdc_sbct_id",
+          "type": "bigint",
+          "desc": "产品子类编号"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "产品大类编号"
+        },
+        {
+          "name": "rwgd",
+          "type": "varchar(46)",
+          "desc": "行GUID"
+        }
+      ]
+    },
+    {
+      "name": "prod_vnd",
+      "desc": "产品-供应商关联表(多对多)",
+      "table_type": "junction",
+      "columns": [
+        {
+          "name": "avrg_ld_tm",
+          "type": "bigint",
+          "desc": "平均交货期(单位:天)"
+        },
+        {
+          "name": "lst_rcpt_cst",
+          "type": "double",
+          "desc": "上次收货成本(净利(profit on net)=上次收货成本-标准价)"
+        },
+        {
+          "name": "lst_rcpt_dt",
+          "type": "datetime",
+          "desc": "上次收货日期"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "mn_ordr_qty",
+          "type": "bigint",
+          "desc": "最小订购数量"
+        },
+        {
+          "name": "mx_ordr_qty",
+          "type": "bigint",
+          "desc": "最大订购数量"
+        },
+        {
+          "name": "on_ordr_qty",
+          "type": "bigint",
+          "desc": "在途订购数量(0=缺货)"
+        },
+        {
+          "name": "ref1",
+          "type": "varchar(13)",
+          "desc": "计量单位编号"
+        },
+        {
+          "name": "ref2",
+          "type": "bigint",
+          "desc": "供应商编号"
+        },
+        {
+          "name": "ref3",
+          "type": "bigint",
+          "desc": "产品编号"
+        },
+        {
+          "name": "stnd_prc",
+          "type": "double",
+          "desc": "标准价格(区别于产品StandardCost(标准成本);净利(profit on net)=上次收货成本-此值)"
+        }
+      ]
+    },
+    {
+      "name": "prsn",
+      "desc": "人员维度表,含姓名/类型",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "addt_cntc_inf",
+          "type": "mediumtext",
+          "desc": "补充联系信息"
+        },
+        {
+          "name": "dmgr",
+          "type": "mediumtext",
+          "desc": "人口统计信息"
+        },
+        {
+          "name": "eml_prmt",
+          "type": "bigint",
+          "desc": "邮件促销标记(0=不接收,1=接收,2=接收(含合作方))"
+        },
+        {
+          "name": "frst_nm",
+          "type": "varchar(34)",
+          "desc": "名"
+        },
+        {
+          "name": "lst_nm",
+          "type": "varchar(32)",
+          "desc": "姓"
+        },
+        {
+          "name": "mddl_nm",
+          "type": "varchar(26)",
+          "desc": "中间名"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "nm_styl",
+          "type": "bigint",
+          "desc": "名称款式(0=西方(名在前),1=东方(姓在前))"
+        },
+        {
+          "name": "prsn_typ",
+          "type": "varchar(12)",
+          "desc": "人员类型(SC=门店联系人,IN=个人客户,SP=销售员,EM=员工,VC=供应商联系人,GC=一般联系人)"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "业务实体编号"
+        },
+        {
+          "name": "rwgd",
+          "type": "varchar(46)",
+          "desc": "行GUID"
+        },
+        {
+          "name": "sffx",
+          "type": "varchar(13)",
+          "desc": "后缀"
+        },
+        {
+          "name": "ttl",
+          "type": "varchar(14)",
+          "desc": "头衔"
+        }
+      ]
+    },
+    {
+      "name": "prsn_crd",
+      "desc": "个人-信用卡关联表(多对多)",
+      "table_type": "junction",
+      "columns": [
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "人员编号"
+        },
+        {
+          "name": "ref2",
+          "type": "bigint",
+          "desc": "信用卡编号"
+        }
+      ]
+    },
+    {
+      "name": "pwd",
+      "desc": "登录密码表",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "pssw_hsh",
+          "type": "varchar(54)",
+          "desc": "密码哈希"
+        },
+        {
+          "name": "pssw_slt",
+          "type": "varchar(18)",
+          "desc": "密码盐"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "人员编号"
+        },
+        {
+          "name": "rwgd",
+          "type": "varchar(46)",
+          "desc": "行GUID"
+        }
+      ]
+    },
+    {
+      "name": "scrp",
+      "desc": "报废原因维度表",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "nm",
+          "type": "varchar(41)",
+          "desc": "名称"
+        },
+        {
+          "name": "scrp_rsn_id",
+          "type": "bigint",
+          "desc": "报废原因编号"
+        }
+      ]
+    },
+    {
+      "name": "shft",
+      "desc": "班次维度表",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "end_tm",
+          "type": "varchar(18)",
+          "desc": "结束时间"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "nm",
+          "type": "varchar(17)",
+          "desc": "名称"
+        },
+        {
+          "name": "shft_id",
+          "type": "bigint",
+          "desc": "班次编号"
+        },
+        {
+          "name": "strt_tm",
+          "type": "varchar(18)",
+          "desc": "开始时间"
+        }
+      ]
+    },
+    {
+      "name": "shp_mth",
+      "desc": "运输方式维度表",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "nm",
+          "type": "varchar(28)",
+          "desc": "名称"
+        },
+        {
+          "name": "rwgd",
+          "type": "varchar(46)",
+          "desc": "行GUID"
+        },
+        {
+          "name": "shp_bs",
+          "type": "double",
+          "desc": "基础运费"
+        },
+        {
+          "name": "shp_mthd_id",
+          "type": "bigint",
+          "desc": "运输方式编号"
+        },
+        {
+          "name": "shp_rt",
+          "type": "double",
+          "desc": "每磅运费"
+        }
+      ]
+    },
+    {
+      "name": "sls_prsn",
+      "desc": "销售员维度表",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "bns",
+          "type": "double",
+          "desc": "奖金(0=未达配额)"
+        },
+        {
+          "name": "cmms_pct",
+          "type": "double",
+          "desc": "佣金比例"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "销售区域编号"
+        },
+        {
+          "name": "ref2",
+          "type": "bigint",
+          "desc": "员工编号"
+        },
+        {
+          "name": "rwgd",
+          "type": "varchar(46)",
+          "desc": "行GUID"
+        },
+        {
+          "name": "sls_lst_yr",
+          "type": "double",
+          "desc": "去年销售额"
+        },
+        {
+          "name": "sls_qt",
+          "type": "double",
+          "desc": "销售配额"
+        },
+        {
+          "name": "sls_ytd",
+          "type": "double",
+          "desc": "年初至今销售额"
+        }
+      ]
+    },
+    {
+      "name": "sls_rsn",
+      "desc": "销售原因维度表",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "nm",
+          "type": "varchar(35)",
+          "desc": "名称"
+        },
+        {
+          "name": "rsn_typ",
+          "type": "varchar(19)",
+          "desc": "原因类型"
+        },
+        {
+          "name": "sls_rsn_id",
+          "type": "bigint",
+          "desc": "销售原因编号"
+        }
+      ]
+    },
+    {
+      "name": "sls_tax",
+      "desc": "销售税率表",
+      "table_type": "fact",
+      "columns": [
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "nm",
+          "type": "varchar(47)",
+          "desc": "名称(含'+'=多重税)"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "州/省编号"
+        },
+        {
+          "name": "rwgd",
+          "type": "varchar(46)",
+          "desc": "行GUID"
+        },
+        {
+          "name": "sls_tx_rt_id",
+          "type": "bigint",
+          "desc": "销售税率编号"
+        },
+        {
+          "name": "tx_rt",
+          "type": "double",
+          "desc": "税率"
+        },
+        {
+          "name": "tx_typ",
+          "type": "bigint",
+          "desc": "税类型(1=零售,2=批发,3=全部)"
+        }
+      ]
+    },
+    {
+      "name": "sls_terr",
+      "desc": "销售区域维度表",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "cst_lst_yr",
+          "type": "double",
+          "desc": "去年成本"
+        },
+        {
+          "name": "cst_ytd",
+          "type": "double",
+          "desc": "年初至今成本"
+        },
+        {
+          "name": "grp",
+          "type": "varchar(23)",
+          "desc": "地理分组"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "nm",
+          "type": "varchar(24)",
+          "desc": "名称"
+        },
+        {
+          "name": "ref1",
+          "type": "varchar(12)",
+          "desc": "国家/地区编号"
+        },
+        {
+          "name": "rwgd",
+          "type": "varchar(46)",
+          "desc": "行GUID"
+        },
+        {
+          "name": "sls_lst_yr",
+          "type": "double",
+          "desc": "去年销售额"
+        },
+        {
+          "name": "sls_ytd",
+          "type": "double",
+          "desc": "年初至今销售额"
+        },
+        {
+          "name": "trrt_id",
+          "type": "bigint",
+          "desc": "区域编号"
+        }
+      ]
+    },
+    {
+      "name": "sls_terr_hist",
+      "desc": "销售员-区域任职历史表",
+      "table_type": "fact",
+      "columns": [
+        {
+          "name": "end_dt",
+          "type": "datetime",
+          "desc": "结束日期"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "销售区域编号"
+        },
+        {
+          "name": "ref2",
+          "type": "bigint",
+          "desc": "销售员编号"
+        },
+        {
+          "name": "rwgd",
+          "type": "varchar(46)",
+          "desc": "行GUID"
+        },
+        {
+          "name": "strt_dt",
+          "type": "datetime",
+          "desc": "开始日期"
+        }
+      ]
+    },
+    {
+      "name": "so_dtl",
+      "desc": "销售订单明细表,每个订单行一个产品及其数量/价格",
+      "table_type": "fact",
+      "columns": [
+        {
+          "name": "crrr_trck_nmbr",
+          "type": "varchar(22)",
+          "desc": "承运人追踪号"
+        },
+        {
+          "name": "ln_ttl",
+          "type": "double",
+          "desc": "行总额"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "ordr_qty",
+          "type": "bigint",
+          "desc": "订购数量"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "促销编号"
+        },
+        {
+          "name": "ref2",
+          "type": "bigint",
+          "desc": "产品编号"
+        },
+        {
+          "name": "ref3",
+          "type": "bigint",
+          "desc": "销售订单编号"
+        },
+        {
+          "name": "rwgd",
+          "type": "varchar(46)",
+          "desc": "行GUID"
+        },
+        {
+          "name": "sls_ordr_dtl_id",
+          "type": "bigint",
+          "desc": "销售订单明细编号"
+        },
+        {
+          "name": "unt_prc",
+          "type": "double",
+          "desc": "单价"
+        },
+        {
+          "name": "unt_prc_dscn",
+          "type": "double",
+          "desc": "单价折扣"
+        }
+      ]
+    },
+    {
+      "name": "so_hdr",
+      "desc": "销售订单头表,每笔订单一行(客户/日期/金额/收货地址)",
+      "table_type": "fact",
+      "columns": [
+        {
+          "name": "accn_nmbr",
+          "type": "varchar(24)",
+          "desc": "账户编号"
+        },
+        {
+          "name": "cmmn",
+          "type": "varchar(11)",
+          "desc": "备注"
+        },
+        {
+          "name": "crdt_crd_appr_cd",
+          "type": "varchar(25)",
+          "desc": "信用卡授权码"
+        },
+        {
+          "name": "due_dt",
+          "type": "datetime",
+          "desc": "到期日期"
+        },
+        {
+          "name": "frgh",
+          "type": "double",
+          "desc": "运费"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "onln_ordr_flg",
+          "type": "bigint",
+          "desc": "在线下单标记"
+        },
+        {
+          "name": "ordr_dt",
+          "type": "datetime",
+          "desc": "下单日期"
+        },
+        {
+          "name": "prch_ordr_nmbr",
+          "type": "varchar(23)",
+          "desc": "采购订单编号"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "货币汇率编号"
+        },
+        {
+          "name": "ref2",
+          "type": "bigint",
+          "desc": "信用卡编号"
+        },
+        {
+          "name": "ref3",
+          "type": "bigint",
+          "desc": "运输方式编号"
+        },
+        {
+          "name": "ref4",
+          "type": "bigint",
+          "desc": "收货地址编号"
+        },
+        {
+          "name": "ref5",
+          "type": "bigint",
+          "desc": "账单地址编号"
+        },
+        {
+          "name": "ref6",
+          "type": "bigint",
+          "desc": "销售区域编号"
+        },
+        {
+          "name": "ref7",
+          "type": "bigint",
+          "desc": "销售员编号"
+        },
+        {
+          "name": "ref8",
+          "type": "bigint",
+          "desc": "客户编号"
+        },
+        {
+          "name": "rvsn_nmbr",
+          "type": "bigint",
+          "desc": "修订编号"
+        },
+        {
+          "name": "rwgd",
+          "type": "varchar(46)",
+          "desc": "行GUID"
+        },
+        {
+          "name": "sb_ttl",
+          "type": "double",
+          "desc": "小计金额"
+        },
+        {
+          "name": "shp_dt",
+          "type": "datetime",
+          "desc": "发货日期"
+        },
+        {
+          "name": "sls_ordr_id",
+          "type": "bigint",
+          "desc": "销售订单编号"
+        },
+        {
+          "name": "sls_ordr_nmbr",
+          "type": "varchar(17)",
+          "desc": "销售订单编号"
+        },
+        {
+          "name": "stts",
+          "type": "bigint",
+          "desc": "状态(1=待定,2=已批准,3=已拒绝,4=已完成)"
+        },
+        {
+          "name": "ttl_due",
+          "type": "double",
+          "desc": "应付总额"
+        },
+        {
+          "name": "tx_amt",
+          "type": "double",
+          "desc": "税额"
+        }
+      ]
+    },
+    {
+      "name": "so_rsn",
+      "desc": "销售订单-销售原因关联表(多对多)",
+      "table_type": "junction",
+      "columns": [
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "销售原因编号"
+        },
+        {
+          "name": "ref2",
+          "type": "bigint",
+          "desc": "销售订单编号"
+        }
+      ]
+    },
+    {
+      "name": "sp_q_hist",
+      "desc": "销售员配额历史表",
+      "table_type": "fact",
+      "columns": [
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "qt_dt",
+          "type": "datetime",
+          "desc": "配额日期"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "销售员编号"
+        },
+        {
+          "name": "rwgd",
+          "type": "varchar(46)",
+          "desc": "行GUID"
+        },
+        {
+          "name": "sls_qt",
+          "type": "double",
+          "desc": "销售配额"
+        }
+      ]
+    },
+    {
+      "name": "spcl_offr",
+      "desc": "促销优惠维度表",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "ctgr",
+          "type": "varchar(21)",
+          "desc": "类别"
+        },
+        {
+          "name": "dscn_pct",
+          "type": "double",
+          "desc": "折扣比例"
+        },
+        {
+          "name": "dscr",
+          "type": "varchar(44)",
+          "desc": "描述"
+        },
+        {
+          "name": "end_dt",
+          "type": "datetime",
+          "desc": "结束日期(促销期=结束日期-开始日期)"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "mn_qty",
+          "type": "bigint",
+          "desc": "最低数量"
+        },
+        {
+          "name": "mx_qty",
+          "type": "bigint",
+          "desc": "最高数量"
+        },
+        {
+          "name": "rwgd",
+          "type": "varchar(46)",
+          "desc": "行GUID"
+        },
+        {
+          "name": "spcl_offr_id",
+          "type": "bigint",
+          "desc": "特殊优惠编号"
+        },
+        {
+          "name": "strt_dt",
+          "type": "datetime",
+          "desc": "开始日期"
+        },
+        {
+          "name": "typ",
+          "type": "varchar(30)",
+          "desc": "类型"
+        }
+      ]
+    },
+    {
+      "name": "spcl_prod",
+      "desc": "促销-产品关联表(多对多)",
+      "table_type": "junction",
+      "columns": [
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "产品编号"
+        },
+        {
+          "name": "ref2",
+          "type": "bigint",
+          "desc": "促销优惠编号"
+        },
+        {
+          "name": "rwgd",
+          "type": "varchar(46)",
+          "desc": "行GUID"
+        }
+      ]
+    },
+    {
+      "name": "st_prv",
+      "desc": "州/省维度表",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "is_only_stt_prvn_flg",
+          "type": "bigint",
+          "desc": "是否唯一州省标志(0=有州省代码,1=无州省代码(用国家代码))"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "nm",
+          "type": "varchar(34)",
+          "desc": "名称"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "销售区域编号"
+        },
+        {
+          "name": "ref2",
+          "type": "varchar(12)",
+          "desc": "国家/地区编号"
+        },
+        {
+          "name": "rwgd",
+          "type": "varchar(46)",
+          "desc": "行GUID"
+        },
+        {
+          "name": "stt_prvn_cd",
+          "type": "varchar(13)",
+          "desc": "州省代码"
+        },
+        {
+          "name": "stt_prvn_id",
+          "type": "bigint",
+          "desc": "州省编号"
+        }
+      ]
+    },
+    {
+      "name": "stor",
+      "desc": "门店维度表(公司客户)",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "dmgr",
+          "type": "mediumtext",
+          "desc": "人口统计信息"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "nm",
+          "type": "varchar(51)",
+          "desc": "名称"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "销售员编号"
+        },
+        {
+          "name": "ref2",
+          "type": "bigint",
+          "desc": "业务实体编号"
+        },
+        {
+          "name": "rwgd",
+          "type": "varchar(46)",
+          "desc": "行GUID"
+        }
+      ]
+    },
+    {
+      "name": "txn_hist",
+      "desc": "库存事务历史表",
+      "table_type": "fact",
+      "columns": [
+        {
+          "name": "actl_cst",
+          "type": "double",
+          "desc": "实际成本"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "qntt",
+          "type": "bigint",
+          "desc": "数量"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "产品编号"
+        },
+        {
+          "name": "rfrn_ordr_id",
+          "type": "bigint",
+          "desc": "关联订单编号"
+        },
+        {
+          "name": "rfrn_ordr_ln_id",
+          "type": "bigint",
+          "desc": "关联订单行号"
+        },
+        {
+          "name": "trns_dt",
+          "type": "datetime",
+          "desc": "事务日期"
+        },
+        {
+          "name": "trns_id",
+          "type": "bigint",
+          "desc": "事务编号"
+        },
+        {
+          "name": "trns_typ",
+          "type": "varchar(11)",
+          "desc": "事务类型(W=工单,S=销售订单,P=采购订单)"
+        }
+      ]
+    },
+    {
+      "name": "txn_hist_a",
+      "desc": "库存事务历史归档表",
+      "table_type": "fact",
+      "columns": [
+        {
+          "name": "actl_cst",
+          "type": "double",
+          "desc": "实际成本"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "prdc_id",
+          "type": "bigint",
+          "desc": "产品编号"
+        },
+        {
+          "name": "qntt",
+          "type": "bigint",
+          "desc": "数量"
+        },
+        {
+          "name": "rfrn_ordr_id",
+          "type": "bigint",
+          "desc": "关联订单编号"
+        },
+        {
+          "name": "rfrn_ordr_ln_id",
+          "type": "bigint",
+          "desc": "关联订单行号"
+        },
+        {
+          "name": "trns_dt",
+          "type": "datetime",
+          "desc": "事务日期"
+        },
+        {
+          "name": "trns_id",
+          "type": "bigint",
+          "desc": "事务编号"
+        },
+        {
+          "name": "trns_typ",
+          "type": "varchar(11)",
+          "desc": "事务类型(W=工单,S=销售订单,P=采购订单)"
+        }
+      ]
+    },
+    {
+      "name": "unit_msr",
+      "desc": "计量单位维度表",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "nm",
+          "type": "varchar(30)",
+          "desc": "名称"
+        },
+        {
+          "name": "unt_msr_cd",
+          "type": "varchar(13)",
+          "desc": "计量单位代码"
+        }
+      ]
+    },
+    {
+      "name": "vnd",
+      "desc": "供应商维度表",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "accn_nmbr",
+          "type": "varchar(22)",
+          "desc": "账户编号"
+        },
+        {
+          "name": "actv_flg",
+          "type": "bigint",
+          "desc": "是否在用标志(0=停用,1=在用)"
+        },
+        {
+          "name": "crdt_rtng",
+          "type": "bigint",
+          "desc": "信用评级(1=优秀,2=良好,3=中上,4=一般,5=较差)"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "nm",
+          "type": "varchar(43)",
+          "desc": "名称"
+        },
+        {
+          "name": "prch_wb_srvc_url",
+          "type": "varchar(37)",
+          "desc": "采购Web服务URL"
+        },
+        {
+          "name": "prfr_vndr_stts",
+          "type": "bigint",
+          "desc": "首选供应商标志(0=非首选,1=首选)"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "业务实体编号"
+        }
+      ]
+    },
+    {
+      "name": "wo",
+      "desc": "生产工单表",
+      "table_type": "fact",
+      "columns": [
+        {
+          "name": "due_dt",
+          "type": "datetime",
+          "desc": "到期日期"
+        },
+        {
+          "name": "end_dt",
+          "type": "datetime",
+          "desc": "结束日期"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "ordr_qty",
+          "type": "bigint",
+          "desc": "订购数量"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "报废原因编号"
+        },
+        {
+          "name": "ref2",
+          "type": "bigint",
+          "desc": "产品编号"
+        },
+        {
+          "name": "scrp_qty",
+          "type": "bigint",
+          "desc": "报废数量"
+        },
+        {
+          "name": "stck_qty",
+          "type": "bigint",
+          "desc": "入库数量(计算列:订单量-报废量)"
+        },
+        {
+          "name": "strt_dt",
+          "type": "datetime",
+          "desc": "开始日期"
+        },
+        {
+          "name": "wrk_ordr_id",
+          "type": "bigint",
+          "desc": "工单编号"
+        }
+      ]
+    },
+    {
+      "name": "wo_rtg",
+      "desc": "生产工序路由表",
+      "table_type": "fact",
+      "columns": [
+        {
+          "name": "actl_cst",
+          "type": "double",
+          "desc": "实际成本"
+        },
+        {
+          "name": "actl_end_dt",
+          "type": "datetime",
+          "desc": "实际结束日期"
+        },
+        {
+          "name": "actl_rsrc_hrs",
+          "type": "double",
+          "desc": "实际资源工时"
+        },
+        {
+          "name": "actl_strt_dt",
+          "type": "datetime",
+          "desc": "实际开始日期"
+        },
+        {
+          "name": "mdfd_dt",
+          "type": "datetime",
+          "desc": "最后修改时间"
+        },
+        {
+          "name": "oprt_sqnc",
+          "type": "bigint",
+          "desc": "工序顺序"
+        },
+        {
+          "name": "plnn_cst",
+          "type": "double",
+          "desc": "计划成本"
+        },
+        {
+          "name": "prdc_id",
+          "type": "bigint",
+          "desc": "产品编号"
+        },
+        {
+          "name": "ref1",
+          "type": "bigint",
+          "desc": "生产位置编号"
+        },
+        {
+          "name": "ref2",
+          "type": "bigint",
+          "desc": "生产工单编号"
+        },
+        {
+          "name": "schd_end_dt",
+          "type": "datetime",
+          "desc": "计划结束日期"
+        },
+        {
+          "name": "schd_strt_dt",
+          "type": "datetime",
+          "desc": "计划开始日期"
+        }
+      ]
+    }
+  ],
+  "foreign_keys": [
+    {
+      "from": "addr.ref1",
+      "to": "st_prv.stt_prvn_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "biz_addr.ref3",
+      "to": "addr.addr_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "biz_addr.ref2",
+      "to": "addr_typ.addr_typ_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "biz_addr.ref1",
+      "to": "biz_ent.bsns_entt_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "biz_cnt.ref3",
+      "to": "biz_ent.bsns_entt_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "biz_cnt.ref2",
+      "to": "cnt_typ.cntc_typ_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "biz_cnt.ref1",
+      "to": "prsn.ref1",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "bom.ref2",
+      "to": "prod.prdc_id",
+      "seq": 1,
+      "count": 2
+    },
+    {
+      "from": "bom.ref3",
+      "to": "prod.prdc_id",
+      "seq": 2,
+      "count": 2
+    },
+    {
+      "from": "bom.ref1",
+      "to": "unit_msr.unt_msr_cd",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "cart_itm.ref1",
+      "to": "prod.prdc_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "cnty_cur.ref2",
+      "to": "cnty.cntr_rgn_cd",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "cnty_cur.ref1",
+      "to": "cur.crrn_cd",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "cur_rate.ref1",
+      "to": "cur.crrn_cd",
+      "seq": 1,
+      "count": 2
+    },
+    {
+      "from": "cur_rate.ref2",
+      "to": "cur.crrn_cd",
+      "seq": 2,
+      "count": 2
+    },
+    {
+      "from": "cust.ref3",
+      "to": "prsn.ref1",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "cust.ref2",
+      "to": "sls_terr.trrt_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "cust.ref1",
+      "to": "stor.ref2",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "doc.ref1",
+      "to": "emp.ref1",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "eml.ref1",
+      "to": "prsn.ref1",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "emp_dept_hist.ref2",
+      "to": "dept.dprt_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "emp_dept_hist.ref3",
+      "to": "emp.ref1",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "emp_dept_hist.ref1",
+      "to": "shft.shft_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "emp_pay_hist.ref1",
+      "to": "emp.ref1",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "emp.ref1",
+      "to": "prsn.ref1",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "job_cand.ref1",
+      "to": "emp.ref1",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "pmdc.ref1",
+      "to": "cult.cltr_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "pmdc.ref2",
+      "to": "prod_dsc.prdc_dscr_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "pmdc.ref3",
+      "to": "prod_mdl.prdc_mdl_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "po_dtl.ref2",
+      "to": "po_hdr.prch_ordr_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "po_dtl.ref1",
+      "to": "prod.prdc_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "po_hdr.ref3",
+      "to": "emp.ref1",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "po_hdr.ref1",
+      "to": "shp_mth.shp_mthd_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "po_hdr.ref2",
+      "to": "vnd.ref1",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "ppp.ref2",
+      "to": "prod.prdc_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "ppp.ref1",
+      "to": "prod_ph.prdc_pht_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "prod_cst_hist.ref1",
+      "to": "prod.prdc_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "prod_doc.ref1",
+      "to": "doc.dcmn_nd",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "prod_doc.ref2",
+      "to": "prod.prdc_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "prod_inv.ref1",
+      "to": "loc.lctn_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "prod_inv.ref2",
+      "to": "prod.prdc_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "prod_lst_hist.ref1",
+      "to": "prod.prdc_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "prod.ref1",
+      "to": "prod_mdl.prdc_mdl_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "prod.ref2",
+      "to": "prod_sub.prdc_sbct_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "prod_rvw.ref1",
+      "to": "prod.prdc_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "prod_sub.ref1",
+      "to": "prod_cat.prdc_ctgr_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "prod.ref3",
+      "to": "unit_msr.unt_msr_cd",
+      "seq": 1,
+      "count": 2
+    },
+    {
+      "from": "prod.ref4",
+      "to": "unit_msr.unt_msr_cd",
+      "seq": 2,
+      "count": 2
+    },
+    {
+      "from": "prod_vnd.ref3",
+      "to": "prod.prdc_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "prod_vnd.ref1",
+      "to": "unit_msr.unt_msr_cd",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "prod_vnd.ref2",
+      "to": "vnd.ref1",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "prsn.ref1",
+      "to": "biz_ent.bsns_entt_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "prsn_crd.ref2",
+      "to": "crd.crdt_crd_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "prsn_crd.ref1",
+      "to": "prsn.ref1",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "pwd.ref1",
+      "to": "prsn.ref1",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "sls_prsn.ref2",
+      "to": "emp.ref1",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "sls_prsn.ref1",
+      "to": "sls_terr.trrt_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "sls_tax.ref1",
+      "to": "st_prv.stt_prvn_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "sls_terr.ref1",
+      "to": "cnty.cntr_rgn_cd",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "sls_terr_hist.ref2",
+      "to": "sls_prsn.ref2",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "sls_terr_hist.ref1",
+      "to": "sls_terr.trrt_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "so_dtl.ref3",
+      "to": "so_hdr.sls_ordr_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "so_dtl.ref1",
+      "to": "spcl_prod.ref2",
+      "seq": 1,
+      "count": 2
+    },
+    {
+      "from": "so_dtl.ref2",
+      "to": "spcl_prod.ref1",
+      "seq": 2,
+      "count": 2
+    },
+    {
+      "from": "so_hdr.ref4",
+      "to": "addr.addr_id",
+      "seq": 1,
+      "count": 2
+    },
+    {
+      "from": "so_hdr.ref5",
+      "to": "addr.addr_id",
+      "seq": 2,
+      "count": 2
+    },
+    {
+      "from": "so_hdr.ref2",
+      "to": "crd.crdt_crd_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "so_hdr.ref1",
+      "to": "cur_rate.crrn_rt_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "so_hdr.ref8",
+      "to": "cust.cstm_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "so_hdr.ref3",
+      "to": "shp_mth.shp_mthd_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "so_hdr.ref7",
+      "to": "sls_prsn.ref2",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "so_hdr.ref6",
+      "to": "sls_terr.trrt_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "so_rsn.ref1",
+      "to": "sls_rsn.sls_rsn_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "so_rsn.ref2",
+      "to": "so_hdr.sls_ordr_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "sp_q_hist.ref1",
+      "to": "sls_prsn.ref2",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "spcl_prod.ref1",
+      "to": "prod.prdc_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "spcl_prod.ref2",
+      "to": "spcl_offr.spcl_offr_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "st_prv.ref2",
+      "to": "cnty.cntr_rgn_cd",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "st_prv.ref1",
+      "to": "sls_terr.trrt_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "stor.ref2",
+      "to": "biz_ent.bsns_entt_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "stor.ref1",
+      "to": "sls_prsn.ref2",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "txn_hist.ref1",
+      "to": "prod.prdc_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "vnd.ref1",
+      "to": "biz_ent.bsns_entt_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "wo.ref2",
+      "to": "prod.prdc_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "wo_rtg.ref1",
+      "to": "loc.lctn_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "wo_rtg.ref2",
+      "to": "wo.wrk_ordr_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "wo.ref1",
+      "to": "scrp.scrp_rsn_id",
+      "seq": 1,
+      "count": 1
+    }
+  ],
+  "stats": {
+    "tables": 65,
+    "columns": 455,
+    "foreign_keys": 87
+  }
+}

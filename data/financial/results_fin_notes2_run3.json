@@ -1,0 +1,121 @@
+{
+  "runs": [
+    {
+      "question_id": 19,
+      "datasource": "financial",
+      "chat_id": "9f65c3ee00a340eeaf6fe31beb6311d8",
+      "final_sql": "SELECT c.gndr FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON d.ref2 = a.accn_id JOIN dstr ds ON a.ref1 = ds.dstr_id WHERE d.typ = 'OWNER' AND ds.a11 = (SELECT MAX(a11) FROM dstr) ORDER BY c.brth_dt ASC LIMIT 1",
+      "sql_history": [
+        "SELECT c.gndr FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON d.ref2 = a.accn_id JOIN dstr ds ON a.ref1 = ds.dstr_id WHERE d.typ = 'OWNER' AND ds.a11 = (SELECT MAX(a11) FROM dstr) ORDER BY c.brth_dt ASC LIMIT 1"
+      ],
+      "agent_text": "性别为 **M（男）**。\n\n查询逻辑：先在 `dstr` 中取平均工资（`a11`）最高的分支，再经 `acct.ref1 → dsp.ref2 → dsp.ref1 → clnt` 找到在该分支开户的客户，按出生日期 `brth_dt` 升序取最早者（最年长），返回其性别 `gndr` = **M**。\n\n📁 结果：`M`",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 16132,
+        "output": 1353,
+        "cache_read": 97280,
+        "cache_write": 0,
+        "reasoning": 849,
+        "total": 114765
+      },
+      "cost_usd": 0.005361,
+      "elapsed_seconds": 21.36,
+      "agent_duration_ms": 13527,
+      "extra_columns": []
+    },
+    {
+      "question_id": 43,
+      "datasource": "financial",
+      "chat_id": "b4148444bb9f449995d5830059ffff50",
+      "final_sql": "SELECT d.a3, SUM(l.amnt) AS total_active_loan FROM ln l JOIN acct a ON l.ref1 = a.accn_id JOIN dstr d ON a.ref1 = d.dstr_id WHERE l.stts IN ('C','D') GROUP BY d.a3 ORDER BY total_active_loan DESC LIMIT 1",
+      "sql_history": [
+        "SELECT d.a3, SUM(l.amnt) AS total_active_loan FROM ln l JOIN acct a ON l.ref1 = a.accn_id JOIN dstr d ON a.ref1 = d.dstr_id WHERE l.stts IN ('C','D') GROUP BY d.a3 ORDER BY total_active_loan DESC LIMIT 1"
+      ],
+      "agent_text": "**南摩拉维亚（south Moravia）** 的活跃贷款金额最高，合计 **15,776,220**。\n\n📁 /home/ubuntu/.openclaw/workspace/financial_highest_active_loan.png",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 15937,
+        "output": 1068,
+        "cache_read": 67328,
+        "cache_write": 0,
+        "reasoning": 767,
+        "total": 84333
+      },
+      "cost_usd": 0.004415,
+      "elapsed_seconds": 19.14,
+      "agent_duration_ms": 11644,
+      "extra_columns": [
+        "total_active_loan"
+      ]
+    },
+    {
+      "question_id": 57,
+      "datasource": "financial",
+      "chat_id": "20c972c2aea74f5f86380f086af6dac9",
+      "final_sql": "SELECT T1.ref1 FROM trns AS T1 INNER JOIN acct AS T2 ON T1.ref1 = T2.accn_id WHERE YEAR(T1.dt) = 1998 AND T1.oprt = 'VYBER KARTOU' AND T1.amnt < (SELECT AVG(amnt) FROM trns WHERE YEAR(dt) = 1998)",
+      "sql_history": [
+        "SELECT T1.ref1 FROM trns AS T1 INNER JOIN acct AS T2 ON T1.ref1 = T2.accn_id WHERE YEAR(T1.dt) = 1998 AND T1.oprt = 'VYBER KARTOU' AND T1.amnt < (SELECT AVG(amnt) FROM trns WHERE YEAR(dt) = 1998)"
+      ],
+      "agent_text": "账户持有人识别号（transaction 所属账户 id，对应 `trns.ref1 = acct.accn_id`），即 1998 年信用卡取现（`oprt='VYBER KARTOU'`）且金额低于 1998 年全体交易平均金额的记录：\n\n14、14、14、14、14、14、33、33、33、33、34、43、43、43、43、43、43、43、43、43、43、48、48、51、51、51、51\n\n说明：按该题权威口径，平均值为 1998 年**全部交易**的 `AVG(amnt)`（非仅信用卡），且按 JOIN 后明细行返回、不去重。去重后的账户号为 14、33、34、43、48、51。",
+      "tool_calls": 7,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 6,
+      "tool_rounds": 5,
+      "tokens": {
+        "input": 20552,
+        "output": 3841,
+        "cache_read": 170880,
+        "cache_write": 0,
+        "reasoning": 2974,
+        "total": 195273
+      },
+      "cost_usd": 0.008737,
+      "elapsed_seconds": 38.94,
+      "agent_duration_ms": 31658,
+      "extra_columns": []
+    },
+    {
+      "question_id": 91,
+      "datasource": "financial",
+      "chat_id": "f5555dc5644f4b4f9e57c42c38848be9",
+      "final_sql": "SELECT SUM(t.amnt) AS total_paid FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id AND d.typ = 'OWNER' JOIN acct a ON a.accn_id = d.ref2 JOIN trns t ON t.ref1 = a.accn_id WHERE c.clnt_id = 617 AND t.dt >= '1998-01-01' AND t.dt < '1999-01-01'",
+      "sql_history": [
+        "SELECT typ, COUNT(*) AS cnt, MIN(amnt) AS mn, MAX(amnt) AS mx FROM trns GROUP BY typ",
+        "SELECT MIN(dt) AS mn, MAX(dt) AS mx FROM trns",
+        "SELECT d.typ AS dsp_typ, t.typ AS trn_typ, COUNT(*) AS c, SUM(t.amnt) AS s FROM dsp d JOIN clnt c ON c.clnt_id = d.ref1 JOIN acct a ON a.accn_id = d.ref2 JOIN trns t ON t.ref1 = a.accn_id WHERE d.ref1 = 617 AND YEAR(t.dt) = 1998 GROUP BY d.typ, t.typ",
+        "SELECT SUM(t.amnt) AS total_paid FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id AND d.typ = 'OWNER' JOIN acct a ON a.accn_id = d.ref2 JOIN trns t ON t.ref1 = a.accn_id WHERE c.clnt_id = 617 AND t.dt >= '1998-01-01' AND t.dt < '1999-01-01'"
+      ],
+      "agent_text": "客户 617 在 1998 年的所有交易合计付出：**303,276**\n\n```sql\nSELECT SUM(t.amnt) AS total_paid\nFROM clnt c\nJOIN dsp d ON d.ref1 = c.clnt_id AND d.typ = 'OWNER'\nJOIN acct a ON a.accn_id = d.ref2\nJOIN trns t ON t.ref1 = a.accn_id\nWHERE c.clnt_id = 617\n  AND t.dt >= '1998-01-01' AND t.dt < '1999-01-01'\n```\n\n通过 `clnt → dsp → acct → trns` 链取客户 617 名下账户在 1998 年的全部交易金额求和。",
+      "tool_calls": 10,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 7,
+      "tool_rounds": 6,
+      "tokens": {
+        "input": 17859,
+        "output": 9014,
+        "cache_read": 208896,
+        "cache_write": 0,
+        "reasoning": 8017,
+        "total": 235769
+      },
+      "cost_usd": 0.010873,
+      "elapsed_seconds": 72.63,
+      "agent_duration_ms": 65127,
+      "extra_columns": []
+    }
+  ]
+}

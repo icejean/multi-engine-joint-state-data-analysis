@@ -1,0 +1,126 @@
+{
+  "runs": [
+    {
+      "question_id": 1,
+      "s_level": "S0",
+      "final_sql": "SELECT\n  COUNT(DISTINCT CASE WHEN at.nm = 'Home' THEN ba.ref1 END) AS home_address_businesses,\n  COUNT(DISTINCT CASE WHEN at.nm = 'Shipping' THEN ba.ref1 END) AS shipping_address_businesses\nFROM biz_addr ba\nJOIN addr_typ at ON ba.ref2 = at.addr_typ_id",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4066,
+        "output": 6010,
+        "total": 10076
+      },
+      "elapsed_seconds": 24.76,
+      "extra_columns": []
+    },
+    {
+      "question_id": 91,
+      "s_level": "S0",
+      "final_sql": "SELECT CONCAT(p.frst_nm, ' ', p.lst_nm) AS sales_person, t.nm AS territory\nFROM stor s\nJOIN sls_prsn sp ON s.ref1 = sp.ref2\nJOIN prsn p ON sp.ref2 = p.ref1\nJOIN sls_terr t ON sp.ref1 = t.trrt_id\nWHERE s.nm = 'Area Bike Accessories'",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4059,
+        "output": 2268,
+        "total": 6327
+      },
+      "elapsed_seconds": 10.42,
+      "extra_columns": [
+        "sales_person"
+      ]
+    },
+    {
+      "question_id": 93,
+      "s_level": "S0",
+      "final_sql": "SELECT DISTINCT v.nm FROM vnd v JOIN prod_vnd pv ON v.ref1 = pv.ref2 JOIN prod p ON p.prdc_id = pv.ref3 WHERE p.nm = 'Women''s Tights'",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4059,
+        "output": 2527,
+        "total": 6586
+      },
+      "elapsed_seconds": 10.38,
+      "extra_columns": []
+    },
+    {
+      "question_id": 101,
+      "s_level": "S0",
+      "final_sql": "SELECT MAX(bm_lvl) FROM bom WHERE ref3 = (SELECT prdc_id FROM prod WHERE nm = 'HL Road Frame - Black, 58')",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4063,
+        "output": 6780,
+        "total": 10843
+      },
+      "elapsed_seconds": 30.51,
+      "extra_columns": []
+    },
+    {
+      "question_id": 108,
+      "s_level": "S0",
+      "final_sql": "SELECT pc.nm AS product_category, SUM(sod.ordr_qty) AS total_quantity_sold, SUM(sod.ln_ttl) AS total_revenue\nFROM prod_cat pc\nJOIN prod_sub ps ON ps.ref1 = pc.prdc_ctgr_id\nJOIN prod p ON p.ref2 = ps.prdc_sbct_id\nJOIN so_dtl sod ON sod.ref2 = p.prdc_id\nGROUP BY pc.prdc_ctgr_id, pc.nm",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4055,
+        "output": 2356,
+        "total": 6411
+      },
+      "elapsed_seconds": 10.74,
+      "extra_columns": []
+    },
+    {
+      "question_id": 111,
+      "s_level": "S0",
+      "final_sql": "SELECT COUNT(DISTINCT so_hdr.sls_ordr_id)\nFROM so_hdr\nJOIN cust ON so_hdr.ref8 = cust.cstm_id\nJOIN sls_terr ON cust.ref1 = sls_terr.trrt_id\nJOIN cnty ON sls_terr.ref1 = cnty.cntr_rgn_cd\nWHERE cnty.nm = 'Canada'\n  AND YEAR(so_hdr.ordr_dt) = 2013",
+      "pass": false,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4055,
+        "output": 10945,
+        "total": 15000
+      },
+      "elapsed_seconds": 44.16,
+      "extra_columns": []
+    },
+    {
+      "question_id": 113,
+      "s_level": "S0",
+      "final_sql": "SELECT p.nm FROM prod p WHERE p.fnsh_gds_flg = 1 AND NOT EXISTS (SELECT 1 FROM so_dtl d WHERE d.ref2 = p.prdc_id)",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4052,
+        "output": 3077,
+        "total": 7129
+      },
+      "elapsed_seconds": 13.59,
+      "extra_columns": []
+    },
+    {
+      "question_id": 128,
+      "s_level": "S0",
+      "final_sql": "SELECT SUM(so_dtl.ln_ttl)\nFROM so_dtl\nJOIN so_hdr ON so_dtl.ref3 = so_hdr.sls_ordr_id\nJOIN prod ON so_dtl.ref2 = prod.prdc_id\nJOIN prod_sub ON prod.ref2 = prod_sub.prdc_sbct_id\nJOIN prod_cat ON prod_sub.ref1 = prod_cat.prdc_ctgr_id\nWHERE prod_cat.nm = 'Bikes'\n  AND YEAR(so_hdr.ordr_dt) = 2013",
+      "pass": true,
+      "error": null,
+      "model": "deepseek-flash",
+      "tokens": {
+        "input": 4065,
+        "output": 2539,
+        "total": 6604
+      },
+      "elapsed_seconds": 10.73,
+      "extra_columns": []
+    }
+  ]
+}

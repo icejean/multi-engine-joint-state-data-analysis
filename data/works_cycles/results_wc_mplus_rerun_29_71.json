@@ -1,0 +1,67 @@
+{
+  "runs": [
+    {
+      "question_id": 29,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "2acb6002e45040b394aeee3a5d5aff59",
+      "final_sql": "WITH latest AS ( SELECT h.ref1, h.rt FROM emp_pay_hist h JOIN (SELECT ref1, MAX(rt_chng_dt) AS mx FROM emp_pay_hist GROUP BY ref1) m ON h.ref1=m.ref1 AND h.rt_chng_dt=m.mx JOIN emp e ON h.ref1=e.ref1 JOIN prsn p ON e.ref1=p.ref1 WHERE e.mrtl_stts='M' AND p.eml_prmt=1 ) SELECT MAX(rt)-AVG(rt) AS diff_highest_minus_average FROM latest",
+      "sql_history": [
+        "SELECT COUNT(*) AS total_rows, COUNT(DISTINCT h.ref1) AS emp_cnt FROM emp_pay_hist h JOIN emp e ON h.ref1=e.ref1 JOIN prsn p ON e.ref1=p.ref1 WHERE e.mrtl_stts='M' AND p.eml_prmt=1",
+        "WITH latest AS ( SELECT h.ref1, h.rt FROM emp_pay_hist h JOIN (SELECT ref1, MAX(rt_chng_dt) AS mx FROM emp_pay_hist GROUP BY ref1) m ON h.ref1=m.ref1 AND h.rt_chng_dt=m.mx JOIN emp e ON h.ref1=e.ref1 JOIN prsn p ON e.ref1=p.ref1 WHERE e.mrtl_stts='M' AND p.eml_prmt=1 ) SELECT MAX(rt) AS max_rt, AVG(rt) AS avg_rt, MAX(rt)-AVG(rt) AS diff FROM latest",
+        "SELECT MAX(h.rt) AS max_rt, AVG(h.rt) AS avg_rt, MAX(h.rt)-AVG(h.rt) AS diff FROM emp_pay_hist h JOIN emp e ON h.ref1=e.ref1 JOIN prsn p ON e.ref1=p.ref1 WHERE e.mrtl_stts='M' AND p.eml_prmt=1",
+        "WITH latest AS ( SELECT h.ref1, h.rt FROM emp_pay_hist h JOIN (SELECT ref1, MAX(rt_chng_dt) AS mx FROM emp_pay_hist GROUP BY ref1) m ON h.ref1=m.ref1 AND h.rt_chng_dt=m.mx JOIN emp e ON h.ref1=e.ref1 JOIN prsn p ON e.ref1=p.ref1 WHERE e.mrtl_stts='M' AND p.eml_prmt=1 ) SELECT MAX(rt)-AVG(rt) AS diff_highest_minus_average FROM latest"
+      ],
+      "agent_text": "已婚且愿意接收邮件促销（`emp.mrtl_stts='M'` 且 `prsn.eml_prmt=1`）的员工，其最高时薪与平均时薪之差为 **42.059028125**。\n\n说明：`emp_pay_hist` 是「一人多行」的历史表（32 名符合条件员工共 34 行），按注意事项先取每人最新一条（`rt_chng_dt` = 该员工内 MAX）再聚合，得到最高时薪 60.0962、平均时薪 18.037171875，差值 42.059028125。\n\n最终 SQL：\n\n```sql\nWITH latest AS (\n  SELECT h.ref1, h.rt\n  FROM emp_pay_hist h\n  JOIN (SELECT ref1, MAX(rt_chng_dt) AS mx FROM emp_pay_hist GROUP BY ref1) m\n    ON h.ref1 = m.ref1 AND h.rt_chng_dt = m.mx\n  JOIN emp e ON h.ref1 = e.ref1\n  JOIN prsn p ON e.ref1 = p.ref1\n  WHERE e.mrtl_stts = 'M' AND p.eml_prmt = 1\n)\nSELECT MAX(rt) - AVG(rt) AS diff_highest_minus_average FROM latest;\n```",
+      "tool_calls": 6,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 6,
+      "tool_rounds": 5,
+      "tokens": {
+        "input": 34734,
+        "output": 4587,
+        "cache_read": 236800,
+        "cache_write": 0,
+        "reasoning": 3487,
+        "total": 276121
+      },
+      "cost_usd": 0.012778,
+      "elapsed_seconds": 35.33,
+      "agent_duration_ms": 27709,
+      "extra_columns": []
+    },
+    {
+      "question_id": 71,
+      "m_level": "M0",
+      "datasource": "works_cycles",
+      "chat_id": "fe0b2e0e1bf04d32986b7dd483c7fcb7",
+      "final_sql": "SELECT T2.jb_ttl, T1.rt, T3.frst_nm, T3.mddl_nm, T3.lst_nm FROM emp_pay_hist AS T1 INNER JOIN emp AS T2 ON T1.ref1 = T2.ref1 INNER JOIN prsn AS T3 ON T2.ref1 = T3.ref1 ORDER BY T1.rt DESC LIMIT 9, 1",
+      "sql_history": [
+        "SELECT h.ref1, h.rt, h.rt_chng_dt, e.jb_ttl, p.frst_nm, p.mddl_nm, p.lst_nm FROM emp_pay_hist h JOIN emp e ON h.ref1 = e.ref1 JOIN prsn p ON e.ref1 = p.ref1 ORDER BY h.rt DESC, e.ref1 LIMIT 15",
+        "SELECT COUNT(*) AS rows_total, COUNT(DISTINCT ref1) AS emps, COUNT(DISTINCT rt) AS distinct_rt FROM emp_pay_hist",
+        "SELECT T2.jb_ttl, T1.rt, T3.frst_nm, T3.mddl_nm, T3.lst_nm FROM emp_pay_hist AS T1 INNER JOIN emp AS T2 ON T1.ref1 = T2.ref1 INNER JOIN prsn AS T3 ON T2.ref1 = T3.ref1 ORDER BY T1.rt DESC LIMIT 9, 1"
+      ],
+      "agent_text": "第 10 高薪资的员工：\n\n| 职位 | 薪资 | 名 | 中间名 | 姓 |\n|---|---|---|---|---|\n| Pacific Sales Manager | 48.101 | Syed | E | Abbas |\n\n**职位：** Pacific Sales Manager ｜ **薪资：** 48.101 ｜ **全名：** Syed E Abbas\n\n（salary = `emp_pay_hist.rt`，按 rt 降序取第 10 行；职位取 `emp.jb_ttl`，姓名取 `prsn` 的 frst_nm / mddl_nm / lst_nm）",
+      "tool_calls": 8,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 7,
+      "tool_rounds": 6,
+      "tokens": {
+        "input": 40952,
+        "output": 9984,
+        "cache_read": 316288,
+        "cache_write": 0,
+        "reasoning": 8849,
+        "total": 367224
+      },
+      "cost_usd": 0.017385,
+      "elapsed_seconds": 59.1,
+      "agent_duration_ms": 50978,
+      "extra_columns": []
+    }
+  ]
+}

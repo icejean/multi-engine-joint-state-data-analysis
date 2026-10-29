@@ -1,0 +1,120 @@
+{
+  "runs": [
+    {
+      "question_id": 19,
+      "datasource": "financial",
+      "chat_id": "12824ad2fa794915bc30a0a35dfb5db1",
+      "final_sql": "SELECT c.gndr FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON d.ref2 = a.accn_id JOIN dstr ds ON a.ref1 = ds.dstr_id WHERE ds.dstr_id = (SELECT dstr_id FROM dstr ORDER BY a11 DESC LIMIT 1) ORDER BY c.brth_dt ASC LIMIT 1",
+      "sql_history": [
+        "SELECT c.gndr FROM clnt c JOIN dsp d ON d.ref1 = c.clnt_id JOIN acct a ON d.ref2 = a.accn_id JOIN dstr ds ON a.ref1 = ds.dstr_id WHERE ds.dstr_id = (SELECT dstr_id FROM dstr ORDER BY a11 DESC LIMIT 1) ORDER BY c.brth_dt ASC LIMIT 1"
+      ],
+      "agent_text": "性别：**F**（女性）\n\n该客户在平均工资最高的分行开户，且是最年长的客户。",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 15997,
+        "output": 622,
+        "cache_read": 66816,
+        "cache_write": 0,
+        "reasoning": 326,
+        "total": 83435
+      },
+      "cost_usd": 0.004285,
+      "elapsed_seconds": 16.22,
+      "agent_duration_ms": 8564,
+      "extra_columns": []
+    },
+    {
+      "question_id": 43,
+      "datasource": "financial",
+      "chat_id": "3a052df5b45b46d4ba787f734b368906",
+      "final_sql": "SELECT d.a3 AS district, COUNT(*) AS active_loans FROM ln JOIN acct a ON ln.ref1 = a.accn_id JOIN dstr d ON a.ref1 = d.dstr_id WHERE ln.stts IN ('C','D') GROUP BY d.a3 ORDER BY active_loans DESC LIMIT 1",
+      "sql_history": [
+        "SELECT d.a3 AS district, COUNT(*) AS active_loans FROM ln JOIN acct a ON ln.ref1 = a.accn_id JOIN dstr d ON a.ref1 = d.dstr_id WHERE ln.stts IN ('C','D') GROUP BY d.a3 ORDER BY active_loans DESC LIMIT 1"
+      ],
+      "agent_text": "**south Moravia** 拥有最多的活跃贷款（running contracts，`ln.stts IN ('C','D')`），共 **88** 笔。\n\n口径：`ln`（贷款）→ `acct`（`ln.ref1 = acct.accn_id`）→ `dstr`（`acct.ref1 = dstr.dstr_id`），按区县 `dstr.a3` 分组统计活跃贷款数取最大。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 15961,
+        "output": 1177,
+        "cache_read": 67200,
+        "cache_write": 0,
+        "reasoning": 831,
+        "total": 84338
+      },
+      "cost_usd": 0.004446,
+      "elapsed_seconds": 19.31,
+      "agent_duration_ms": 11965,
+      "extra_columns": [
+        "active_loans"
+      ]
+    },
+    {
+      "question_id": 57,
+      "datasource": "financial",
+      "chat_id": "60efa3ae6b894dafb4206148a183860f",
+      "final_sql": "SELECT T1.ref1 FROM trns AS T1 WHERE T1.oprt = 'VYBER KARTOU' AND YEAR(T1.dt) = 1998 AND T1.amnt < ( SELECT AVG(T2.amnt) FROM trns AS T2 WHERE T2.oprt = 'VYBER KARTOU' AND YEAR(T2.dt) = 1998 )",
+      "sql_history": [
+        "SELECT YEAR(dt) AS y, oprt, COUNT(*) AS n, AVG(amnt) AS avg_amt, MIN(amnt) AS mn, MAX(amnt) AS mx FROM trns WHERE YEAR(dt)=1998 GROUP BY YEAR(dt), oprt ORDER BY n DESC",
+        "SELECT (SELECT AVG(amnt) FROM trns WHERE YEAR(dt)=1998) AS avg_all_1998, (SELECT AVG(amnt) FROM trns WHERE YEAR(dt)=1998 AND oprt='VYBER KARTOU') AS avg_cc_1998, (SELECT COUNT(*) FROM trns WHERE oprt='VYBER KARTOU' AND YEAR(dt)=1998 AND amnt < (SELECT AVG(amnt) FROM trns WHERE YEAR(dt)=1998)) AS rows_below_allavg, (SELECT COUNT(DISTINCT ref1) FROM trns WHERE oprt='VYBER KARTOU' AND YEAR(dt)=1998 AND amnt < (SELECT AVG(amnt) FROM trns WHERE YEAR(dt)=1998)) AS accts_below_allavg, (SELECT COUNT(*) FROM trns WHERE oprt='VYBER KARTOU' AND YEAR(dt)=1998 AND amnt < (SELECT AVG(amnt) FROM trns WHERE YEAR(dt)=1998 AND oprt='VYBER KARTOU')) AS rows_below_ccavg, (SELECT COUNT(DISTINCT ref1) FROM trns WHERE oprt='VYBER KARTOU' AND YEAR(dt)=1998 AND amnt < (SELECT AVG(amnt) FROM trns WHERE YEAR(dt)=1998 AND oprt='VYBER KARTOU')) AS accts_below_ccavg",
+        "SELECT T1.ref1 FROM trns AS T1 WHERE T1.oprt = 'VYBER KARTOU' AND YEAR(T1.dt) = 1998 AND T1.amnt < ( SELECT AVG(T2.amnt) FROM trns AS T2 WHERE T2.oprt = 'VYBER KARTOU' AND YEAR(T2.dt) = 1998 )"
+      ],
+      "agent_text": "✅ 最终答案已执行（结果已返回，未再做任何验证查询）。\n\n**SQL**\n```sql\nSELECT T1.ref1\nFROM trns AS T1\nWHERE T1.oprt = 'VYBER KARTOU'\n  AND YEAR(T1.dt) = 1998\n  AND T1.amnt < (\n      SELECT AVG(T2.amnt)\n      FROM trns AS T2\n      WHERE T2.oprt = 'VYBER KARTOU'\n        AND YEAR(T2.dt) = 1998\n  );\n```\n\n**口径说明**\n- 信用卡交易 = `trns.oprt = 'VYBER KARTOU'`（依据 BIRD evidence：信用卡取现）。\n- “低于平均值”= 低于 1998 年信用卡取现交易的平均金额（AVG ≈ 2270.94）。\n- “account holder identification number”按 notes 第 12 条 = 账户 id `trns.ref1`（不是客户 `clnt_id`）。\n- 按 notes 第 1 条，「列出做了某动作的 X 的 id」保留 JOIN 明细行、不加 DISTINCT。\n\n返回列为 `ref1`（账户持有人编号），共 2373 行（展示已按 100 行截断，如 `14`、`33`、`43`…）。",
+      "tool_calls": 13,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 11,
+      "tool_rounds": 10,
+      "tokens": {
+        "input": 25265,
+        "output": 27072,
+        "cache_read": 491008,
+        "cache_write": 0,
+        "reasoning": 25266,
+        "total": 543345
+      },
+      "cost_usd": 0.024865,
+      "elapsed_seconds": 218.81,
+      "agent_duration_ms": 211324,
+      "extra_columns": []
+    },
+    {
+      "question_id": 91,
+      "datasource": "financial",
+      "chat_id": "d0746c3f016e4a769ddb8b8bf255effc",
+      "final_sql": "SELECT SUM(t.amnt) AS total_paid FROM trns t JOIN acct a ON t.ref1 = a.accn_id JOIN dsp d ON d.ref2 = a.accn_id WHERE d.ref1 = 617 AND d.typ = 'OWNER' AND t.dt >= '1998-01-01' AND t.dt <= '1998-12-31';",
+      "sql_history": [
+        "SELECT SUM(t.amnt) AS total_paid FROM trns t JOIN acct a ON t.ref1 = a.accn_id JOIN dsp d ON d.ref2 = a.accn_id WHERE d.ref1 = 617 AND d.typ = 'OWNER' AND t.dt >= '1998-01-01' AND t.dt <= '1998-12-31';"
+      ],
+      "agent_text": "Client 617（作为账户 OWNER）在 1998 年的全部交易合计支付金额为 **303276**。\n\n（SQL：对 `trns` 按 `ref1=acct.accn_id` 关联账户、再经 `dsp` 找到属于客户 617 且 `typ='OWNER'` 的账户，筛选交易日期在 1998 年内，求和 `amnt`。）",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 15889,
+        "output": 1954,
+        "cache_read": 68096,
+        "cache_write": 0,
+        "reasoning": 1598,
+        "total": 85939
+      },
+      "cost_usd": 0.004678,
+      "elapsed_seconds": 24.48,
+      "agent_duration_ms": 16941,
+      "extra_columns": []
+    }
+  ]
+}

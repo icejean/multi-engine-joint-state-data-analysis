@@ -1,0 +1,28 @@
+flowchart TB
+    subgraph gov["Governance layer: execution-level audit × OS multi-tenant isolation × private / Domestic ICT Innovation"]
+        direction TB
+
+        sc["schema.json  +  notes.md<br/>(deterministic grounding, one-shot injection)"]
+        llm["LLM · one conversational context<br/>(semantic understanding / reasoning / orchestration, not computation)"]
+
+        sc -->|"one-shot injection (source of determinism)"| llm
+
+        py["Python kernel<br/>(ML context)"]
+        r["R kernel<br/>(ML context)"]
+        sql["SQL → RDB<br/>(relational context)"]
+        cy["Cypher → GraphDB<br/>(graph context)"]
+
+        llm -->|"execution-feedback loop"| py
+        llm --> r
+        llm --> sql
+        llm --> cy
+
+        flow["⇄ state flow across engines (CSV shared layer) + grounding reuse (notes.md)"]
+        py <--> flow
+        r <--> flow
+        sql <--> flow
+        cy <--> flow
+    end
+
+    classDef novelty stroke:#c0392b,stroke-width:3px,stroke-dasharray:5 3;
+    class flow novelty;

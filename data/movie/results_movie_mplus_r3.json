@@ -1,0 +1,465 @@
+{
+  "runs": [
+    {
+      "question_id": 59,
+      "datasource": "movie",
+      "chat_id": "4d1c86ff8ad646c1ab2df7a41a57fd9e",
+      "final_cypher": "MATCH (mib:Movie {name:'Men in Black 3'})-[:directedBy]->(d:Person)\nMATCH (m:Movie)-[:directedBy]->(d)\nWITH DISTINCT m, d\nWITH m, count(DISTINCT d) AS num\nRETURN m.name AS movie, num\nORDER BY movie",
+      "cypher_history": [
+        "MATCH (mib:Movie {name:'Men in Black 3'})-[:directedBy]->(d:Person)\nMATCH (m:Movie)-[:directedBy]->(d)\nWITH DISTINCT m, d\nWITH m, count(DISTINCT d) AS num\nRETURN m.name AS movie, num\nORDER BY movie"
+      ],
+      "agent_text": "数据源 `movie` 查询结果 —— Men in Black 3 的导演（Barry Sonnenfeld）执导的所有电影，以及每部片中「同时也执导过 Men in Black 3」的导演数量：\n\n| 电影 | 此类导演数 |\n|---|---|\n| Addams Family Values | 1 |\n| Big Trouble | 1 |\n| For Love or Money | 1 |\n| Get Shorty | 1 |\n| Men in Black | 1 |\n| Men in Black 3 | 1 |\n| Men in Black II | 1 |\n| Nine Lives | 1 |\n| RV | 1 |\n| The Addams Family | 1 |\n| Wild Wild West | 1 |\n\n共 11 部，每部均由 1 位符合条件（也执导过 Men in Black 3）的导演执导。\n\n最终答案 Cypher：\n\n```cypher\nMATCH (mib:Movie {name:'Men in Black 3'})-[:directedBy]->(d:Person)\nMATCH (m:Movie)-[:directedBy]->(d)\nWITH DISTINCT m, d\nWITH m, count(DISTINCT d) AS num\nRETURN m.name AS movie, num\nORDER BY movie\n```",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 15277,
+        "output": 2093,
+        "cache_read": 65408,
+        "cache_write": 0,
+        "reasoning": 1593,
+        "total": 82778
+      },
+      "cost_usd": 0.004556,
+      "elapsed_seconds": 23.93,
+      "agent_duration_ms": 14262,
+      "extra_columns": []
+    },
+    {
+      "question_id": 99,
+      "datasource": "movie",
+      "chat_id": "7d8d5d581e184c03ad8676f41c0a6482",
+      "final_cypher": "MATCH (m:Movie)-[:originatesFrom]->(:Country {name:'Australia'})\nOPTIONAL MATCH (m)-[:directedBy]->(d:Person)\nWITH m, count(DISTINCT d) AS num\nRETURN m.name, num",
+      "cypher_history": [
+        "MATCH (m:Movie)-[:originatesFrom]->(:Country {name:'Australia'})\nOPTIONAL MATCH (m)-[:directedBy]->(d:Person)\nWITH m, count(DISTINCT d) AS num\nRETURN m.name, num"
+      ],
+      "agent_text": "已完成。基于资源文件确定图结构后，最终答案 Cypher：\n\n```cypher\nMATCH (m:Movie)-[:originatesFrom]->(:Country {name:'Australia'})\nOPTIONAL MATCH (m)-[:directedBy]->(d:Person)\nWITH m, count(DISTINCT d) AS num\nRETURN m.name, num\n```\n\n要点：\n- 「来自澳大利亚」用 `originatesFrom`（产地，非 `releasedIn`/`producedBy`）。\n- 「每部电影的导演数」按**节点**分组（`WITH m, count(DISTINCT d)`），同名电影各出一行；`OPTIONAL MATCH` 保证没有导演的电影也列为 0。\n- 结果共 **6793** 部澳大利亚电影（显示截断至前 100 行），例如 `Boy Erased` 1、`Cargo` 2、`Bad Blood` 0 等。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 16264,
+        "output": 853,
+        "cache_read": 64128,
+        "cache_write": 0,
+        "reasoning": 449,
+        "total": 81245
+      },
+      "cost_usd": 0.004311,
+      "elapsed_seconds": 15.81,
+      "agent_duration_ms": 8724,
+      "extra_columns": []
+    },
+    {
+      "question_id": 148,
+      "datasource": "movie",
+      "chat_id": "3d4fb069ee014517ae3155eb60947b11",
+      "final_cypher": "MATCH (orig:Movie {name:'Pirates of the Caribbean: The Curse of the Black Pearl'})-[:writtenBy]->(w:Person)\nWITH DISTINCT w\nMATCH (w)<-[:writtenBy]-(m:Movie)\nWITH m, count(DISTINCT w) AS num\nRETURN m.name AS name, num\nORDER BY num DESC, name",
+      "cypher_history": [
+        "MATCH (orig:Movie {name:'Pirates of the Caribbean: The Curse of the Black Pearl'})-[:writtenBy]->(w:Person)\nWITH DISTINCT w\nMATCH (w)<-[:writtenBy]-(m:Movie)\nWITH m, count(DISTINCT w) AS num\nRETURN m.name AS name, num\nORDER BY num DESC, name"
+      ],
+      "agent_text": "查询结果如下（写《加勒比海盗：黑珍珠号的诅咒》的编剧共 2 位——Ted Elliott 与 Terry Rossio；下表为这些编剧参与编剧的电影，及每部电影中参与编剧的「这批编剧」人数）：\n\n| 电影名称 | 参与的编剧数 |\n|---|---|\n| Pirates of the Caribbean: A Day At The Sea | 2 |\n| Pirates of the Caribbean: At World's End | 2 |\n| Pirates of the Caribbean: Dead Man's Chest | 2 |\n| Pirates of the Caribbean: On Stranger Tides | 2 |\n| Pirates of the Caribbean: The Curse of the Black Pearl | 2 |\n| Small Soldiers | 2 |\n| The Mask of Zorro | 2 |\n| The Puppet Masters | 2 |\n| The Road to El Dorado | 2 |\n| Déjà Vu | 1 |\n| Godzilla vs. Kong | 1 |\n| Godzilla x Kong: The New Empire | 1 |\n| Little Monsters | 1 |\n| The Amazing Maurice | 1 |\n\n共 14 部电影，其中 9 部是 Elliott 和 Rossio 两人共同编剧（计数 2），其余 5 部只有其中一人参与（计数 1）。\n\n用到的 Cypher：\n\n```cypher\nMATCH (orig:Movie {name:'Pirates of the Caribbean: The Curse of the Black Pearl'})-[:writtenBy]->(w:Person)\nWITH DISTINCT w\nMATCH (w)<-[:writtenBy]-(m:Movie)\nWITH m, count(DISTINCT w) AS num\nRETURN m.name AS name, num\nORDER BY num DESC, name\n```",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 15308,
+        "output": 1113,
+        "cache_read": 64384,
+        "cache_write": 0,
+        "reasoning": 509,
+        "total": 80805
+      },
+      "cost_usd": 0.004258,
+      "elapsed_seconds": 17.09,
+      "agent_duration_ms": 10160,
+      "extra_columns": []
+    },
+    {
+      "question_id": 175,
+      "datasource": "movie",
+      "chat_id": "291d6a81c3a54e90aa5425f4ce723610",
+      "final_cypher": "MATCH (m:Movie)-[:releasedIn]->(c:Country {name:'Switzerland'})\nWITH DISTINCT m\nOPTIONAL MATCH (m)-[:directedBy]->(d:Person)\nWITH m, count(DISTINCT d) AS num\nRETURN m.name AS name, num",
+      "cypher_history": [
+        "MATCH (m:Movie)-[:releasedIn]->(c:Country {name:'Switzerland'})\nWITH DISTINCT m\nOPTIONAL MATCH (m)-[:directedBy]->(d:Person)\nWITH m, count(DISTINCT d) AS num\nRETURN m.name AS name, num"
+      ],
+      "agent_text": "Query executed successfully. Final answer Cypher:\n\n```cypher\nMATCH (m:Movie)-[:releasedIn]->(c:Country {name:'Switzerland'})\nWITH DISTINCT m\nOPTIONAL MATCH (m)-[:directedBy]->(d:Person)\nWITH m, count(DISTINCT d) AS num\nRETURN m.name AS name, num\n```\n\n结果：共 **144 部**电影在瑞士上映（`releasedIn` → Country \"Switzerland\"），每部返回 `name` 与导演数 `num`（按电影节点去重、`count(DISTINCT d)` 计导演；用 OPTIONAL MATCH 保留 0 导演的电影）。前 100 行已回传，多数电影导演数为 1，少数为 2（如 *The Artist & The Pervert*、*Rule of the Fists*、*Searching for Ingmar Bergman*、*A Fish Called Wanda*、*Captain Sabertooth and the Treasure of Lama Rama*、*Hippie Masala*、*Speed Racer*、*The Dark Gene*）。完整 144 行仍在 kernel 中，可用 `export_data` 导出。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 16356,
+        "output": 1002,
+        "cache_read": 64128,
+        "cache_write": 0,
+        "reasoning": 513,
+        "total": 81486
+      },
+      "cost_usd": 0.004366,
+      "elapsed_seconds": 16.1,
+      "agent_duration_ms": 9163,
+      "extra_columns": []
+    },
+    {
+      "question_id": 192,
+      "datasource": "movie",
+      "chat_id": "c138b29be2a24b8eb2dd3188295134d1",
+      "final_cypher": "MATCH (m:Movie)-[:releasedIn]->(c:Country), (m)-[:originatesFrom]->(c)\nWITH DISTINCT m\nWHERE m.runtime_minute IS NOT NULL\nRETURN m.name AS name, m.runtime_minute AS runtime\nORDER BY m.runtime_minute ASC\nLIMIT 1",
+      "cypher_history": [
+        "MATCH (m:Movie)-[:releasedIn]->(c:Country), (m)-[:originatesFrom]->(c)\nWITH DISTINCT m\nWHERE m.runtime_minute IS NOT NULL\nRETURN m.name AS name, m.runtime_minute AS runtime\nORDER BY m.runtime_minute ASC\nLIMIT 1"
+      ],
+      "agent_text": "**Cousin Ben Troop Screening with Jason Schwartzman**（时长 2.0 分钟）\n\n查询逻辑：先匹配 `(m:Movie)-[:releasedIn]->(c:Country)` 与 `(m)-[:originatesFrom]->(c)`（上映国 = 产地国为同一国家），按节点去重后，在 `runtime_minute` 非空的前提下取最短时长。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 15346,
+        "output": 674,
+        "cache_read": 64000,
+        "cache_write": 0,
+        "reasoning": 348,
+        "total": 80020
+      },
+      "cost_usd": 0.004129,
+      "elapsed_seconds": 14.31,
+      "agent_duration_ms": 7380,
+      "extra_columns": [
+        "runtime"
+      ]
+    },
+    {
+      "question_id": 207,
+      "datasource": "movie",
+      "chat_id": "479dea8631db40ad871b9676062d83f3",
+      "final_cypher": "MATCH (n:Movie)-[r1:hasGenre]->(m1:Genre {name: 'fantasy film'}) OPTIONAL MATCH (n:Movie)-[r0:directedBy]->(m0:Person) WITH n, count(DISTINCT m0) AS num RETURN n.name AS name, num",
+      "cypher_history": [
+        "MATCH (g:Genre) WHERE toLower(g.name) CONTAINS 'fantasy' RETURN g.name AS name, count{ (g)<-[:hasGenre]-() } AS cnt ORDER BY cnt DESC",
+        "MATCH (m:Movie)-[:hasGenre]->(:Genre {name:'fantasy film'})\nWITH DISTINCT m\nRETURN count(m) AS fantasy_films,\ncount{ (m)-[:directedBy]->() } AS with_director_rows,\nsum(CASE WHEN NOT EXISTS { (m)-[:directedBy]->() } THEN 1 ELSE 0 END) AS no_director",
+        "MATCH (n:Movie)-[r1:hasGenre]->(m1:Genre {name: 'fantasy film'}) OPTIONAL MATCH (n:Movie)-[r0:directedBy]->(m0:Person) WITH n, count(DISTINCT m0) AS num RETURN n.name AS name, num"
+      ],
+      "agent_text": "已按权威资源文件（`movie_schema.json` + `movie_notes.md`）确定图结构，并直接给出答案查询。\n\n**关键判定**\n- 「fantasy films」→ Genre 值为 `fantasy film`（3028 部，非 `fantasy`/`high fantasy` 等）。\n- 关系方向：`(Movie)-[:hasGenre]->(Genre)`、`(Movie)-[:directedBy]->(Person)`。\n- 「all … films」用 `OPTIONAL MATCH` 保留无导演的电影（174 部，计 0）。\n- 「number of directors **for each**」→ 按**电影节点**分组：`WITH n, count(DISTINCT m0) AS num RETURN n.name, num`（不用 `RETURN n.name, count(...)`，否则同名电影会被合并）。\n\n**最终答案 Cypher**\n```cypher\nMATCH (n:Movie)-[r1:hasGenre]->(m1:Genre {name: 'fantasy film'})\nOPTIONAL MATCH (n:Movie)-[r0:directedBy]->(m0:Person)\nWITH n, count(DISTINCT m0) AS num\nRETURN n.name AS name, num\n```\n\n**结果**：共 **3028** 行，每行一部奇幻电影的 `name` 及其导演数 `num`（含 0 的电影，如 Pedralta、Bumilangit Cinematic Universe、Time Key、A Theory of Colours、Pandavas: The Five Warriors）。返回以 100 行上限截断显示，全量在 kernel 中。\n\n样例（`name`, `num`）：\n- Blade, 1\n- Taarzan: The Wonder Car, 2\n- Wonder Woman 1984, 1\n- Journey Beneath the Desert, 3\n- Pedralta, 0\n- Pandavas: The Five Warriors, 0",
+      "tool_calls": 8,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 8,
+      "tool_rounds": 7,
+      "tokens": {
+        "input": 20330,
+        "output": 3349,
+        "cache_read": 219776,
+        "cache_write": 0,
+        "reasoning": 2011,
+        "total": 243455
+      },
+      "cost_usd": 0.009938,
+      "elapsed_seconds": 31.41,
+      "agent_duration_ms": 24441,
+      "extra_columns": []
+    },
+    {
+      "question_id": 220,
+      "datasource": "movie",
+      "chat_id": "08a74292ef0743399e93fc780e958c8e",
+      "final_cypher": "MATCH (p:Person {name:'Patrick Bergin'})<-[:hasCastMember]-(:Movie)-[:hasCastMember]->(other:Person)\nWHERE other <> p AND other.gender IS NOT NULL\nRETURN DISTINCT other.gender AS gender",
+      "cypher_history": [
+        "MATCH (p:Person {name:'Patrick Bergin'})<-[:hasCastMember]-(m:Movie)-[:hasCastMember]->(other:Person)\nWHERE other <> p\nRETURN DISTINCT other.gender AS gender",
+        "MATCH (p:Person {name:'Patrick Bergin'})<-[:hasCastMember]-(:Movie)-[:hasCastMember]->(other:Person)\nWHERE other <> p AND other.gender IS NOT NULL\nRETURN DISTINCT other.gender AS gender"
+      ],
+      "agent_text": "与 Patrick Bergin 同片出演的演员共有 **2 种性别**：\n\n- **male（男）**\n- **female（女）**\n\n```cypher\nMATCH (p:Person {name:'Patrick Bergin'})<-[:hasCastMember]-(:Movie)-[:hasCastMember]->(other:Person)\nWHERE other <> p AND other.gender IS NOT NULL\nRETURN DISTINCT other.gender AS gender\n```\n\n说明：先由 `Patrick Bergin` 反查其参演的电影（`hasCastMember` 方向 Movie→Person），再找这些电影的其他演员，用 `DISTINCT` 取唯一性别值（排除本人和性别缺失者）。",
+      "tool_calls": 4,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 15578,
+        "output": 1166,
+        "cache_read": 92160,
+        "cache_write": 0,
+        "reasoning": 688,
+        "total": 108904
+      },
+      "cost_usd": 0.005088,
+      "elapsed_seconds": 18.33,
+      "agent_duration_ms": 11406,
+      "extra_columns": []
+    },
+    {
+      "question_id": 241,
+      "datasource": "movie",
+      "chat_id": "417a64a60a664e4d9249870b013da09d",
+      "final_cypher": "MATCH (m:Movie)-[:receivesAward]->(:Award {name:\"Jameson People's Choice Award for Best Actor\"})\nMATCH (m)-[:receivesAward]->(award:Award)\nWITH award, count(DISTINCT m) AS num\nRETURN award.name AS award_name, num\nORDER BY num DESC",
+      "cypher_history": [
+        "MATCH (a:Award) WHERE toLower(a.name) CONTAINS 'jameson' RETURN DISTINCT a.name AS name LIMIT 50",
+        "MATCH (m:Movie)-[:receivesAward]->(:Award {name:\"Jameson People's Choice Award for Best Actor\"})\nMATCH (m)-[:receivesAward]->(award:Award)\nWITH award, count(DISTINCT m) AS num\nRETURN award.name AS award_name, num\nORDER BY num DESC"
+      ],
+      "agent_text": "查到了。数据源 `movie` 图结构中，电影与奖项是 `(Movie)-[:receivesAward]->(Award)`。先锁定「获得 Jameson People's Choice Award for Best Actor」的电影，再统计这些电影获得过的各奖项及电影数（按电影节点去重）：\n\n| 奖项名称 | 获奖电影数 |\n|---|---|\n| Jameson People's Choice Award for Best Actor | 8 |\n| Jameson People's Choice Award for Best Actress | 2 |\n| European Film Award for Best Film | 2 |\n| European Film Award for Best Screenwriter | 2 |\n| European Film Award - People's Choice Award for Best Director | 2 |\n| European Film Award for Best Director | 2 |\n| Academy Award for Best Writing, Original Screenplay | 1 |\n| European Film Award for Best Actor | 1 |\n| César Award for Best Film from the European Union | 1 |\n| Edda Award for Best Film | 1 |\n\n最终答案 Cypher（系统取最后执行的这条）：\n\n```cypher\nMATCH (m:Movie)-[:receivesAward]->(:Award {name:\"Jameson People's Choice Award for Best Actor\"})\nMATCH (m)-[:receivesAward]->(award:Award)\nWITH award, count(DISTINCT m) AS num\nRETURN award.name AS award_name, num\nORDER BY num DESC\n```",
+      "tool_calls": 4,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 15565,
+        "output": 5881,
+        "cache_read": 96128,
+        "cache_write": 0,
+        "reasoning": 5278,
+        "total": 117574
+      },
+      "cost_usd": 0.006517,
+      "elapsed_seconds": 42.82,
+      "agent_duration_ms": 35861,
+      "extra_columns": []
+    },
+    {
+      "question_id": 251,
+      "datasource": "movie",
+      "chat_id": "724e45f0abc8420680b466fd462801bd",
+      "final_cypher": "MATCH (td:Movie {name:'Training Day'})-[:writtenBy]->(p:Person)\nMATCH (m:Movie)-[:writtenBy]->(p)\nWITH DISTINCT m\nRETURN m.name AS name, m.filming_location AS filming_location",
+      "cypher_history": [
+        "MATCH (td:Movie {name:'Training Day'})-[:writtenBy]->(p:Person)\nMATCH (m:Movie)-[:writtenBy]->(p)\nWITH DISTINCT m\nRETURN m.name AS name, m.filming_location AS filming_location"
+      ],
+      "agent_text": "David Ayer wrote *Training Day*, and these are the movies he wrote, with their filming locations:\n\n| Movie | Filming location(s) |\n|---|---|\n| Sabotage | Atlanta, Georgia, Los Angeles |\n| S.W.A.T. | Ambassador Hotel |\n| U-571 | Russia, San Francisco |\n| The Tax Collector | — (none recorded) |\n| End of Watch | Los Angeles |\n| Training Day | California, Santa Monica |\n| Harsh Times | — (none recorded) |\n| Suicide Squad | — (none recorded) |\n| The Fast and the Furious | Long Beach, Los Angeles, Malibu, Mexico |\n| Fury | Hertfordshire, London, Los Angeles, Oxfordshire, Pinewood Studios, RAF Bovingdon, Watlington |\n| Dark Blue | — (none recorded) |\n\n11 movies total (written by the same person who wrote *Training Day*); those marked \"—\" have NULL `filming_location` and are returned as-is per the \"list all\" rule.",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 15369,
+        "output": 1107,
+        "cache_read": 64512,
+        "cache_write": 0,
+        "reasoning": 665,
+        "total": 80988
+      },
+      "cost_usd": 0.004268,
+      "elapsed_seconds": 16.07,
+      "agent_duration_ms": 9144,
+      "extra_columns": []
+    },
+    {
+      "question_id": 266,
+      "datasource": "movie",
+      "chat_id": "e7e7636bb4ee4752b41f2558716355ef",
+      "final_cypher": "MATCH (m:Movie)-[:releasedIn]->(c:Country {name:'Netherlands'})\nOPTIONAL MATCH (m)-[:writtenBy]->(w:Person)\nWITH DISTINCT m, count(DISTINCT w) AS numWriters\nRETURN m.name AS name, numWriters\nORDER BY name, numWriters",
+      "cypher_history": [
+        "MATCH (m:Movie)-[:releasedIn]->(c:Country {name:'Netherlands'})\nOPTIONAL MATCH (m)-[:writtenBy]->(w:Person)\nWITH DISTINCT m, count(DISTINCT w) AS numWriters\nRETURN m.name AS name, numWriters\nORDER BY name, numWriters"
+      ],
+      "agent_text": "已按要求基于 `movie` 数据源的权威资源文件写出并执行最终查询。\n\n**查询（已作为最终答案执行）：**\n```cypher\nMATCH (m:Movie)-[:releasedIn]->(c:Country {name:'Netherlands'})\nOPTIONAL MATCH (m)-[:writtenBy]->(w:Person)\nWITH DISTINCT m, count(DISTINCT w) AS numWriters\nRETURN m.name AS name, numWriters\nORDER BY name, numWriters\n```\n\n**要点说明：**\n- `releasedIn` = 上映国家（Movie→Country），「released in the Netherlands」用它；`writtenBy` = 编剧（Movie→Person）。\n- 按**节点**去重与分组（`WITH DISTINCT m` / `count(DISTINCT w)`），同名电影各占一行，不会被合并。\n- 用 `OPTIONAL MATCH` 让没有编剧记录的电影也保留（计数为 0），符合「每部电影的编剧数」。\n\n**结果：** 共 **982 部**在荷兰上映的电影（如 `1917`→2、`Amélie`→2、`Annie Hall`→2、`Aquaman`→2、`Barbarella`→4、`Adventures of a Taxi Driver`→0 等）。因返回行数较多，Console 展示仅截取前 100 行，完整 982 行结果已保留在 kernel 结果集中。",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 16289,
+        "output": 1030,
+        "cache_read": 64000,
+        "cache_write": 0,
+        "reasoning": 475,
+        "total": 81319
+      },
+      "cost_usd": 0.004361,
+      "elapsed_seconds": 15.86,
+      "agent_duration_ms": 8875,
+      "extra_columns": []
+    },
+    {
+      "question_id": 294,
+      "datasource": "movie",
+      "chat_id": "6cc37094717f449e81bc6dbeb20d9f81",
+      "final_cypher": "MATCH (b:Movie {name:'The Bourne Supremacy'})-[:producedBy]->(c:ProductionCompany)\nWITH DISTINCT c\nMATCH (m:Movie)-[:producedBy]->(c)\nWITH DISTINCT m\nWHERE m.global_box_office_usd IS NOT NULL\nRETURN avg(m.global_box_office_usd) AS avg_global_box_office_usd",
+      "cypher_history": [
+        "MATCH (b:Movie {name:'The Bourne Supremacy'})-[:producedBy]->(c:ProductionCompany)\nWITH DISTINCT c\nMATCH (m:Movie)-[:producedBy]->(c)\nWITH DISTINCT m\nWHERE m.global_box_office_usd IS NOT NULL\nRETURN avg(m.global_box_office_usd) AS avg_global_box_office_usd"
+      ],
+      "agent_text": "Produced by the same company that made *The Bourne Supremacy*, the average global box office revenue is:\n\n**≈ $288,280,428.51 USD**\n\n```cypher\nMATCH (b:Movie {name:'The Bourne Supremacy'})-[:producedBy]->(c:ProductionCompany)\nWITH DISTINCT c\nMATCH (m:Movie)-[:producedBy]->(c)\nWITH DISTINCT m\nWHERE m.global_box_office_usd IS NOT NULL\nRETURN avg(m.global_box_office_usd) AS avg_global_box_office_usd\n```",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 15338,
+        "output": 799,
+        "cache_read": 64128,
+        "cache_write": 0,
+        "reasoning": 416,
+        "total": 80265
+      },
+      "cost_usd": 0.004167,
+      "elapsed_seconds": 15.61,
+      "agent_duration_ms": 8642,
+      "extra_columns": []
+    },
+    {
+      "question_id": 303,
+      "datasource": "movie",
+      "chat_id": "46069adca2334b8da410ac858f9c9298",
+      "final_cypher": "MATCH (a:Movie {name:'Arrival'})-[:originatesFrom]->(c:Country)\nMATCH (m:Movie)-[:originatesFrom]->(c)\nUNWIND m.filming_location AS loc\nRETURN DISTINCT loc",
+      "cypher_history": [
+        "MATCH (a:Movie {name:'Arrival'})-[:originatesFrom]->(c:Country)\nMATCH (m:Movie)-[:originatesFrom]->(c)\nWHERE m.filming_location IS NOT NULL\nUNWIND m.filming_location AS loc\nRETURN DISTINCT loc",
+        "MATCH (a:Movie {name:'Arrival'})-[:originatesFrom]->(c:Country)\nRETURN c.name AS country, count(*) AS n",
+        "MATCH (a:Movie {name:'Arrival'})-[:originatesFrom]->(c:Country)\nMATCH (m:Movie)-[:originatesFrom]->(c)\nUNWIND m.filming_location AS loc\nRETURN DISTINCT loc"
+      ],
+      "agent_text": "答案已生成。`Arrival` 的产地是 **United States of America**，因此本题 = 所有美国产电影的拍摄地去重集合，共 **2031** 个唯一拍摄地。\n\n最终 Cypher：\n\n```cypher\nMATCH (a:Movie {name:'Arrival'})-[:originatesFrom]->(c:Country)\nMATCH (m:Movie)-[:originatesFrom]->(c)\nUNWIND m.filming_location AS loc\nRETURN DISTINCT loc\n```\n\n结果（展示上限 100 行，实际 2031 行，按返回顺序）：\n\nCalifornia, Atlanta, Los Angeles, New Jersey, Monaco, Paris, Toronto, New York City, Montreal, Ontario, Rockwood Academy, Santa Monica, Fort Lee, Barcelona, Spain, Salt Lake City, Delhi, Austria, Switzerland, Vancouver, Arizona, Thailand, New Orleans, Ballarat, Clunes, Hepburn Springs, Little River, Mount Rothwell, Morocco, Stockton, Puerto Vallarta, San Francisco, North Carolina, Romania, South Carolina, Southern Carpathians, British Columbia, Coquitlam, Palermo, Venice, Mexico, Florida, Hawaii, The Bahamas, Hamilton, Utah, Chicago, El Mirage Lake, Paramount Stage 15, Paramount Stage 17, Paramount Stage 29, Paramount Stage 9, Grand Teton National Park, Las Vegas Valley, Philadelphia, Wyoming, Saskatchewan, Boston, Madrid, Scotland, Democratic Republic of the Congo, Turkey, Long Beach, New Mexico, Leo Carrillo State Park, Pinewood Studios, Malibu, San Diego, Egypt, Pittsburgh, Weirton, Wisconsin, Kenya, Cannes, Connecticut, Culver City, Alabama, Honolulu, Kernville, Santa Clarita, Walker Ranch, Malta, Baltimore, Santa Rosa, 555 California Street, Pacific Heights, Detroit, Japan, New Zealand, Iceland, Moscow, Nice, Mori Point, South Africa, Taipei, Comedy Square, Greece, Assisi, Perugia, Zimbabwe …（其余 1931 个略）\n\n说明：`filming_location` 是 Movie 上的数组属性，`UNWIND` 展开后 `RETURN DISTINCT loc` 去重；`UNWIND null` 不产生行，故 NULL 不影响结果。",
+      "tool_calls": 5,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 5,
+      "tool_rounds": 4,
+      "tokens": {
+        "input": 16663,
+        "output": 2800,
+        "cache_read": 123008,
+        "cache_write": 0,
+        "reasoning": 1886,
+        "total": 142471
+      },
+      "cost_usd": 0.006561,
+      "elapsed_seconds": 26.35,
+      "agent_duration_ms": 19401,
+      "extra_columns": []
+    },
+    {
+      "question_id": 337,
+      "datasource": "movie",
+      "chat_id": "ca3c9234728b435f8daf53a3688a8403",
+      "final_cypher": "MATCH (m:Movie)-[:hasGenre]->(g:Genre)\nWHERE g.name = 'pirate film'\nWITH DISTINCT m\nOPTIONAL MATCH (m)-[:releasedIn]->(c:Country)\nWITH m, count(DISTINCT c) AS num\nRETURN m.name AS name, num\nORDER BY name",
+      "cypher_history": [
+        "MATCH (g:Genre) WHERE toLower(g.name) CONTAINS 'pirate' RETURN g.name AS name, count(*) AS c ORDER BY c DESC",
+        "MATCH (m:Movie)-[:hasGenre]->(g:Genre)\nWHERE g.name = 'pirate film'\nWITH DISTINCT m\nOPTIONAL MATCH (m)-[:releasedIn]->(c:Country)\nWITH m, count(DISTINCT c) AS num\nRETURN m.name AS name, num\nORDER BY name"
+      ],
+      "agent_text": "已确认图结构并给出答案。\n\n- 图 schema：`(Movie)-[:hasGenre]->(Genre)`、`(Movie)-[:releasedIn]->(Country)`（方向均为 Movie 出发）。\n- 资源文件提示「pirate films」对应带 `film` 后缀的枚举值，经确认 Genre 中存在的实际值为 **`pirate film`**（唯一含 \"pirate\" 的取值）。\n\n最终 Cypher（已执行，即答案）：\n\n```cypher\nMATCH (m:Movie)-[:hasGenre]->(g:Genre)\nWHERE g.name = 'pirate film'\nWITH DISTINCT m\nOPTIONAL MATCH (m)-[:releasedIn]->(c:Country)\nWITH m, count(DISTINCT c) AS num\nRETURN m.name AS name, num\nORDER BY name\n```\n\n说明：\n- 按**节点**去重（`WITH DISTINCT m`），同名电影各出一行（如多个 \"Captain Kidd\"、\"Peter Pan\" 分别列出）。\n- 国家数用 `count(DISTINCT c)`；「所有海盗片」用 `OPTIONAL MATCH`，未记录上映国家的影片保留并以 0 计数，不做 `IS NOT NULL` 过滤。\n- 结果共 **195 部**海盗电影（显示层截断到 100 行，全量已在 kernel 中），例如：`Captain Sabertooth and the Treasure of Lama Rama → 32`、`Pirates of the Caribbean: Dead Men Tell No Tales → 15`、`Captain Phillips → 7`、`Peter Pan → 6`，也有大量 `num = 0` 的影片。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 16576,
+        "output": 2352,
+        "cache_read": 93824,
+        "cache_write": 0,
+        "reasoning": 1664,
+        "total": 112752
+      },
+      "cost_usd": 0.005606,
+      "elapsed_seconds": 23.53,
+      "agent_duration_ms": 16614,
+      "extra_columns": []
+    },
+    {
+      "question_id": 338,
+      "datasource": "movie",
+      "chat_id": "53d7594a069641898b4bb0ad4fac28cf",
+      "final_cypher": "MATCH (g:Genre) WITH DISTINCT g RETURN g.name AS name ORDER BY name",
+      "cypher_history": [
+        "MATCH (g:Genre) WITH DISTINCT g RETURN g.name AS name ORDER BY name"
+      ],
+      "agent_text": "数据源 `movie` 中不同的 genre（题材）共 **694** 个节点。已按节点去重、按名称排序返回：\n\n```cypher\nMATCH (g:Genre) WITH DISTINCT g RETURN g.name AS name ORDER BY name\n```\n\n结果说明：返回 694 行（前端显示上限为 100 行，故只展示前 100 个，如 Afrofuturism、action film、adventure film、Bollywood、Spaghetti Western、Western film…）。完整 694 个题材名以该查询的返回集为准。\n\n📁（如需完整清单文件可再说，用户未要求时不上传）",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 15784,
+        "output": 520,
+        "cache_read": 63744,
+        "cache_write": 0,
+        "reasoning": 193,
+        "total": 80048
+      },
+      "cost_usd": 0.00414,
+      "elapsed_seconds": 14.99,
+      "agent_duration_ms": 8056,
+      "extra_columns": []
+    },
+    {
+      "question_id": 362,
+      "datasource": "movie",
+      "chat_id": "29f5dfe2a5b145b98dd4187313e23d75",
+      "final_cypher": "MATCH (f:Movie {name:'The Fighter'})-[:releasedIn]->(c:Country)\nMATCH (m:Movie)-[:originatesFrom]->(c)\nWHERE m.global_box_office_usd IS NOT NULL\nRETURN m.name AS name\nORDER BY m.global_box_office_usd DESC\nLIMIT 1;",
+      "cypher_history": [
+        "MATCH (f:Movie {name:'The Fighter'})-[:releasedIn]->(c:Country)\nRETURN f.name AS movie, collect(c.name) AS released_countries;",
+        "MATCH (f:Movie {name:'The Fighter'})-[:releasedIn]->(c:Country)\nMATCH (m:Movie)-[:originatesFrom]->(c)\nWHERE m.global_box_office_usd IS NOT NULL\nRETURN m.name AS name\nORDER BY m.global_box_office_usd DESC\nLIMIT 1;",
+        "MATCH (f:Movie {name:'The Fighter'})-[:releasedIn]->(c:Country)\nMATCH (m:Movie)-[:releasedIn]->(c)\nWHERE m.global_box_office_usd IS NOT NULL\nRETURN m.name AS name, m.global_box_office_usd AS box\nORDER BY m.global_box_office_usd DESC\nLIMIT 3;",
+        "MATCH (f:Movie {name:'The Fighter'})-[:releasedIn]->(c:Country)\nMATCH (m:Movie)-[:originatesFrom]->(c)\nWHERE m.global_box_office_usd IS NOT NULL\nRETURN m.name AS name\nORDER BY m.global_box_office_usd DESC\nLIMIT 1;"
+      ],
+      "agent_text": "答案：**The Hunger Games: Mockingjay – Part 2**\n\n思路（按资源文件的模式）：\n1. 从 `The Fighter` 经 `releasedIn` 推出其上映国家（Germany）。\n2. 找 `originatesFrom` 同一国家的电影，取 `global_box_office_usd` 最高的一部（先 `WHERE ... IS NOT NULL` 再降序 `LIMIT 1`）。\n\n最终 Cypher：\n```cypher\nMATCH (f:Movie {name:'The Fighter'})-[:releasedIn]->(c:Country)\nMATCH (m:Movie)-[:originatesFrom]->(c)\nWHERE m.global_box_office_usd IS NOT NULL\nRETURN m.name AS name\nORDER BY m.global_box_office_usd DESC\nLIMIT 1;\n```",
+      "tool_calls": 6,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 6,
+      "tool_rounds": 5,
+      "tokens": {
+        "input": 15805,
+        "output": 5171,
+        "cache_read": 156544,
+        "cache_write": 0,
+        "reasoning": 4377,
+        "total": 177520
+      },
+      "cost_usd": 0.008044,
+      "elapsed_seconds": 40.66,
+      "agent_duration_ms": 33763,
+      "extra_columns": []
+    },
+    {
+      "question_id": 369,
+      "datasource": "movie",
+      "chat_id": "c483207e9df44a54bf2604f94781c71e",
+      "final_cypher": "MATCH (src:Movie {name:'The Matrix Reloaded'})-[:directedBy]->(p:Person)\nMATCH (m:Movie)-[:directedBy]->(p)\nWITH DISTINCT m\nRETURN m.name AS movie_name\nORDER BY m.runtime_minute ASC",
+      "cypher_history": [
+        "MATCH (src:Movie {name:'The Matrix Reloaded'})-[:directedBy]->(p:Person)\nMATCH (m:Movie)-[:directedBy]->(p)\nWITH DISTINCT m\nRETURN m.name AS movie_name, m.runtime_minute AS runtime\nORDER BY m.runtime_minute ASC",
+        "MATCH (src:Movie {name:'The Matrix Reloaded'})-[:directedBy]->(p:Person)\nMATCH (m:Movie)-[:directedBy]->(p)\nWITH DISTINCT m\nRETURN m.name AS movie_name\nORDER BY m.runtime_minute ASC"
+      ],
+      "agent_text": "The Matrix Reloaded 由沃卓斯基（Wachowski）导演，其执导影片按时长从短到长：\n\n1. Bound\n2. Jupiter Ascending\n3. Speed Racer\n4. The Matrix Revolutions\n5. The Matrix\n6. The Matrix Reloaded\n7. The Matrix Resurrections\n8. Cloud Atlas",
+      "tool_calls": 4,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 15442,
+        "output": 967,
+        "cache_read": 92288,
+        "cache_write": 0,
+        "reasoning": 533,
+        "total": 108697
+      },
+      "cost_usd": 0.005017,
+      "elapsed_seconds": 17.39,
+      "agent_duration_ms": 10487,
+      "extra_columns": []
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "runs": [
+    {
+      "question_id": 13,
+      "datasource": "financial",
+      "chat_id": "749fca0a8cf841599e9b7934d9de2e34",
+      "final_sql": "SELECT DISTINCT ref1 AS accn_id FROM trns WHERE dt = (SELECT MIN(dt) FROM trns WHERE dt >= '1995-01-01' AND dt < '1996-01-01')",
+      "sql_history": [
+        "SELECT DISTINCT ref1 AS accn_id FROM trns WHERE dt = (SELECT MIN(dt) FROM trns WHERE dt >= '1995-01-01' AND dt < '1996-01-01')"
+      ],
+      "agent_text": "1995 年最早交易日（trns.dt = 该年最小值）对应的账户共 27 个：\n\n9, 35, 36, 40, 50, 66, 71, 83, 90, 104, 107, 112, 119, 123, 126, 128, 153, 160, 163, 168, 201, 220, 222, 234, 237, 238, 244\n\n（SQL：`SELECT DISTINCT ref1 FROM trns WHERE dt = (SELECT MIN(dt) FROM trns WHERE dt >= '1995-01-01' AND dt < '1996-01-01')`）",
+      "tool_calls": 3,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 15047,
+        "output": 823,
+        "cache_read": 66048,
+        "cache_write": 0,
+        "reasoning": 451,
+        "total": 81918
+      },
+      "cost_usd": 0.004186,
+      "elapsed_seconds": 18.1,
+      "agent_duration_ms": 10120,
+      "extra_columns": []
+    },
+    {
+      "question_id": 61,
+      "datasource": "financial",
+      "chat_id": "6afacbcae2fc4ea3bf36bd323617366a",
+      "final_sql": "SELECT DISTINCT d.typ FROM dsp d JOIN acct a ON d.ref2 = a.accn_id JOIN dstr ds ON a.ref1 = ds.dstr_id WHERE d.typ <> 'OWNER' AND ds.a11 > 8000 AND ds.a11 <= 9000",
+      "sql_history": [
+        "SELECT DISTINCT d.typ FROM dsp d JOIN acct a ON d.ref2 = a.accn_id JOIN dstr ds ON a.ref1 = ds.dstr_id WHERE d.typ <> 'OWNER' AND ds.a11 > 8000 AND ds.a11 <= 9000"
+      ],
+      "agent_text": "账户类型中**不符合贷款资格**的是 **DISPONENT**（而 OWNER 有贷款资格），且这些账户所在地区（通过开户分支 `acct.ref1` → `dstr.dstr_id`）居民平均收入 `a11` 大于 8000 且不超过 9000。\n\n答案：**DISPONENT**",
+      "tool_calls": 3,
+      "pass": false,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 3,
+      "tool_rounds": 2,
+      "tokens": {
+        "input": 15076,
+        "output": 1508,
+        "cache_read": 66816,
+        "cache_write": 0,
+        "reasoning": 1194,
+        "total": 83400
+      },
+      "cost_usd": 0.004404,
+      "elapsed_seconds": 20.45,
+      "agent_duration_ms": 13010,
+      "extra_columns": []
+    }
+  ]
+}

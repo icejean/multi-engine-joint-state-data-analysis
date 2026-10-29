@@ -1,0 +1,32 @@
+{
+  "runs": [
+    {
+      "question_id": 128,
+      "datasource": "formula_1",
+      "chat_id": "a9ab068739e34288a0e3b509507e2f7a",
+      "final_sql": "SELECT d.frnm, d.srnm FROM drvr d JOIN lp_tm l ON d.drvr_id = l.ref1 WHERE d.ntnl = 'Spanish' AND YEAR(d.db) < 1982 GROUP BY d.drvr_id, d.frnm, d.srnm ORDER BY MAX(l.mlls) DESC LIMIT 10",
+      "sql_history": [
+        "SELECT d.frnm, d.srnm FROM drvr d JOIN lp_tm l ON d.drvr_id = l.ref1 WHERE d.ntnl = 'Spanish' AND YEAR(d.db) < 1982 GROUP BY d.drvr_id, d.frnm, d.srnm ORDER BY MAX(l.mlls) DESC LIMIT 10"
+      ],
+      "agent_text": "西班牙籍、1982 年前出生且拥有最晚/最快圈速的车手（按每人最大圈速毫秒降序，Top 10 内共返回 3 位）：\n\n| frnm | srnm |\n|---|---|\n| Fernando | Alonso |\n| Pedro | de la Rosa |\n| Marc | Gené |\n\n该数据源中满足条件的仅此 3 位，故 Top 10 取了全部。",
+      "tool_calls": 4,
+      "pass": true,
+      "error": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "turns": 4,
+      "tool_rounds": 3,
+      "tokens": {
+        "input": 18678,
+        "output": 856,
+        "cache_read": 101760,
+        "cache_write": 0,
+        "reasoning": 383,
+        "total": 121294
+      },
+      "cost_usd": 0.005704,
+      "elapsed_seconds": 18.22,
+      "agent_duration_ms": 10516,
+      "extra_columns": []
+    }
+  ]
+}

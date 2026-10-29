@@ -1,0 +1,392 @@
+{
+  "database": "financial",
+  "description": "financial 完整数据字典(混淆名) + 外键 + 列类型, 一次性注入即免逐表探索。",
+  "tables": [
+    {
+      "name": "acct",
+      "desc": "bank accounts",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "accn_id",
+          "type": "integer",
+          "desc": "the id of the account"
+        },
+        {
+          "name": "ref1",
+          "type": "integer",
+          "desc": "location of branch"
+        },
+        {
+          "name": "frqn",
+          "type": "text",
+          "desc": "frequency of the acount"
+        },
+        {
+          "name": "dt",
+          "type": "date",
+          "desc": "the creation date of the account"
+        }
+      ]
+    },
+    {
+      "name": "clnt",
+      "desc": "bank clients (persons)",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "clnt_id",
+          "type": "integer",
+          "desc": "the unique number"
+        },
+        {
+          "name": "gndr",
+          "type": "text",
+          "desc": ""
+        },
+        {
+          "name": "brth_dt",
+          "type": "date",
+          "desc": "birth date"
+        },
+        {
+          "name": "ref1",
+          "type": "integer",
+          "desc": "location of branch"
+        }
+      ]
+    },
+    {
+      "name": "crd",
+      "desc": "payment cards issued to accounts",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "crd_id",
+          "type": "integer",
+          "desc": "id number of credit card"
+        },
+        {
+          "name": "ref1",
+          "type": "integer",
+          "desc": "disposition id"
+        },
+        {
+          "name": "typ",
+          "type": "text",
+          "desc": "type of credit card"
+        },
+        {
+          "name": "issd",
+          "type": "date",
+          "desc": "the date when the credit card issued"
+        }
+      ]
+    },
+    {
+      "name": "dsp",
+      "desc": "disposition: account-client ownership link",
+      "table_type": "junction",
+      "columns": [
+        {
+          "name": "dsp_id",
+          "type": "integer",
+          "desc": "unique number of identifying this row of record"
+        },
+        {
+          "name": "ref1",
+          "type": "integer",
+          "desc": "id number of client"
+        },
+        {
+          "name": "ref2",
+          "type": "integer",
+          "desc": "id number of account"
+        },
+        {
+          "name": "typ",
+          "type": "text",
+          "desc": "type of disposition"
+        }
+      ]
+    },
+    {
+      "name": "dstr",
+      "desc": "geographic districts (Czech regions)",
+      "table_type": "dim",
+      "columns": [
+        {
+          "name": "dstr_id",
+          "type": "integer",
+          "desc": "location of branch"
+        },
+        {
+          "name": "a2",
+          "type": "text",
+          "desc": "district_name"
+        },
+        {
+          "name": "a3",
+          "type": "text",
+          "desc": "region"
+        },
+        {
+          "name": "a4",
+          "type": "text",
+          "desc": "number of inhabitants"
+        },
+        {
+          "name": "a5",
+          "type": "text",
+          "desc": "municipality < district < region"
+        },
+        {
+          "name": "a6",
+          "type": "text",
+          "desc": "municipality < district < region"
+        },
+        {
+          "name": "a7",
+          "type": "text",
+          "desc": "municipality < district < region"
+        },
+        {
+          "name": "a8",
+          "type": "integer",
+          "desc": "municipality < district < region"
+        },
+        {
+          "name": "a9",
+          "type": "integer",
+          "desc": ""
+        },
+        {
+          "name": "a10",
+          "type": "real",
+          "desc": "ratio of urban inhabitants"
+        },
+        {
+          "name": "a11",
+          "type": "integer",
+          "desc": "average salary"
+        },
+        {
+          "name": "a12",
+          "type": "real",
+          "desc": "unemployment rate 1995"
+        },
+        {
+          "name": "a13",
+          "type": "real",
+          "desc": "unemployment rate 1996"
+        },
+        {
+          "name": "a14",
+          "type": "integer",
+          "desc": "no. of entrepreneurs per 1000 inhabitants"
+        },
+        {
+          "name": "a15",
+          "type": "integer",
+          "desc": "no. of committed crimes 1995"
+        },
+        {
+          "name": "a16",
+          "type": "integer",
+          "desc": "no. of committed crimes 1996"
+        }
+      ]
+    },
+    {
+      "name": "ln",
+      "desc": "loans granted to accounts",
+      "table_type": "fact",
+      "columns": [
+        {
+          "name": "ln_id",
+          "type": "integer",
+          "desc": "the id number identifying the loan data"
+        },
+        {
+          "name": "ref1",
+          "type": "integer",
+          "desc": "the id number identifying the account"
+        },
+        {
+          "name": "dt",
+          "type": "date",
+          "desc": "the date when the loan is approved"
+        },
+        {
+          "name": "amnt",
+          "type": "integer",
+          "desc": "approved amount"
+        },
+        {
+          "name": "drtn",
+          "type": "integer",
+          "desc": "loan duration"
+        },
+        {
+          "name": "pymn",
+          "type": "real",
+          "desc": "monthly payments"
+        },
+        {
+          "name": "stts",
+          "type": "text",
+          "desc": "repayment status"
+        }
+      ]
+    },
+    {
+      "name": "ord",
+      "desc": "payment orders",
+      "table_type": "fact",
+      "columns": [
+        {
+          "name": "ordr_id",
+          "type": "integer",
+          "desc": "identifying the unique order"
+        },
+        {
+          "name": "ref1",
+          "type": "integer",
+          "desc": "id number of account"
+        },
+        {
+          "name": "bnk_to",
+          "type": "text",
+          "desc": "bank of the recipient"
+        },
+        {
+          "name": "accn_to",
+          "type": "integer",
+          "desc": "account of the recipient"
+        },
+        {
+          "name": "amnt",
+          "type": "real",
+          "desc": "debited amount"
+        },
+        {
+          "name": "k_symb",
+          "type": "text",
+          "desc": "purpose of the payment"
+        }
+      ]
+    },
+    {
+      "name": "trns",
+      "desc": "transactions on accounts",
+      "table_type": "fact",
+      "columns": [
+        {
+          "name": "trns_id",
+          "type": "integer",
+          "desc": "transaction id"
+        },
+        {
+          "name": "ref1",
+          "type": "integer",
+          "desc": ""
+        },
+        {
+          "name": "dt",
+          "type": "date",
+          "desc": "date of transaction"
+        },
+        {
+          "name": "typ",
+          "type": "text",
+          "desc": "+/- transaction"
+        },
+        {
+          "name": "oprt",
+          "type": "text",
+          "desc": "mode of transaction"
+        },
+        {
+          "name": "amnt",
+          "type": "integer",
+          "desc": "amount of money"
+        },
+        {
+          "name": "blnc",
+          "type": "integer",
+          "desc": "balance after transaction"
+        },
+        {
+          "name": "k_symb",
+          "type": "text",
+          "desc": "characterization of the transaction"
+        },
+        {
+          "name": "bnk",
+          "type": "text",
+          "desc": "bank of the partner"
+        },
+        {
+          "name": "accn",
+          "type": "integer",
+          "desc": "account of the partner"
+        }
+      ]
+    }
+  ],
+  "foreign_keys": [
+    {
+      "from": "acct.ref1",
+      "to": "dstr.dstr_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "crd.ref1",
+      "to": "dsp.dsp_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "clnt.ref1",
+      "to": "dstr.dstr_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "dsp.ref1",
+      "to": "clnt.clnt_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "dsp.ref2",
+      "to": "acct.accn_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "ln.ref1",
+      "to": "acct.accn_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "ord.ref1",
+      "to": "acct.accn_id",
+      "seq": 1,
+      "count": 1
+    },
+    {
+      "from": "trns.ref1",
+      "to": "acct.accn_id",
+      "seq": 1,
+      "count": 1
+    }
+  ],
+  "stats": {
+    "tables": 8,
+    "columns": 55,
+    "foreign_keys": 8
+  }
+}

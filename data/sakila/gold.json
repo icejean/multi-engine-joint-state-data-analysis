@@ -1,0 +1,575 @@
+[
+  {
+    "id": "A3",
+    "type": "single",
+    "hop": 1,
+    "columns": [
+      "n"
+    ],
+    "rows": [
+      [
+        223
+      ]
+    ]
+  },
+  {
+    "id": "B1",
+    "type": "join2",
+    "hop": 2,
+    "columns": [
+      "frst_nm",
+      "last_nm",
+      "n"
+    ],
+    "rows": [
+      [
+        "GINA",
+        "DEGENERES",
+        42
+      ],
+      [
+        "WALTER",
+        "TORN",
+        41
+      ],
+      [
+        "MARY",
+        "KEITEL",
+        40
+      ],
+      [
+        "MATTHEW",
+        "CARREY",
+        39
+      ],
+      [
+        "SANDRA",
+        "KILMER",
+        37
+      ],
+      [
+        "SCARLETT",
+        "DAMON",
+        36
+      ],
+      [
+        "ANGELA",
+        "WITHERSPOON",
+        35
+      ],
+      [
+        "GROUCHO",
+        "DUNST",
+        35
+      ],
+      [
+        "HENRY",
+        "BERRY",
+        35
+      ],
+      [
+        "UMA",
+        "WOOD",
+        35
+      ]
+    ]
+  },
+  {
+    "id": "B5",
+    "type": "join34",
+    "hop": 3,
+    "columns": [
+      "frst_nm",
+      "last_nm",
+      "total"
+    ],
+    "rows": [
+      [
+        "KARL",
+        "SEAL",
+        "221.55"
+      ],
+      [
+        "ELEANOR",
+        "HUNT",
+        "216.54"
+      ],
+      [
+        "CLARA",
+        "SHAW",
+        "195.58"
+      ],
+      [
+        "MARION",
+        "SNYDER",
+        "194.61"
+      ],
+      [
+        "RHONDA",
+        "KENNEDY",
+        "194.61"
+      ],
+      [
+        "TOMMY",
+        "COLLAZO",
+        "186.62"
+      ],
+      [
+        "WESLEY",
+        "BULL",
+        "177.60"
+      ],
+      [
+        "TIM",
+        "CARY",
+        "175.61"
+      ],
+      [
+        "MARCIA",
+        "DEAN",
+        "175.58"
+      ],
+      [
+        "ANA",
+        "BRADLEY",
+        "174.66"
+      ]
+    ]
+  },
+  {
+    "id": "C3",
+    "type": "join34",
+    "hop": 4,
+    "columns": [
+      "n"
+    ],
+    "rows": [
+      [
+        30
+      ]
+    ]
+  },
+  {
+    "id": "C5",
+    "type": "join34",
+    "hop": 3,
+    "columns": [
+      "n"
+    ],
+    "rows": [
+      [
+        58
+      ]
+    ]
+  },
+  {
+    "id": "C6",
+    "type": "join34",
+    "hop": 3,
+    "columns": [
+      "frst_nm",
+      "last_nm"
+    ],
+    "rows": [
+      [
+        "CHRISTIAN",
+        "GABLE"
+      ],
+      [
+        "JOHNNY",
+        "CAGE"
+      ],
+      [
+        "LUCILLE",
+        "TRACY"
+      ],
+      [
+        "MARY",
+        "KEITEL"
+      ],
+      [
+        "MENA",
+        "TEMPLE"
+      ],
+      [
+        "OPRAH",
+        "KILMER"
+      ],
+      [
+        "PENELOPE",
+        "GUINESS"
+      ],
+      [
+        "ROCK",
+        "DUKAKIS"
+      ],
+      [
+        "SANDRA",
+        "PECK"
+      ],
+      [
+        "WARREN",
+        "NOLTE"
+      ]
+    ]
+  },
+  {
+    "id": "D1",
+    "type": "cryptic",
+    "hop": 1,
+    "columns": [
+      "n"
+    ],
+    "rows": [
+      [
+        191
+      ]
+    ]
+  },
+  {
+    "id": "E2",
+    "type": "rule",
+    "hop": 1,
+    "columns": [
+      "n"
+    ],
+    "rows": [
+      [
+        584
+      ]
+    ]
+  },
+  {
+    "id": "E3",
+    "type": "rule",
+    "hop": 2,
+    "columns": [
+      "n"
+    ],
+    "rows": [
+      [
+        46
+      ]
+    ]
+  },
+  {
+    "id": "F1",
+    "type": "dict",
+    "hop": 1,
+    "columns": [
+      "n"
+    ],
+    "rows": [
+      [
+        797
+      ]
+    ]
+  },
+  {
+    "id": "F2",
+    "type": "dict",
+    "hop": 1,
+    "columns": [
+      "n"
+    ],
+    "rows": [
+      [
+        2
+      ]
+    ]
+  },
+  {
+    "id": "F3",
+    "type": "dict",
+    "hop": 1,
+    "columns": [
+      "n"
+    ],
+    "rows": [
+      [
+        599
+      ]
+    ]
+  },
+  {
+    "id": "F4",
+    "type": "dict",
+    "hop": 1,
+    "columns": [
+      "n"
+    ],
+    "rows": [
+      [
+        2
+      ]
+    ]
+  },
+  {
+    "id": "F5",
+    "type": "dict",
+    "hop": 1,
+    "columns": [
+      "n"
+    ],
+    "rows": [
+      [
+        2
+      ]
+    ]
+  },
+  {
+    "id": "G1",
+    "type": "dict",
+    "hop": 1,
+    "columns": [
+      "n"
+    ],
+    "rows": [
+      [
+        6
+      ]
+    ]
+  },
+  {
+    "id": "G2",
+    "type": "join2",
+    "hop": 2,
+    "columns": [
+      "frst_nm",
+      "last_nm",
+      "n"
+    ],
+    "rows": [
+      [
+        "PENELOPE",
+        "GUINESS",
+        6
+      ],
+      [
+        "NICK",
+        "WAHLBERG",
+        5
+      ],
+      [
+        "ED",
+        "CHASE",
+        4
+      ]
+    ]
+  },
+  {
+    "id": "H1",
+    "type": "join2",
+    "hop": 2,
+    "columns": [
+      "n"
+    ],
+    "rows": [
+      [
+        198
+      ]
+    ]
+  },
+  {
+    "id": "H2",
+    "type": "join2",
+    "hop": 2,
+    "columns": [
+      "n"
+    ],
+    "rows": [
+      [
+        99
+      ]
+    ]
+  },
+  {
+    "id": "H3",
+    "type": "join34",
+    "hop": 3,
+    "columns": [
+      "frst_nm",
+      "last_nm",
+      "n"
+    ],
+    "rows": [
+      [
+        "AARON",
+        "SELBY",
+        2
+      ],
+      [
+        "ADRIAN",
+        "CLARY",
+        2
+      ],
+      [
+        "ALFRED",
+        "CASILLAS",
+        2
+      ],
+      [
+        "ALFREDO",
+        "MCADAMS",
+        2
+      ],
+      [
+        "ALICE",
+        "STEWART",
+        2
+      ],
+      [
+        "ALLISON",
+        "STANLEY",
+        2
+      ],
+      [
+        "ANDREA",
+        "HENDERSON",
+        2
+      ],
+      [
+        "ANDREW",
+        "PURDY",
+        2
+      ],
+      [
+        "ANDY",
+        "VANHORN",
+        2
+      ],
+      [
+        "ANN",
+        "EVANS",
+        2
+      ]
+    ]
+  },
+  {
+    "id": "H4",
+    "type": "join2",
+    "hop": 2,
+    "columns": [
+      "frst_nm",
+      "last_nm",
+      "n"
+    ],
+    "rows": [
+      [
+        "AARON",
+        "SELBY",
+        2
+      ],
+      [
+        "ADRIAN",
+        "CLARY",
+        2
+      ],
+      [
+        "ALFRED",
+        "CASILLAS",
+        2
+      ],
+      [
+        "ALFREDO",
+        "MCADAMS",
+        2
+      ],
+      [
+        "ALICE",
+        "STEWART",
+        2
+      ],
+      [
+        "ALLISON",
+        "STANLEY",
+        2
+      ],
+      [
+        "ANDREA",
+        "HENDERSON",
+        2
+      ],
+      [
+        "ANDREW",
+        "PURDY",
+        2
+      ],
+      [
+        "ANDY",
+        "VANHORN",
+        2
+      ],
+      [
+        "ANN",
+        "EVANS",
+        2
+      ]
+    ]
+  },
+  {
+    "id": "H5",
+    "type": "rule",
+    "hop": 1,
+    "columns": [
+      "n"
+    ],
+    "rows": [
+      [
+        199
+      ]
+    ]
+  },
+  {
+    "id": "H6",
+    "type": "single",
+    "hop": 1,
+    "columns": [
+      "n"
+    ],
+    "rows": [
+      [
+        100
+      ]
+    ]
+  },
+  {
+    "id": "Q39",
+    "type": "join34",
+    "hop": 5,
+    "columns": [
+      "cty"
+    ],
+    "rows": [
+      [
+        "Cape Coral"
+      ]
+    ]
+  },
+  {
+    "id": "Q40",
+    "type": "rule",
+    "hop": 1,
+    "columns": [
+      "n"
+    ],
+    "rows": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "id": "Q41",
+    "type": "join2",
+    "hop": 2,
+    "columns": [
+      "SUM(f.lngth)"
+    ],
+    "rows": [
+      [
+        "68355"
+      ]
+    ]
+  }
+]
