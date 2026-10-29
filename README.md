@@ -59,8 +59,8 @@ data/       Resource files (schema.json + notes.md), gold, and results per bench
 Raw benchmark data is **not** included (large binaries). Download from the official sources:
 
 - **BIRD**: https://bird-bench.github.io
-- **CypherBench**: https://github.com/... (CypherBench official)
-- **TabReD**: https://github.com/... (TabReD official, Kaggle)
+- **CypherBench**: https://github.com/megagonlabs/cypherbench (dataset: https://huggingface.co/datasets/megagonlabs/cypherbench)
+- **TabReD**: https://github.com/yandex-research/tabred (`uvx tabred download`, requires a Kaggle account)
 
 After downloading, place the data under `data/` following the layout in the resource files.
 
