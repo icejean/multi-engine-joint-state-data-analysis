@@ -79,6 +79,11 @@ python3 scripts/run_bench_bird_mplus.py --db formula_1 --all \
 python3 scripts/run_bench_bird_singleshot.py --db formula_1 --all \
     --results results_f1_ss.json
 
+# pass^3（同一份收敛后 notes × 3 轮，量化模型漂移；统计 平均 pass@1 / 三轮全对 all-3）
+python3 scripts/run_bench_bird_mplus.py --db formula_1 --all --results results_f1_pass3_run1.json
+python3 scripts/run_bench_bird_mplus.py --db formula_1 --all --results results_f1_pass3_run2.json
+python3 scripts/run_bench_bird_mplus.py --db formula_1 --all --results results_f1_pass3_run3.json
+
 # 收敛汇总
 python3 scripts/summarize_convergence.py --db formula_1 \
     --results results_f1_round1.json --round 1 --notes "empty(从零)"
@@ -108,7 +113,7 @@ python3 scripts/statistical_analysis.py      # p2-statistical-results.md §B1
 
 ## 10. 迭代时间线（收敛过程，非逐轮数字）
 
-与 financial 同构：prep → 建库 → round1 从零 → 根因/修 notes/重跑 → B1 同库基线 → 收口（收敛到 grounding 拉满、锁定硬地板）。formula_1 的库专属 notes 涉及圈速 `TIME_TO_SEC` 等 F1 语义坑。
+与 financial 同构：prep → 建库 → round1 从零 → 根因/修 notes/重跑 → B1 同库基线 → **pass^3（三轮）** → 收口（收敛到 grounding 拉满、锁定硬地板）。formula_1 的库专属 notes 涉及圈速 `TIME_TO_SEC` 等 F1 语义坑。
 
 > 精确数字以 `analysis/p2-statistical-results.md` §B1 与 `convergence_curve.json` 为准。
 

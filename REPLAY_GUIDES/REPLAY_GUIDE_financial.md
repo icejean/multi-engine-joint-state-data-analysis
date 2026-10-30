@@ -93,6 +93,11 @@ python3 scripts/run_bench_bird_singleshot.py --db financial --all \
 python3 scripts/run_bench_bird_singleshot.py --db financial --all --with-notes \
     --results results_fin_ss_notes.json
 
+# pass^3（同一份收敛后 notes × 3 轮，量化模型漂移；统计 平均 pass@1 / 三轮全对 all-3）
+python3 scripts/run_bench_bird_mplus.py --db financial --all --results results_fin_pass3_run1.json
+python3 scripts/run_bench_bird_mplus.py --db financial --all --results results_fin_pass3_run2.json
+python3 scripts/run_bench_bird_mplus.py --db financial --all --results results_fin_pass3_run3.json
+
 # 收敛汇总（每轮一进 convergence_curve.json）
 python3 scripts/summarize_convergence.py --db financial \
     --results results_fin_round1.json --round 1 --notes "empty(从零)"
@@ -129,7 +134,8 @@ python3 scripts/statistical_analysis.py      # McNemar + bootstrap CI（p2-stati
 2. **round1（从零）**：只注入 schema.json、无 notes，跑 M+S 得下界。
 3. **根因 → 修 notes → 重跑**：逐轮对失败题做根因分析，把「语义歧义」消成 notes 规则，再重跑——这是收敛曲线的主体。
 4. **B1 同库基线**：跑 single-shot（s1 无 notes / s1n 带 notes），得到「M+S 领先 single-shot」的同库对照。
-5. **收口**：准确率收敛到 grounding 拉满的最终值，漂移根因与硬地板题锁定。
+5. **pass^3**：同一份收敛后 notes × 3 轮，得到「平均 pass@1」与「三轮全对 all-3」两个口径（后者更严格）。
+6. **收口**：准确率收敛到 grounding 拉满的最终值，漂移根因与硬地板题锁定。
 
 > 精确数字以 `analysis/p2-statistical-results.md` §B1 与 `convergence_curve.json` 为准。
 

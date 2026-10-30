@@ -52,9 +52,10 @@ python3 scripts/build_sakila_rntl.py
 
 ---
 
-## 3. 题集（25 题）
+## 3. 题集（最终 25 题）
 
-- **单一事实源**：`data/sakila/questions.json`（25 题，题面 + gold_sql）；人读版 `questions-final.md`；旧 40 题设计稿 `questions.md`（留档）。
+- **单一事实源**：`data/sakila/questions.json`（**25 题**，题面 + gold_sql）；人读版 `questions-final.md`（最终 25 题定稿）。
+- **题量历史**：中间「第三轮」曾扩到 **40 题**（`analysis/findings.md` §8.3、`analysis/exp-report-sql-metadata-gradient.md` §5.3），定稿回落 **25 题**。论文 §7.1 的「判分陷阱」分析用的是 **40 题口径**（31 次失败 > 25），§7.1③ 的「84% (21/25)」是 25 题定稿口径——跨题量非重点、未统一。
 
 ---
 
