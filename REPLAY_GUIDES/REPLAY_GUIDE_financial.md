@@ -22,7 +22,7 @@
 
 - **源**：BIRD dev 集，数据库 `financial`。<https://bird-bench.github.io> 下载 dev 集，得到：
   - `dev.json`（题库）、`dev_databases/financial/financial.sqlite`（数据库）、`dev_databases/financial/database_description/*.csv`（8 表英文列描述）。
-- **本仓库已含**：`question_set.json` / `question_set_obfuscated.json`、`obfuscation_map.json`、`financial_schema.json`、`financial_notes.md`、`gold.json`、`gold_errors.json`、`database_description/*.csv`、`convergence_curve.json`、`results_fin_*.json`、`b1_*.log`。
+- **本仓库已含**：`dev.json` / `dev_tables.json`（BIRD 原题集，prep_bird.py 输入）、`question_set.json` / `question_set_obfuscated.json`、`obfuscation_map.json`、`financial_schema.json`、`financial_notes.md`、`gold.json`、`gold_errors.json`、`database_description/*.csv`、`convergence_curve.json`、`results_fin_*.json`、`run_round*.log`、`b1_*.log`。
 - **本仓库不含**：`financial.sqlite`（二进制库，需下载）。
 
 ---
@@ -105,6 +105,7 @@ python3 scripts/summarize_convergence.py --db financial \
 
 - **B1 同库基线**：`scripts/run_b1_singleshot.sh`（后台串行跑 s1/s1n，日志落 `data/financial/b1_*.log`）；分析用 `scripts/analyze_b1_singleshot.py`。
 - **断点续跑**：结果逐条落盘，已跑的题自动跳过。
+- **探索变体**（结果文件前缀即过程）：`round1-4`（收敛轮）、`notes`/`notes2-4`（4 版 notes 各 ×3 轮）、`note2test`/`note11`（note 增量验证）、`fix2/3`/`evfix`/`goldfix`/`promptfix`（定向修）、`temp0`（temperature=0 稳定）、`hard`（硬地板分析）、`glm52_*`（跨模型）、`q13q61` 等单题重试、`full106`（全量 106 题）。
 
 ---
 
@@ -143,6 +144,6 @@ python3 scripts/statistical_analysis.py      # McNemar + bootstrap CI（p2-stati
 
 ## 11. 相关文件清单
 
-**数据（`data/financial/`）**：`question_set.json`、`question_set_obfuscated.json`、`obfuscation_map.json`、`financial_schema.json`、`financial_notes.md`、`gold.json`、`gold_errors.json`、`database_description/*.csv`（8 表）、`convergence_curve.json`、`results_fin_*.json`、`b1_*.log`。
+**数据（`data/financial/`）**：`dev.json` / `dev_tables.json`、`question_set.json`、`question_set_obfuscated.json`、`obfuscation_map.json`、`financial_schema.json`、`financial_notes.md`、`gold.json`、`gold_errors.json`、`database_description/*.csv`（8 表）、`convergence_curve.json`、`results_fin_*.json`（含 round/notes/fix/temp0/hard/glm52/pass3 变体）、`run_round*.log`、`b1_*.log`。
 
 **脚本**：`scripts/{prep_bird,transform_gold_sql,migrate_bird,gen_gold_bird,run_bench_bird_mplus,run_bench_bird_singleshot,summarize_convergence,analyze_b1_singleshot,score,statistical_analysis}.py` + `scripts/run_b1_singleshot.sh`。

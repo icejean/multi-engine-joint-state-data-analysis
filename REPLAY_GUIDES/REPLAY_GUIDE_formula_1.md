@@ -21,7 +21,7 @@
 ## 1. 数据源与下载
 
 - **源**：BIRD dev 集，数据库 `formula_1`。<https://bird-bench.github.io> 下载 dev 集，得到 `dev.json`、`dev_databases/formula_1/formula_1.sqlite`、`database_description/*.csv`（13 表）。
-- **本仓库已含**：`question_set.json` / `question_set_obfuscated.json`、`obfuscation_map.json`、`formula_1_schema.json`、`formula_1_notes.md`、`gold.json`、`gold_errors.json`、`database_description/*.csv`、`convergence_curve.json`、`results_f1_*.json`、`b1_*.log`。
+- **本仓库已含**：`dev.json` / `dev_tables.json`（BIRD 原题集，prep_bird.py 输入）、`question_set.json` / `question_set_obfuscated.json`、`obfuscation_map.json`、`formula_1_schema.json`、`formula_1_notes.md`、`gold.json`、`gold_errors.json`、`database_description/*.csv`、`convergence_curve.json`、`results_f1_*.json`、`run_*.log`、`b1_*.log`。
 - **本仓库不含**：`formula_1.sqlite`（二进制库，需下载）。
 
 ---
@@ -113,7 +113,7 @@ python3 scripts/statistical_analysis.py      # p2-statistical-results.md §B1
 
 ## 10. 迭代时间线（收敛过程，非逐轮数字）
 
-与 financial 同构：prep → 建库 → round1 从零 → 根因/修 notes/重跑 → B1 同库基线 → **pass^3（三轮）** → 收口（收敛到 grounding 拉满、锁定硬地板）。formula_1 的库专属 notes 涉及圈速 `TIME_TO_SEC` 等 F1 语义坑。
+与 financial 同构：prep → 建库 → round1 从零 → 根因/修 notes/重跑 → B1 同库基线 → **pass^3（三轮）** → 收口（收敛到 grounding 拉满、锁定硬地板）。formula_1 的库专属 notes 涉及圈速 `TIME_TO_SEC` 等 F1 语义坑。探索变体（结果前缀）：`round1-5`/`round5b`（收敛轮）、`note1-3test`（note 增量验证）、`notesfix`/`goldfix`/`driftfix`/`stablefix`/`regfix`/`q128fix`（定向修）、`smoke`/`smoke2`（冒烟）。
 
 > 精确数字以 `analysis/p2-statistical-results.md` §B1 与 `convergence_curve.json` 为准。
 
@@ -121,6 +121,6 @@ python3 scripts/statistical_analysis.py      # p2-statistical-results.md §B1
 
 ## 11. 相关文件清单
 
-**数据（`data/formula_1/`）**：`question_set.json`、`question_set_obfuscated.json`、`obfuscation_map.json`、`formula_1_schema.json`、`formula_1_notes.md`、`gold.json`、`gold_errors.json`、`database_description/*.csv`（13 表）、`convergence_curve.json`、`results_f1_*.json`、`b1_*.log`。
+**数据（`data/formula_1/`）**：`dev.json` / `dev_tables.json`、`question_set.json`、`question_set_obfuscated.json`、`obfuscation_map.json`、`formula_1_schema.json`、`formula_1_notes.md`、`gold.json`、`gold_errors.json`、`database_description/*.csv`（13 表）、`convergence_curve.json`、`results_f1_*.json`（含 round/note*test/fix/pass3 变体）、`run_*.log`、`b1_*.log`。
 
 **脚本**：同 financial（`scripts/{prep_bird,transform_gold_sql,migrate_bird,gen_gold_bird,run_bench_bird_mplus,run_bench_bird_singleshot,summarize_convergence,analyze_b1_singleshot}.py` + `run_b1_singleshot.sh`）。

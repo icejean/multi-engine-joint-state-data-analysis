@@ -135,6 +135,9 @@ bash scripts/run_mplus_pass.sh    # 或 run_pass.sh
 
 - **pass^3 口径**：同一题跑 3 轮，统计 平均（pass@1）/ 三轮全对（all-3）/ 并集（≥1 轮对），对应论文 §4.3 的方差与漂移分析。
 - **断点续跑**：结果逐条落盘，已跑的 `(question_id, level)` 自动跳过。
+- **S0 漂移/稳定实验**（`scripts/run_s0_drift.sh`）：S0 单发非确定性对照（漂移 vs temperature=0 稳定），结果 `results_wc_s0_drift_r{1,2,3}.json` / `results_wc_s0_stab_r{1..5}.json`。
+- **跨模型**（M+S 换模型验证「跨模型成立」）：glm-5.2（`scripts/run_mplus_glm52.sh` + `run_mplus_glm52_pass.sh` → `results_wc_mplus_126_glm52*.json`）、glm-5.1/GLM-5-Pro（`results_wc_mplus_glm5pro_126*.json`）。
+- **探索变体**（结果文件前缀即过程）：`pilot`/`pilot_clean`（26 题试点）、`m_26*`/`s_26*`（26 题子集）、`m_tier1_verify`/`fix*`/`q*`（定向验证/单题重试）、`mplus_126_pass4`（天花板收口）。
 
 ---
 
@@ -186,8 +189,10 @@ python3 scripts/statistical_analysis.py      # McNemar + bootstrap CI + pass@k �
 
 ## 11. 相关文件清单
 
-**数据（`data/works_cycles/`）**：`question_set_final_obfuscated.json`、`question_set_100.json`、`custom_questions_24.json`、`obfuscation_map.json`、`descriptions.json`、`gold.json`、`gold_errors.json`、`works_cycles_er_schema.json`、`works_cycles_er_notes.md`、`database_description/*.csv`（65 表）、`metadata/works_cycles_L{1,2,3}_*.json`、`results_wc_*.json`。
+**数据（`data/works_cycles/`）**：`question_set_final_obfuscated.json`、`question_set_100.json`、`custom_questions_24.json`、`obfuscation_map.json`、`descriptions.json`、`gold.json`、`gold_errors.json`、`works_cycles_er_schema.json`、`works_cycles_er_notes.md`、`database_description/*.csv`（65 表）、`metadata/works_cycles_L{1,2,3}_*.json`、`metadata/fk_diff_sqlite_vs_tablesjson.md`（FK 口径差异注）、`results_wc_*.json`（含 s0_drift/s0_stab/glm52/glm5pro/pass4 变体）。
 
-**脚本**：`data/works_cycles/{select_questions,merge_question_sets,generate_obfuscation_map,transform_gold_sql,generate_descriptions,build_metadata_gradients,migrate_to_mysql}.py` + `scripts/{gen_gold_wc,gen_schema_resource,run_bench_wc,run_bench_wc_mplus,run_bench_wc_singleshot,score,rescore_wc,statistical_analysis}.py` + `scripts/run_{mplus_pass,pass}.sh`。
+**脚本**：`data/works_cycles/{select_questions,merge_question_sets,generate_obfuscation_map,transform_gold_sql,generate_descriptions,build_metadata_gradients,migrate_to_mysql,_rootcause2_dump}.py` + `scripts/{gen_gold_wc,gen_schema_resource,run_bench_wc,run_bench_wc_mplus,run_bench_wc_singleshot,score,rescore_wc,statistical_analysis}.py` + `scripts/run_{mplus_pass,pass,s0_drift,mplus_glm52,mplus_glm52_pass}.sh`。
+
+**不随仓（需下载）**：`works_cycles.sqlite`、`train.json`/`train_tables.json`/`train_gold.sql`、`Customer_classic.csv`（原始/大数据）。
 
 **分析文档**：`analysis/root-cause/` 下 §9 所列各篇 + `analysis/{p2-statistical-results,pass3-variance-report,tech-route-selection,stateful-analysis-report}.md`。

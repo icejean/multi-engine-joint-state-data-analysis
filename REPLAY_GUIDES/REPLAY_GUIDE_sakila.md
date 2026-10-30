@@ -108,7 +108,7 @@ python3 scripts/score.py --selftest   # 以 gold 自身为候选，期望 100%
 
 ## 8. 相关文件清单
 
-**数据（`data/sakila/`）**：`questions.json`、`questions-final.md`、`questions.md`、`gold.json`、`rename_map.json`、`results_*.json`。
+**数据（`data/sakila/`）**：`questions.json`、`questions-final.md`、`gold.json`、`rename_map.json`、`results_*.json`（7 个：`glm52`=M·glm-5.2 定稿、`singleshot_{glm52,flash,pro}`=S 三模型、`dsh_{flash,glm52,pro}_full`=M·DSH 三后端）。
 
 **脚本**：`scripts/{build_sakila_rntl,gen_gold,run_bench,run_bench_singleshot,score,smoke_test}.py`。
 

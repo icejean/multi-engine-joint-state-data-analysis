@@ -92,6 +92,7 @@ python3 scripts/summarize_convergence.py --db movie --results results_movie_mplu
 ```
 
 - **断点续跑**：结果逐条落盘，已跑的题自动跳过。
+- **探索变体**（结果文件前缀即过程）：`mplus`（round1 初始）→ `mplus_r2/r3`、`r4/r4b`（收敛轮）→ `final`/`final2`（v4 定稿）；`pass2/pass3`（pass^3 三轮）；`q2q52`（子集验证）。收敛轨迹 85.8%→95.0%→96.5% 见 `convergence.json`。
 
 ---
 
