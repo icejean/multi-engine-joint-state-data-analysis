@@ -580,7 +580,7 @@ Among them, horizontal and vertical are the **structural dimensions** of the joi
 
 ## Section 9 References
 
-> Internal production data (newbc-ri, kg-main, Shanghai housing prices, Zhuhai Airport graph, etc.) are not publicly available and are therefore not cited.
+> Internal production data (newbc-ri, kg-main, Shanghai housing prices, etc.) are not publicly available and are therefore not cited.
 
 ### 9.1 Academic papers / benchmarks (numbered, verified)
 
@@ -605,30 +605,31 @@ Among them, horizontal and vertical are the **structural dimensions** of the joi
 | 11 | TabReD (weather dataset) | §5.2 / §5.3 | Rubachev, Kartashev, Gorishniy, Babenko, "TabReD: A Benchmark of Tabular Machine Learning in-the-Wild," ICLR 2025, arXiv:2406.19380 |
 | 12 | dbt Labs semantic layer (+8.2~15.9pp) | §6.1 | "Semantic Layer vs. Text-to-SQL: 2026 Benchmark Update," dbt Developer Blog, https://docs.getdbt.com/blog/semantic-layer-vs-text-to-sql-2026 |
 | 13 | Sakila / AdventureWorks (anti-memorization experiment / works_cycles data) | §4.1 / §7.1③ | Sakila → https://dev.mysql.com/doc/sakila/en/ ; AdventureWorks → https://learn.microsoft.com/en-us/sql/samples/adventureworks-install-configure |
+| 14 | Airport routes (Neo4j graph example) | §5.1 | Neo4j graph-examples, "Airport Routes," https://github.com/neo4j-graph-examples/airport-routes (8,627 airports / 73,954 routes; demo filtered to domestic (China) routes) |
 
 
 ### 9.3 Tools, products, and open-source libraries
 
 | # | Citation | Location | Source |
 |---|---|---|---|
-| 14 | JetBrains live kernel / Snowflake Notebooks / marimo / Hex / Deepnote / Posit | §2.2 / §2.6 / §6.2 | JetBrains live kernel → https://blog.jetbrains.com/pycharm/2026/08/we-gave-ai-agents-a-live-jupyter-kernel-in-pycharm/ ; Snowflake Notebooks → https://docs.snowflake.com/en/release-notes/2026/other/2026-02-05-notebooks-in-workspaces ; marimo → https://marimo.io ; Hex → https://hex.tech ; Deepnote → https://deepnote.com ; Posit → https://posit.co |
-| 15 | Ivanfangsc/jupyter-mcp, nteract | §6.2 | jupyter-mcp → https://github.com/Ivanfangsc/jupyter-mcp ; nteract → https://github.com/nteract/nteract |
-| 16 | LightGBM | §5.2 | Ke et al., "LightGBM: A Highly Efficient Gradient Boosting Decision Tree," NeurIPS 2017, arXiv:1710.08754 |
-| 17 | XGBoost | §5.2 | Chen & Guestrin, "XGBoost: A Scalable Tree Boosting System," KDD 2016, arXiv:1603.02754 |
-| 18 | CatBoost | §5.2 | Prokhorenkova et al., "CatBoost: unbiased boosting with categorical features," NeurIPS 2018, arXiv:1706.09516 |
-| 19 | Optuna | §5.2 / §5.3 | Akiba et al., "Optuna: A Next-generation Hyperparameter Optimization Framework," KDD 2019, arXiv:1907.10902 |
-| 20 | mlr3 / tidymodels | §5.3 | mlr3 → Lang et al., JOSS 4(44):1903, 2019, DOI 10.21105/joss.01903 ; tidymodels → https://www.tidymodels.org |
-| 21 | rtorch | §5.3 | R binding for libtorch → https://cran.r-project.org/package=rtorch (no single paper) |
-| 22 | Apache Arrow (arrow direct parquet read) | §5.3 | project (no single paper) → https://arrow.apache.org |
+| 15 | JetBrains live kernel / Snowflake Notebooks / marimo / Hex / Deepnote / Posit | §2.2 / §2.6 / §6.2 | JetBrains live kernel → https://blog.jetbrains.com/pycharm/2026/08/we-gave-ai-agents-a-live-jupyter-kernel-in-pycharm/ ; Snowflake Notebooks → https://docs.snowflake.com/en/release-notes/2026/other/2026-02-05-notebooks-in-workspaces ; marimo → https://marimo.io ; Hex → https://hex.tech ; Deepnote → https://deepnote.com ; Posit → https://posit.co |
+| 16 | Ivanfangsc/jupyter-mcp, nteract | §6.2 | jupyter-mcp → https://github.com/Ivanfangsc/jupyter-mcp ; nteract → https://github.com/nteract/nteract |
+| 17 | LightGBM | §5.2 | Ke et al., "LightGBM: A Highly Efficient Gradient Boosting Decision Tree," NeurIPS 2017, arXiv:1710.08754 |
+| 18 | XGBoost | §5.2 | Chen & Guestrin, "XGBoost: A Scalable Tree Boosting System," KDD 2016, arXiv:1603.02754 |
+| 19 | CatBoost | §5.2 | Prokhorenkova et al., "CatBoost: unbiased boosting with categorical features," NeurIPS 2018, arXiv:1706.09516 |
+| 20 | Optuna | §5.2 / §5.3 | Akiba et al., "Optuna: A Next-generation Hyperparameter Optimization Framework," KDD 2019, arXiv:1907.10902 |
+| 21 | mlr3 / tidymodels | §5.3 | mlr3 → Lang et al., JOSS 4(44):1903, 2019, DOI 10.21105/joss.01903 ; tidymodels → https://www.tidymodels.org |
+| 22 | rtorch | §5.3 | R binding for libtorch → https://cran.r-project.org/package=rtorch (no single paper) |
+| 23 | Apache Arrow (arrow direct parquet read) | §5.3 | project (no single paper) → https://arrow.apache.org |
 
 ### 9.4 Models
 
 | # | Citation | Location | Source |
 |---|---|---|---|
-| 23 | deepseek-v4-flash | §4 primary model | DeepSeek, "DeepSeek-V4 Preview Release," https://api-docs.deepseek.com/news/news260424/ |
-| 24 | glm-5.2 / glm-5.1 (GLM-5-Pro) | §4.5 | Zhipu GLM-5, model card: https://docs.z.ai/guides/llm/glm-5 ; https://docs.bigmodel.cn/cn/guide/models/text/glm-5 |
-| 25 | MiniMax M3 | §5.4 | MiniMax, arXiv:2606.13392, https://www.minimax.io/models/text/m3 |
-| 26 | Claude 3.5 Sonnet | §5.1 | Anthropic, "Introducing Claude 3.5 Sonnet," https://www.anthropic.com/news/claude-3-5-sonnet |
-| 27 | GPT-5 | §6.2 | OpenAI, "GPT-5 System Card," arXiv:2601.03267 |
-| 28 | Gemini | §6.2 / §8.4 | Google DeepMind, "Gemini: A Family of Highly Capable Multimodal Models," arXiv:2312.11805 |
+| 24 | deepseek-v4-flash | §4 primary model | DeepSeek, "DeepSeek-V4 Preview Release," https://api-docs.deepseek.com/news/news260424/ |
+| 25 | glm-5.2 / glm-5.1 (GLM-5-Pro) | §4.5 | Zhipu GLM-5, model card: https://docs.z.ai/guides/llm/glm-5 ; https://docs.bigmodel.cn/cn/guide/models/text/glm-5 |
+| 26 | MiniMax M3 | §5.4 | MiniMax, arXiv:2606.13392, https://www.minimax.io/models/text/m3 |
+| 27 | Claude 3.5 Sonnet | §5.1 | Anthropic, "Introducing Claude 3.5 Sonnet," https://www.anthropic.com/news/claude-3-5-sonnet |
+| 28 | GPT-5 | §6.2 | OpenAI, "GPT-5 System Card," arXiv:2601.03267 |
+| 29 | Gemini | §6.2 / §8.4 | Google DeepMind, "Gemini: A Family of Highly Capable Multimodal Models," arXiv:2312.11805 |
 

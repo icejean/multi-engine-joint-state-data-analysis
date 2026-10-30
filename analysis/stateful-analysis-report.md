@@ -209,7 +209,7 @@ Python/R 内核驱动 27 万行上海房价数据，端到端「取数 → 清�
 
 ### 3.2 图方向（RDB × GraphDB 乘法）
 
-Cypher 内核跑通「珠海机场 → 资金环路 → 团伙分析」demo：
+Cypher 内核跑通「珠海机场 → 资金环路 → 团伙分析」demo（机场航线网络 = Neo4j graph-examples/airport-routes 公开数据集，过滤国内航线、模拟发票开票网络）：
 
 - WCC 子图识别 → 环路检测（3 跳、金额幅度 <20%，对应「资金回流/虚开发票」风控特征）→ Leiden 社区 + PageRank 团伙画像；
 - 关系型走 SQL、图走 Cypher，同一 LLM 上下文打通两种异质结构化数据。

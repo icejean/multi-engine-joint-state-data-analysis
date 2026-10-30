@@ -61,12 +61,13 @@ Raw benchmark data is **not** included (large binaries). Download from the offic
 - **BIRD**: https://bird-bench.github.io
 - **CypherBench**: https://github.com/megagonlabs/cypherbench (dataset: https://huggingface.co/datasets/megagonlabs/cypherbench)
 - **TabReD**: https://github.com/yandex-research/tabred (`uvx tabred download`, requires a Kaggle account)
+- **Airport routes** (Neo4j graph-examples demo data — 8,627 airports / 73,954 routes; the §5.1 single-graph graph-algorithm demo filters this to domestic (China) routes and relabels them as an invoice-issuing network): https://github.com/neo4j-graph-examples/airport-routes (load `data/neo4j.dump`; requires Neo4j 4.4 + GDS plugin)
 
 After downloading, place the data under `data/` following the layout in the resource files.
 
 ## Data governance
 
-Private / internally-deployed data used for **qualitative** validation — `newbc-ri` (production R&D management DB), `kg-main` (knowledge graph), Shanghai housing prices, and the Zhuhai Airport graph — is **not** publicly available and is therefore excluded from this repository. Their quantitative evidence is left to future work (see the paper §5.1, §7.2).
+Private / internally-deployed data used for **qualitative** validation — `newbc-ri` (production R&D management DB), `kg-main` (knowledge graph), and Shanghai housing prices — is **not** publicly available and is therefore excluded from this repository. Their quantitative evidence is left to future work (see the paper §5.1, §7.2).
 
 ## Citation
 
