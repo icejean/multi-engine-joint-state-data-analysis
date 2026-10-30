@@ -18,6 +18,7 @@ paper/      Paper source (LaTeX + bibliography) and compiled PDF
 analysis/   Process documents: methodology, experiment reports, root-cause analyses
 scripts/    Reproducibility scripts (gold generation, evaluation, grounding, benchmarks)
 data/       Resource files (schema.json + notes.md), gold, and results per benchmark
+REPLAY_GUIDES/  Per-database step-by-step replay guides (data source → preprocessing → benchmark → results)
 ```
 
 ## Headline results
@@ -30,6 +31,8 @@ data/       Resource files (schema.json + notes.md), gold, and results per bench
 | ML (R) | TabReD weather | rtorch MLP 1.5419°C, float32 GBDT 1.5449 |
 
 ## Reproducing the results
+
+Step-by-step replay guides per database are in [`REPLAY_GUIDES/`](REPLAY_GUIDES/).
 
 ### SQL — BIRD dev (`works_cycles`, `financial`, `formula_1`)
 
