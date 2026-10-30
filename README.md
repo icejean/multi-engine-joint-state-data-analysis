@@ -71,3 +71,7 @@ Private / internally-deployed data used for **qualitative** validation — `newb
 ## Citation
 
 If you use this work, please cite the paper (arXiv ID to be added once published).
+
+## License
+
+[MIT](LICENSE) — the resource files, scripts, and documents in this repository are free to use, modify, and redistribute with attribution.
