@@ -32,7 +32,7 @@ REPLAY_GUIDES/  Per-database step-by-step replay guides (data source → preproc
 
 ## Reproducing the results
 
-Step-by-step replay guides per database are in [`REPLAY_GUIDES/`](REPLAY_GUIDES/).
+Step-by-step replay guides per database are in [`REPLAY_GUIDES/`](REPLAY_GUIDES/). Which result files the paper's conclusions depend on (vs. intermediate process records) is cataloged in [`REPLAY_GUIDES/RESULTS_INVENTORY.md`](REPLAY_GUIDES/RESULTS_INVENTORY.md).
 
 ### SQL — BIRD dev (`works_cycles`, `financial`, `formula_1`)
 
