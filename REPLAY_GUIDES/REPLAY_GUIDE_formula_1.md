@@ -1,32 +1,32 @@
-# REPLAY_GUIDE_formula_1.md — formula_1（BIRD dev）复现指南
+# REPLAY_GUIDE_formula_1.md — formula_1 (BIRD dev) Replay Guide
 
-> 从零复现论文 §4.4 的 **formula_1**（BIRD dev F1 赛车库，混淆改名）SQL 收敛实验。
-> 与 `financial` 共用同一套 `prep_bird.py` 管线（见 REPLAY_GUIDE_financial.md），本文只标差异。
-> 资产：`data/formula_1/`、`scripts/`、`analysis/root-cause/`。
-
----
-
-## 0. 定位与口径（先读）
-
-- **数据域**：关系型（SQL），BIRD dev 的 `formula_1` 库（F1 赛车，13 表）。
-- **机制**：**M+S**（一次性注入 schema.json + notes.md）+ 对照 single-shot 基线（B1）。
-- **收敛曲线**：同一库多轮跑，每轮换一份 notes.md（从零逐步积累）。
-- **诚实边界**：M+S 走 Portal 真实执行链路，需部署 DataAI Portal 全栈才能复跑——
-  开源 DataAI 项目见 <https://github.com/icejean/dataai_with_jupyterlab_and_rstudio>（`docs/DataAI-Portal-AI数据分析平台简介.md` 是 Portal 介绍资料入口）。
-  single-shot 直连 LLM API + pymysql，第三方可复现。
-- **判分**：`results_equal_relaxed`。
+> Reproducing the §4.4 **formula_1** (BIRD dev F1 racing, obfuscated) SQL convergence experiment from scratch.
+> Shares the same `prep_bird.py` pipeline as `financial` (see REPLAY_GUIDE_financial.md); this doc only marks the differences.
+> Assets: `data/formula_1/`, `scripts/`, `analysis/root-cause/`.
 
 ---
 
-## 1. 数据源与下载
+## 0. Positioning and conventions (read first)
 
-- **源**：BIRD dev 集，数据库 `formula_1`。<https://bird-bench.github.io> 下载 dev 集，得到 `dev.json`、`dev_databases/formula_1/formula_1.sqlite`、`database_description/*.csv`（13 表）。
-- **本仓库已含**：`dev.json` / `dev_tables.json`（BIRD 原题集，prep_bird.py 输入）、`question_set.json` / `question_set_obfuscated.json`、`obfuscation_map.json`、`formula_1_schema.json`、`formula_1_notes.md`、`gold.json`、`gold_errors.json`、`database_description/*.csv`、`convergence_curve.json`、`results_f1_*.json`、`run_*.log`、`b1_*.log`。
-- **本仓库不含**：`formula_1.sqlite`（二进制库，需下载）。
+- **Data domain**: relational (SQL). The BIRD dev `formula_1` database (F1 racing, 13 tables).
+- **Mechanism**: **M+S** (one-shot injection of schema.json + notes.md) + a single-shot baseline (B1).
+- **Convergence curve**: run the same DB over multiple rounds, swapping in a new notes.md each round (accumulating from scratch).
+- **Honesty boundary**: M+S goes through the real Portal execution chain, requiring the full DataAI Portal stack —
+  the open-source DataAI project is at <https://github.com/icejean/dataai_with_jupyterlab_and_rstudio> (`docs/DataAI-Portal-AI数据分析平台简介.md` is the Portal introduction entry).
+  single-shot calls the LLM API directly + pymysql, third-party reproducible.
+- **Scoring**: `results_equal_relaxed`.
 
 ---
 
-## 2. 预处理（混淆改名）
+## 1. Data source & download
+
+- **Source**: BIRD dev set, database `formula_1`. Download the dev set from <https://bird-bench.github.io>, giving `dev.json`, `dev_databases/formula_1/formula_1.sqlite`, `database_description/*.csv` (13 tables).
+- **Included in this repo**: `dev.json` / `dev_tables.json` (BIRD original question set, input to prep_bird.py), `question_set.json` / `question_set_obfuscated.json`, `obfuscation_map.json`, `formula_1_schema.json`, `formula_1_notes.md`, `gold.json`, `gold_errors.json`, `database_description/*.csv`, `convergence_curve.json`, `results_f1_*.json`, `run_*.log`, `b1_*.log`.
+- **Not included**: `formula_1.sqlite` (binary DB, download required).
+
+---
+
+## 2. Preprocessing (obfuscation / renaming)
 
 ```bash
 python3 scripts/prep_bird.py formula_1
@@ -38,7 +38,7 @@ python3 scripts/transform_gold_sql.py --questions data/formula_1/question_set.js
 
 ---
 
-## 3. 建库与加载
+## 3. Database creation & loading
 
 ```bash
 python3 scripts/migrate_bird.py formula_1
@@ -46,52 +46,52 @@ python3 scripts/migrate_bird.py formula_1
 
 ---
 
-## 4. 题集（174 题）
+## 4. Question set (174 questions)
 
-- **单一事实源**：`data/formula_1/question_set_obfuscated.json`（174 题）。
+- **Single source of truth**: `data/formula_1/question_set_obfuscated.json` (174 questions).
 
 ---
 
-## 5. gold 源 / 生成 / fix
+## 5. gold source / generation / fixes
 
 ```bash
 python3 scripts/gen_gold_bird.py formula_1
 ```
 
-- 输出：`data/formula_1/gold.json` + `gold_errors.json`（交叉验证「原名 SQLite vs 混淆 MySQL」）。
+- Output: `data/formula_1/gold.json` + `gold_errors.json` (cross-validation "original SQLite vs obfuscated MySQL").
 
 ---
 
-## 6. 资源文件（M+S 一次性注入）
+## 6. Resource files (M+S one-shot injection)
 
-- `data/formula_1/formula_1_schema.json` + `formula_1_notes.md`。
+- `data/formula_1/formula_1_schema.json` + `formula_1_notes.md`.
 
 ---
 
-## 7. 跑 benchmark
+## 7. Running the benchmark
 
 ```bash
-# M+S 收敛曲线
+# M+S convergence curve
 python3 scripts/run_bench_bird_mplus.py --db formula_1 --all \
     --results results_f1_round1.json
 
-# single-shot 基线（B1）
+# single-shot baseline (B1)
 python3 scripts/run_bench_bird_singleshot.py --db formula_1 --all \
     --results results_f1_ss.json
 
-# pass^3（同一份收敛后 notes × 3 轮，量化模型漂移；统计 平均 pass@1 / 三轮全对 all-3）
+# pass^3 (same converged notes × 3 rounds; stats: average pass@1 / all-3)
 python3 scripts/run_bench_bird_mplus.py --db formula_1 --all --results results_f1_pass3_run1.json
 python3 scripts/run_bench_bird_mplus.py --db formula_1 --all --results results_f1_pass3_run2.json
 python3 scripts/run_bench_bird_mplus.py --db formula_1 --all --results results_f1_pass3_run3.json
 
-# 收敛汇总
+# convergence summary
 python3 scripts/summarize_convergence.py --db formula_1 \
-    --results results_f1_round1.json --round 1 --notes "empty(从零)"
+    --results results_f1_round1.json --round 1 --notes "empty(scratch)"
 ```
 
 ---
 
-## 8. 判分
+## 8. Scoring
 
 ```bash
 python3 scripts/score.py --selftest
@@ -100,27 +100,27 @@ python3 scripts/statistical_analysis.py      # p2-statistical-results.md §B1
 
 ---
 
-## 9. 根因分析（文档索引）
+## 9. Root-cause analysis (doc index)
 
-| 主题 | 文档 |
+| Topic | Doc |
 |---|---|
-| BIRD dev 跨库收敛 | `analysis/root-cause/bird-dev-convergence.md` |
-| 跨模型对照 | `analysis/root-cause/glm52-7q-root-cause.md`、`bird-dev-pro-vs-flash.md` |
-| gold 审计 | `analysis/root-cause/gold-fixes-bird-dev.md` + `analysis/gold-verification.md` |
-| 统计方法 | `analysis/p2-statistical-results.md`（§B1） |
+| BIRD dev cross-DB convergence | `analysis/root-cause/bird-dev-convergence.md` |
+| Cross-model comparison | `analysis/root-cause/glm52-7q-root-cause.md`, `bird-dev-pro-vs-flash.md` |
+| gold audit | `analysis/root-cause/gold-fixes-bird-dev.md` + `analysis/gold-verification.md` |
+| Statistical method | `analysis/p2-statistical-results.md` (§B1) |
 
 ---
 
-## 10. 迭代时间线（收敛过程，非逐轮数字）
+## 10. Iteration timeline (convergence process, not per-round numbers)
 
-与 financial 同构：prep → 建库 → round1 从零 → 根因/修 notes/重跑 → B1 同库基线 → **pass^3（三轮）** → 收口（收敛到 grounding 拉满、锁定硬地板）。formula_1 的库专属 notes 涉及圈速 `TIME_TO_SEC` 等 F1 语义坑。探索变体（结果前缀）：`round1-5`/`round5b`（收敛轮）、`note1-3test`（note 增量验证）、`notesfix`/`goldfix`/`driftfix`/`stablefix`/`regfix`/`q128fix`（定向修）、`smoke`/`smoke2`（冒烟）。
+Same structure as financial: prep → DB build → round1 from scratch → root cause / fix notes / re-run → B1 same-DB baseline → **pass^3 (three rounds)** → closure (converge to grounding-saturated, lock hard-floor). formula_1's DB-specific notes involve F1 semantic pitfalls like lap-time `TIME_TO_SEC`. Exploration variants (result prefix): `round1-5`/`round5b` (convergence rounds), `note1-3test` (notes incremental validation), `notesfix`/`goldfix`/`driftfix`/`stablefix`/`regfix`/`q128fix` (targeted fixes), `smoke`/`smoke2` (smoke tests).
 
-> 精确数字以 `analysis/p2-statistical-results.md` §B1 与 `convergence_curve.json` 为准。
+> Exact numbers are authoritative in `analysis/p2-statistical-results.md` §B1 and `convergence_curve.json`.
 
 ---
 
-## 11. 相关文件清单
+## 11. Related files
 
-**数据（`data/formula_1/`）**：`dev.json` / `dev_tables.json`、`question_set.json`、`question_set_obfuscated.json`、`obfuscation_map.json`、`formula_1_schema.json`、`formula_1_notes.md`、`gold.json`、`gold_errors.json`、`database_description/*.csv`（13 表）、`convergence_curve.json`、`results_f1_*.json`（含 round/note*test/fix/pass3 变体）、`run_*.log`、`b1_*.log`。
+**Data (`data/formula_1/`)**: `dev.json` / `dev_tables.json`, `question_set.json`, `question_set_obfuscated.json`, `obfuscation_map.json`, `formula_1_schema.json`, `formula_1_notes.md`, `gold.json`, `gold_errors.json`, `database_description/*.csv` (13 tables), `convergence_curve.json`, `results_f1_*.json` (incl. round/note*test/fix/pass3 variants), `run_*.log`, `b1_*.log`.
 
-**脚本**：同 financial（`scripts/{prep_bird,transform_gold_sql,migrate_bird,gen_gold_bird,run_bench_bird_mplus,run_bench_bird_singleshot,summarize_convergence,analyze_b1_singleshot}.py` + `run_b1_singleshot.sh`）。
+**Scripts**: same as financial (`scripts/{prep_bird,transform_gold_sql,migrate_bird,gen_gold_bird,run_bench_bird_mplus,run_bench_bird_singleshot,summarize_convergence,analyze_b1_singleshot}.py` + `run_b1_singleshot.sh`).
