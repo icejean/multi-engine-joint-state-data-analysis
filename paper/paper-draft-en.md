@@ -562,7 +562,7 @@ Among them, horizontal and vertical are the **structural dimensions** of the joi
 ### 8.3 Review of contributions
 
 1. **Combination mechanism**: the unified mechanism of data context × multi-engine × governance and audit, realizing the two-multiplication connection ("semantics × precise computation", "relational × graph") (§2).
-2. **Deterministic engineering method (M+S)**: schema.json auto-generation + notes.md iterative accumulation, replacing exploration; the SQL direction already validated to converge ~90%+ (§3).
+2. **Deterministic engineering method (M+S)**: schema.json auto-generation + notes.md iterative accumulation, replacing exploration; the SQL direction already validated to converge to ~90%+ (§3).
 3. **Empirical dominance (SQL)**: M+S is consistently higher than single-shot in accuracy / reliability, ties pure exploration in accuracy but is faster, cheaper, and less drifty; across models it is a **weak-model amplifier** (S→M+S gain inversely proportional to capability, +4pp → +14pp → +27~33pp) (§4).
 4. **Convergence curve**: quantifying "experience accumulation" into a reproducible engineering process, with mechanism generalization holding both across databases (three databases) and across engines (Cypher as the first case) (§4.4, §5.1).
 5. **(Honesty addendum)**: BIRD gold quality audit (43.9% problem rate) + the counterintuitive finding "under a strong model, a complete dictionary suffices and ER is unnecessary" + the methodological finding of the agent scoring trap (§4.6, §7.1).
