@@ -316,7 +316,7 @@ Grounding's value is not a one-time lucky high score, but a **monotonically conv
 - **The "grounding ladder" benchmarked against single-shot SOTA** (referencing MCI-SQL, BIRD dev metadata pre-injection, EX 74.45%):
   1. **From zero** (schema.json injection only, single-shot level) **≈ SOTA**: financial +1.1pp, formula_1 −3.6pp;
   2. **Add notes and converge** (round4 single-shot) **exceeds SOTA**: financial +10.5pp, formula_1 +8.7pp;
-  3. **Grounding full** (average) **leads SOTA by ~20–23pp**: financial +20.9pp, formula_1 +20.2pp, formula_1 single-shot ceiling +22.7pp.
+  3. **Grounding full** **leads SOTA by ~20–23pp**: average financial +20.9pp / formula_1 +20.2pp; single-shot ceiling financial +21.8pp / formula_1 +22.7pp.
 
   **The mechanism gain of notes = one more segment climbed above SOTA — this is precisely the contribution of the "data context", not benchmark ranking.**
 
