@@ -40,7 +40,7 @@ This paper proposes a **combination mechanism** as a new approach to AI data ana
 2. **Deterministic engineering method (M+S)**: automatic schema.json generation plus iterative notes.md accumulation, replacing per-table exploration; the SQL direction is already validated to converge to ~90%+ (§3).
 3. **Empirical dominance (SQL)**: M+S is consistently higher than single-shot in accuracy and reliability, and matches pure exploration in accuracy while being faster, cheaper, and less drifty; across models it acts as a **weak-model amplifier** (§4).
 4. **Convergence curve**: notes iteration converges monotonically, turning "experience accumulation" into a reproducible engineering process (§4.4).
-5. **(Honesty addendum)**: a BIRD gold quality audit, the counterintuitive finding that "under a strong model, a complete dictionary suffices and ER is unnecessary", and the methodological discovery of the agent scoring trap (§4.6, §7.1).
+5. **(Honesty addendum)**: a BIRD gold quality audit, the counterintuitive finding that "under a strong model, a complete dictionary suffices and ER is unnecessary", and the methodological contributions of the agent scoring trap and the anti-memorization benchmark methodology (§4.6, §7.1).
 
 ### 1.5 Scope and non-goals
 
@@ -565,7 +565,7 @@ Among them, horizontal and vertical are the **structural dimensions** of the joi
 2. **Deterministic engineering method (M+S)**: schema.json auto-generation + notes.md iterative accumulation, replacing exploration; the SQL direction already validated to converge to ~90%+ (§3).
 3. **Empirical dominance (SQL)**: M+S is consistently higher than single-shot in accuracy / reliability, ties pure exploration in accuracy but is faster, cheaper, and less drifty; across models it is a **weak-model amplifier** (S→M+S gain inversely proportional to capability, +4pp → +14pp → +27~33pp) (§4).
 4. **Convergence curve**: quantifying "experience accumulation" into a reproducible engineering process, with mechanism generalization holding both across databases (three databases) and across engines (Cypher as the first case) (§4.4, §5.1).
-5. **(Honesty addendum)**: BIRD gold quality audit (43.9% problem rate) + the counterintuitive finding "under a strong model, a complete dictionary suffices and ER is unnecessary" + the methodological finding of the agent scoring trap (§4.6, §7.1).
+5. **(Honesty addendum)**: BIRD gold quality audit (43.9% problem rate) + the counterintuitive finding "under a strong model, a complete dictionary suffices and ER is unnecessary" + the methodological contributions of the agent scoring trap and the anti-memorization benchmark methodology (§4.6, §7.1).
 
 ### 8.4 Future work
 
