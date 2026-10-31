@@ -43,7 +43,7 @@ cd data/works_cycles
 python3 select_questions.py --train-json <BIRD>/train.json --db-id works_cycles \
     --target 100 --out question_set_100.json
 
-# 2) Merge official 98 + self-authored 28 → final question set (126 questions)
+# 2) Merge official 98 + self-authored 28 → final question set (126 = 96 official + 30 self-authored)
 python3 merge_question_sets.py --official question_set_100.json \
     --custom custom_questions_24.json --out question_set_final.json
 
@@ -85,7 +85,7 @@ python3 data/works_cycles/migrate_to_mysql.py
 ## 4. Question set (126 questions)
 
 - **Single source of truth**: `data/works_cycles/question_set_final_obfuscated.json` (126 questions, with `id/question_id/question/evidence/SQL_obfuscated/source`).
-- Composition: 98 official (`question_set_100.json`) + 28 self-authored (`custom_questions_24.json`).
+- Composition: **96 official + 30 self-authored** = 126 questions (the final split per `question_set_final.json`'s `source` field; the intermediate inputs are `question_set_100.json` = 98 and `custom_questions_24.json` = 28, with 2 ill-posed official questions Q88/Q92 dropped during cleanup — see paper §4.6/§7.1).
 - Self-authored questions cover scenarios BIRD doesn't (e.g. BOM `WITH` recursion, `end_dt`/`rt_chng_dt` history-table conventions).
 
 ---
