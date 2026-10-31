@@ -358,7 +358,7 @@ Three regularities: ① **M+S holds across models and does not lose accuracy whe
 
 Multiplication II of §2.4 claims that "the same LLM context bridges relational and graph, two kinds of heterogeneous structured data". The SQL side was quantified in Section 4; the graph side is quantified on CypherBench's movie subgraph (401 questions, CypherBench's most famous representative graph; 459,393 nodes / 1,892,202 relationships / 7 labels / 9 relationship types):
 
-- **96.5% EX** (execution accuracy, result-set equivalence; the single-shot convergence ceiling, with the three-round average likewise 96.5%, breakdown 96.5/96.0/97.0), **all-3 94.0%** (377/401), union (at least one round correct) 98.5% (395/401) — the same schema.json + notes.md mechanism, applied to Text2Cypher, converges to a high accuracy of the same order as SQL.
+- **96.5% EX** (execution accuracy, result-set equivalence; the convergence endpoint, with the three-round average likewise 96.5% and the single-shot ceiling 97.0%, breakdown 96.5/96.0/97.0), **all-3 94.0%** (377/401), union (at least one round correct) 98.5% (395/401) — the same schema.json + notes.md mechanism, applied to Text2Cypher, converges to a high accuracy of the same order as SQL.
 - Exceeds Text2Cypher SOTA by **+24~35pp** (EX 96.5%: vs Cypher-RI (schema selection + RL) 69.59% +26.9pp, vs Claude 3.5 Sonnet (zero-shot) 61.58% +34.9pp; all-3 94.0% corresponds to +24.4pp / +32.4pp).
 
 **Convergence trajectory** (isomorphic to §4.4: notes accumulate → accuracy converges monotonically). The same "failure root-cause analysis → add notes rules → re-run" loop lifted movie from 85.8% to 96.5%.

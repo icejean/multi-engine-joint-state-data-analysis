@@ -603,7 +603,7 @@ Multiplication II of \S{}2.4 claims that ``the same LLM context bridges relation
 
 \begin{itemize}
 \item
-  \textbf{96.5\% EX} (execution accuracy, result-set equivalence; the single-shot convergence ceiling, with the three-round average likewise 96.5\%, breakdown 96.5/96.0/97.0), \textbf{all-3 94.0\%} (377/401), union (at least one round correct) 98.5\% (395/401) --- the same schema.json + notes.md mechanism, applied to Text2Cypher, converges to a high accuracy of the same order as SQL.
+  \textbf{96.5\% EX} (execution accuracy, result-set equivalence; the convergence endpoint, with the three-round average likewise 96.5\% and the single-shot ceiling 97.0\%, breakdown 96.5/96.0/97.0), \textbf{all-3 94.0\%} (377/401), union (at least one round correct) 98.5\% (395/401) --- the same schema.json + notes.md mechanism, applied to Text2Cypher, converges to a high accuracy of the same order as SQL.
 \item
   Exceeds Text2Cypher SOTA by \textbf{+24\textasciitilde35pp} (EX 96.5\%: vs Cypher-RI~\cite{cypher-ri} (schema selection + RL) 69.59\% +26.9pp, vs Claude 3.5 Sonnet~\cite{claude-35-sonnet} (zero-shot) 61.58\% +34.9pp; all-3 94.0\% corresponds to +24.4pp / +32.4pp).
 \end{itemize}
