@@ -1,10 +1,10 @@
 {
   "name": "works_cycles_question_set_final",
-  "description": "三梯度测试最终题集：官方 98 + 自拟 28 = 126",
+  "description": "三梯度测试最终题集：官方 96 + 自拟 30 = 126",
   "count": 126,
   "breakdown": {
-    "official": 98,
-    "custom": 28
+    "official": 96,
+    "custom": 30
   },
   "questions": [
     {

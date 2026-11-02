@@ -43,7 +43,7 @@ cd data/works_cycles
 python3 select_questions.py --train-json <BIRD>/train.json --db-id works_cycles \
     --target 100 --out question_set_100.json
 
-# 2) Merge official 98 + self-authored 28 → final question set (126 = 96 official + 30 self-authored)
+# 2) Merge official 98 + self-authored 28 → 126; final split after cleanup = 96 official + 30 self-authored (see §4)
 python3 merge_question_sets.py --official question_set_100.json \
     --custom custom_questions_24.json --out question_set_final.json
 
@@ -85,7 +85,7 @@ python3 data/works_cycles/migrate_to_mysql.py
 ## 4. Question set (126 questions)
 
 - **Single source of truth**: `data/works_cycles/question_set_final_obfuscated.json` (126 questions, with `id/question_id/question/evidence/SQL_obfuscated/source`).
-- Composition: **96 official + 30 self-authored** = 126 questions (the final split per `question_set_final.json`'s `source` field; the intermediate inputs are `question_set_100.json` = 98 and `custom_questions_24.json` = 28, with 2 ill-posed official questions Q88/Q92 dropped during cleanup — see paper §4.6/§7.1).
+- Composition: **96 official + 30 self-authored** = 126 questions (the final split per `question_set_final.json`'s `source` field; the intermediate inputs are `question_set_100.json` = 98 and `custom_questions_24.json` = 28, with 2 ill-posed official questions Q88/Q92 dropped and 2 self-authored questions added during cleanup — see paper §4.6/§7.1).
 - Self-authored questions cover scenarios BIRD doesn't (e.g. BOM `WITH` recursion, `end_dt`/`rt_chng_dt` history-table conventions).
 
 ---
@@ -173,7 +173,7 @@ python3 scripts/statistical_analysis.py      # McNemar + bootstrap CI + pass@k �
 
 The endpoint of reproduction is not any single round's number, but pushing the experiment to a **closed state** — mechanism conclusions self-consistent, ceiling locked, boundaries honest. Proceed in order:
 
-1. **Question selection + DB build**: BIRD dev `works_cycles` — 98 selected + 28 self-authored → 126 questions; three-tier DBs `works_cycles/_dict/_er`.
+1. **Question selection + DB build**: BIRD dev `works_cycles` — 98 selected + 28 self-authored, cleanup (−2 ill-posed Q88/Q92, +2 self-authored) → 96 official + 30 self-authored = 126 questions; three-tier DBs `works_cycles/_dict/_er`.
 2. **S axis**: run the single-shot baseline (S0/S1/S2 three metadata-pre-injection tiers), establishing the "single-shot ceiling" and the "pre-injection degrades on large schemas" boundary.
 3. **M axis**: run agent self-iteration (M0/M1/M2), observing the gain of "execution feedback + metadata exploration" over S, and the rounds/cost.
 4. **M+S**: run the injection mode against M — quantifying the rounds/tokens saved by "exploration → one-shot injection", and whether accuracy holds.
