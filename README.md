@@ -7,7 +7,7 @@ This repository holds the benchmarks, resource files, scripts, and results that 
 ## Paper
 
 - **Title**: AI Data Analysis: A New Approach — Multi-engine Joint State Data Analysis
-- **arXiv**: *(pending)*
+- **arXiv**: [2611.00807](https://arxiv.org/abs/2611.00807)
 - **PDF**: [`paper/paper.pdf`](paper/paper.pdf)
 - **LaTeX source**: [`paper/paper.tex`](paper/paper.tex), [`paper/refs.bib`](paper/refs.bib)
 
@@ -74,7 +74,19 @@ Private / internally-deployed data used for **qualitative** validation — `newb
 
 ## Citation
 
-If you use this work, please cite the paper (arXiv ID to be added once published).
+If you use this work, please cite:
+
+```bibtex
+@misc{ye2026aidataanalysisnew,
+      title={AI Data Analysis: A New Approach - Multi-engine Joint State Data Analysis},
+      author={Jean Ye},
+      year={2026},
+      eprint={2611.00807},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2611.00807},
+}
+```
 
 ## License
 
